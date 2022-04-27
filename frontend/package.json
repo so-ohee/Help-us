@@ -9,9 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@actbase/react-daum-postcode": "^1.0.4",
     "@babel/core": "^7.17.9",
     "next": "^12.1.5",
     "react": "^18.0.0",
+    "react-daum-postcode": "^3.0.1",
     "react-dom": "^18.0.0"
   },
   "devDependencies": {
