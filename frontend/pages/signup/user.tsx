@@ -1,29 +1,40 @@
 import { FC, useState } from "react";
 import Postcode from '@actbase/react-daum-postcode';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+
 
 const User: FC = () => {
-  const [isModal, setModal] = useState(false);
+
+
+  const [open, setOpen] = useState<boolean>(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   return (
     <>
-      {/* <modal isVisible={isModal}>
+
+      <div>
+      <Button variant="outlined" onClick={handleClickOpen}>
+        Open form dialog
+      </Button>
+      <Dialog open={open} onClose={handleClose}>
         <Postcode
-          style={{ width: 320, height: 320 }}
+          style={{ width: 500, height: 500 }}
           jsOptions={{ animation: true, hideMapBtn: true }}
           onSelected={data => {
             alert(JSON.stringify(data));
-            setModal(false);
+            setOpen(false);
           }}
         />
-      </modal>
-      <button onClick={() => setModal(true)}>주소찾기</button> */}
-        <Postcode
-          style={{ width: 320, height: 320 }}
-          jsOptions={{ animation: true, hideMapBtn: true }}
-          onSelected={data => {
-            alert(JSON.stringify(data));
-            setModal(false);
-          }}
-        />
+      </Dialog>
+    </div>
+    
     </>
   );
 };

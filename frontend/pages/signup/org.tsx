@@ -2,6 +2,12 @@ import { FC, useState } from "react";
 import PopupDom from '../../components/popupdom';
 import PopupPostCode from '../../components/popuppostcode';
 import DaumPostcode from "react-daum-postcode";
+import {
+    Modal,
+    Button,
+    Box,
+    Typography
+  } from "@mui/material";
 
 const Org: FC = () => {
 

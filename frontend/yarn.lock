@@ -3168,11 +3168,7 @@
   "resolved" "https://registry.npmjs.org/process-nextick-args/-/process-nextick-args-2.0.1.tgz"
   "version" "2.0.1"
 
-<<<<<<< HEAD
-"prop-types@^15.7.2", "prop-types@^15.8.1":
-=======
 "prop-types@^15.6.2", "prop-types@^15.7.2", "prop-types@^15.8.1":
->>>>>>> 7407e955eb1e86192c79d2801c012f850599c808
   "integrity" "sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg=="
   "resolved" "https://registry.npmjs.org/prop-types/-/prop-types-15.8.1.tgz"
   "version" "15.8.1"
@@ -3200,7 +3196,6 @@
     "kind-of" "^6.0.0"
     "math-random" "^1.0.1"
 
-<<<<<<< HEAD
 "react-daum-postcode@^3.0.1":
   "integrity" "sha512-TBA6p+5yFy4YrH3jneNPyqNR+9igCb/XhQfnDBOABX38Hgf4n5EMmXf3NZptPSqg3UldHQ+8HPHCJ5L6zjskkg=="
   "resolved" "https://registry.npmjs.org/react-daum-postcode/-/react-daum-postcode-3.0.1.tgz"
@@ -3209,10 +3204,7 @@
     "prop-types" "^15.7.2"
     "react" "^17.0.2"
 
-"react-dom@^17.0.2 || ^18.0.0-0", "react-dom@^18.0.0", "react-dom@>= 16.8.0":
-=======
 "react-dom@^17.0.0 || ^18.0.0", "react-dom@^17.0.2 || ^18.0.0-0", "react-dom@^18.0.0", "react-dom@>= 16.8.0", "react-dom@>=16.6.0":
->>>>>>> 7407e955eb1e86192c79d2801c012f850599c808
   "integrity" "sha512-XqX7uzmFo0pUceWFCt7Gff6IyIMzFUn7QMZrbrQfGxtaxXZIcGQzoNpRLE3fQLnS4XzLLPMZX2T9TRcSrasicw=="
   "resolved" "https://registry.npmjs.org/react-dom/-/react-dom-18.0.0.tgz"
   "version" "18.0.0"
