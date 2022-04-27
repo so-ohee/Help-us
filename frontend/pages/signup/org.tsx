@@ -20,6 +20,8 @@ import styled from 'styled-components';
 
 const Org: FC = () => {
 
+    const checkNum = '123456'
+
     const [addr, setAddr] = useState<string>('')
     const [postcode, setPostcode] = useState<string>('')
 
@@ -35,6 +37,11 @@ const Org: FC = () => {
     const [pwCheckMsg, setPwCheckMsg] = useState("");
     const [checkPw, setCheckPw] = useState(false);
 
+    const [emailMsg, setEmailMsg] = useState("");
+    const [checkEmail, setCheckEmail] = useState(false);
+    const [authMail, setAuthMail] = useState(false)
+    const [authEnd, setAuthEnd] = useState(false)
+    const [authnum, setAuthnum] = useState('')
 
 
     const [inputs, setInputs] = useState({
@@ -61,6 +68,40 @@ const Org: FC = () => {
     const passwordRegex2 = /(?=.*\d{1,50})(?=.*[a-zA-Z]{1,50}).{1,50}$/; // 영문, 숫자 하나 이상 포함
 
     const emailRegex = /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+
+
+    // 이메일 유효성 검사
+    useEffect(() => {
+        setCheckEmail(false);
+        setEmailMsg("");
+        const debounce = setTimeout(() => {
+          if (email.length >= 1) {
+            if (!emailRegex.test(email)) {
+                setEmailMsg("올바른 이메일 형식이 아닙니다.");
+            } 
+            else {
+                setEmailMsg("");
+                setCheckEmail(true);
+            }
+            //   // 이메일 중복검사
+            //   axios({
+            //     method: "get",
+            //     url: "/user/checkemail?email=" + email,
+            //   })
+            //     .then((res) => {
+            //       setEmailMsg("사용하셔도 좋습니다.");
+            //       setCheckEmail(true);
+            //     })
+            //     .catch((err) => {
+            //       setEmailMsg("중복된 이메일입니다.");
+            //     });
+            // }
+          }
+        }, 500);
+        return () => clearTimeout(debounce);
+      }, [email]);
+
+
 
     // 비밀번호 유효성 검사
     useEffect(() => {
@@ -119,6 +160,19 @@ const Org: FC = () => {
 
         
     }, [password, passwordConfirm]);
+
+    // 인증번호 처리
+    useEffect(() => {
+        if (authnum.length >= 6){
+            if (authnum === checkNum){
+                // alert('인증되었습니다.')
+                setAuthEnd(true)
+            }else{
+                alert('다시 입력해주세요.')
+                setAuthnum('')
+            }
+        }
+    },[authnum])
 
     // 회원가입 버튼 누를시
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -179,17 +233,92 @@ const Org: FC = () => {
                 </Typography>
                 <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
                     <Grid container spacing={1}>
-                        <Grid item xs={12}>
+                        <Grid item xs={10}>
                             <TextField
                             required
                             fullWidth
                             id="email"
                             label="이메일"
                             name="email"
+                            value={email}
+                            onChange={onChange}
+                            disabled={authMail}
+                            // color="black"
                             autoFocus
                             inputProps={{ maxLength: 30 }}
+                            error={emailMsg.length > 0}
                             />
                         </Grid>
+                        <Grid item xs={1}>
+                        <Button
+                            sx={{ mt: 1, mb:1, mx:1}}
+                            variant="contained"
+                            disabled={!checkEmail || authMail}
+                            onClick={() => setAuthMail(true)}
+                        >
+                        인증
+                        </Button>
+                        </Grid>
+                        {
+                            authMail ?
+                            (
+                                <>
+                                <Grid item xs={3}>
+                                    <TextField
+                                    required
+                                    fullWidth
+                                    id="authnum"
+                                    label="인증번호"
+                                    name="authnum"
+                                    value={authnum}
+                                    onChange={(e) => setAuthnum(e.target.value)}
+                                    disabled={authEnd}
+                                    // color="black"
+                                    inputProps={{ maxLength: 6 }}
+                                    // error={emailMsg}
+                                    />
+                                </Grid>
+
+                                </>
+                            )
+                            : null
+                        }
+                        {
+                            authMail && !authEnd ?
+                            (
+                                <Button
+                                sx={{ mt: 2, mb:1, mx:1}}
+                                variant="contained"
+                                // disabled={!checkEmail || authMail}
+                                onClick={() => setAuthMail(false)}
+                                >
+                                다시 인증하기
+                                </Button>
+                            )
+                            : null
+                        }
+                        {
+                            authEnd ?
+                            (
+                                <Button
+                                sx={{ mt: 2, mb:1, mx:1}}
+                                variant="contained"
+                                disabled={true}
+                                >
+                                인증 완료
+                                </Button>
+                            )
+                            : null
+                        }
+
+                        {
+                            emailMsg ?
+                            (
+                                <FormHelperTexts>{emailMsg}</FormHelperTexts>
+                            )
+                            : null
+                        }
+                        
 
                         <Grid item xs={12}>
                             <TextField
