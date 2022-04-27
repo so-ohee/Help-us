@@ -13,44 +13,44 @@ import {
   Box,
 } from "@mui/material";
 
-// interface TabPanelProps {
-//   children?: React.ReactNode;
-//   dir?: string;
-//   index: number;
-//   value: number;
-// }
+interface TabPanelProps {
+  children?: React.ReactNode;
+  dir?: string;
+  index: number;
+  value: number;
+}
 
-// function TabPanel(props: TabPanelProps) {
-//   const { children, value, index, ...other } = props;
+function TabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props;
 
-//   return (
-//     <div
-//       role="tabpanel"
-//       hidden={value !== index}
-//       id={`full-width-tabpanel-${index}`}
-//       aria-labelledby={`full-width-tab-${index}`}
-//       {...other}
-//     >
-//       {value === index && (
-//         <Box sx={{ p: 3 }}>
-//           <Typography>{children}</Typography>
-//         </Box>
-//       )}
-//     </div>
-//   );
-// }
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`full-width-tabpanel-${index}`}
+      aria-labelledby={`full-width-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: 3 }}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+}
 
-// function a11yProps(index: number) {
-//   return {
-//     id: `full-width-tab-${index}`,
-//     "aria-controls": `full-width-tabpanel-${index}`,
-//   };
-// }
+function a11yProps(index: number) {
+  return {
+    id: `full-width-tab-${index}`,
+    "aria-controls": `full-width-tabpanel-${index}`,
+  };
+}
 
 const OrgMypage: FC = () => {
-  const [tabValue, setTabValue] = useState<string>("one");
+  const [tabValue, setTabValue] = useState<number>(0);
 
-  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
   };
 
@@ -88,7 +88,7 @@ const OrgMypage: FC = () => {
             <Button variant="contained">수정</Button>
           </Grid>
         </Grid>
-        <Box sx={{ width: "100%" }}>
+        <Box sx={{ width: "100%", mt: 5 }}>
           <Tabs
             value={tabValue}
             onChange={handleChange}
@@ -96,11 +96,23 @@ const OrgMypage: FC = () => {
             indicatorColor="secondary"
             aria-label="secondary tabs example"
           >
-            <Tab value="one" label="물품" />
-            <Tab value="two" label="봉사" />
-            <Tab value="three" label="후기" />
+            <Tab label="물품" {...a11yProps(0)} />
+            <Tab label="봉사" {...a11yProps(1)} />
+            <Tab label="후기" {...a11yProps(2)} />
           </Tabs>
+          <TabPanel value={tabValue} index={0}>
+            Item One
+          </TabPanel>
+          <TabPanel value={tabValue} index={1}>
+            Item Two
+          </TabPanel>
+          <TabPanel value={tabValue} index={2}>
+            Item Three
+          </TabPanel>
         </Box>
+        <Typography variant="h4" sx={{ mt: 5 }}>
+          배송 현황
+        </Typography>
       </Container>
       <style jsx>
         {`
