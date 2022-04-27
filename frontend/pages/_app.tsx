@@ -12,9 +12,14 @@ function MyApp({ Component, pageProps }: AppProps) {
         {/* 파비콘이 적용되지 않는 이유는?.. ㅜㅜ */}
         <link rel="favicon" href="/favicon.ico" />
       </Head>
+<<<<<<< HEAD
       <Layout>
         <Component {...pageProps} />
       </Layout>
+=======
+
+      <Component {...pageProps} />
+>>>>>>> feature/orgP
     </>
   );
 }
