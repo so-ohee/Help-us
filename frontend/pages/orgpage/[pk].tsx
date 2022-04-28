@@ -47,7 +47,7 @@ function a11yProps(index: number) {
   };
 }
 
-const OrgMypage: FC = () => {
+const OrgPage: FC = () => {
   const [tabValue, setTabValue] = useState<number>(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -74,14 +74,12 @@ const OrgMypage: FC = () => {
             <Typography sx={{ mt: 2 }}>기관 번호 : 010-7777-7777</Typography>
             <Typography sx={{ mt: 2 }}>기관 이메일 : test@gmail.com</Typography>
             <Typography sx={{ mt: 2 }}>
-              기관 소개 : I don't know how I feel all day long 우리의 문제인지
-              아님 내 문제인지 I don't know how to word my feeling 우리의
-              문제인지 아님 내 문제인지 그때 내가 그렇게 굴었던 건 진심이 아녔어
-              돌아서지 않을 줄 알았던 네게 나쁘게 한거야 너에게 자꾸 원치 않던
-              말로 상처 주는 날 미워해도 좋아 사실 나의 맘은 그게 아냐 너를 아주
-              원하고 있어 나도 모르겠는 날 너에게 물어 이런 저런 말들로 널
-              떠보려는 거 알아 너가 듣고 싶어 하는 말을 지금은 못하지만
-              기다려줬으면 해
+              기관 소개 : 아무래도 다시 돌아갈 순 없어 아무런 표정도 없이 이런
+              말하는 그런 내가 잔인한가요 제발 내 마음 설레이게 자꾸만 바라보게
+              하지 말아요 아무 일 없던 것처럼 그냥 스쳐지나갈 미련인 걸 알아요
+              아무리 사랑한다 말했어도 다시 돌아올 수 없는 그 때 그 맘이
+              부른다고 다시 오나요 아무래도 다시 돌아갈 순 없어 아무런 표정도
+              없이 이런 말하는 그런 내가 잔인한가요
             </Typography>
           </Grid>
           <Grid xs={1}>
@@ -96,9 +94,13 @@ const OrgMypage: FC = () => {
             indicatorColor="secondary"
             aria-label="secondary tabs example"
           >
-            <Tab label="물품" {...a11yProps(0)} />
+            <Tab label="기부" {...a11yProps(0)} />
             <Tab label="봉사" {...a11yProps(1)} />
-            <Tab label="후기" {...a11yProps(2)} />
+            <Tab label="기부 후기" {...a11yProps(2)} />
+            <Tab label="배송 현황" {...a11yProps(3)} />
+            <Tab label="기부 현황" {...a11yProps(4)} />
+            <Tab label="봉사 현황" {...a11yProps(5)} />
+            <Tab label="문의 내역" {...a11yProps(6)} />
           </Tabs>
           <TabPanel value={tabValue} index={0}>
             Item One
@@ -110,9 +112,9 @@ const OrgMypage: FC = () => {
             Item Three
           </TabPanel>
         </Box>
-        <Typography variant="h4" sx={{ mt: 5 }}>
+        {/* <Typography variant="h4" sx={{ mt: 5 }}>
           배송 현황
-        </Typography>
+        </Typography> */}
       </Container>
       <style jsx>
         {`
@@ -126,4 +128,4 @@ const OrgMypage: FC = () => {
   );
 };
 
-export default OrgMypage;
+export default OrgPage;
