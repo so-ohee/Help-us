@@ -1,45 +1,38 @@
-import react, { useState } from "react";
-import {
-  AppBar,
-  Container,
-  Toolbar,
-  Typography,
-  styled,
-  Box,
-  Stack,
-  Link,
-} from "@mui/material/";
+import react, { FC, ReactNode, useState } from 'react';
+import { AppBar, Container, Toolbar, Typography, styled, Box, Stack, Link } from "@mui/material/";
+import Image from 'next/image';
+import logo from "../public/images/logo3.png";
 
-const ColorAppbar = styled(AppBar)({
-  backgroundColor: "#FFBC39",
-  color: "in",
-});
 
 export interface LoginProps {
-  value: boolean;
+  value?: any;
 }
 
-const Navbar = ({ value }) => {
-  const [isLogin, setIsLogin] = useState<boolean>(value);
+const ColorAppbar = styled(AppBar) ({
+  backgroundColor: "#FFFFFF",
+  color: "#000000",
+  
+});
+
+
+const Navbar: FC<LoginProps> = ({ value }) => {
+  const [ isLogin, setIsLogin ] = useState<boolean>(value);
 
   return (
-    <ColorAppbar position="static">
+    <ColorAppbar position="static" elevation={0}>
       <Container maxWidth="xl">
-        <Toolbar sx={{ display: "flex" }}>
-          <Typography
-            variant="h5"
-            noWrap
-            component="div"
-            sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
-          >
+        <Toolbar sx={{ display: "flex", my : 2}} >
             <Link href="/" underline="none" color="inherit">
-              HELP:US
+              <Image 
+                src={logo}
+                alt='logo'
+                width={65}
+                height={70}
+              />
             </Link>
-          </Typography>
-
-          <Box>
-            <Stack direction="row" justifyContent="center">
-              <Typography variant="h6" sx={{ mx: 2 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <Stack direction="row">
+              <Typography variant="h6" sx={{ mx: 2}}>
                 <Link href="#" underline="none" color="inherit">
                   후원하기
                 </Link>
@@ -50,7 +43,7 @@ const Navbar = ({ value }) => {
                 </Link>
               </Typography>
             </Stack>
-          </Box>
+          </Box> 
         </Toolbar>
       </Container>
     </ColorAppbar>

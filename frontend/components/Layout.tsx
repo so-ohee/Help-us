@@ -3,13 +3,13 @@ import { NextPage } from "next";
 import Navbar from "./Navbar";
 // import Footer from "./Footer";
 
-type Props = {
+interface Props {
   children: ReactNode;
 }
 
 const Layout: NextPage = ({children}: Props) => {
   return (
-    <div>
+    <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh"}}>
       <Navbar />
       <main>{children}</main>
       {/* <Footer /> */}
