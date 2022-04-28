@@ -42,6 +42,7 @@ const Org: FC = () => {
     const [authMail, setAuthMail] = useState(false)
     const [authEnd, setAuthEnd] = useState(false)
     const [authnum, setAuthnum] = useState('')
+    const [authTime, setAuthTime] = useState<number>(10)
 
 
     const [inputs, setInputs] = useState({
@@ -173,6 +174,20 @@ const Org: FC = () => {
             }
         }
     },[authnum])
+
+    // 인증번호 타이머
+    useEffect(() => {
+        if (authMail){
+            const timer = setInterval(() => {
+                if (authTime <= 0){
+                    clearInterval(timer)
+                }
+                console.log(authTime)
+                setAuthTime(authTime - 1)
+            }, 1000)
+            return () => clearInterval(timer)
+        }
+    }, [authMail, authTime])
 
     // 회원가입 버튼 누를시
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -378,6 +393,7 @@ const Org: FC = () => {
                             fullWidth
                             id="name"
                             label="기관명"
+                            inputProps={{ maxLength: 20 }}
                             />
                         </Grid>
 
@@ -388,6 +404,7 @@ const Org: FC = () => {
                             fullWidth
                             id="phone"
                             label="전화번호"
+                            inputProps={{ maxLength: 15 }}
                             />
                         </Grid>
 
@@ -429,6 +446,7 @@ const Org: FC = () => {
                             fullWidth
                             id="addr2"
                             label="상세 주소"
+                            inputProps={{ maxLength: 30 }}
                             />
                         </Grid>
 
@@ -440,6 +458,7 @@ const Org: FC = () => {
                             rows={3}
                             id="intro"
                             label="소개"
+                            inputProps={{ maxLength: 200 }}
                             />
                         </Grid>
 
