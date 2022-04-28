@@ -1,7 +1,16 @@
-import { FC } from "react";
+import { FC, useState } from "react";
+
 
 const User: FC = () => {
-  return <div></div>;
+
+
+  return (
+    <>
+
+
+    
+    </>
+  );
 };
 
 export default User;
