@@ -1,4 +1,4 @@
-import { FC, useState, useEffect, useRef, useCallback } from "react";
+import { FC, useState, useEffect, useRef } from "react";
 import Postcode from '@actbase/react-daum-postcode';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -208,6 +208,8 @@ const Org: FC = () => {
                     authTime.current = timeLimit
                     setSec(timeLimit)
                     setAuthMail(false)
+                    setAuthMsg('')
+                    setAuthnum('')
                 }
 
             }, 1000)
@@ -272,7 +274,7 @@ const Org: FC = () => {
                     <LockOutlinedIcon />
                 </Avatar>
                 <Typography component="h1" variant="h5">
-                    Sign up
+                    기관 회원가입
                 </Typography>
                 <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
                     <Grid container spacing={1}>
@@ -341,6 +343,8 @@ const Org: FC = () => {
                                     setAuthMail(false)
                                     authTime.current = timeLimit
                                     setSec(timeLimit)
+                                    setAuthMsg('')
+                                    setAuthnum('')
                                 }}
                                 >
                                 다시 인증하기
