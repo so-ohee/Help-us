@@ -4,7 +4,6 @@ import { Box, Grid, Tab, Typography, Stack } from "@mui/material/";
 import {TabContext, TabList, TabPanel} from '@mui/lab/';
 import Head from "next/head";
 import Image from "next/image";
-import styles from "../styles/Home.module.css";
 import { useRouter } from "next/router";
 import Card from "../components/card";
 import volunteer1 from "../public/images/volunteer1.jpg";
@@ -71,16 +70,22 @@ const Home: NextPage = () => {
           </TabContext>
         </Box>
         <Box>
-          <Box sx={{ width: 1200, height: 130, backgroundColor: "#FCE2A6", mx: 7, my : 3}}>
-            <Typography>
-
-            </Typography>
+          <Box sx={{ width: 1200, height: 130, backgroundColor: "#FCE2A6", mx: 7, mt: 3, mb: 10}}>
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end'}}>
+              <Stack>
+                <Typography variant="h6" sx={{fontWeight: 'bold', mt: 3, mb : 2}}>
+                  이달의 후원 참여 인원
+                </Typography>
+                {/* 인원 넣기 */}
+                <Typography variant="h6" sx={{fontWeight: 'bold', mb : 2}}>
+                  이달의 봉사 참여 인원
+                </Typography>
+                {/* 인원 넣기 */}
+              </Stack>
+            </Box>
           </Box>
         </Box>
       </Grid>
-
-
-
     </div>
   );
 };
