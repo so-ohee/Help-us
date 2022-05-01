@@ -12,7 +12,7 @@ import javax.validation.constraints.PositiveOrZero;
 @ApiModel(value = "물품 등록")
 @Getter
 @Builder
-public class ProductReqDto {
+public class ProductDto {
     @ApiModelProperty(value = "물품명")
     @NotBlank(message = "물품 명을 입력해주세요")
     private String productName;

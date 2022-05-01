@@ -10,7 +10,7 @@ import lombok.Getter;
 public class DonationProductResDto {
 
     private Integer productId;
-    private ProductReqDto product;
+    private ProductDto product;
     private String productInfo;
     private Integer finishCount;
     private Integer deliveryCount;

@@ -1,7 +1,7 @@
 package com.ssafy.helpus.donation.service;
 
 import com.ssafy.helpus.donation.dto.DonationProductResDto;
-import com.ssafy.helpus.donation.dto.ProductReqDto;
+import com.ssafy.helpus.donation.dto.ProductDto;
 import com.ssafy.helpus.donation.entity.DonationProduct;
 import com.ssafy.helpus.donation.entity.Product;
 import com.ssafy.helpus.donation.repository.ProductRepository;
@@ -20,7 +20,7 @@ public class ProductService {
     private final ProductRepository productRepository;
 
     //물품 등록
-    public Product registerProduct (ProductReqDto productReqDto) {
+    public Product registerProduct (ProductDto productReqDto) {
         log.info("ProductService registerProduct call");
 
         Product product = Product.builder()
@@ -31,10 +31,10 @@ public class ProductService {
     }
 
     //물품 조회
-    public ProductReqDto getProduct(Product product) {
+    public ProductDto getProduct(Product product) {
         log.info("ProductService getProduct call");
 
-        ProductReqDto productReqDto = ProductReqDto.builder()
+        ProductDto productReqDto = ProductDto.builder()
                 .productName(product.getProductName())
                 .totalCount(product.getCount()).build();
         return productReqDto;
