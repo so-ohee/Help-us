@@ -1,21 +1,29 @@
 import react, { useState } from "react";
 import type { NextPage } from "next";
-import { Box, Grid, Tab, Typography, Stack } from "@mui/material/";
+import { Box, Grid, Tab, Typography, Stack, Link } from "@mui/material/";
 import {TabContext, TabList, TabPanel} from '@mui/lab/';
 import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import Card from "../components/card";
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 import volunteer1 from "../public/images/volunteer1.jpg";
 
 
 const Home: NextPage = () => {
   const router = useRouter();
   const [value, setValue] = useState("1");
+  const [ option, setOption ] = useState('');
 
-  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+  const tabHandleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
+  const optionHandleChange = (event: SelectChangeEvent) => {
+    setOption(event.target.value as string);
+  }
 
   return (
     <div>
@@ -30,12 +38,27 @@ const Home: NextPage = () => {
         </Box>
         <Box>
           <TabContext value={value}>
-            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-              <TabList onChange={handleChange} aria-label="lab API tabs example">
+            <Stack direction="row" >
+              <TabList onChange={tabHandleChange} aria-label="lab API tabs example">
                 <Tab label="물품" value="1" />
                 <Tab label="봉사" value="2" />
               </TabList>
-            </Box>
+                <Box sx={{ maxWidth: 200, display: 'flex', justifyContent: 'flex-end'}}>
+                  <FormControl fullWidth >
+                    <InputLabel>정렬</InputLabel>
+                    <Select
+                      value={option}
+                      label="option"
+                      onChange={optionHandleChange}
+                    >
+                      <MenuItem value="latest">최신순</MenuItem>
+                      <MenuItem value="high">달성률 높은 순</MenuItem>
+                      <MenuItem value="low">달성률 낮은 순</MenuItem>
+                      <MenuItem value="endDate">종료일 순</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Box>
+            </Stack>
             <TabPanel value="1">
               <Box sx={{ mt: 3 }}>
                 <Stack direction="row">

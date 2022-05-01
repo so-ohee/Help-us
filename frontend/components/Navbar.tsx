@@ -33,12 +33,12 @@ const Navbar: FC<LoginProps> = ({ value }) => {
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <Stack direction="row">
               <Typography variant="h6" sx={{ mx: 2}}>
-                <Link href="#" underline="none" color="inherit">
+                <Link href="/donation" underline="none" color="inherit">
                   후원하기
                 </Link>
               </Typography>
               <Typography variant="h6" sx={{ mx: 2 }}>
-                <Link href="#" underline="none" color="inherit">
+                <Link href="/share" underline="none" color="inherit">
                   나눔하기
                 </Link>
               </Typography>
