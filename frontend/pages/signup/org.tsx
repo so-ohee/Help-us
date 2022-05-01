@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from "react";
+import { FC, useState, useEffect, useRef } from "react";
 import Postcode from '@actbase/react-daum-postcode';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -17,13 +17,27 @@ import Dialog from '@mui/material/Dialog';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import styled from 'styled-components';
 
+const FormHelperTexts = styled(FormHelperText)`
+width: 100%;
+padding-left: 16px;
+font-weight: 700;
+color: #d32f2f;
+`;
+const CustomDisableInput = styled(TextField)(() => ({
+".MuiInputBase-input.Mui-disabled": {
+  WebkitTextFillColor: "#000",
+  color: "#000"
+}
+}));
+
 
 const Org: FC = () => {
 
     const checkNum = '123456'
+    const timeLimit = 180
 
     const [addr, setAddr] = useState<string>('')
-    const [postcode, setPostcode] = useState<string>('')
+    const [post, setPost] = useState('')
 
     const [pwMsg1, setPwMsg1] = useState("");
     const [pwMsg2, setPwMsg2] = useState("");
@@ -42,7 +56,11 @@ const Org: FC = () => {
     const [authMail, setAuthMail] = useState(false)
     const [authEnd, setAuthEnd] = useState(false)
     const [authnum, setAuthnum] = useState('')
-    const [authTime, setAuthTime] = useState<number>(10)
+    const [sec, setSec] = useState<number>(timeLimit)
+    const authTime = useRef<number>(timeLimit)
+    const timer = useRef(null)
+    const [authMsg, setAuthMsg] = useState('')
+
 
 
     const [inputs, setInputs] = useState({
@@ -168,8 +186,9 @@ const Org: FC = () => {
             if (authnum === checkNum){
                 // alert('인증되었습니다.')
                 setAuthEnd(true)
+                setAuthMsg('')
             }else{
-                alert('다시 입력해주세요.')
+                setAuthMsg('다시 입력해주세요.')
                 setAuthnum('')
             }
         }
@@ -177,17 +196,26 @@ const Org: FC = () => {
 
     // 인증번호 타이머
     useEffect(() => {
-        if (authMail){
-            const timer = setInterval(() => {
-                if (authTime <= 0){
-                    clearInterval(timer)
+        if (authMail && !authEnd){
+            timer.current = setInterval(() => {
+                authTime.current -= 1
+                if (!open2.current){
+                    setSec(authTime.current)
                 }
-                console.log(authTime)
-                setAuthTime(authTime - 1)
+                if (authTime.current <= 0){
+                    clearInterval(timer.current)
+                    alert('시간이 만료되었습니다. 다시 인증해주세요.')
+                    authTime.current = timeLimit
+                    setSec(timeLimit)
+                    setAuthMail(false)
+                    setAuthMsg('')
+                    setAuthnum('')
+                }
+
             }, 1000)
-            return () => clearInterval(timer)
         }
-    }, [authMail, authTime])
+        return () => clearInterval(timer.current)
+    }, [authMail, authEnd])
 
     // 회원가입 버튼 누를시
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -205,27 +233,29 @@ const Org: FC = () => {
 
     // 우편번호 찾기 클릭시
     const [open, setOpen] = useState<boolean>(false);
+    const open2 = useRef(false) // 타이머 중, dialog 리렌더링 방지
+
     const handleClickOpen = () => {
-      setOpen(true);
+        setOpen(true);
+        open2.current = true
     };
     const handleClose = () => {
-      setOpen(false);
+        setOpen(false);
+        open2.current = false
     };
-
-
     const theme = createTheme();
-    const FormHelperTexts = styled(FormHelperText)`
-        width: 100%;
-        padding-left: 16px;
-        font-weight: 700;
-        color: #d32f2f;
-    `;
-    const CustomDisableInput = styled(TextField)(() => ({
-        ".MuiInputBase-input.Mui-disabled": {
-          WebkitTextFillColor: "#000",
-          color: "#000"
+
+    // 시간 초 -> 분,초
+    const minsec = (e) => {
+        const m = parseInt(e/60)
+        const s = e%60
+        if (s < 10){
+            return m+':0'+s
+        }else{
+            return m+':'+s
         }
-      }));
+    }
+
     
     return(
         <>
@@ -244,7 +274,7 @@ const Org: FC = () => {
                     <LockOutlinedIcon />
                 </Avatar>
                 <Typography component="h1" variant="h5">
-                    Sign up
+                    기관 회원가입
                 </Typography>
                 <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
                     <Grid container spacing={1}>
@@ -290,10 +320,10 @@ const Org: FC = () => {
                                     disabled={authEnd}
                                     // color="black"
                                     inputProps={{ maxLength: 6 }}
-                                    // error={emailMsg}
+                                    error={authMsg.length > 0}
                                     />
                                 </Grid>
-
+                                
                                 </>
                             )
                             : null
@@ -301,14 +331,25 @@ const Org: FC = () => {
                         {
                             authMail && !authEnd ?
                             (
+                                <>
+                                <div style={{marginTop:'35px', marginLeft:'5px'}}>
+                                    {minsec(sec)}
+                                </div>
                                 <Button
-                                sx={{ mt: 2, mb:1, mx:1}}
+                                sx={{ mt: 2, mb:1, mx:2}}
                                 variant="contained"
                                 // disabled={!checkEmail || authMail}
-                                onClick={() => setAuthMail(false)}
+                                onClick={() => {
+                                    setAuthMail(false)
+                                    authTime.current = timeLimit
+                                    setSec(timeLimit)
+                                    setAuthMsg('')
+                                    setAuthnum('')
+                                }}
                                 >
                                 다시 인증하기
                                 </Button>
+                                </>
                             )
                             : null
                         }
@@ -332,6 +373,13 @@ const Org: FC = () => {
                                 <FormHelperTexts>{emailMsg}</FormHelperTexts>
                             )
                             : null
+                        }
+                                                {
+                            authMsg ?
+                            (
+                                <FormHelperTexts>{authMsg}</FormHelperTexts>
+                            )
+                            :null
                         }
                         
 
@@ -415,7 +463,7 @@ const Org: FC = () => {
                             fullWidth
                             id="post"
                             label="우편번호"
-                            value={postcode}
+                            value={post}
                             disabled={true}
                             />
                         </Grid>
@@ -484,14 +532,16 @@ const Org: FC = () => {
             <div>
                 <Dialog open={open} onClose={handleClose}>
                     <Postcode
-                    style={{ width: 500, height: 500 }}
-                    jsOptions={{ animation: true, hideMapBtn: true }}
-                    onSelected={data => {
-                        // console.log(data)
-                        setAddr(data.address)
-                        setPostcode(data.zonecode)
-                        // console.log(JSON.stringify(data))
-                        setOpen(false);
+                        style={{ width: 500, height: 500 }}
+                        jsOptions={{ animation: true, hideMapBtn: true }}
+                        onError={() => console.log('우편번호 찾기 error')}
+                        onSelected={data => {
+                            // console.log(data)
+                            setAddr(data.address)
+                            setPost(data.zonecode)
+                            // console.log(JSON.stringify(data))
+                            setOpen(false);
+                            open2.current = false
                     }}
                     />
                 </Dialog>
