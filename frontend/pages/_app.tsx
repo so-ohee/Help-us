@@ -1,3 +1,4 @@
+import react, {FC} from 'react';
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import Layout from "../components/Layout";
@@ -5,7 +6,7 @@ import Layout from "../components/Layout";
 import Head from "next/head";
 import Script from "next/script";
 
-function MyApp({ Component, pageProps }: AppProps) {
+const MyApp:FC = ({ Component, pageProps }: AppProps)  => {
   return (
     <>
       <Head>
