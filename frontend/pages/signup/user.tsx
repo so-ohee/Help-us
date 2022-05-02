@@ -229,8 +229,8 @@ const User: FC = () => {
     const theme = createTheme();
 
     // 시간 초 -> 분,초
-    const minsec = (e) => {
-        const m = parseInt(e/60)
+    const minsec = (e:number) => {
+        const m = (e-e%60)/60
         const s = e%60
         if (s < 10){
             return m+':0'+s

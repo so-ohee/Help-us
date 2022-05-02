@@ -37,7 +37,7 @@ const Org: FC = () => {
     const timeLimit = 180
 
     const [addr, setAddr] = useState<string>('')
-    const [post, setPost] = useState('')
+    const [post, setPost] = useState<string|number>('')
 
     const [pwMsg1, setPwMsg1] = useState("");
     const [pwMsg2, setPwMsg2] = useState("");
@@ -247,7 +247,7 @@ const Org: FC = () => {
 
     // 시간 초 -> 분,초
     const minsec = (e) => {
-        const m = parseInt(e/60)
+        const m = (e-e%60)/60
         const s = e%60
         if (s < 10){
             return m+':0'+s
