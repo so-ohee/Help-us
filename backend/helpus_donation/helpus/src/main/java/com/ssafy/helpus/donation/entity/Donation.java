@@ -53,7 +53,7 @@ public class Donation {
     @OneToMany(mappedBy = "donation")
     List<DonationImage> images = new ArrayList<>();
 
-    @OneToMany(mappedBy = "donation")
+    @OneToMany(mappedBy = "donation", fetch = FetchType.EAGER)
     List<DonationProduct> products = new ArrayList<>();
 
     @Builder
