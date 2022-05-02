@@ -11,7 +11,6 @@ const MyApp:FC = ({ Component, pageProps }: AppProps)  => {
     <>
       <Head>
         <title>HELP:US</title>
-        {/* 파비콘이 적용되지 않는 이유는?.. ㅜㅜ */}
         <link rel="favicon" href="/favicon.ico" />
       </Head>
 

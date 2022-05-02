@@ -12,7 +12,6 @@ import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import ArrowRight from "@mui/icons-material/ArrowRight";
 import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
-import Home from "@mui/icons-material/Home";
 import Settings from "@mui/icons-material/Settings";
 import People from "@mui/icons-material/People";
 import PermMedia from "@mui/icons-material/PermMedia";
@@ -23,45 +22,24 @@ import { useRouter } from "next/router";
 import { menuItemClasses, Typography } from "@mui/material";
 import { bgcolor } from "@mui/system";
 
+import Home from "@mui/icons-material/Home";
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+
 import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
+import VolunteerActivismOutlinedIcon from "@mui/icons-material/VolunteerActivismOutlined";
+
 import EmojiPeopleIcon from "@mui/icons-material/EmojiPeople";
+
+import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
+import AssignmentIndOutlinedIcon from "@mui/icons-material/AssignmentIndOutlined";
+
 import RateReviewIcon from "@mui/icons-material/RateReview";
+import RateReviewOutlinedIcon from "@mui/icons-material/RateReviewOutlined";
 import LiveHelpIcon from "@mui/icons-material/LiveHelp";
+import LiveHelpOutlinedIcon from "@mui/icons-material/LiveHelpOutlined";
 
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
-
-const data1 = [
-  {
-    icon: <VolunteerActivismIcon />,
-    label: "물품 후원",
-    path: "/orgpage/my/donation",
-  },
-  {
-    icon: <EmojiPeopleIcon />,
-    label: "봉사",
-    path: "/orgpage/my/volunteer",
-  },
-  { icon: <RateReviewIcon />, label: "기부 후기", path: "/orgpage/my/review" },
-  { icon: <LiveHelpIcon />, label: "문의 내역", path: "/orgpage/my/cs" },
-];
-
-const data2 = [
-  {
-    icon: <VolunteerActivismIcon />,
-    label: "물품 기부",
-    path: "/orgpage/my/checkdonation",
-  },
-  {
-    icon: <EmojiPeopleIcon />,
-    label: "봉사",
-    path: "/orgpage/my/checkvolunteer",
-  },
-  {
-    icon: <LocalShippingIcon />,
-    label: "배송",
-    path: "/orgpage/my/checkdelivery",
-  },
-];
+import LocalShippingOutlinedIcon from "@mui/icons-material/LocalShippingOutlined";
 
 const FireNav = styled(List)<{ component?: React.ElementType }>({
   "& .MuiListItemButton-root": {
@@ -80,6 +58,82 @@ const FireNav = styled(List)<{ component?: React.ElementType }>({
 export default function OrgMypageSidebar() {
   const pathName = useRouter().pathname;
 
+  const data1 = [
+    {
+      icon:
+        pathName === "/orgpage/my/donation" ? (
+          <VolunteerActivismIcon />
+        ) : (
+          <VolunteerActivismOutlinedIcon />
+        ),
+      label: "물품 후원",
+      path: "/orgpage/my/donation",
+    },
+    {
+      icon:
+        pathName === "/orgpage/my/volunteer" ? (
+          <AssignmentIndIcon />
+        ) : (
+          <AssignmentIndOutlinedIcon />
+        ),
+      label: "봉사",
+      path: "/orgpage/my/volunteer",
+    },
+    {
+      icon:
+        pathName === "/orgpage/my/review" ? (
+          <RateReviewIcon />
+        ) : (
+          <RateReviewOutlinedIcon />
+        ),
+      label: "기부 후기",
+      path: "/orgpage/my/review",
+    },
+    {
+      icon:
+        pathName === "/orgpage/my/cs" ? (
+          <LiveHelpIcon />
+        ) : (
+          <LiveHelpOutlinedIcon />
+        ),
+      label: "문의 내역",
+      path: "/orgpage/my/cs",
+    },
+  ];
+
+  const data2 = [
+    {
+      icon:
+        pathName === "/orgpage/my/checkdonation" ? (
+          <VolunteerActivismIcon />
+        ) : (
+          <VolunteerActivismOutlinedIcon />
+        ),
+      label: "물품 기부",
+      path: "/orgpage/my/checkdonation",
+    },
+    {
+      icon:
+        pathName === "/orgpage/my/checkvolunteer" ? (
+          <AssignmentIndIcon />
+        ) : (
+          <AssignmentIndOutlinedIcon />
+        ),
+      label: "봉사",
+      path: "/orgpage/my/checkvolunteer",
+    },
+    {
+      icon:
+        pathName === "/orgpage/my/checkdelivery" ? (
+          <LocalShippingIcon />
+        ) : (
+          <LocalShippingOutlinedIcon />
+        ),
+      label: "배송",
+      path: "/orgpage/my/checkdelivery",
+    },
+  ];
+
   return (
     <Box sx={{ display: "flex" }}>
       <ThemeProvider
@@ -94,7 +148,7 @@ export default function OrgMypageSidebar() {
           palette: {
             mode: "dark",
             primary: { main: "#000000" },
-            background: { paper: "#F6EAC4" },
+            background: { paper: "#FCF8F0" },
           },
         })}
       >
@@ -105,11 +159,22 @@ export default function OrgMypageSidebar() {
               <ListItem
                 component="div"
                 disablePadding
-                sx={{ backgroundColor: "#F8DD8E" }}
+                // sx={{ backgroundColor: "#CDAD78" }}
+                sx={{
+                  bgcolor: pathName === "/orgpage/my" ? "#CDAD78" : "#FCF8F0",
+                  "&:hover, &:focus": {
+                    "& svg": { opacity: 1 },
+                    bgcolor: "#f5e1be",
+                  },
+                }}
               >
                 <ListItemButton sx={{ height: 56 }}>
                   <ListItemIcon>
-                    <Home color="primary" />
+                    {pathName === "/orgpage/my" ? (
+                      <Home color="primary" />
+                    ) : (
+                      <HomeOutlinedIcon color="primary" />
+                    )}
                   </ListItemIcon>
                   <ListItemText
                     primary="마이페이지"
@@ -125,7 +190,7 @@ export default function OrgMypageSidebar() {
             <Divider />
             <Box
               sx={{
-                bgcolor: "#F6EAC4",
+                bgcolor: "#FCF8F0",
                 pb: 2,
               }}
             >
@@ -170,9 +235,9 @@ export default function OrgMypageSidebar() {
                       color: "#000000",
                       "&:hover, &:focus": {
                         "& svg": { opacity: 1 },
-                        bgcolor: "#F8DD8E",
+                        bgcolor: "#f5e1be",
                       },
-                      bgcolor: pathName === item.path ? "#F8DD8E" : "#F6EAC4",
+                      bgcolor: pathName === item.path ? "#CDAD78" : "#FCF8F0",
                     }}
                   >
                     <ListItemIcon sx={{ color: "inherit" }}>
@@ -191,7 +256,7 @@ export default function OrgMypageSidebar() {
             </Box>
             <Box
               sx={{
-                bgcolor: "#F6EAC4",
+                bgcolor: "#FCF8F0",
                 pb: 2,
               }}
             >
@@ -237,7 +302,7 @@ export default function OrgMypageSidebar() {
                       color: "#000000",
                       "&:hover, &:focus": {
                         "& svg": { opacity: 1 },
-                        bgcolor: "#F8DD8E",
+                        bgcolor: "#f5e1be",
                       },
                     }}
                   >
