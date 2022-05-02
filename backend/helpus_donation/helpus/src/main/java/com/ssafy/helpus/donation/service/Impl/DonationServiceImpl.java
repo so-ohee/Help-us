@@ -3,7 +3,6 @@ package com.ssafy.helpus.donation.service.Impl;
 import com.ssafy.helpus.donation.dto.Donation.*;
 import com.ssafy.helpus.donation.entity.Donation;
 import com.ssafy.helpus.donation.entity.DonationProduct;
-import com.ssafy.helpus.donation.entity.Product;
 import com.ssafy.helpus.donation.enumClass.DonationOrder;
 import com.ssafy.helpus.donation.enumClass.DonationStatus;
 import com.ssafy.helpus.donation.repository.DonationProductRepository;
@@ -52,12 +51,12 @@ public class DonationServiceImpl implements DonationService {
 
         //물품 저장
         for(DonationProductReqDto productDto : donationDto.getProducts()) {
-            Product product = productService.registerProduct(productDto.getProduct());
 
             DonationProduct donationProduct = DonationProduct.builder()
                     .donation(donation)
-                    .product(product)
-                    .productInfo(productDto.getProductInfo()).build();
+                    .productName(productDto.getProductName())
+                    .productInfo(productDto.getProductInfo())
+                    .totalCount(productDto.getTotalCount()).build();
             donationProductRepository.save(donationProduct);
         }
 
