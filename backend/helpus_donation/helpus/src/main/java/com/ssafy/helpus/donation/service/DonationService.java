@@ -9,7 +9,7 @@ import java.util.Map;
 
 public interface DonationService {
     //기부 글 등록
-    Map<String, Object> registerDonation(DonationReqDto donation, List<MultipartFile> files) throws Exception;
+    Map<String, Object> registerDonation(DonationReqDto donation, Long memberId, List<MultipartFile> files) throws Exception;
     //기부 글 수정
     Map<String, Object> updateDonation(DonationUpdateReqDto donation, List<MultipartFile> files) throws Exception;
     //기부 글 조회

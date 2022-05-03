@@ -36,14 +36,14 @@ public class DonationServiceImpl implements DonationService {
     private final MemberService memberService;
 
     @Override
-    public Map<String, Object> registerDonation(DonationReqDto donationDto, List<MultipartFile> files) throws Exception {
+    public Map<String, Object> registerDonation(DonationReqDto donationDto, Long memberId, List<MultipartFile> files) throws Exception {
         log.info("DonationService registerDonation call");
 
         Map<String, Object> resultMap = new HashMap<>();
 
         //게시글 저장
         Donation donation = Donation.builder()
-                .memberId(donationDto.getMemberId())
+                .memberId(memberId)
                 .title(donationDto.getTitle())
                 .content(donationDto.getContent())
                 .endDate(donationDto.getEndDate()).build();
