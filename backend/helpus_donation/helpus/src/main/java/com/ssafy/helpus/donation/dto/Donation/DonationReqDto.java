@@ -19,7 +19,7 @@ public class DonationReqDto {
 
     @ApiModelProperty(value = "회원 고유 번호")
     @NotNull
-    private Integer memberId;
+    private Long memberId;
 
     @ApiModelProperty(value = "내용")
     @NotBlank(message = "내용을 입력해주세요")
