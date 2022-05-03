@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @ApiModel(value = "운송장")
@@ -20,5 +21,9 @@ public class WaybillReqDto {
 
     @ApiModelProperty(value = "송장 번호")
     @NotNull(message = "송장 번호를 입력해주세요.")
-    private Integer expressNum;
+    private Integer invoice;
+
+    @ApiModelProperty(value = "택배사")
+    @NotBlank(message = "택배사를 입력해주세요")
+    private String parcel;
 }

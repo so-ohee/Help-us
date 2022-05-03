@@ -74,7 +74,8 @@ public class ApplyServiceImpl implements ApplyService {
             return resultMap;
         }
 
-        apply.get().setInvoice(waybillDto.getExpressNum()); //송장번호 등록
+        apply.get().setInvoice(waybillDto.getInvoice());
+        apply.get().setParcel(waybillDto.getParcel());
         apply.get().setStatus(ApplyStatus.배송중);
 
         resultMap.put("message", Message.INVOICE_UPDATE_SUCCESS);
