@@ -6,8 +6,8 @@ import com.ssafy.helpus.donation.entity.DonationApply;
 import com.ssafy.helpus.donation.entity.DonationProduct;
 import com.ssafy.helpus.donation.enumClass.ApplyStatus;
 import com.ssafy.helpus.donation.repository.DonationApplyRepository;
+import com.ssafy.helpus.donation.repository.DonationProductRepository;
 import com.ssafy.helpus.donation.service.ApplyService;
-import com.ssafy.helpus.donation.service.ProductService;
 import com.ssafy.helpus.utils.Message;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,8 +24,7 @@ import java.util.Optional;
 public class ApplyServiceImpl implements ApplyService {
 
     private final DonationApplyRepository applyRepository;
-
-    private final ProductService productService;
+    private final DonationProductRepository productRepository;
 
     @Override
     public Map<String, Object> applyDonation(ApplyReqDto applyDto, Long memberId) throws Exception {
@@ -33,12 +32,14 @@ public class ApplyServiceImpl implements ApplyService {
 
         Map<String, Object> resultMap = new HashMap<>();
 
-        //기부 물품 배송중 수량 변경
-        DonationProduct donationProduct = productService.addApplyProduct(applyDto);
+        DonationProduct donationProduct = productRepository.findById(applyDto.getDonationProductId()).get();
 
         DonationApply apply;
         //기부 내역 저장
         if(applyDto.getInvoice()!= null) {
+            //기부 물품 배송중 수량 변경
+            donationProduct.setDeliveryCount(donationProduct.getDeliveryCount() + applyDto.getCount());
+
             apply = DonationApply.builder()
                     .donationId(applyDto.getDonationId())
                     .memberId(memberId)
@@ -72,6 +73,11 @@ public class ApplyServiceImpl implements ApplyService {
         if (!apply.isPresent()) {
             resultMap.put("message", Message.APPLY_NOT_FOUND);
             return resultMap;
+        }
+
+        if(apply.get().getInvoice()==null) {
+            DonationProduct donationProduct = productRepository.findById(apply.get().getDonationProduct().getDonationProductId()).get();
+            donationProduct.setDeliveryCount(donationProduct.getDeliveryCount()+ apply.get().getCount());
         }
 
         apply.get().setInvoice(waybillDto.getInvoice());

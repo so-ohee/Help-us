@@ -1,15 +1,12 @@
 package com.ssafy.helpus.donation.service.Impl;
 
-import com.ssafy.helpus.donation.dto.Apply.ApplyReqDto;
 import com.ssafy.helpus.donation.dto.Donation.DonationListProductResDto;
 import com.ssafy.helpus.donation.dto.Donation.DonationProductResDto;
 import com.ssafy.helpus.donation.entity.DonationProduct;
-import com.ssafy.helpus.donation.repository.DonationProductRepository;
 import com.ssafy.helpus.donation.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +15,6 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
-
-    private final DonationProductRepository productRepository;
 
     @Override
     public List<DonationProductResDto> getDonationProduct(List<DonationProduct> donationProducts) {
@@ -58,15 +53,5 @@ public class ProductServiceImpl implements ProductService {
             products.add(donationResDto);
         }
         return products;
-    }
-
-    @Override
-    @Transactional
-    public DonationProduct addApplyProduct(ApplyReqDto applyDto) throws Exception {
-
-        DonationProduct donationProduct = productRepository.findById(applyDto.getDonationProductId()).get();
-        donationProduct.setDeliveryCount(donationProduct.getDeliveryCount()+ applyDto.getCount());
-
-        return donationProduct;
     }
 }
