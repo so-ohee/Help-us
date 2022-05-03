@@ -76,7 +76,7 @@ const OrgMypage: FC = () => {
             flexGrow: 1,
             height: "100vh",
             overflow: "auto",
-            mt: 10,
+            mt: 0,
           }}
         >
           <Container
