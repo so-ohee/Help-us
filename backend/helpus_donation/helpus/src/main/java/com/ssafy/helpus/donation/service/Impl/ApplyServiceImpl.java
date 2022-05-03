@@ -3,6 +3,7 @@ package com.ssafy.helpus.donation.service.Impl;
 import com.ssafy.helpus.donation.dto.Apply.ApplyReqDto;
 import com.ssafy.helpus.donation.dto.Apply.WaybillReqDto;
 import com.ssafy.helpus.donation.entity.DonationApply;
+import com.ssafy.helpus.donation.entity.DonationProduct;
 import com.ssafy.helpus.donation.enumClass.ApplyStatus;
 import com.ssafy.helpus.donation.repository.DonationApplyRepository;
 import com.ssafy.helpus.donation.service.ApplyService;
@@ -32,24 +33,29 @@ public class ApplyServiceImpl implements ApplyService {
 
         Map<String, Object> resultMap = new HashMap<>();
 
+        //기부 물품 배송중 수량 변경
+        DonationProduct donationProduct = productService.addApplyProduct(applyDto);
+
         DonationApply apply;
         //기부 내역 저장
-        if(applyDto.getExpressNum()!= null) {
+        if(applyDto.getInvoice()!= null) {
             apply = DonationApply.builder()
                     .donationId(applyDto.getDonationId())
                     .memberId(memberId)
-                    .expressNum(applyDto.getExpressNum())
+                    .donationProduct(donationProduct)
+                    .count(applyDto.getCount())
+                    .parcel(applyDto.getParcel())
+                    .invoice(applyDto.getInvoice())
                     .status(ApplyStatus.배송중).build();
         } else {
             apply = DonationApply.builder()
                     .donationId(applyDto.getDonationId())
                     .memberId(memberId)
+                    .donationProduct(donationProduct)
+                    .count(applyDto.getCount())
                     .status(ApplyStatus.배송대기).build();
         }
         applyRepository.save(apply);
-
-        //기부 물품 내역 저장
-        productService.addApplyProduct(apply, applyDto.getProducts());
 
         resultMap.put("message", Message.DONATION_APPLY_SUCCESS);
         return resultMap;
@@ -68,7 +74,7 @@ public class ApplyServiceImpl implements ApplyService {
             return resultMap;
         }
 
-        apply.get().setExpressNum(waybillDto.getExpressNum()); //송장번호 등록
+        apply.get().setInvoice(waybillDto.getExpressNum()); //송장번호 등록
         apply.get().setStatus(ApplyStatus.배송중);
 
         resultMap.put("message", Message.INVOICE_UPDATE_SUCCESS);

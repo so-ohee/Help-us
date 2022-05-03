@@ -1,12 +1,9 @@
 package com.ssafy.helpus.donation.service.Impl;
 
-import com.ssafy.helpus.donation.dto.Apply.ApplyProductReqDto;
+import com.ssafy.helpus.donation.dto.Apply.ApplyReqDto;
 import com.ssafy.helpus.donation.dto.Donation.DonationListProductResDto;
 import com.ssafy.helpus.donation.dto.Donation.DonationProductResDto;
-import com.ssafy.helpus.donation.entity.DonationApply;
-import com.ssafy.helpus.donation.entity.DonationApplyProduct;
 import com.ssafy.helpus.donation.entity.DonationProduct;
-import com.ssafy.helpus.donation.repository.DonationApplyProductRepository;
 import com.ssafy.helpus.donation.repository.DonationProductRepository;
 import com.ssafy.helpus.donation.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +20,6 @@ import java.util.List;
 public class ProductServiceImpl implements ProductService {
 
     private final DonationProductRepository productRepository;
-    private final DonationApplyProductRepository applyProductRepository;
 
     @Override
     public List<DonationProductResDto> getDonationProduct(List<DonationProduct> donationProducts) {
@@ -66,18 +62,11 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public void addApplyProduct(DonationApply apply, List<ApplyProductReqDto> productDto) throws Exception {
+    public DonationProduct addApplyProduct(ApplyReqDto applyDto) throws Exception {
 
-        for(ApplyProductReqDto product : productDto) {
-            DonationProduct donationProduct = productRepository.findById(product.getDonationProductId()).get();
-            donationProduct.setDeliveryCount(donationProduct.getDeliveryCount()+ product.getCount());
+        DonationProduct donationProduct = productRepository.findById(applyDto.getDonationProductId()).get();
+        donationProduct.setDeliveryCount(donationProduct.getDeliveryCount()+ applyDto.getCount());
 
-            DonationApplyProduct applyProduct = DonationApplyProduct.builder()
-                    .donationApply(apply)
-                    .donationProduct(donationProduct)
-                    .count(product.getCount()).build();
-
-            applyProductRepository.save(applyProduct);
-        }
+        return donationProduct;
     }
 }
