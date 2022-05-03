@@ -106,58 +106,56 @@ const orgpageMyDonation: FC = () => {
   // ]
 
   return (
-    <ThemeProvider theme={mdTheme}>
-      <Box sx={{ display: "flex" }}>
-        <CssBaseline />
-        <OrgMypageSidebar />
-        <Box
-          component="main"
-          sx={{
-            flexGrow: 1,
-            height: "100vh",
-            overflow: "auto",
-            mt: 10,
-          }}
-        >
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Stack direction="row" justifyContent="space-between">
-              <Typography variant="h4">물품 후원 게시글</Typography>
-              <CustomButton>글 작성</CustomButton>
-            </Stack>
-            <Grid>
-              <Box
-                sx={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(auto-fill, 500px)",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  marginTop: 5,
-                  rowGap: 5,
-                  columnGap: 10,
-                }}
-              >
-                <DonationCardOrg />
-                <DonationCardOrg />
-              </Box>
-              <Box
-                sx={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(auto-fill, 500px)",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  marginTop: 5,
-                  rowGap: 5,
-                  columnGap: 10,
-                }}
-              >
-                <DonationCard />
-                <DonationCard />
-              </Box>
-            </Grid>
-          </Container>
-        </Box>
+    <Box sx={{ display: "flex" }}>
+      <CssBaseline />
+      <OrgMypageSidebar />
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          height: "100vh",
+          overflow: "auto",
+          mt: 10,
+        }}
+      >
+        <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+          <Stack direction="row" justifyContent="space-between">
+            <Typography variant="h4">물품 후원 게시글</Typography>
+            <CustomButton>글 작성</CustomButton>
+          </Stack>
+          <Grid>
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill, 500px)",
+                justifyContent: "center",
+                alignItems: "center",
+                marginTop: 5,
+                rowGap: 5,
+                columnGap: 10,
+              }}
+            >
+              <DonationCardOrg />
+              <DonationCardOrg />
+            </Box>
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill, 500px)",
+                justifyContent: "center",
+                alignItems: "center",
+                marginTop: 5,
+                rowGap: 5,
+                columnGap: 10,
+              }}
+            >
+              <DonationCard />
+              <DonationCard />
+            </Box>
+          </Grid>
+        </Container>
       </Box>
-    </ThemeProvider>
+    </Box>
   );
 };
 

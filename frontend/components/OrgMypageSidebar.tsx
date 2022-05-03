@@ -150,6 +150,11 @@ export default function OrgMypageSidebar() {
             primary: { main: "#000000" },
             background: { paper: "#FCF8F0" },
           },
+          typography: {
+            // fontFamily: "Gowun Dodum",
+            // fontFamily: "Noto Serif KR",
+            fontFamily: "Noto Sans KR",
+          },
         })}
       >
         <Paper elevation={0} sx={{ maxWidth: 240 }}>

@@ -99,58 +99,56 @@ const orgpageMyVolunteer: FC = () => {
   ];
 
   return (
-    <ThemeProvider theme={mdTheme}>
-      <Box sx={{ display: "flex" }}>
-        <CssBaseline />
-        <OrgMypageSidebar />
-        <Box
-          component="main"
-          sx={{
-            flexGrow: 1,
-            height: "100vh",
-            overflow: "auto",
-            mt: 10,
-          }}
-        >
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Stack direction="row" justifyContent="space-between">
-              <Typography variant="h4">봉사 모집 게시글</Typography>
-              <CustomButton>글 작성</CustomButton>
-            </Stack>
-            <Grid>
-              <Box
-                sx={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(auto-fill, 500px)",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  marginTop: 5,
-                  rowGap: 5,
-                  columnGap: 10,
-                }}
-              >
-                <VolunteerCardOrg />
-                <VolunteerCardOrg />
-              </Box>
-              <Box
-                sx={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(auto-fill, 500px)",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  marginTop: 5,
-                  rowGap: 5,
-                  columnGap: 10,
-                }}
-              >
-                <VolunteerCard />
-                <VolunteerCard />
-              </Box>
-            </Grid>
-          </Container>
-        </Box>
+    <Box sx={{ display: "flex", maxWidth: "lg" }}>
+      <CssBaseline />
+      <OrgMypageSidebar />
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          height: "100vh",
+          overflow: "auto",
+          mt: 10,
+        }}
+      >
+        <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+          <Stack direction="row" justifyContent="space-between">
+            <Typography variant="h4">봉사 모집 게시글</Typography>
+            <CustomButton>글 작성</CustomButton>
+          </Stack>
+          <Grid>
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill, 500px)",
+                justifyContent: "center",
+                alignItems: "center",
+                marginTop: 5,
+                rowGap: 5,
+                columnGap: 10,
+              }}
+            >
+              <VolunteerCardOrg />
+              <VolunteerCardOrg />
+            </Box>
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill, 500px)",
+                justifyContent: "center",
+                alignItems: "center",
+                marginTop: 5,
+                rowGap: 5,
+                columnGap: 10,
+              }}
+            >
+              <VolunteerCard />
+              <VolunteerCard />
+            </Box>
+          </Grid>
+        </Container>
       </Box>
-    </ThemeProvider>
+    </Box>
   );
 };
 
