@@ -21,7 +21,7 @@ const mdTheme = createTheme();
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.black,
+    backgroundColor: "#CDAD78",
     color: theme.palette.common.white,
   },
   [`&.${tableCellClasses.body}`]: {
@@ -171,13 +171,27 @@ const orgpageMyCheckDonation: FC = () => {
               <Table sx={{ minWidth: 700 }} aria-label="customized table">
                 <TableHead>
                   <TableRow>
-                    <StyledTableCell align="center">번호</StyledTableCell>
-                    <StyledTableCell align="center">제목</StyledTableCell>
-                    <StyledTableCell align="center">물품 상세</StyledTableCell>
-                    <StyledTableCell align="center">발송일</StyledTableCell>
-                    <StyledTableCell align="center">빌송인</StyledTableCell>
-                    <StyledTableCell align="center">송장 번호</StyledTableCell>
-                    <StyledTableCell align="center">현황</StyledTableCell>
+                    <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                      번호
+                    </StyledTableCell>
+                    <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                      제목
+                    </StyledTableCell>
+                    <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                      물품 상세
+                    </StyledTableCell>
+                    <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                      발송일
+                    </StyledTableCell>
+                    <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                      빌송인
+                    </StyledTableCell>
+                    <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                      송장 번호
+                    </StyledTableCell>
+                    <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                      현황
+                    </StyledTableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>

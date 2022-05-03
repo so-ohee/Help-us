@@ -304,6 +304,7 @@ export default function OrgMypageSidebar() {
                         "& svg": { opacity: 1 },
                         bgcolor: "#f5e1be",
                       },
+                      bgcolor: pathName === item.path ? "#CDAD78" : "#FCF8F0",
                     }}
                   >
                     <ListItemIcon sx={{ color: "inherit" }}>
