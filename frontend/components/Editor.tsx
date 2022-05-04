@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React from 'react';
 import { CKEditor } from 'ckeditor4-react';
 
@@ -10,11 +9,6 @@ function Editor() {
             />
         </div>
     );
-=======
-
-const Editor = () => {
-  return (<></>)
->>>>>>> 0741b4ab852b9b4070a68b7c187565931e7e48d1
 }
 
 export default Editor;
