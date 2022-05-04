@@ -99,7 +99,7 @@ const orgpageMyVolunteer: FC = () => {
   ];
 
   return (
-    <Box sx={{ display: "flex", maxWidth: "lg" }}>
+    <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <OrgMypageSidebar />
       <Box
@@ -108,7 +108,7 @@ const orgpageMyVolunteer: FC = () => {
           flexGrow: 1,
           height: "100vh",
           overflow: "auto",
-          mt: 10,
+          mt: 0,
         }}
       >
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>

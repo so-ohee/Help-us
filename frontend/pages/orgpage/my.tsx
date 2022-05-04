@@ -66,7 +66,6 @@ const OrgMypage: FC = () => {
   };
 
   return (
-    // <ThemeProvider theme={mdTheme}>
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <OrgMypageSidebar />
@@ -76,7 +75,7 @@ const OrgMypage: FC = () => {
           flexGrow: 1,
           height: "100vh",
           overflow: "auto",
-          mt: 10,
+          mt: 0,
         }}
       >
         <Container
@@ -171,7 +170,6 @@ const OrgMypage: FC = () => {
         </Container>
       </Box>
     </Box>
-    // </ThemeProvider>
   );
 };
 

@@ -1,18 +1,16 @@
 package com.ssafy.helpus.donation.service.Impl;
 
-import com.ssafy.helpus.donation.dto.Apply.ApplyProductReqDto;
 import com.ssafy.helpus.donation.dto.Donation.DonationListProductResDto;
 import com.ssafy.helpus.donation.dto.Donation.DonationProductResDto;
+import com.ssafy.helpus.donation.entity.Donation;
 import com.ssafy.helpus.donation.entity.DonationApply;
-import com.ssafy.helpus.donation.entity.DonationApplyProduct;
 import com.ssafy.helpus.donation.entity.DonationProduct;
-import com.ssafy.helpus.donation.repository.DonationApplyProductRepository;
 import com.ssafy.helpus.donation.repository.DonationProductRepository;
+import com.ssafy.helpus.donation.repository.DonationRepository;
 import com.ssafy.helpus.donation.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +21,7 @@ import java.util.List;
 public class ProductServiceImpl implements ProductService {
 
     private final DonationProductRepository productRepository;
-    private final DonationApplyProductRepository applyProductRepository;
+    private final DonationRepository donationRepository;
 
     @Override
     public List<DonationProductResDto> getDonationProduct(List<DonationProduct> donationProducts) {
@@ -65,19 +63,18 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    @Transactional
-    public void addApplyProduct(DonationApply apply, List<ApplyProductReqDto> productDto) throws Exception {
+    public void deliveryCompleted(DonationApply apply) {
+        DonationProduct donationProduct = productRepository.findById(apply.getDonationProduct().getDonationProductId()).get();
 
-        for(ApplyProductReqDto product : productDto) {
-            DonationProduct donationProduct = productRepository.findById(product.getDonationProductId()).get();
-            donationProduct.setDeliveryCount(donationProduct.getDeliveryCount()+ product.getCount());
+        donationProduct.setDeliveryCount(donationProduct.getDeliveryCount() - apply.getCount()); //배송중 수량 변경
+        donationProduct.setFinishCount(donationProduct.getFinishCount() + apply.getCount()); //도착 수량 변경
 
-            DonationApplyProduct applyProduct = DonationApplyProduct.builder()
-                    .donationApply(apply)
-                    .donationProduct(donationProduct)
-                    .count(product.getCount()).build();
+        double percent = (double)donationProduct.getFinishCount() / (double)donationProduct.getTotalCount() * 100.0;
+        donationProduct.setPercent(percent); //각 물품 퍼센트 변경
 
-            applyProductRepository.save(applyProduct);
-        }
+        //전체 퍼센트 변경
+        double totalPercent = productRepository.percentCalculation(apply.getDonationId());
+        Donation donation = donationRepository.findById(apply.getDonationId()).get();
+        donation.setPercent(totalPercent);
     }
 }
