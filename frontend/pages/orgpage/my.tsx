@@ -22,6 +22,8 @@ import BusinessIcon from "@mui/icons-material/Business";
 import CallIcon from "@mui/icons-material/Call";
 import MailIcon from "@mui/icons-material/Mail";
 
+import TestImage from "../../public/images/testImage.jpg";
+
 const mdTheme = createTheme();
 
 const useStyles = makeStyles((theme) => ({
@@ -64,97 +66,110 @@ const OrgMypage: FC = () => {
   };
 
   return (
-    <ThemeProvider theme={mdTheme}>
-      <Box sx={{ display: "flex" }}>
-        <CssBaseline />
-        <OrgMypageSidebar />
-        {/* <Drawer
-          variant="permanent"
-          open={open}
-          sx={{ backgroundColor: "#F8DD8E" }}
-        >
-          <List component="nav" sx={{ backgroundColor: "#F8DD8E" }}>
-            {mainListItems}
-            <Divider sx={{ my: 1 }} />
-            {secondaryListItems}
-          </List>
-        </Drawer> */}
-        <Box
-          component="main"
+    <Box sx={{ display: "flex" }}>
+      <CssBaseline />
+      <OrgMypageSidebar />
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          height: "100vh",
+          overflow: "auto",
+          mt: 0,
+        }}
+      >
+        <Container
+          maxWidth="lg"
           sx={{
-            flexGrow: 1,
-            height: "100vh",
-            overflow: "auto",
+            mt: 4,
+            mb: 4,
+            bgcolor: "#FCF8F0",
+            borderRadius: 1.25,
+            height: "350px",
           }}
         >
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Grid container spacing={1}>
-              <Grid item xs={3}>
+          <Grid container spacing={2}>
+            <Grid item xs={3}>
+              <div
+                style={{
+                  borderRadius: "5px",
+                  overflow: "hidden",
+                  marginTop: "6px",
+                }}
+              >
                 <Image
-                  src={helpImage}
+                  src={TestImage}
                   alt="orgImage"
                   width="300px"
                   height="300px"
                 />
-              </Grid>
-              <Grid item xs={8}>
-                <Typography sx={{ mt: 2 }} variant="h4" fontWeight="bold">
-                  수원시광교노인복지관
-                </Typography>
-                <Grid
-                  sx={{ mt: 2 }}
-                  container
-                  direction="row"
-                  alignItems="center"
-                >
-                  <BusinessIcon sx={{ mr: 2 }} />
-                  <Typography align="center">
-                    경기도 수원시 팔달구 중부대로 222번길 22 2-22
-                  </Typography>
-                </Grid>
-                <Grid
-                  sx={{ mt: 2 }}
-                  container
-                  direction="row"
-                  alignItems="center"
-                >
-                  <CallIcon sx={{ mr: 2 }} />
-                  <Typography align="center">010-7777-7777</Typography>
-                </Grid>
-                <Grid
-                  sx={{ mt: 2 }}
-                  container
-                  direction="row"
-                  alignItems="center"
-                >
-                  <MailIcon sx={{ mr: 2 }} />
-                  <Typography align="center">test@gmail.com</Typography>
-                </Grid>
-                <Typography sx={{ mt: 2 }}>
-                  기관 소개 : 아무래도 다시 돌아갈 순 없어 아무런 표정도 없이
-                  이런 말하는 그런 내가 잔인한가요 제발 내 마음 설레이게 자꾸만
-                  바라보게 하지 말아요 아무 일 없던 것처럼 그냥 스쳐지나갈
-                  미련인 걸 알아요 아무리 사랑한다 말했어도 다시 돌아올 수 없는
-                  그 때 그 맘이 부른다고 다시 오나요 아무래도 다시 돌아갈 순
-                  없어 아무런 표정도 없이 이런 말하는 그런 내가 잔인한가요
+              </div>
+            </Grid>
+            <Grid item xs={8}>
+              <Typography sx={{ mt: 0 }} variant="h4" fontWeight="bold">
+                수원시광교노인복지관
+              </Typography>
+              <Grid
+                sx={{ mt: 2 }}
+                container
+                direction="row"
+                alignItems="center"
+              >
+                <BusinessIcon sx={{ mr: 2 }} />
+                <Typography align="center">
+                  경기도 수원시 팔달구 중부대로 222번길 22 2-22
                 </Typography>
               </Grid>
-              <Grid item xs={1}>
-                <UpdateButton variant="contained" sx={{ mb: 15 }}>
-                  수정
-                </UpdateButton>
-                {/* <UpdateButton variant="contained" size="small">
+              <Grid
+                sx={{ mt: 2 }}
+                container
+                direction="row"
+                alignItems="center"
+              >
+                <CallIcon sx={{ mr: 2 }} />
+                <Typography align="center">010-7777-7777</Typography>
+              </Grid>
+              <Grid
+                sx={{ mt: 2 }}
+                container
+                direction="row"
+                alignItems="center"
+              >
+                <MailIcon sx={{ mr: 2 }} />
+                <Typography align="center">test@gmail.com</Typography>
+              </Grid>
+              <Box
+                sx={{
+                  bgcolor: "#f5e1be",
+                  borderRadius: 1.25,
+                  height: "120px",
+                }}
+              >
+                <Typography sx={{ p: 2, mt: 1 }}>
+                  아무래도 다시 돌아갈 순 없어 아무런 표정도 없이 이런 말하는
+                  그런 내가 잔인한가요 제발 내 마음 설레이게 자꾸만 바라보게
+                  하지 말아요 아무 일 없던 것처럼 그냥 스쳐지나갈 미련인 걸
+                  알아요 아무리 사랑한다 말했어도 다시 돌아올 수 없는 그 때 그
+                  맘이 부른다고 다시 오나요 아무래도 다시 돌아갈 순 없어 아무런
+                  표정도 없이 이런 말하는 그런 내가 잔인한가요
+                </Typography>
+              </Box>
+            </Grid>
+            <Grid item xs={1}>
+              <UpdateButton variant="contained" sx={{ mb: 15 }}>
+                수정
+              </UpdateButton>
+              {/* <UpdateButton variant="contained" size="small">
                   <EditIcon />
                 </UpdateButton> */}
-                {/* <IconButton aria-label="edit" className={classes.customColor}>
+              {/* <IconButton aria-label="edit" className={classes.customColor}>
                   <EditIcon />
                 </IconButton> */}
-              </Grid>
             </Grid>
-          </Container>
-        </Box>
+          </Grid>
+        </Container>
       </Box>
-    </ThemeProvider>
+    </Box>
   );
 };
 
