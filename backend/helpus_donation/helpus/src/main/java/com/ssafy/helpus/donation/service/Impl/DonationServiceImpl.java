@@ -142,19 +142,32 @@ public class DonationServiceImpl implements DonationService {
     }
 
     @Override
-    public Map<String, Object> listDonation(Long memberId, String order, int page) {
+    public Map<String, Object> mainListDonation(String order, int page) {
+        log.info("DonationService mainListDonation call");
+
+        Sort sort = gerOrder(order);
+        Page<Donation> donations  = donationRepository.findByStatus(DonationStatus.진행, PageRequest.of(page, 6, sort));
+
+        return makeListDonation(donations);
+    }
+
+    @Override
+    public Map<String, Object> listDonation(Long memberId, String donationStatus, int page) {
         log.info("DonationService listDonation call");
 
-        Map<String, Object> resultMap = new HashMap<>();
-
         Page<Donation> donations;
-        Sort sort = gerOrder(order);
 
-        if(memberId==null) { //메인, 기부
-            donations = donationRepository.findByStatus(DonationStatus.진행, PageRequest.of(page, 8, sort));
-        }else { //기관
-            donations = donationRepository.findByMemberId(memberId, PageRequest.of(page, 8, sort));
+        if(donationStatus.equals(DonationStatus.진행.toString()) || donationStatus.equals(DonationStatus.마감.toString())) {
+            donations = donationRepository.findByMemberIdAndStatus(memberId, DonationStatus.valueOf(donationStatus), PageRequest.of(page, 6, Sort.by("donationId").descending()));
+        }else { //후기 미작성
+            donations = donationRepository.findByMemberId(memberId, PageRequest.of(page, 6, Sort.by("donationId").ascending()));
         }
+
+        return makeListDonation(donations);
+    }
+
+    public Map<String, Object> makeListDonation(Page<Donation> donations) {
+        Map<String, Object> resultMap = new HashMap<>();
 
         if(donations.isEmpty()) {
             resultMap.put("message", Message.DONATION_NOT_FOUND);
@@ -181,6 +194,31 @@ public class DonationServiceImpl implements DonationService {
         resultMap.put("donation", list);
         resultMap.put("totalPage", donations.getTotalPages());
         resultMap.put("message", Message.DONATION_FIND_SUCCESS);
+        return resultMap;
+    }
+
+    @Override
+    public Map<String, Object> titleListDonation(Long memberId) {
+        log.info("DonationService listDonation call");
+
+        Map<String, Object> resultMap = new HashMap<>();
+
+        List<Donation> donation = donationRepository.findByMemberId(memberId);
+        if(donation.isEmpty()) {
+            resultMap.put("message", Message.DONATION_NOT_FOUND);
+            return resultMap;
+        }
+
+        List<DonationTitleListResDto> list = new ArrayList<>();
+        for(Donation d : donation) {
+            DonationTitleListResDto donationDto = DonationTitleListResDto.builder()
+                    .donationId(d.getDonationId())
+                    .title(d.getTitle()).build();
+            list.add(donationDto);
+        }
+
+        resultMap.put("message", Message.DONATION_FIND_SUCCESS);
+        resultMap.put("donation", list);
         return resultMap;
     }
 

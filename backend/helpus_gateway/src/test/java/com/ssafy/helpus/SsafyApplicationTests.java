@@ -3,11 +3,11 @@ package com.ssafy.helpus;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class GatewayApplicationTests {
+//@SpringBootTest
+class SsafyApplicationTests {
 
-    @Test
-    void contextLoads() {
-    }
+	@Test
+	void contextLoads() {
+	}
 
 }
