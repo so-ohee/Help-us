@@ -7,7 +7,6 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
-import org.springframework.cloud.gateway.filter.factory.rewrite.ModifyRequestBodyGatewayFilterFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
@@ -16,15 +15,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
-import java.util.HashMap;
-import java.util.Map;
+
 import java.util.Objects;
 
 @Component
 public class JwtFilter extends AbstractGatewayFilterFactory<JwtFilter.Config> {
 
 
-    public JwtFilter(ModifyRequestBodyGatewayFilterFactory factory){
+    public JwtFilter(){
         super(Config.class);
     }
 
@@ -62,13 +60,14 @@ public class JwtFilter extends AbstractGatewayFilterFactory<JwtFilter.Config> {
             JWTVerifier verifier = JWT.require(algo).withIssuer("auth").build();
             DecodedJWT jwt = verifier.verify(token);
             System.out.println("--------------------------------------------------------");
-            System.out.println(jwt.getClaim("userId"));
+            System.out.println(jwt.getClaim("memberId"));
             return jwt;
 
         }catch (JWTVerificationException e){
             return null;
         }
     }
+
     public static class Config{
 
     }
