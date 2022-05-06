@@ -16,30 +16,63 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import TextField from '@mui/material/TextField';
+import CircularProgress from '@mui/material/CircularProgress';
 import { OCR } from "../function/axios";
 
 
 const SignupList = () => {
-    const imgUrl="http://img1.bizhows.com/bhfile01/__CM_FILE_DATA/202104/15/14/2438331_1618465806169.jpg"
+    const numRegex = /\d{3}-\d{2}-\d{5}/g
+    const imgUrl = 
+    // "http://img1.bizhows.com/bhfile01/__CM_FILE_DATA/202104/15/14/2438331_1618465806169.jpg"
+    // "https://www.draps.co.kr/app/dubu_board/docs/imgs/f/sm_f15967052034313_lg_i15942817778905_%ED%9A%8C%EC%9B%90%EC%A6%9D_0000_%EC%84%B8%EA%B8%88%EA%B3%84%EC%82%B0%EC%84%9C%EC%9A%A9_%EC%82%AC%EC%97%85%EC%9E%90%EB%93%B1%EB%A1%9D%EC%A6%9D_%EB%93%9C%EB%A6%BC%EC%97%90%EC%9D%B4%ED%94%BC%EC%97%90%EC%8A%A4.jpg"
+    "https://beautifulfund.org/bf/files/common/img/business_license.jpg"
+    const [step, setStep] = useState<string>('ing')
+    const [num, setNum] = useState('')
+    const [msg, setMsg] = useState('')
+    const [myMsg, setMyMsg] = useState('')
+ 
     // 다이얼로그
     const [open, setOpen] = useState(false);
     const handleClickOpen = () => {
         setOpen(true);
 
         // ocr
+
         OCR(imgUrl)
-        .then(res => console.log(res))
+        .then(res => {
+            for (var i = 0; i < res.data.images[0].fields.length; i++) {
+                if (res.data.images[0].fields[i].inferText.match(numRegex)) {
+                    console.log(res.data.images[0].fields[i].inferText.match(numRegex)[0])
+                    axios.post('https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=vl6BtUPxAdH%2B8i7%2BYzrw9O%2B%2BL22Wxl591V%2BofSgRDIWQCzZrtPYVNJ8%2FzYbqAc%2BNngCsQOLYKuRTl0GZCJoXmQ%3D%3D', {
+                        "b_no": [res.data.images[0].fields[i].inferText.match(numRegex)[0].replace(/-/g,'')]
+                    })
+                    .then(res => {
+                        setMyMsg(res.data.data[0].b_stt +' '+ res.data.data[0].tax_type)
+                    })
+                    .catch(err => console.log(err))
+
+                    setStep('success')
+                    break;
+                }
+                else if (i+1 === res.data.images[0].fields.length ) { // 사업자등록번호 못 찾은 경우,
+                    setStep('failed')
+                }
+            }
+        })
+        .catch(err => {
+            console.log(err)
+            setStep('failed')
+        }
+        )
         
     };
     const handleClose = () => {
       setOpen(false);
       setNum('')
       setMsg('')
+      setStep('ing')
+      setMyMsg('')
     };
-
-
-    const [num, setNum] = useState('')
-    const [msg, setMsg] = useState('')
 
 
     const onKeyPress = (e) => {
@@ -47,14 +80,6 @@ const SignupList = () => {
             checkNum()
         }
     }
-
-
-    // ocr
-    useEffect(() => {
-        // OCR('https://m.cacaopack.co.kr/file_data/yongchulk/2021/05/25/2f17fe53936a0f4f5414809f93aef198.jpg')
-        // .then(res => console.log(res))
-        // console.log('--')
-    },[])
 
 
 
@@ -105,6 +130,7 @@ const SignupList = () => {
         useEffect(() => {
         setNum(autoHypenPhone(num))
         }, [num])
+
 
     return (
         <>
@@ -188,17 +214,14 @@ const SignupList = () => {
                 </DialogContentText>
                 <img 
                     width='550px'
-                    src=
-                    "http://img1.bizhows.com/bhfile01/__CM_FILE_DATA/202104/15/14/2438331_1618465806169.jpg"
+                    src={imgUrl}
                 />
-            </DialogContent>
-            <DialogActions>
-                <div style={{marginRight:'auto'}}>
+                <div>
                     <TextField 
                         label="사업자등록번호" 
                         variant="outlined" 
                         size="small" 
-                        style={{width:'135px'}}
+                        style={{width:'150px'}}
                         inputProps={{ maxLength: 12 }}
                         value={num}
                         onChange={(e) => setNum(e.target.value)}
@@ -207,6 +230,29 @@ const SignupList = () => {
                     <Button variant="contained" style={{padding:'8px'}} onClick={checkNum}>조회</Button>
                     <span style={{fontWeight:'bold', margin:'5px', fontSize:'15px'}}>{msg}</span>
                     
+                </div>
+            </DialogContent>
+            <DialogActions>
+                <div style={{marginRight:'auto'}}>
+                    {
+                        step === 'ing' ? (
+                            <div>
+                                사업자등록번호 조회중입니다. <CircularProgress size='20px' color="primary"/>
+                            </div>
+                        ) :
+                        (
+                            step === 'success' ? (
+                                <div>
+                                    {myMsg}
+                                </div>
+                            ) :
+                            (
+                                <div>
+                                사업자등록번호 조회에 실패하였습니다.
+                                </div>
+                            )
+                        )
+                    }
                 </div>
                 <Button variant="contained" onClick={handleClose}>승인</Button>
                 {/* <Button onClick={handleClose}>거절</Button> */}
