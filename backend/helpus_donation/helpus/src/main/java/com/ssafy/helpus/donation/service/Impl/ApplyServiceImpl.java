@@ -1,11 +1,13 @@
 package com.ssafy.helpus.donation.service.Impl;
 
+import com.ssafy.helpus.donation.dto.Apply.ApplyListResDto;
 import com.ssafy.helpus.donation.dto.Apply.ApplyReqDto;
 import com.ssafy.helpus.donation.dto.Apply.WaybillReqDto;
 import com.ssafy.helpus.donation.entity.Donation;
 import com.ssafy.helpus.donation.entity.DonationApply;
 import com.ssafy.helpus.donation.entity.DonationProduct;
 import com.ssafy.helpus.donation.enumClass.ApplyStatus;
+import com.ssafy.helpus.donation.enumClass.DonationStatus;
 import com.ssafy.helpus.donation.repository.DonationApplyRepository;
 import com.ssafy.helpus.donation.repository.DonationProductRepository;
 import com.ssafy.helpus.donation.repository.DonationRepository;
@@ -15,12 +17,11 @@ import com.ssafy.helpus.member.service.MemberService;
 import com.ssafy.helpus.utils.Message;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -115,6 +116,69 @@ public class ApplyServiceImpl implements ApplyService {
         productService.deliveryCompleted(apply.get()); //수량 계산
 
         resultMap.put("message", Message.DELIVERY_UPDATE_SUCCESS);
+        return resultMap;
+    }
+
+    @Override
+    public Map<String, Object> userTrackingList(Long memberId, int page) {
+        log.info("ApplyService userTrackingList call");
+
+        Page<DonationApply> applies = applyRepository.findByMemberIdAndStatusNot(memberId, ApplyStatus.배송완료, PageRequest.of(page,10, Sort.by("status").ascending()));
+
+        return makeList(applies, "user");
+    }
+    @Override
+    public Map<String, Object> orgTrackingList(Long memberId, Long donationId, int page) {
+        log.info("ApplyService trackingList call");
+
+        Page<DonationApply> applies;
+
+        if(donationId == null) { //전체 조회
+            List<Donation> donations = donationRepository.findByMemberId(memberId);
+
+            if(donations.isEmpty()) { //기부 글이 없을 경우
+                return new HashMap<>(){{put("message", Message.DONATION_NOT_FOUND);}};
+            }
+
+            applies = applyRepository.findByStatusAndDonationIn(ApplyStatus.배송중, donations, PageRequest.of(page, 10, Sort.by("donationApplyId").ascending()));
+        } else { //글별 조회
+            Donation donation = donationRepository.findById(donationId).get();
+            applies = applyRepository.findByStatusAndDonation(ApplyStatus.배송중, donation, PageRequest.of(page, 10, Sort.by("donationApplyId").ascending()));
+        }
+
+        return makeList(applies, "org");
+    }
+
+    public Map<String, Object> makeList(Page<DonationApply> applies, String type) {
+        Map<String, Object> resultMap = new HashMap<>();
+
+        if(applies.isEmpty()) {
+            resultMap.put("message", Message.APPLY_NOT_FOUND);
+            return resultMap;
+        }
+
+        List<ApplyListResDto> list = new ArrayList<>();
+        for(DonationApply apply : applies) {
+            Long memberId = type.equals("user") ? apply.getDonation().getMemberId() : apply.getMemberId();
+
+            ApplyListResDto applyDto = ApplyListResDto.builder()
+                    .donationApplyId(apply.getDonationApplyId())
+                    .donationId(apply.getDonation().getDonationId())
+                    .memberId(memberId)
+                    .name(memberService.getMemberName(memberId))
+                    .title(apply.getDonation().getTitle())
+                    .productName(apply.getDonationProduct().getProductName())
+                    .count(apply.getCount())
+                    .parcel(apply.getParcel())
+                    .invoice(apply.getInvoice())
+                    .donationDate(apply.getDonationDate())
+                    .status(apply.getStatus()).build();
+            list.add(applyDto);
+        }
+
+        resultMap.put("apply", list);
+        resultMap.put("message", Message.APPLY_FIND_SUCCESS);
+        resultMap.put("totalPage", applies.getTotalPages());
         return resultMap;
     }
 }
