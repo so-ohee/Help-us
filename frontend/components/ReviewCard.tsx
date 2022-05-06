@@ -15,7 +15,7 @@ const CustomButton = styled(Button)({
   },
 });
 
-const DonationCardOrg: FC = () => {
+const ReviewCard: FC = () => {
   return (
     <div>
       <Box
@@ -26,7 +26,6 @@ const DonationCardOrg: FC = () => {
           position: "relative",
           height: 230,
           width: 500,
-          backgroundColor: "#ffffff",
         }}
       >
         <Stack direction="row">
@@ -54,12 +53,13 @@ const DonationCardOrg: FC = () => {
               borderTop: "1px solide #CDAD78",
               height: "100%",
               width: "65%",
+              bgcolor: "#ffffff",
             }}
           >
             <Box>
               {/* 제목은 17자까지만 보여주기??*/}
               <Typography sx={{ fontWeight: "bold", fontSize: 17, mt: 0.5 }}>
-                운동회를 위한 기부가 필요합니다.
+                기부 후기입니다.
               </Typography>
               <Grid
                 container
@@ -274,11 +274,6 @@ const DonationCardOrg: FC = () => {
                 direction="row"
                 alignItems="center"
               >
-                {/* <Box sx={{ width: 60 }}>
-                  <Typography align="center" sx={{ fontSize: 13 }}>
-                    달성률
-                  </Typography>
-                </Box> */}
                 <Box
                   sx={{
                     borderTopLeftRadius: 5,
@@ -303,15 +298,13 @@ const DonationCardOrg: FC = () => {
               </Stack>
             </Box>
             <Stack
-              justifyContent="space-between"
+              // justifyContent="space-between"
               direction="row"
               sx={{ mt: 1.5 }}
               alignItems="center"
+              justifyContent="center"
             >
-              <Typography>자동 종료일: 2022-05-20</Typography>
-              <CustomButton variant="contained" size="small" sx={{ width: 30 }}>
-                종료
-              </CustomButton>
+              <Typography align="center">수원시광교노인복지관</Typography>
             </Stack>
           </Box>
         </Stack>
@@ -320,4 +313,4 @@ const DonationCardOrg: FC = () => {
   );
 };
 
-export default DonationCardOrg;
+export default ReviewCard;

@@ -85,10 +85,10 @@ const OrgMypage: FC = () => {
             mb: 4,
             bgcolor: "#FCF8F0",
             borderRadius: 1.25,
-            height: "350px",
+            // height: "350px",
           }}
         >
-          <Grid container spacing={2}>
+          <Grid container spacing={2} minHeight="350px">
             <Grid item xs={3}>
               <div
                 style={{
@@ -142,8 +142,9 @@ const OrgMypage: FC = () => {
                 sx={{
                   bgcolor: "#f5e1be",
                   borderRadius: 1.25,
-                  height: "120px",
+                  // height: "120px",
                 }}
+                minHeight="120px"
               >
                 <Typography sx={{ p: 2, mt: 1 }}>
                   아무래도 다시 돌아갈 순 없어 아무런 표정도 없이 이런 말하는

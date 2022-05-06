@@ -15,7 +15,7 @@ const CustomButton = styled(Button)({
   },
 });
 
-const DonationCardOrg: FC = () => {
+const DonationCardOrgFinish: FC = () => {
   return (
     <div>
       <Box
@@ -302,16 +302,8 @@ const DonationCardOrg: FC = () => {
                 </Typography>
               </Stack>
             </Box>
-            <Stack
-              justifyContent="space-between"
-              direction="row"
-              sx={{ mt: 1.5 }}
-              alignItems="center"
-            >
-              <Typography>자동 종료일: 2022-05-20</Typography>
-              <CustomButton variant="contained" size="small" sx={{ width: 30 }}>
-                종료
-              </CustomButton>
+            <Stack direction="row" sx={{ mt: 1.5 }} justifyContent="center">
+              <Typography>종료일: 2022-05-20</Typography>
             </Stack>
           </Box>
         </Stack>
@@ -320,4 +312,4 @@ const DonationCardOrg: FC = () => {
   );
 };
 
-export default DonationCardOrg;
+export default DonationCardOrgFinish;

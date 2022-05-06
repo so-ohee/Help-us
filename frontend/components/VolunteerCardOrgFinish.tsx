@@ -19,7 +19,7 @@ const CustomButton = styled(Button)({
   },
 });
 
-const VolunteerCard: FC = () => {
+const VolunteerCardOrgFinish: FC = () => {
   return (
     <div>
       <Box
@@ -148,14 +148,8 @@ const VolunteerCard: FC = () => {
                 </Typography>
               </Stack>
             </Box>
-            <Stack
-              // justifyContent="space-between"
-              direction="row"
-              sx={{ mt: 1.5 }}
-              alignItems="center"
-              justifyContent="center"
-            >
-              <Typography align="center">수원시광교노인복지관</Typography>
+            <Stack direction="row" sx={{ mt: 1.5 }} justifyContent="center">
+              <Typography>종료일: 2022-05-20</Typography>
             </Stack>
           </Box>
         </Stack>
@@ -164,4 +158,4 @@ const VolunteerCard: FC = () => {
   );
 };
 
-export default VolunteerCard;
+export default VolunteerCardOrgFinish;
