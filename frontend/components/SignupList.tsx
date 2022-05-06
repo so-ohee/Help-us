@@ -16,13 +16,20 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import TextField from '@mui/material/TextField';
+import { OCR } from "../function/axios";
 
 
 const SignupList = () => {
+    const imgUrl="http://img1.bizhows.com/bhfile01/__CM_FILE_DATA/202104/15/14/2438331_1618465806169.jpg"
     // 다이얼로그
     const [open, setOpen] = useState(false);
     const handleClickOpen = () => {
-      setOpen(true);
+        setOpen(true);
+
+        // ocr
+        OCR(imgUrl)
+        .then(res => console.log(res))
+        
     };
     const handleClose = () => {
       setOpen(false);
@@ -40,6 +47,16 @@ const SignupList = () => {
             checkNum()
         }
     }
+
+
+    // ocr
+    useEffect(() => {
+        // OCR('https://m.cacaopack.co.kr/file_data/yongchulk/2021/05/25/2f17fe53936a0f4f5414809f93aef198.jpg')
+        // .then(res => console.log(res))
+        // console.log('--')
+    },[])
+
+
 
     // 사업자등록번호 조회
     const checkNum = () => {

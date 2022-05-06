@@ -27,6 +27,7 @@
     "react-calendar": "^3.7.0",
     "react-daum-postcode": "^3.0.1",
     "react-dom": "^18.0.0"
+
   },
   "devDependencies": {
     "@types/node": "17.0.25",
