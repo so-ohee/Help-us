@@ -25,14 +25,14 @@ public class VolunteerDataSourceConfig {
 
     @Autowired
     @Qualifier
-    private DataSource donationDataSource;
+    private DataSource volunteerDataSource;
 
     @Primary
     @Bean
     public LocalContainerEntityManagerFactoryBean donationEntityManagerFactory(EntityManagerFactoryBuilder builder) {
-        return builder.dataSource(donationDataSource)
-                .packages("com.ssafy.helpus.donation.entity")
-                .persistenceUnit("donation").build();
+        return builder.dataSource(volunteerDataSource)
+                .packages("com.ssafy.helpus.volunteer.entity")
+                .persistenceUnit("volunteer").build();
     }
 
     @Primary
