@@ -7,7 +7,6 @@ import com.ssafy.helpus.donation.entity.Donation;
 import com.ssafy.helpus.donation.entity.DonationApply;
 import com.ssafy.helpus.donation.entity.DonationProduct;
 import com.ssafy.helpus.donation.enumClass.ApplyStatus;
-import com.ssafy.helpus.donation.enumClass.DonationStatus;
 import com.ssafy.helpus.donation.repository.DonationApplyRepository;
 import com.ssafy.helpus.donation.repository.DonationProductRepository;
 import com.ssafy.helpus.donation.repository.DonationRepository;
@@ -120,17 +119,23 @@ public class ApplyServiceImpl implements ApplyService {
     }
 
     @Override
-    public Map<String, Object> userTrackingList(Long memberId, int page) {
-        log.info("ApplyService userTrackingList call");
+    public Map<String, Object> userApplyList(Long memberId, String type, int page) {
+        log.info("ApplyService userApplyList call");
 
-        Page<DonationApply> applies = applyRepository.findByMemberIdAndStatusNot(memberId, ApplyStatus.배송완료, PageRequest.of(page,10, Sort.by("status").ascending()));
+        Page<DonationApply> applies;
+        if(type.equals("tracking"))
+               applies = applyRepository.findByMemberIdAndStatusNot(memberId, ApplyStatus.배송완료, PageRequest.of(page,10, Sort.by("status").ascending()));
+        else
+            applies = applyRepository.findByMemberIdAndStatus(memberId, ApplyStatus.배송완료, PageRequest.of(page, 10, Sort.by("donationApplyId").descending()));
 
         return makeList(applies, "user");
     }
-    @Override
-    public Map<String, Object> orgTrackingList(Long memberId, Long donationId, int page) {
-        log.info("ApplyService trackingList call");
 
+    @Override
+    public Map<String, Object> orgApplyList(Long memberId, Long donationId, String type, int page) {
+        log.info("ApplyService orgApplyList call");
+
+        ApplyStatus status = type.equals("tracking") ? ApplyStatus.배송중 : ApplyStatus.배송완료;
         Page<DonationApply> applies;
 
         if(donationId == null) { //전체 조회
@@ -140,10 +145,10 @@ public class ApplyServiceImpl implements ApplyService {
                 return new HashMap<>(){{put("message", Message.DONATION_NOT_FOUND);}};
             }
 
-            applies = applyRepository.findByStatusAndDonationIn(ApplyStatus.배송중, donations, PageRequest.of(page, 10, Sort.by("donationApplyId").ascending()));
+            applies = applyRepository.findByStatusAndDonationIn(status, donations, PageRequest.of(page, 10, Sort.by("donationApplyId").ascending()));
         } else { //글별 조회
             Donation donation = donationRepository.findById(donationId).get();
-            applies = applyRepository.findByStatusAndDonation(ApplyStatus.배송중, donation, PageRequest.of(page, 10, Sort.by("donationApplyId").ascending()));
+            applies = applyRepository.findByStatusAndDonation(status, donation, PageRequest.of(page, 10, Sort.by("donationApplyId").ascending()));
         }
 
         return makeList(applies, "org");
@@ -177,7 +182,7 @@ public class ApplyServiceImpl implements ApplyService {
         }
 
         resultMap.put("apply", list);
-        resultMap.put("message", Message.DELIVERY_FIND_SUCCESS);
+        resultMap.put("message", Message.APPLY_FIND_SUCCESS);
         resultMap.put("totalPage", applies.getTotalPages());
         return resultMap;
     }

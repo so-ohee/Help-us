@@ -14,7 +14,9 @@ import java.util.List;
 public interface DonationApplyRepository extends JpaRepository<DonationApply, Long> {
     Page<DonationApply> findByMemberIdAndStatusNot(Long memberId, ApplyStatus status, Pageable pageable);
 
-    Page<DonationApply> findByStatusAndDonationIn(ApplyStatus 배송중, List<Donation> donations, Pageable pageable);
+    Page<DonationApply> findByStatusAndDonationIn(ApplyStatus status, List<Donation> donations, Pageable pageable);
 
-    Page<DonationApply> findByStatusAndDonation(ApplyStatus 배송중, Donation donation, Pageable pageable);
+    Page<DonationApply> findByStatusAndDonation(ApplyStatus status, Donation donation, Pageable pageable);
+
+    Page<DonationApply> findByMemberIdAndStatus(Long memberId, ApplyStatus status, Pageable pageable);
 }

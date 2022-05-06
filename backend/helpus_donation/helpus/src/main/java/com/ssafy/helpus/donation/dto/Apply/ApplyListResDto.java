@@ -10,6 +10,7 @@ import java.time.LocalDate;
 
 @ApiModel(value = "기부 목록")
 @Getter
+@Builder
 public class ApplyListResDto {
 
     private Long donationApplyId;
@@ -35,20 +36,4 @@ public class ApplyListResDto {
     private LocalDate donationDate;
 
     private ApplyStatus status;
-
-    @Builder
-    public ApplyListResDto(Long donationApplyId, Long donationId, Long memberId, String name, String title,
-                           String parcel, Integer invoice, String productName, int count, LocalDate donationDate, ApplyStatus status) {
-        this.donationApplyId = donationApplyId;
-        this.donationId = donationId;
-        this.memberId = memberId;
-        this.name = name;
-        this.title = title;
-        this.parcel = parcel;
-        this.invoice = invoice;
-        this.productName = productName;
-        this.count = count;
-        this.donationDate = donationDate;
-        this.status = status;
-    }
 }

@@ -81,11 +81,12 @@ public class ApplyController {
         return new ResponseEntity(resultMap, status);
     }
 
-    @ApiOperation(value = "배송 현황 목록 조회")
-    @GetMapping("tracking")
-    public ResponseEntity applyTrackingList(@RequestParam(required = false) Long donationId,
-                                    @RequestParam(required = false, defaultValue = "1") int page, @RequestHeader HttpHeaders headers) {
-        log.info("ApplyController applyTrackingList call");
+    @ApiOperation(value = "기부 현황 목록 조회")
+    @GetMapping("{type}")
+    public ResponseEntity applyList(@PathVariable String type,
+                                            @RequestParam(required = false) Long donationId,
+                                            @RequestParam(required = false, defaultValue = "1") int page, @RequestHeader HttpHeaders headers) {
+        log.info("ApplyController applyList call");
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.OK;
@@ -93,13 +94,13 @@ public class ApplyController {
             Long memberId = Long.valueOf(headers.get("memberId").get(0));
             String role = headers.get("role").get(0);
             if(role.equals("USER"))
-                resultMap = applyService.userTrackingList(memberId, page-1);
+                resultMap = applyService.userApplyList(memberId, type, page-1);
             else if(role.equals("ORG"))
-                resultMap = applyService.orgTrackingList(memberId, donationId, page-1);
+                resultMap = applyService.orgApplyList(memberId, donationId, type, page-1);
         } catch (Exception e) {
-            log.error(Message.DELIVERY_FIND_FAIL+" : {}", e.getMessage());
+            log.error(Message.APPLY_FIND_FAIL+" : {}", e.getMessage());
 
-            resultMap.put("message", Message.DELIVERY_FIND_FAIL);
+            resultMap.put("message", Message.APPLY_FIND_FAIL);
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return new ResponseEntity(resultMap, status);

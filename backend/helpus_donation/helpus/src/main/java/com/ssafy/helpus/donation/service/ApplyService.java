@@ -12,8 +12,8 @@ public interface ApplyService {
     Map<String, Object> updateWaybill(WaybillReqDto waybillDto) throws Exception;
     //배송 완료
     Map<String, Object> deliveryCompleted(Long donationApplyId) throws Exception;
-    //배송 현황 조회 - 개인
-    Map<String, Object> userTrackingList(Long memberId, int page);
-    //배송 현황 조회 - 기관
-    Map<String, Object> orgTrackingList(Long memberId, Long donationId, int page);
+    //물품 후원 내역 - 기관
+    Map<String, Object> orgApplyList(Long memberId, Long donationId, String type, int page);
+    //물품 후원 내역 - 개인
+    Map<String, Object> userApplyList(Long memberId, String type, int page);
 }
