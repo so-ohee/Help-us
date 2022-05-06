@@ -83,9 +83,9 @@ public class ApplyController {
 
     @ApiOperation(value = "배송 현황 목록 조회")
     @GetMapping("tracking")
-    public ResponseEntity applyList(@RequestParam(required = false) Long donationId,
+    public ResponseEntity applyTrackingList(@RequestParam(required = false) Long donationId,
                                     @RequestParam(required = false, defaultValue = "1") int page, @RequestHeader HttpHeaders headers) {
-        log.info("ApplyController applyList call");
+        log.info("ApplyController applyTrackingList call");
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.OK;
