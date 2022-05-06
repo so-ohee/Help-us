@@ -57,6 +57,7 @@ const VolunteerCardOrg: FC = () => {
               borderTop: "1px solide #CDAD78",
               height: "100%",
               width: "65%",
+              bgcolor: "#ffffff",
             }}
           >
             <Box>
@@ -153,7 +154,7 @@ const VolunteerCardOrg: FC = () => {
               sx={{ mt: 1.5 }}
               alignItems="center"
             >
-              <Typography>자동 마감일: 2022-05-20</Typography>
+              <Typography>자동 종료일: 2022-05-20</Typography>
               <CustomButton variant="contained" size="small" sx={{ width: 30 }}>
                 종료
               </CustomButton>
