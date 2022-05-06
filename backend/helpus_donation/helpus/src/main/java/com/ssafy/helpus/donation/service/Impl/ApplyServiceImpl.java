@@ -177,7 +177,7 @@ public class ApplyServiceImpl implements ApplyService {
         }
 
         resultMap.put("apply", list);
-        resultMap.put("message", Message.APPLY_FIND_SUCCESS);
+        resultMap.put("message", Message.DELIVERY_FIND_SUCCESS);
         resultMap.put("totalPage", applies.getTotalPages());
         return resultMap;
     }
