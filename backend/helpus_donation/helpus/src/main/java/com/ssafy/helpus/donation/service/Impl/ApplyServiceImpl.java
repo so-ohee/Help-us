@@ -2,13 +2,16 @@ package com.ssafy.helpus.donation.service.Impl;
 
 import com.ssafy.helpus.donation.dto.Apply.ApplyReqDto;
 import com.ssafy.helpus.donation.dto.Apply.WaybillReqDto;
+import com.ssafy.helpus.donation.entity.Donation;
 import com.ssafy.helpus.donation.entity.DonationApply;
 import com.ssafy.helpus.donation.entity.DonationProduct;
 import com.ssafy.helpus.donation.enumClass.ApplyStatus;
 import com.ssafy.helpus.donation.repository.DonationApplyRepository;
 import com.ssafy.helpus.donation.repository.DonationProductRepository;
+import com.ssafy.helpus.donation.repository.DonationRepository;
 import com.ssafy.helpus.donation.service.ApplyService;
 import com.ssafy.helpus.donation.service.ProductService;
+import com.ssafy.helpus.member.service.MemberService;
 import com.ssafy.helpus.utils.Message;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,8 +29,10 @@ public class ApplyServiceImpl implements ApplyService {
 
     private final DonationApplyRepository applyRepository;
     private final DonationProductRepository productRepository;
+    private final DonationRepository donationRepository;
 
     private final ProductService productService;
+    private final MemberService memberService;
 
     @Override
     public Map<String, Object> applyDonation(ApplyReqDto applyDto, Long memberId) throws Exception {
@@ -35,6 +40,7 @@ public class ApplyServiceImpl implements ApplyService {
 
         Map<String, Object> resultMap = new HashMap<>();
 
+        Donation donation = donationRepository.findById(applyDto.getDonationId()).get();
         DonationProduct donationProduct = productRepository.findById(applyDto.getDonationProductId()).get();
 
         DonationApply apply;
@@ -44,7 +50,7 @@ public class ApplyServiceImpl implements ApplyService {
             donationProduct.setDeliveryCount(donationProduct.getDeliveryCount() + applyDto.getCount());
 
             apply = DonationApply.builder()
-                    .donationId(applyDto.getDonationId())
+                    .donation(donation)
                     .memberId(memberId)
                     .donationProduct(donationProduct)
                     .count(applyDto.getCount())
@@ -53,7 +59,7 @@ public class ApplyServiceImpl implements ApplyService {
                     .status(ApplyStatus.배송중).build();
         } else {
             apply = DonationApply.builder()
-                    .donationId(applyDto.getDonationId())
+                    .donation(donation)
                     .memberId(memberId)
                     .donationProduct(donationProduct)
                     .count(applyDto.getCount())
