@@ -1,14 +1,12 @@
 import react, { useState } from "react";
 import type { NextPage } from "next";
-import { Box, Grid, Tab, Typography, Stack, Link } from "@mui/material/";
+import { Box, Grid, Tab, Typography, Stack, Link, InputLabel, MenuItem, FormControl, Tabs } from "@mui/material/";
 import {TabContext, TabList, TabPanel} from '@mui/lab/';
 import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import Card from "../components/card";
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
+import DonationCard from "../components/DonationCard";
+import VolunteerCard from "../components/VolunteerCard";
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import volunteer1 from "../public/images/volunteer1.jpg";
 
@@ -38,12 +36,14 @@ const Home: NextPage = () => {
         </Box>
         <Box>
           <TabContext value={value}>
-            <Stack direction="row" >
-              <TabList onChange={tabHandleChange} aria-label="lab API tabs example">
+            <Stack direction="row" justifyContent="space-between">
+              <Tabs 
+                onChange={tabHandleChange}
+                >
                 <Tab label="물품" value="1" />
                 <Tab label="봉사" value="2" />
-              </TabList>
-                <Box sx={{ maxWidth: 200, display: 'flex', justifyContent: 'flex-end'}}>
+              </Tabs>
+                <Box sx={{ minWidth: 200, display: 'flex', justifyContent: 'flex-end'}}>
                   <FormControl fullWidth >
                     <InputLabel>정렬</InputLabel>
                     <Select
@@ -61,17 +61,17 @@ const Home: NextPage = () => {
             </Stack>
             <TabPanel value="1">
               <Box sx={{ mt: 3 }}>
-                <Stack direction="row">
-                  <Card/>
-                  <Card/>
+                <Stack direction="row" spacing={5} sx={{mb : 5}}>
+                  <DonationCard/>
+                  <DonationCard/>
                 </Stack>
-                <Stack direction="row">
-                  <Card/>
-                  <Card/>
+                <Stack direction="row" spacing={5} sx={{mb : 5}}>
+                  <DonationCard/>
+                  <DonationCard/>
                 </Stack>
-                <Stack direction="row">
-                  <Card/>
-                  <Card/>
+                <Stack direction="row" spacing={5} sx={{mb : 5}}>
+                  <DonationCard/>
+                  <DonationCard/>
                 </Stack>
               </Box>
             </TabPanel>
@@ -80,13 +80,13 @@ const Home: NextPage = () => {
                 <Typography variant="h3" sx={{ fontWeight: "bold"}}> 지도</Typography>
               </Box>
               <Box sx={{ mt: 3 }}>
-              <Stack direction="row">
-                  <Card/>
-                  <Card/>
+              <Stack direction="row" spacing={5} sx={{mb : 5}}>
+                  <VolunteerCard/>
+                  <VolunteerCard/>
                 </Stack>
-                <Stack direction="row">
-                  <Card/>
-                  <Card/>
+                <Stack direction="row" spacing={5} sx={{mb : 5}}>
+                  <VolunteerCard/>
+                  <VolunteerCard/>
                 </Stack>
               </Box>
             </TabPanel>
