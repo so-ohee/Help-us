@@ -57,6 +57,7 @@ const VolunteerCard: FC = () => {
               borderTop: "1px solide #CDAD78",
               height: "100%",
               width: "65%",
+              bgcolor: "#ffffff",
             }}
           >
             <Box>

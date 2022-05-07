@@ -26,6 +26,7 @@ const DonationCardOrg: FC = () => {
           position: "relative",
           height: 230,
           width: 500,
+          backgroundColor: "#ffffff",
         }}
       >
         <Stack direction="row">
@@ -307,7 +308,7 @@ const DonationCardOrg: FC = () => {
               sx={{ mt: 1.5 }}
               alignItems="center"
             >
-              <Typography>자동 마감일: 2022-05-20</Typography>
+              <Typography>자동 종료일: 2022-05-20</Typography>
               <CustomButton variant="contained" size="small" sx={{ width: 30 }}>
                 종료
               </CustomButton>
