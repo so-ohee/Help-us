@@ -20,8 +20,51 @@ import html2canvas from 'html2canvas'
 const Certi: FC = () => {
 
  
+  const [list, setList] = useState([])
+  const [checked, setChecked] = useState([])
   const [ing, setIng] = useState(false)
   const [certiNum, setCertiNum] = useState('')
+
+
+  // 기부 목록 받아오기
+  useEffect(() => {
+    setList([
+      {
+        org: '싸피재단',
+        item: '라면',
+        cnt: 100,
+        day: '2022-05-09'
+      },
+      {
+        org: '싸피',
+        item: '휴지',
+        cnt: 10,
+        day: '2022-05-08'
+      },
+      {
+        org: '싸피재단123',
+        item: '컵라면',
+        cnt: 5,
+        day: '2022-05-07'
+      },
+      {
+        org: '싸피재단1234',
+        item: '생수 2L',
+        cnt: 1000,
+        day: '2022-05-06'
+      },
+
+    ])
+  },[])
+
+  // 체크박시 선택시
+  const handleChange = (e) => {
+    if (checked.includes(Number(e.target.value))){
+      setChecked(checked.filter(idx => idx !== Number(e.target.value)))
+    }else{
+      setChecked([...checked, Number(e.target.value)])
+    }
+  }
 
   // 현재 날짜
   let now = new Date()
@@ -30,12 +73,13 @@ const Certi: FC = () => {
   let date = now.getDate()
 
 
-  // 버튼 클릭시 증명번호 생성
-  useEffect(() => {
-    if (ing === true){
-      setCertiNum(randomString(4)+'-'+randomString(4)+'-'+randomString(4)+'-'+randomString(4))
-    }
-  },[ing])
+  // 버튼 클릭시
+  const onClick = () => {
+    setIng(true)
+    setChecked(checked.sort((a, b) => a - b))
+    setCertiNum(randomString(4)+'-'+randomString(4)+'-'+randomString(4)+'-'+randomString(4))
+  }
+
 
   // 증명번호 생성 후, 증명서 생성
   useEffect(() => {
@@ -46,7 +90,7 @@ const Certi: FC = () => {
 
 
 
-  // 난수 생섬
+  // 난수 생섬 함수
   const randomString = (count) => {
     let str = '';
     for (let i = 0; i < count; i++) {
@@ -70,6 +114,7 @@ const Certi: FC = () => {
     link.click()
     document.body.removeChild(link)
     setIng(false)
+    setCertiNum('')
   }
 
   return (
@@ -91,28 +136,27 @@ const Certi: FC = () => {
               </TableRow>
             </TableHead>
           <TableBody>
-            <TableRow>
-              <TableCell align="center" style={{padding:'4px'}}>
-                <Checkbox />
-              </TableCell>
-              <TableCell align="center" >1</TableCell>
-              <TableCell>싸피재단</TableCell>
-              <TableCell>라면</TableCell>
-              <TableCell>100</TableCell>
-              <TableCell>2022-05-08</TableCell>
-            </TableRow>
-
-            <TableRow>
-              <TableCell align="center" style={{padding:'4px'}}>
-                <Checkbox />
-              </TableCell>
-              <TableCell align="center" >1</TableCell>
-              <TableCell>싸피재단</TableCell>
-              <TableCell>라면</TableCell>
-              <TableCell>100</TableCell>
-              <TableCell>2022-05-08</TableCell>
-            </TableRow>
-
+            {
+              list.map((e, idx) => {
+                return (
+                  <TableRow key={idx}>
+                    <TableCell align="center" style={{padding:'4px'}}>
+                      <Checkbox 
+                        checked={checked.includes(idx)}
+                        onChange={handleChange}
+                        name={`list-${idx}`}
+                        value={idx}
+                      />
+                    </TableCell>
+                    <TableCell align="center" >{idx+1}</TableCell>
+                    <TableCell>{e.org}</TableCell>
+                    <TableCell>{e.item}</TableCell>
+                    <TableCell>{e.cnt}</TableCell>
+                    <TableCell>{e.day}</TableCell>
+                  </TableRow>
+                )
+              }
+            )}
           </TableBody>
           </Table>
         </TableContainer>
@@ -120,7 +164,8 @@ const Certi: FC = () => {
         <Button
           variant="contained" 
           style={{marginTop:'20px'}}
-          onClick={() => setIng(true)}
+          onClick={() => onClick()}
+          disabled={checked.length === 0}
         >
           확인서 발급
         </Button>
@@ -148,31 +193,30 @@ const Certi: FC = () => {
                     <Table >
                       <TableHead >
                         <TableRow >
-                          <TableCell sx={{ width: 70 }} align="center">번호</TableCell>
-                          <TableCell sx={{ width: 200 }}>기관명</TableCell>
-                          <TableCell sx={{ width: 170 }}>물품</TableCell>
-                          <TableCell sx={{ width: 80 }}>수량</TableCell>
-                          <TableCell sx={{ width: 120 }}>날짜</TableCell>
+                          <TableCell sx={{ width: 70 }} align="center" style={{padding:'12px'}}>번호</TableCell>
+                          <TableCell sx={{ width: 200 }} style={{padding:'12px'}}>기관명</TableCell>
+                          <TableCell sx={{ width: 170 }} style={{padding:'12px'}}>물품</TableCell>
+                          <TableCell sx={{ width: 80 }} style={{padding:'12px'}}>수량</TableCell>
+                          <TableCell sx={{ width: 120 }} style={{padding:'12px'}}>날짜</TableCell>
                         </TableRow>
                       </TableHead>
+
                     <TableBody>
-                      <TableRow>
-                        <TableCell align="center" >1</TableCell>
-                        <TableCell>싸피재단</TableCell>
-                        <TableCell>라면</TableCell>
-                        <TableCell>100</TableCell>
-                        <TableCell>2022-05-08</TableCell>
-                      </TableRow>
-
-                      <TableRow>
-                        <TableCell align="center" >1</TableCell>
-                        <TableCell>싸피재단</TableCell>
-                        <TableCell>라면</TableCell>
-                        <TableCell>100</TableCell>
-                        <TableCell>2022-05-08</TableCell>
-                      </TableRow>
-
+                      {
+                        checked.map((e, idx) => {
+                          return (
+                            <TableRow key={idx}>
+                              <TableCell align="center" style={{padding:'12px'}}>{idx+1}</TableCell>
+                              <TableCell style={{padding:'12px'}}>{list[e].org}</TableCell>
+                              <TableCell style={{padding:'12px'}}>{list[e].item}</TableCell>
+                              <TableCell style={{padding:'12px'}}>{list[e].cnt}</TableCell>
+                              <TableCell style={{padding:'12px'}}>{list[e].day}</TableCell>
+                            </TableRow>
+                          )
+                        }
+                      )}
                     </TableBody>
+
                     </Table>
                   </TableContainer>
                 </div>
