@@ -10,9 +10,9 @@ import java.util.Map;
 public interface VolunteerService {
 
     // 봉사 등록
-    Map<String, Object> registerVoluneer(VolunteerReqDto volunteerReqDto, Long memberId, List<MultipartFile> files, String role) throws Exception;
+    Map<String, Object> registerVoluneer(VolunteerReqDto volunteerReqDto, Long memberId, MultipartFile[] files, String role) throws Exception;
     // 봉사 수정
-    Map<String, Object> updateVolunteer(VolunteerUpdateReqDto volunteerUpdateReqDto, Long memberId, List<MultipartFile> files, String role) throws Exception;
+    Map<String, Object> updateVolunteer(VolunteerUpdateReqDto volunteerUpdateReqDto, Long memberId, MultipartFile[] files, String role) throws Exception;
     // 봉사 글 조회
     Map<String, Object> getVoluneer(Long volunteerId) throws Exception;
 

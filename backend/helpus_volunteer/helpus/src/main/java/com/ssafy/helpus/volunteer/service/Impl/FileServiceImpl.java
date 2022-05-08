@@ -22,7 +22,7 @@ public class FileServiceImpl implements FileService {
     private final VolunteerImageRepository volunteerImageRepository;
 
     @Override
-    public boolean fileExtensionCheck(List<MultipartFile> files) throws Exception {
+    public boolean fileExtensionCheck(MultipartFile[] files) throws Exception {
         log.debug("FileService fileExtensionCheck call");
 
         for(MultipartFile mfile : files){ //파일 확장자 검사
@@ -37,7 +37,7 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public void volunteerFileSave(Volunteer volunteer, List<MultipartFile> files) throws Exception {
+    public void volunteerFileSave(Volunteer volunteer, MultipartFile[] files) throws Exception {
         log.debug("FileService donationFileSave call");
 
         for (MultipartFile mfile : files) {

@@ -1,13 +1,12 @@
 package com.ssafy.helpus.volunteer.controller;
 
-import com.ssafy.helpus.volunteer.dto.VolunteerReqDto;
-import com.ssafy.helpus.volunteer.dto.VolunteerUpdateReqDto;
+import com.ssafy.helpus.volunteer.dto.TalentDonationReqDto;
+import com.ssafy.helpus.volunteer.dto.TalentDonationUpdateReqDto;
 import com.ssafy.helpus.volunteer.service.FileService;
-import com.ssafy.helpus.volunteer.service.VolunteerService;
+import com.ssafy.helpus.volunteer.service.TalentDonationService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,31 +14,32 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/volunteer")
+@RequestMapping("/TalentDonation")
 @CrossOrigin(origins = {"*"}, maxAge = 6000)
-public class VolunteerController {
+public class TalentDonationController {
 
-    private final VolunteerService volunteerService;
+    private final TalentDonationService talentDonationService;
     private final FileService fileService;
 
 
-    @ApiOperation(value = "봉사 글 등록")
+    @ApiOperation(value = "재능기부 글 등록")
     @PostMapping
-    public ResponseEntity registerVolunteer(@RequestPart VolunteerReqDto volunteerReqDto, @RequestPart(required = false) MultipartFile[] files,
-                                            @RequestHeader HttpHeaders headers){
-        log.info("VolunteerController registerVolunteer call");
+    public ResponseEntity registerTalentDonation(@RequestPart TalentDonationReqDto talentDonationReqDto, @RequestPart(required = false) MultipartFile[] files,
+                                                 @RequestHeader HttpHeaders headers){
+        log.info("TalentDonationController registerTalentDonation call");
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.CREATED;
         try {
                 Long memberId = Long.valueOf(headers.get("memberId").get(0));
                 String role = headers.get("role").get(0);
-                resultMap = volunteerService.registerVoluneer(volunteerReqDto, memberId, files, role);
+                resultMap = talentDonationService.registerTalentDonation(talentDonationReqDto, memberId, files, role);
         } catch (Exception e){
             log.error(e.getMessage());
             resultMap.put("message", e.getMessage());
@@ -48,18 +48,19 @@ public class VolunteerController {
         return new ResponseEntity(resultMap, status);
     }
 
-    @ApiOperation(value = "봉사 글 수정")
+    @ApiOperation(value = "재능기부 글 수정")
     @PutMapping
-    public ResponseEntity updateVolunteer(@RequestPart VolunteerUpdateReqDto volunteerUpdateReqDto, @RequestPart(required = false) MultipartFile[] files,
-                                          @RequestHeader HttpHeaders headers){
-        log.info("VolunteerController updateVolunteer call");
+    public ResponseEntity updateTalentDonation(@RequestPart TalentDonationUpdateReqDto talentDonationUpdateReqDto, @RequestPart(required = false) MultipartFile[] files,
+                                               @RequestHeader HttpHeaders headers){
+        log.info("TalentDonationController updateTalentDonation call");
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.CREATED;
         try {
                 Long memberId = Long.valueOf(headers.get("memberId").get(0));
                 String role = headers.get("role").get(0);
-                resultMap = volunteerService.updateVolunteer(volunteerUpdateReqDto, memberId, files, role);
+                resultMap = talentDonationService.updateTalentDonation(talentDonationUpdateReqDto, memberId, files, role);
+
         } catch (Exception e){
             log.error(e.getMessage());
             resultMap.put("message", "봉사글 수정 실패");
@@ -68,15 +69,15 @@ public class VolunteerController {
         return new ResponseEntity(resultMap, status);
     }
 
-    @ApiOperation(value = "봉사 글 조회")
+    @ApiOperation(value = "재능기부 글 조회")
     @GetMapping("{volunteerId}")
-    public ResponseEntity getVolunteer(@PathVariable Long volunteerId){
-        log.info("VolunteerController getVolunteer call");
+    public ResponseEntity getTalentDonation(@PathVariable Long volunteerId){
+        log.info("TalentDonationController getVolunteer call");
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.OK;
         try {
-            resultMap = volunteerService.getVoluneer(volunteerId);
+            resultMap = talentDonationService.getTalentDonation(volunteerId);
         } catch (Exception e){
             log.error(e.getMessage());
             resultMap.put("message", "error");
