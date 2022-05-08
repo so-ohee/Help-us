@@ -10,6 +10,9 @@ import com.ssafy.helpus.donation.service.FileService;
 import com.ssafy.helpus.utils.Message;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -90,7 +93,7 @@ public class ConfirmServiceImpl implements ConfirmService {
             return resultMap;
         }
 
-        ConfirmResDto confrimDto = ConfirmResDto.builder()
+        ConfirmResDto confirmDto = ConfirmResDto.builder()
                 .donationId(confirm.get().getDonationId())
                 .memberId(confirm.get().getMemberId())
                 .title(confirm.get().getTitle())
@@ -100,7 +103,7 @@ public class ConfirmServiceImpl implements ConfirmService {
                 .images(fileService.getConfirmFileList(confirm.get().getImages())).build();
 
         resultMap.put("message", Message.CONFIRM_FIND_SUCCESS);
-        resultMap.put("confirm", confrimDto);
+        resultMap.put("confirm", confirmDto);
         return resultMap;
     }
 }
