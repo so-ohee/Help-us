@@ -59,8 +59,29 @@ public class VolunteerServiceImpl implements VolunteerService{
     }
 
     @Override
+    @Transactional
     public Map<String, Object> updateVolunteer(VolunteerUpdateReqDto volunteerUpdateReqDto, Long memberId, List<MultipartFile> files, String role) throws Exception {
-        return null;
+        log.info("VolunteerService updateVolunteer call");
+
+        Map<String, Object> resultMap = new HashMap<>();
+
+        Optional<Volunteer> volunteer = volunteerRepository.findById(volunteerUpdateReqDto.getVolunteerId());
+
+        volunteer.get().setTitle(volunteerUpdateReqDto.getTitle());
+        volunteer.get().setContent(volunteerUpdateReqDto.getContent());
+        volunteer.get().setVolZipcode(volunteerUpdateReqDto.getVolZipcode());
+        volunteer.get().setVolAddress(volunteerUpdateReqDto.getVolAddress());
+        volunteer.get().setPeople(volunteerUpdateReqDto.getPeople());
+        volunteer.get().setVolDate(volunteerUpdateReqDto.getVolDate());
+
+        if(files != null){
+            fileService.volunteerFileDelete(volunteer.get().getImages());
+            fileService.volunteerFileSave(volunteer.get(), files);
+        }
+
+        resultMap.put("message", "성공");
+        return resultMap;
+
     }
 
     @Override
@@ -72,7 +93,7 @@ public class VolunteerServiceImpl implements VolunteerService{
 
         Optional<Volunteer> volunteer = volunteerRepository.findById(volunteerId);
         if(!volunteer.isPresent()){
-            resultMap.put("message", "없음");
+            resultMap.put("message", "게시물 없음");
             return resultMap;
         }
 

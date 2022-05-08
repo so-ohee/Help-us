@@ -56,14 +56,14 @@ public class VolunteerController {
 
     @ApiOperation(value = "봉사 글 수정")
     @PutMapping
-    public ResponseEntity updateVolunteer(@RequestPart VolunteerUpdateReqDto volunteerUpdateReqDto, @RequestPart List<MultipartFile> files,
+    public ResponseEntity updateVolunteer(@RequestPart VolunteerUpdateReqDto volunteerUpdateReqDto, @RequestPart(required = false) List<MultipartFile> files,
                                           @RequestHeader HttpHeaders headers){
-        log.info("VolunteerController registerVolunteer call");
+        log.info("VolunteerController updateVolunteer call");
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.CREATED;
         try {
-            if(!fileService.fileExtensionCheck(files)){
+            if(files != null && !fileService.fileExtensionCheck(files)){
                 resultMap.put("message", "파일확장자 x");
                 status = HttpStatus.BAD_REQUEST;
             }else {
@@ -73,7 +73,7 @@ public class VolunteerController {
             }
         } catch (Exception e){
             log.error(e.getMessage());
-            resultMap.put("message", "에러에러");
+            resultMap.put("message", "봉사글 수정 실패");
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return new ResponseEntity(resultMap, status);
