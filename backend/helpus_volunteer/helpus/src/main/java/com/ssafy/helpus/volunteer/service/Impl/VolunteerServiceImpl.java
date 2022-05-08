@@ -1,6 +1,7 @@
 package com.ssafy.helpus.volunteer.service.Impl;
 
 import com.ssafy.helpus.volunteer.dto.VolunteerReqDto;
+import com.ssafy.helpus.volunteer.dto.VolunteerResDto;
 import com.ssafy.helpus.volunteer.dto.VolunteerUpdateReqDto;
 import com.ssafy.helpus.volunteer.entity.Volunteer;
 import com.ssafy.helpus.volunteer.repository.VolunteerRepository;
@@ -8,13 +9,15 @@ import com.ssafy.helpus.volunteer.service.FileService;
 import com.ssafy.helpus.volunteer.service.VolunteerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.logging.log4j.message.Message;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -56,12 +59,61 @@ public class VolunteerServiceImpl implements VolunteerService{
     }
 
     @Override
-    public Map<String, Object> updateVoluneer(VolunteerUpdateReqDto volunteerUpdateReqDto, List<MultipartFile> files) throws Exception {
-        return null;
+    @Transactional
+    public Map<String, Object> updateVolunteer(VolunteerUpdateReqDto volunteerUpdateReqDto, Long memberId, List<MultipartFile> files, String role) throws Exception {
+        log.info("VolunteerService updateVolunteer call");
+
+        Map<String, Object> resultMap = new HashMap<>();
+
+        Optional<Volunteer> volunteer = volunteerRepository.findById(volunteerUpdateReqDto.getVolunteerId());
+
+        volunteer.get().setTitle(volunteerUpdateReqDto.getTitle());
+        volunteer.get().setContent(volunteerUpdateReqDto.getContent());
+        volunteer.get().setVolZipcode(volunteerUpdateReqDto.getVolZipcode());
+        volunteer.get().setVolAddress(volunteerUpdateReqDto.getVolAddress());
+        volunteer.get().setPeople(volunteerUpdateReqDto.getPeople());
+        volunteer.get().setVolDate(volunteerUpdateReqDto.getVolDate());
+
+        if(files != null){
+            fileService.volunteerFileDelete(volunteer.get().getImages());
+            fileService.volunteerFileSave(volunteer.get(), files);
+        }
+
+        resultMap.put("message", "성공");
+        return resultMap;
+
     }
 
     @Override
+    @Transactional
     public Map<String, Object> getVoluneer(Long volunteerId) throws Exception {
-        return null;
+        log.info("VolunteerService getVolunteer call");
+
+        Map<String, Object> resultMap = new HashMap<>();
+
+        Optional<Volunteer> volunteer = volunteerRepository.findById(volunteerId);
+        if(!volunteer.isPresent()){
+            resultMap.put("message", "게시물 없음");
+            return resultMap;
+        }
+
+        VolunteerResDto volunteerResDto = VolunteerResDto.builder()
+                .memberId(volunteer.get().getMemberId())
+                .title(volunteer.get().getTitle())
+                .content(volunteer.get().getContent())
+                .createDate(volunteer.get().getCreateDate())
+                .updateDate(volunteer.get().getUpdateDate())
+                .volDate(volunteer.get().getVolDate())
+                .volAddress(volunteer.get().getVolAddress())
+                .volZipcode(volunteer.get().getVolZipcode())
+                .applicant(volunteer.get().getApplicant())
+                .people(volunteer.get().getPeople())
+                .percent(volunteer.get().getPercent())
+                .images(fileService.getVolunteerFileList(volunteer.get().getImages())).build();
+
+        resultMap.put("message", "조회 성공");
+        resultMap.put("volunteer", volunteerResDto);
+        return resultMap;
     }
+
 }

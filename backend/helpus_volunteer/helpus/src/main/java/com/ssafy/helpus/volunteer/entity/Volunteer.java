@@ -9,6 +9,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -45,7 +47,7 @@ public class Volunteer {
     private int applicant;
 
     @Column(name = "vol_date")
-    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate volDate;
 
     @Column(name = "create_date", insertable = false, updatable = false)
@@ -55,6 +57,15 @@ public class Volunteer {
     @Column(name = "update_date", insertable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm")
     private LocalDateTime updateDate;
+
+    @Column(insertable = false)
+    private int status;
+
+    @Column(insertable = false)
+    private double percent;
+
+    @OneToMany(mappedBy = "volunteer")
+    List<VolunteerImage> images = new ArrayList<>();
 
     @Builder
     public Volunteer(Long memberId, String title, String content, int volZipcode, String volAddress, int people, int applicant, LocalDate volDate, String category){
