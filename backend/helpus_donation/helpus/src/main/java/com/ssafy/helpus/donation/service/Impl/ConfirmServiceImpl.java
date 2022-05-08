@@ -1,5 +1,6 @@
 package com.ssafy.helpus.donation.service.Impl;
 
+import com.ssafy.helpus.donation.dto.Confirm.ConfirmListResDto;
 import com.ssafy.helpus.donation.dto.Confirm.ConfirmReqDto;
 import com.ssafy.helpus.donation.dto.Confirm.ConfirmResDto;
 import com.ssafy.helpus.donation.dto.Confirm.ConfirmUpdateReqDto;
@@ -7,6 +8,7 @@ import com.ssafy.helpus.donation.entity.DonationConfirm;
 import com.ssafy.helpus.donation.repository.DonationConfirmRepository;
 import com.ssafy.helpus.donation.service.ConfirmService;
 import com.ssafy.helpus.donation.service.FileService;
+import com.ssafy.helpus.member.service.MemberService;
 import com.ssafy.helpus.utils.Message;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,10 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -29,6 +28,7 @@ import java.util.Optional;
 public class ConfirmServiceImpl implements ConfirmService {
 
     private final FileService fileService;
+    private final MemberService memberService;
 
     private final DonationConfirmRepository confirmRepository;
 
@@ -104,6 +104,41 @@ public class ConfirmServiceImpl implements ConfirmService {
 
         resultMap.put("message", Message.CONFIRM_FIND_SUCCESS);
         resultMap.put("confirm", confirmDto);
+        return resultMap;
+    }
+
+    @Override
+    public Map<String, Object> confirmList(Long memberId, int page) {
+        log.info("ConfirmService getConfirm call");
+
+        Map<String, Object> resultMap = new HashMap<>();
+
+        Page<DonationConfirm> confirms = null;
+        if(memberId == null) {
+            confirms = confirmRepository.findAll(PageRequest.of(page, 10, Sort.by("donationConfirmId").descending()));
+        } else {
+            confirms = confirmRepository.findByMemberId(memberId, PageRequest.of(page, 10, Sort.by("donationConfirmId").descending()));
+        }
+
+        if(confirms.isEmpty()) {
+            resultMap.put("message", Message.CONFIRM_NOT_FOUND);
+            return resultMap;
+        }
+
+        List<ConfirmListResDto> list = new ArrayList<>();
+        for(DonationConfirm confirm : confirms) {
+            ConfirmListResDto confirmListResDto = ConfirmListResDto.builder()
+                    .donationConfirmId(confirm.getDonationConfirmId())
+                    .title(confirm.getTitle())
+                    .name(memberService.getMemberName(confirm.getMemberId()))
+                    .createDate(confirm.getCreateDate()).build();
+
+            list.add(confirmListResDto);
+        }
+
+        resultMap.put("message", Message.CONFIRM_FIND_SUCCESS);
+        resultMap.put("confirm", list);
+        resultMap.put("totalPage", confirms.getTotalPages());
         return resultMap;
     }
 }
