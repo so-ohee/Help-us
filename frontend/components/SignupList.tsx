@@ -221,7 +221,7 @@ const SignupList = () => {
                         label="사업자등록번호" 
                         variant="outlined" 
                         size="small" 
-                        style={{width:'150px'}}
+                        style={{width:'135px'}}
                         inputProps={{ maxLength: 12 }}
                         value={num}
                         onChange={(e) => setNum(e.target.value)}
