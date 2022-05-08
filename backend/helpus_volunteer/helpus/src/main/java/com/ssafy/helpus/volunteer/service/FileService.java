@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface FileService {
 
-    boolean fileExtensionCheck(List<MultipartFile> files) throws Exception;
+    boolean fileExtensionCheck(MultipartFile[] files) throws Exception;
 
-    void volunteerFileSave(Volunteer volunteer, List<MultipartFile> files) throws Exception;
+    void volunteerFileSave(Volunteer volunteer, MultipartFile[] files) throws Exception;
 
     void volunteerFileDelete(List<VolunteerImage> files) throws Exception;
 
