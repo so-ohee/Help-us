@@ -132,8 +132,10 @@ const Certi: FC = () => {
           <>
             <br /><br /><br /><br /><br /><br /><br /><br /><br />
             <div id='div' style={{width:'1000px'}}>
-              <div style={{padding:'60px'}}>
+              <div style={{padding:'80px'}}>
                 <span style={{fontSize:'20px'}}>문서확인번호: {certiNum}</span>
+
+                <div style={{border:'1px solid black', padding:'50px', paddingBottom:'30px'}}>
                 <span style={{display: 'flex', justifyContent: 'center', margin:'30px', fontSize:'40px', fontWeight:'bold'}}>기부내역 확인서</span>
                 <h2>성 &nbsp; 함 : 김싸피</h2>
                 <h2>연락처 : 010-1234-1234</h2>
@@ -143,14 +145,14 @@ const Certi: FC = () => {
                 <h1 style={{display: 'flex', justifyContent: 'center'}}>기부내역</h1>
                 <div style={{minHeight:'500px'}}>
                   <TableContainer component={Paper} style={{display: 'flex', justifyContent: 'center'}}>
-                    <Table sx={{ width: 800 }}>
+                    <Table >
                       <TableHead >
                         <TableRow >
                           <TableCell sx={{ width: 70 }} align="center">번호</TableCell>
                           <TableCell sx={{ width: 200 }}>기관명</TableCell>
                           <TableCell sx={{ width: 170 }}>물품</TableCell>
                           <TableCell sx={{ width: 80 }}>수량</TableCell>
-                          <TableCell sx={{ width: 120 }}>발송일</TableCell>
+                          <TableCell sx={{ width: 120 }}>날짜</TableCell>
                         </TableRow>
                       </TableHead>
                     <TableBody>
@@ -174,7 +176,7 @@ const Certi: FC = () => {
                     </Table>
                   </TableContainer>
                 </div>
-                <h2 style={{display: 'flex', justifyContent: 'center'}}>위와 같이 물품 기부하였음을 확인합니다.</h2>
+                <h2 style={{display: 'flex', justifyContent: 'center'}}>위와 같이 기부하였음을 확인합니다.</h2>
                 <h2 style={{display: 'flex', justifyContent: 'center', marginBottom:'10px'}}>{year}년 {month}월 {date}일</h2>
                 <div style={{display: 'flex', justifyContent: 'center'}}>
                   <span style={{fontSize:'40px', fontWeight:'bold', marginTop:'20px', marginLeft:'90px'}}>헬프어스</span>
@@ -186,6 +188,7 @@ const Certi: FC = () => {
                   />
                 </div>
 
+              </div>
               </div>
             </div>
           </>
