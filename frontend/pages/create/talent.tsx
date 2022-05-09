@@ -1,9 +1,7 @@
 import { FC } from "react";
 import { Box, Grid, Button, Typography, Stack, TextField, TextareaAutosize } from "@mui/material/";
-import { styled } from "@mui/material/styles";
-import Image from 'next/image';
+import { ThemeProvider, createTheme, styled } from "@mui/material/styles";
 import { CKEditor } from 'ckeditor4-react';
-import volunteer1 from "../../public/images/volunteer1.jpg";
 
 const CustomButton = styled(Button)({
   backgroundColor: "#5B321E",
@@ -16,18 +14,23 @@ const CustomButton = styled(Button)({
 });
 
 const Talent: FC = () => {
+  const theme = createTheme({
+    typography: {
+      // fontFamily: "Gowun Dodum",
+      // fontFamily: "Noto Serif KR",
+      fontFamily: "Noto Sans KR",
+    },
+    palette: {
+      primary: {
+        main: '#5B321E',
+      },
+    },
+  });
+
   return (
-    <div>
+    <ThemeProvider theme={theme}>
       <Grid container justifyContent="center" alignItems="center">
-        <Stack>
-          <Box textAlign="center" >
-            <Image 
-              src= {volunteer1}
-              alt="volunteer first"
-              width={1200}
-              height={200}
-            />
-          </Box>
+        <Stack sx={{ minWidth: 1200 }}>
           <Box sx={{ display: 'flex', justifyContent: 'flex-end'}}>
             <CustomButton variant="contained" href="/share">
               목록으로
@@ -47,7 +50,7 @@ const Talent: FC = () => {
           </Box>
         </Stack>
       </Grid>
-    </div>
+    </ThemeProvider>
   );
 };
 
