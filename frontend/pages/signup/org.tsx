@@ -258,7 +258,7 @@ const Org: FC = () => {
 
     // 파일 선택시
     const onImageChange = (e) => {
-        console.log(e.target.files[0])
+        // console.log(e.target.files[0])
         setRegiName(e.target.files[0].name)
         setRegi(e.target.files[0])
     }
@@ -560,7 +560,7 @@ const Org: FC = () => {
                         variant="contained"
                         sx={{ mt: 3, mb: 2 }}
                         onClick={onSubmit}
-                        disabled={!checkPw || !authEnd || name.length === 0 || phone.length === 0 || addr.length === 0 || regiName.length === 0}
+                        // disabled={!checkPw || !authEnd || name.length === 0 || phone.length === 0 || addr.length === 0 || regiName.length === 0}
                     >
                         회원가입
                     </Button>

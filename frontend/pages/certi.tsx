@@ -24,11 +24,12 @@ const Certi: FC = () => {
   const [checked, setChecked] = useState([])
   const [ing, setIng] = useState(false)
   const [certiNum, setCertiNum] = useState('')
+  const [full, setFull] = useState([])
 
 
   // 기부 목록 받아오기
   useEffect(() => {
-    setList([
+    const givenList =[
       {
         org: '싸피재단',
         item: '라면',
@@ -53,8 +54,10 @@ const Certi: FC = () => {
         cnt: 1000,
         day: '2022-05-06'
       },
-
-    ])
+    ]
+    setList(givenList)
+    const arr = Array.from({length: givenList.length}, (v, i) => i)
+    setFull(arr)
   },[])
 
   // 체크박시 선택시
@@ -68,12 +71,21 @@ const Certi: FC = () => {
 
   // 전체 선택
   const checkAll = () => {
-    console.log('')
+    setChecked(full)
   }
 
   // 전체 해제
   const checkNotAll = () => {
     setChecked([])
+  }
+
+  // 전체 버튼 클릭시
+  const checkButton = () => {
+    if (checked.length === list.length){
+      checkNotAll()
+    }else{
+      checkAll()
+    }
   }
 
   // 현재 날짜
@@ -134,18 +146,17 @@ const Certi: FC = () => {
         <h1>나의 기부내역</h1>
         <br></br>
 
-        <Button
-          variant="contained" 
-          style={{marginLeft:'5px'}}
-          onClick={() => checkNotAll()}
-        >
-          전체 해제
-        </Button>
         <TableContainer component={Paper}>
           <Table sx={{ maxWidth: 800 }}>
             <TableHead >
               <TableRow >
-              <TableCell sx={{ width: 60 }} align="center">선택</TableCell>
+                <TableCell sx={{ width: 60 }} align="center">
+                  <Checkbox 
+                    style={{padding:'0px'}}
+                    checked={checked.length === list.length}
+                    onChange={checkButton}
+                  />
+                </TableCell>
                 <TableCell sx={{ width: 70 }} align="center">번호</TableCell>
                 <TableCell sx={{ width: 200 }}>기관명</TableCell>
                 <TableCell sx={{ width: 170 }}>물품</TableCell>
