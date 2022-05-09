@@ -1,9 +1,10 @@
 import { FC } from "react";
 import axios from "axios";
 
-// proxy 사용중
-// url1: 회원가입, 로그인
-// const url1 = 'http://k6c106.p.ssafy.io:9082'
+// proxy
+// url1: 회원가입, 로그인 'http://k6c106.p.ssafy.io:9082'
+// url2: 기부 'http://k6c106.p.ssafy.io:9080'
+// url3: 봉사 'http://k6c106.p.ssafy.io:9081'
 
 
 
