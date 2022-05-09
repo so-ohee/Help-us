@@ -12,7 +12,8 @@ import {
   IconButton,
   Stack,
 } from "@mui/material";
-import OrgMypageSidebar from "../../components/OrgMypageSidebar";
+
+import UserMypageSidebar from "@/components/UserMypageSidebar";
 import Link from "next/link";
 import helpImage from "../../public/images/help.png";
 import EditIcon from "@mui/icons-material/Edit";
@@ -23,6 +24,7 @@ import CallIcon from "@mui/icons-material/Call";
 import MailIcon from "@mui/icons-material/Mail";
 
 import TestImage from "../../public/images/testImage.jpg";
+import goodImage from "../../public/images/good.jpg";
 
 const mdTheme = createTheme();
 
@@ -58,11 +60,11 @@ const UpdateButton2 = styled(Button)({
   // width: "50px",
 });
 
-const OrgMypage: FC = () => {
+const UserMypage: FC = () => {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <OrgMypageSidebar />
+      <UserMypageSidebar />
       <Box
         component="main"
         sx={{
@@ -86,14 +88,13 @@ const OrgMypage: FC = () => {
             <Grid item xs={3}>
               <div
                 style={{
-                  borderRadius: "20%",
+                  borderRadius: "5px",
                   overflow: "hidden",
                   marginTop: "6px",
-                  // height: "300px",
                 }}
               >
                 <Image
-                  src={TestImage}
+                  src={goodImage}
                   alt="orgImage"
                   width="300px"
                   height="300px"
@@ -102,9 +103,38 @@ const OrgMypage: FC = () => {
             </Grid>
             <Grid item xs={8}>
               <Typography sx={{ mt: 0 }} variant="h4" fontWeight="bold">
-                수원시광교노인복지관
+                이다예
               </Typography>
               <Grid
+                sx={{ mt: 2 }}
+                container
+                direction="row"
+                alignItems="center"
+              >
+                <MailIcon sx={{ mr: 2 }} />
+                <Typography align="center">test@gmail.com</Typography>
+              </Grid>
+              <Grid
+                sx={{ mt: 2 }}
+                container
+                direction="row"
+                alignItems="center"
+              >
+                <Typography fontWeight="bold" align="center">
+                  기부 횟수 : 4
+                </Typography>
+              </Grid>
+              <Grid
+                sx={{ mt: 2 }}
+                container
+                direction="row"
+                alignItems="center"
+              >
+                <Typography fontWeight="bold" align="center">
+                  봉사 시간 : 8
+                </Typography>
+              </Grid>
+              {/* <Grid
                 sx={{ mt: 2 }}
                 container
                 direction="row"
@@ -123,16 +153,8 @@ const OrgMypage: FC = () => {
               >
                 <CallIcon sx={{ mr: 2 }} />
                 <Typography align="center">010-7777-7777</Typography>
-              </Grid>
-              <Grid
-                sx={{ mt: 2 }}
-                container
-                direction="row"
-                alignItems="center"
-              >
-                <MailIcon sx={{ mr: 2 }} />
-                <Typography align="center">test@gmail.com</Typography>
-              </Grid>
+              </Grid> */}
+
               <Box
                 sx={{
                   bgcolor: "#f5e1be",
@@ -169,4 +191,4 @@ const OrgMypage: FC = () => {
   );
 };
 
-export default OrgMypage;
+export default UserMypage;

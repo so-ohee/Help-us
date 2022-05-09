@@ -1,11 +1,8 @@
 import { FC, useState } from "react";
 import { Box, Grid, Button, Typography, Stack, TextField, TextareaAutosize } from "@mui/material/";
-import { styled } from "@mui/material/styles";
-import Image from 'next/image';
-import DaumPostcode from "react-daum-postcode";
+import { ThemeProvider, createTheme, styled } from "@mui/material/styles";
 import { CKEditor } from 'ckeditor4-react';
 import DatePicker from "../../components/DatePicker";
-import volunteer1 from "../../public/images/volunteer1.jpg";
 
 const CustomButton = styled(Button)({
   backgroundColor: "#5B321E",
@@ -18,20 +15,25 @@ const CustomButton = styled(Button)({
 });
 
 const Volunteer: FC = () => {
+  const theme = createTheme({
+    typography: {
+      // fontFamily: "Gowun Dodum",
+      // fontFamily: "Noto Serif KR",
+      fontFamily: "Noto Sans KR",
+    },
+    palette: {
+      primary: {
+        main: '#5B321E',
+      },
+    },
+  });
+
   const [value, setValue] =useState<Date | null>(null);
 
   return (
-  <div>
+  <ThemeProvider theme={theme}>
     <Grid container justifyContent="center" alignItems="center" >
-      <Stack>
-        <Box textAlign="center" >
-          <Image 
-            src= {volunteer1}
-            alt="volunteer first"
-            width={1200}
-            height={200}
-          />
-        </Box>
+      <Stack sx={{ minWidth: 1200 }}>
         <Box sx={{ display: 'flex', justifyContent: 'flex-end'}}>
           <CustomButton variant="contained" href="/donation">
             목록으로
@@ -74,7 +76,7 @@ const Volunteer: FC = () => {
         </Box>
       </Stack>
     </Grid>
-  </div>
+  </ThemeProvider>
   );
 };
 

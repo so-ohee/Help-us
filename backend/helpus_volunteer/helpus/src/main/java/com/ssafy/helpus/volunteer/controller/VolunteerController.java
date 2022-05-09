@@ -85,4 +85,22 @@ public class VolunteerController {
         return new ResponseEntity(resultMap, status);
     }
 
+    @ApiOperation(value = "봉사 글 삭제")
+    @DeleteMapping("{volunteerId}")
+    public ResponseEntity endVolunteer(@PathVariable Long volunteerId){
+        log.info("VolunteerController endVolunteer call");
+
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.OK;
+        try {
+            resultMap = volunteerService.endVolunteer(volunteerId);
+        }catch (Exception e){
+            log.error(e.getMessage());
+
+            resultMap.put("Message", e.getMessage());
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity(resultMap, status);
+    }
+
 }

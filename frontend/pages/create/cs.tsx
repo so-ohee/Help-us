@@ -1,10 +1,8 @@
 import { FC, useState } from "react";
 import { Box, Grid, Button, Typography, Stack, InputLabel, MenuItem, FormControl, TextField } from "@mui/material/";
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import Image from 'next/image';
+import { ThemeProvider, createTheme, styled } from "@mui/material/styles";
 import { CKEditor } from 'ckeditor4-react';
-import { styled } from "@mui/material/styles";
-import volunteer1 from "../../public/images/volunteer1.jpg";
 
 
 const CustomButton = styled(Button)({
@@ -17,27 +15,31 @@ const CustomButton = styled(Button)({
   },
 });
 
+
 const Cs: FC = () => {
+  const theme = createTheme({
+    typography: {
+      // fontFamily: "Gowun Dodum",
+      // fontFamily: "Noto Serif KR",
+      fontFamily: "Noto Sans KR",
+    },
+    palette: {
+      primary: {
+        main: '#5B321E',
+      },
+    },
+  });
+
   const [ option, setOption ] = useState('');
 
   const optionHandleChange = (event: SelectChangeEvent) => {
     setOption(event.target.value as string);
   }
 
-  
-
   return (
-    <div>
+    <ThemeProvider theme={theme}>
       <Grid container justifyContent="center" alignItems="center">
-        <Stack>
-        <Box textAlign="center" >
-              <Image 
-                src= {volunteer1}
-                alt="volunteer first"
-                width={1200}
-                height={200}
-              />
-          </Box>
+        <Stack sx={{ minWidth: 1200 }}>
             <Box sx={{ display: 'flex', justifyContent: 'flex-end'}}>
               <CustomButton variant="contained" href="/donation">
                 목록으로
@@ -48,7 +50,7 @@ const Cs: FC = () => {
             </Box>
             <Box sx={{ maxWidth: 200, display: 'flex', justifyContent: 'flex-start'}}>
               <FormControl fullWidth>
-                <InputLabel>정렬</InputLabel>
+                <InputLabel>카테고리 선택</InputLabel>
                 <Select
                   value={option}
                   label="option"
@@ -66,15 +68,15 @@ const Cs: FC = () => {
               <TextField fullWidth label="제목"  />
             </Box>
             
-            {/* <CKEditor
+            <CKEditor
               initData={<p>내용 :</p>}
-            /> */}
+            />
         <Box sx={{my: 5, display: 'flex', justifyContent: 'center'}}>
           <CustomButton size="large" variant="contained" type="submit">등록하기</CustomButton>
         </Box>
         </Stack>
       </Grid>
-    </div>
+    </ThemeProvider>
   );
 };
 

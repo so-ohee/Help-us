@@ -14,5 +14,6 @@ public interface TalentDonationService {
     Map<String, Object> updateTalentDonation(TalentDonationUpdateReqDto talentDonationUpdateReqDto, Long memberId, MultipartFile[] files, String role) throws Exception;
     // 재능기부 글 조회
     Map<String, Object> getTalentDonation(Long volunteerId) throws Exception;
-
+    // 재능기부 글 삭제
+    Map<String, Object> deleteTalentDonation(Long volunteerId) throws Exception;
 }

@@ -21,7 +21,7 @@ const Navbar: FC<LoginProps> = ({ value }) => {
   return (
     <ColorAppbar position="static" elevation={0}>
       <Container maxWidth="xl">
-        <Toolbar sx={{ display: "flex", my : 2}} >
+        <Toolbar sx={{ display: "flex", my : 2, justifyContent: 'space-between'}} >
             <Link href="/" underline="none" color="inherit">
               <Image 
                 src={logo}
@@ -43,6 +43,11 @@ const Navbar: FC<LoginProps> = ({ value }) => {
                 </Link>
               </Typography>
             </Stack>
+          </Box>
+          <Box>
+            <Typography variant="h6" sx={{ mx: 2 }}>
+              <Link underline="none" color="inherit">마이 페이지</Link>  
+            </Typography>  
           </Box> 
         </Toolbar>
       </Container>

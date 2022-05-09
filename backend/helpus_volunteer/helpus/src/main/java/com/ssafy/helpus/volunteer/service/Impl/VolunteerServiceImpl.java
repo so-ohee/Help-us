@@ -137,4 +137,23 @@ public class VolunteerServiceImpl implements VolunteerService{
         return resultMap;
     }
 
+    @Override
+    @Transactional
+    public Map<String, Object> endVolunteer(Long volunteerId) throws Exception {
+        log.info("VolunteerService endVolunteer call");
+        Map<String, Object> resultMap = new HashMap<>();
+
+        Optional<Volunteer> volunteer = volunteerRepository.findById(volunteerId);
+
+        if(!volunteer.isPresent() || volunteer.get().getStatus()==1){
+            resultMap.put("message", "조회불가");
+            return resultMap;
+        }
+
+        volunteer.get().setStatus(1);
+
+        resultMap.put("message", "마감처리 성공");
+        return  resultMap;
+    }
+
 }

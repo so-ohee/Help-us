@@ -15,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -109,6 +108,24 @@ public class TalentDonationServiceImpl implements TalentDonationService {
 
         resultMap.put("message", "조회 성공");
         resultMap.put("volunteer", talentDonationResDto);
+        return resultMap;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> deleteTalentDonation(Long volunteerId) throws Exception {
+        log.info("TalentDonationService deleteTalentDonation call");
+
+        Map<String, Object> resultMap = new HashMap<>();
+
+        Optional<Volunteer> volunteer = volunteerRepository.findById(volunteerId);
+        if(!volunteer.isPresent()){
+            resultMap.put("message", "해당게시물은 없습니다");
+            return resultMap;
+        }
+        volunteerRepository.deleteById(volunteerId);
+
+        resultMap.put("message", "삭제성공");
         return resultMap;
     }
 
