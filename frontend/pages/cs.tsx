@@ -1,6 +1,5 @@
 import { FC, useState } from "react";
 import { Box, Grid, Tab, Typography, Stack, Button, InputBase, Paper, Tabs } from "@mui/material/";
-import {TabContext, TabList, TabPanel} from '@mui/lab/';
 import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material/";
 import { tableCellClasses } from "@mui/material/TableCell";
 import { styled } from "@mui/material/styles";
@@ -41,15 +40,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   height: 62,
 }));
 
-function createData(
-  num: number,
-  title: string,
-  writer: string,
-  date: string,
-  view: string,
-) {
-  return { num, title, writer, date, view };
-}
 
 const dummyData = [
   {
@@ -191,54 +181,54 @@ const CsMain: FC = () => {
             </Paper>
           </Box>
             <Stack>
-            <TableContainer component={Paper} sx={{ my: 5 }}>
-            <Table sx={{ minWidth: 700 }} aria-label="customized table">
-              <TableHead>
-                <TableRow>
-                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                    번호
-                  </StyledTableCell>
-                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                    제목
-                  </StyledTableCell>
-                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                    작성자
-                  </StyledTableCell>
-                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                    작성일
-                  </StyledTableCell>
-                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                    공개 여부
-                  </StyledTableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {dummyData.map((data) => (
-                  <StyledTableRow key={data.donationApplyId}>
-                    <StyledTableCell align="center">
-                      {data.donationApplyId}
+              <TableContainer component={Paper} sx={{ my: 5 }}>
+              <Table sx={{ minWidth: 700 }} aria-label="customized table">
+                <TableHead>
+                  <TableRow>
+                    <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                      번호
                     </StyledTableCell>
-                    <StyledTableCell align="center" sx={{ width: 400 }}>
-                      {data.title}
+                    <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                      제목
                     </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {data.name}
+                    <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                      작성자
                     </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {data.donationDate}
+                    <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                      작성일
                     </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {data.fact === true ? (
-                        <Typography>공개</Typography>
-                      ) : (
-                        <Typography>비공개</Typography>
-                      )}
+                    <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                      공개 여부
                     </StyledTableCell>
-                  </StyledTableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {dummyData.map((data) => (
+                    <StyledTableRow key={data.donationApplyId}>
+                      <StyledTableCell align="center">
+                        {data.donationApplyId}
+                      </StyledTableCell>
+                      <StyledTableCell align="center" sx={{ width: 400 }}>
+                        {data.title}
+                      </StyledTableCell>
+                      <StyledTableCell align="center">
+                        {data.name}
+                      </StyledTableCell>
+                      <StyledTableCell align="center">
+                        {data.donationDate}
+                      </StyledTableCell>
+                      <StyledTableCell align="center">
+                        {data.fact === true ? (
+                          <Typography>공개</Typography>
+                        ) : (
+                          <Typography>비공개</Typography>
+                        )}
+                      </StyledTableCell>
+                    </StyledTableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
           </Stack>
         </Stack>
       </Grid>
