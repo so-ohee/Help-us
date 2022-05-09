@@ -66,6 +66,16 @@ const Certi: FC = () => {
     }
   }
 
+  // 전체 선택
+  const checkAll = () => {
+    console.log('')
+  }
+
+  // 전체 해제
+  const checkNotAll = () => {
+    setChecked([])
+  }
+
   // 현재 날짜
   let now = new Date()
   let year = now.getFullYear()
@@ -115,6 +125,7 @@ const Certi: FC = () => {
     document.body.removeChild(link)
     setIng(false)
     setCertiNum('')
+    setChecked([])
   }
 
   return (
@@ -123,6 +134,13 @@ const Certi: FC = () => {
         <h1>나의 기부내역</h1>
         <br></br>
 
+        <Button
+          variant="contained" 
+          style={{marginLeft:'5px'}}
+          onClick={() => checkNotAll()}
+        >
+          전체 해제
+        </Button>
         <TableContainer component={Paper}>
           <Table sx={{ maxWidth: 800 }}>
             <TableHead >

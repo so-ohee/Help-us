@@ -1,6 +1,41 @@
 import { FC } from "react";
 import axios from "axios";
 
+// proxy 사용중
+// url1: 회원가입, 로그인
+// const url1 = 'http://k6c106.p.ssafy.io:9082'
+
+
+
+
+
+
+
+// 이메일 중복 체크
+export const emailCheck = async (email) => {
+  return await axios({
+    method:'POST',
+    url:'/url1/member/email-check',
+    // url:'/url1',
+    data: {
+      "email" : email
+    },
+  })
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // ocr
 export const OCR = async (url) => {
