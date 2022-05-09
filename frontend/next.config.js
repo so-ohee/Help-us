@@ -15,15 +15,15 @@ module.exports = {
         destination: "https://bec8udp05h.apigw.ntruss.com/custom/v1/15684/b2ab54fd83e5770a4f755bd8d556a8b0815ad072db3cd9bae4a86827b995edee/general",
       },
       {
-        source: "/url1/:path*",
+        source: "/9082/:path*",
         destination: 'http://k6c106.p.ssafy.io:9082/:path*',
       },
       {
-        source: "/url2/:path*",
+        source: "/9080/:path*",
         destination: 'http://k6c106.p.ssafy.io:9080/:path*',
       },
       {
-        source: "/url3/:path*",
+        source: "/9081/:path*",
         destination: 'http://k6c106.p.ssafy.io:9081/:path*',
       },
     ];
