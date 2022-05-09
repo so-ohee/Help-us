@@ -61,12 +61,6 @@ const UpdateButton2 = styled(Button)({
 });
 
 const UserMypage: FC = () => {
-  const classes = useStyles();
-  const [open, setOpen] = useState(true);
-  const toggleDrawer = () => {
-    setOpen(!open);
-  };
-
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -119,6 +113,26 @@ const UserMypage: FC = () => {
               >
                 <MailIcon sx={{ mr: 2 }} />
                 <Typography align="center">test@gmail.com</Typography>
+              </Grid>
+              <Grid
+                sx={{ mt: 2 }}
+                container
+                direction="row"
+                alignItems="center"
+              >
+                <Typography fontWeight="bold" align="center">
+                  기부 횟수 : 4
+                </Typography>
+              </Grid>
+              <Grid
+                sx={{ mt: 2 }}
+                container
+                direction="row"
+                alignItems="center"
+              >
+                <Typography fontWeight="bold" align="center">
+                  봉사 시간 : 8
+                </Typography>
               </Grid>
               {/* <Grid
                 sx={{ mt: 2 }}

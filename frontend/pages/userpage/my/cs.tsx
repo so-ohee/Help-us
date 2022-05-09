@@ -163,31 +163,6 @@ const dummyData = [
   },
 ];
 
-const IsFact = ({ fact }) => {
-  // const fact = props.fact;
-
-  if (fact === null) {
-    return (
-      <>
-        <CustomButton sx={{ width: 40, height: 30, mr: 2 }}>참석</CustomButton>
-        <CustomButton2 sx={{ width: 40, height: 30 }}>불참</CustomButton2>
-      </>
-    );
-  } else if (fact === true) {
-    return (
-      <>
-        <Typography>참석</Typography>
-      </>
-    );
-  } else if (fact === false) {
-    return (
-      <>
-        <Typography>불참</Typography>
-      </>
-    );
-  }
-};
-
 const UserMypageCs: FC = () => {
   return (
     <Box sx={{ display: "flex" }}>
@@ -203,10 +178,7 @@ const UserMypageCs: FC = () => {
         }}
       >
         <Container maxWidth="lg" sx={{}}>
-          <Stack direction="row" justifyContent="space-between">
-            <Typography variant="h4">재능 기부 글</Typography>
-            <CustomButton>글 작성</CustomButton>
-          </Stack>
+          <Typography variant="h4">문의 내역</Typography>
           <TableContainer component={Paper} sx={{ mt: 5 }}>
             <Table sx={{ minWidth: 700 }} aria-label="customized table">
               <TableHead>
@@ -218,7 +190,10 @@ const UserMypageCs: FC = () => {
                     제목
                   </StyledTableCell>
                   <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                    등록일
+                    작성일
+                  </StyledTableCell>
+                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                    답변 여부
                   </StyledTableCell>
                 </TableRow>
               </TableHead>
@@ -234,18 +209,13 @@ const UserMypageCs: FC = () => {
                     <StyledTableCell align="center">
                       {data.donationDate}
                     </StyledTableCell>
-                    {/* <StyledTableCell align="center">
-                      {data.name}
-                    </StyledTableCell>
                     <StyledTableCell align="center">
-                      <IsFact fact={data.fact} />
-                      <CustomButton sx={{ width: 40, height: 30, mr: 2 }}>
-                        참석
-                      </CustomButton>
-                      <CustomButton2 sx={{ width: 40, height: 30 }}>
-                        불참
-                      </CustomButton2>
-                    </StyledTableCell> */}
+                      {data.fact === true ? (
+                        <Typography>완료</Typography>
+                      ) : (
+                        <Typography>미완료</Typography>
+                      )}
+                    </StyledTableCell>
                   </StyledTableRow>
                 ))}
               </TableBody>

@@ -59,12 +59,6 @@ const UpdateButton2 = styled(Button)({
 });
 
 const OrgMypage: FC = () => {
-  const classes = useStyles();
-  const [open, setOpen] = useState(true);
-  const toggleDrawer = () => {
-    setOpen(!open);
-  };
-
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -92,9 +86,10 @@ const OrgMypage: FC = () => {
             <Grid item xs={3}>
               <div
                 style={{
-                  borderRadius: "5px",
+                  borderRadius: "20%",
                   overflow: "hidden",
                   marginTop: "6px",
+                  // height: "300px",
                 }}
               >
                 <Image
