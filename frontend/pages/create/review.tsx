@@ -1,9 +1,8 @@
 import { FC } from "react";
 import { Box, Grid, Button, Typography, Stack, TextField, TextareaAutosize } from "@mui/material/";
-import Image from 'next/image';
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { CKEditor } from 'ckeditor4-react';
 import { styled } from "@mui/material/styles";
-import volunteer1 from "../../public/images/volunteer1.jpg";
 
 
 const CustomButton = styled(Button)({
@@ -17,18 +16,23 @@ const CustomButton = styled(Button)({
 });
 
 const Review: FC = () => {
+  const theme = createTheme({
+    typography: {
+      // fontFamily: "Gowun Dodum",
+      // fontFamily: "Noto Serif KR",
+      fontFamily: "Noto Sans KR",
+    },
+    palette: {
+      primary: {
+        main: '#5B321E',
+      },
+    },
+  });
+
   return (
-    <div>
+    <ThemeProvider theme={theme}>
       <Grid container justifyContent="center" alignItems="center">
-        <Stack>
-          <Box textAlign="center" >
-            <Image 
-              src= {volunteer1}
-              alt="volunteer first"
-              width={1200}
-              height={200}
-            />
-          </Box>
+        <Stack sx={{ minWidth: 1200 }}>
           <Box sx={{ display: 'flex', justifyContent: 'flex-end'}}>
             <CustomButton variant="contained" href="/review">
               목록으로
@@ -51,7 +55,7 @@ const Review: FC = () => {
           </Box>
         </Stack>
       </Grid>
-    </div>
+    </ThemeProvider>
   );
 };
 
