@@ -15,5 +15,7 @@ public interface VolunteerService {
     Map<String, Object> updateVolunteer(VolunteerUpdateReqDto volunteerUpdateReqDto, Long memberId, MultipartFile[] files, String role) throws Exception;
     // 봉사 글 조회
     Map<String, Object> getVoluneer(Long volunteerId) throws Exception;
+    //기부 글 마감
+    Map<String, Object> endVolunteer(Long volunteerId) throws Exception;
 
 }
