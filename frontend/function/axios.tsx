@@ -22,6 +22,17 @@ export const emailCheck = async (email) => {
   })
 }
 
+// 이메일 인증 메일 발송
+export const emailAuth = async (email) => {
+  return await axios({
+    method:'POST',
+    url:'/9082/member/email-auth',
+    data: {
+      "email" : email
+    },
+  })
+}
+
 
 
 

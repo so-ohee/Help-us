@@ -1,22 +1,17 @@
 import { FC, useState, useEffect, useRef } from "react";
 import Postcode from '@actbase/react-daum-postcode';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormHelperText from '@mui/material/FormHelperText';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Dialog from '@mui/material/Dialog';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import styled from 'styled-components';
-import { emailCheck } from "../../function/axios";
+import { emailCheck, emailAuth } from "../../function/axios";
 
 const FormHelperTexts = styled(FormHelperText)`
 width: 100%;
@@ -34,8 +29,10 @@ const CustomDisableInput = styled(TextField)(() => ({
 
 const Org: FC = () => {
 
-    const checkNum = '123456'
+
     const timeLimit = 180
+    const imageUpload = useRef(null)
+    const [checkNum, setCheckNum] = useState('0000000')
 
     const [addr, setAddr] = useState<string>('')
     const [post, setPost] = useState<string|number>('')
@@ -62,17 +59,21 @@ const Org: FC = () => {
     const timer = useRef(null)
     const [authMsg, setAuthMsg] = useState('')
 
+    const [regiName, setRegiName] = useState('')
+    const [regi, setRegi] = useState('')
+
 
 
     const [inputs, setInputs] = useState({
         email: "",
         password: "",
         passwordConfirm: "",
-        nickname: "",
         name: "",
         phone: "",
+        addr2: "",
+        intro: "",
       });
-      const { email, password, passwordConfirm, nickname, name, phone } =
+      const { email, password, passwordConfirm, name, phone, addr2, intro } =
         inputs;
       const onChange = (e) => {
         const { value, name } = e.target;
@@ -101,8 +102,13 @@ const Org: FC = () => {
             } 
             else {
                 emailCheck(email)
-                .then(res => console.log(res))
-                .catch(err => console.log(err))
+                .then(res => {
+                    if (res.data === true){
+                        setEmailMsg("")
+                    }else {
+                        setEmailMsg("중복된 이메일입니다.")
+                    }
+                })
                 setEmailMsg("");
                 setCheckEmail(true);
             }
@@ -171,9 +177,15 @@ const Org: FC = () => {
         
     }, [password, passwordConfirm]);
 
+    // 이메일 인증 클릭시
+    const onClickAuth = () => {
+        setAuthMail(true)
+        emailAuth(email).then(res => setCheckNum(res.data.code))
+    }
+
     // 인증번호 처리
     useEffect(() => {
-        if (authnum.length >= 6){
+        if (authnum.length >= 5){
             if (authnum === checkNum){
                 // alert('인증되었습니다.')
                 setAuthEnd(true)
@@ -201,6 +213,7 @@ const Org: FC = () => {
                     setAuthMail(false)
                     setAuthMsg('')
                     setAuthnum('')
+                    setCheckNum('000000')
                 }
 
             }, 1000)
@@ -208,18 +221,14 @@ const Org: FC = () => {
         return () => clearInterval(timer.current)
     }, [authMail, authEnd])
 
+
     // 회원가입 버튼 누를시
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        console.log(data)
-        console.log({
-          email: data.get('email'),
-          password: data.get('password'),
-          addr: addr +' '+ data.get('addr2')
-          
-        });
-      };
+    const onSubmit = () => {
+        // if (!checkPw || !authEnd || name.length === 0 || phone.length === 0 || addr.length === 0 || regiName.length === 0){
+        //     alert('모든 항목을 입력해주세요.')
+        // }
+        console.log(email,password,name,phone,post,addr, addr2, intro, regi)
+    }
     
 
     // 우편번호 찾기 클릭시
@@ -247,6 +256,17 @@ const Org: FC = () => {
         }
     }
 
+    // 파일 선택시
+    const onImageChange = (e) => {
+        console.log(e.target.files[0])
+        setRegiName(e.target.files[0].name)
+        setRegi(e.target.files[0])
+    }
+
+    // 업로드 버튼 클릭시
+    const clickImageUpload = () => {
+        imageUpload.current.click()
+    }
     
     return(
         <>
@@ -261,13 +281,11 @@ const Org: FC = () => {
                     alignItems: 'center',
                 }}
                 >
-                <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                    <LockOutlinedIcon />
-                </Avatar>
-                <Typography component="h1" variant="h5">
+
+                <Typography component="h1" variant="h5" style={{fontWeight:'bold'}}>
                     기관 회원가입
                 </Typography>
-                <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+                <Box component="form" noValidate sx={{ mt: 3 }}>
                     <Grid container spacing={1}>
                         <Grid item xs={10}>
                             <TextField
@@ -290,7 +308,7 @@ const Org: FC = () => {
                             sx={{ mt: 1, mb:1, mx:1}}
                             variant="contained"
                             disabled={!checkEmail || authMail}
-                            onClick={() => setAuthMail(true)}
+                            onClick={() => onClickAuth()}
                         >
                         인증
                         </Button>
@@ -310,7 +328,7 @@ const Org: FC = () => {
                                     onChange={(e) => setAuthnum(e.target.value)}
                                     disabled={authEnd}
                                     // color="black"
-                                    inputProps={{ maxLength: 6 }}
+                                    inputProps={{ maxLength: 5 }}
                                     error={authMsg.length > 0}
                                     />
                                 </Grid>
@@ -336,6 +354,7 @@ const Org: FC = () => {
                                     setSec(timeLimit)
                                     setAuthMsg('')
                                     setAuthnum('')
+                                    setCheckNum('000000')
                                 }}
                                 >
                                 다시 인증하기
@@ -431,6 +450,8 @@ const Org: FC = () => {
                             required
                             fullWidth
                             id="name"
+                            value={name}
+                            onChange={onChange}
                             label="기관명"
                             inputProps={{ maxLength: 20 }}
                             />
@@ -442,6 +463,8 @@ const Org: FC = () => {
                             required
                             fullWidth
                             id="phone"
+                            value={phone}
+                            onChange={onChange}
                             label="전화번호"
                             inputProps={{ maxLength: 15 }}
                             />
@@ -485,6 +508,8 @@ const Org: FC = () => {
                             fullWidth
                             id="addr2"
                             label="상세 주소"
+                            value={addr2}
+                            onChange={onChange}
                             inputProps={{ maxLength: 30 }}
                             />
                         </Grid>
@@ -497,22 +522,49 @@ const Org: FC = () => {
                             rows={3}
                             id="intro"
                             label="소개"
+                            value={intro}
+                            onChange={onChange}
                             inputProps={{ maxLength: 200 }}
                             />
                         </Grid>
 
+                        <Grid item xs={6}>
+                            <TextField
+                            name="regi"
+                            required
+                            fullWidth
+                            id="regi"
+                            label="사업자등록증"
+                            value={regiName}
+                            disabled={true}
+                            />
+                        </Grid>
+                        <Button
+                            sx={{ mt: 2, mb:1, mx:1}}
+                            variant="contained"
+                            onClick={clickImageUpload}
+                        >
+                        업로드
+                        </Button>
+                        <input 
+                            type="file" 
+                            accept='image/*'
+                            ref={imageUpload}
+                            onChange={onImageChange}
+                            style={{display:"none"}}
+                        />
+                    </Grid>
 
-                    </Grid>
                     <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    sx={{ mt: 3, mb: 2 }}
+                        fullWidth
+                        variant="contained"
+                        sx={{ mt: 3, mb: 2 }}
+                        onClick={onSubmit}
+                        disabled={!checkPw || !authEnd || name.length === 0 || phone.length === 0 || addr.length === 0 || regiName.length === 0}
                     >
-                    Sign Up
+                        회원가입
                     </Button>
-                    <Grid container justifyContent="flex-end">
-                    </Grid>
+                    <br /><br />
                 </Box>
                 </Box>
             </Container>
