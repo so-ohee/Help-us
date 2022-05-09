@@ -16,6 +16,7 @@ import Container from '@mui/material/Container';
 import Dialog from '@mui/material/Dialog';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import styled from 'styled-components';
+import { emailCheck } from "../../function/axios";
 
 const FormHelperTexts = styled(FormHelperText)`
 width: 100%;
@@ -99,22 +100,12 @@ const Org: FC = () => {
                 setEmailMsg("올바른 이메일 형식이 아닙니다.");
             } 
             else {
+                emailCheck(email)
+                .then(res => console.log(res))
+                .catch(err => console.log(err))
                 setEmailMsg("");
                 setCheckEmail(true);
             }
-            //   // 이메일 중복검사
-            //   axios({
-            //     method: "get",
-            //     url: "/user/checkemail?email=" + email,
-            //   })
-            //     .then((res) => {
-            //       setEmailMsg("사용하셔도 좋습니다.");
-            //       setCheckEmail(true);
-            //     })
-            //     .catch((err) => {
-            //       setEmailMsg("중복된 이메일입니다.");
-            //     });
-            // }
           }
         }, 500);
         return () => clearTimeout(debounce);

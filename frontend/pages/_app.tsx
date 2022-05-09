@@ -27,10 +27,10 @@ const MyApp: FC = ({ Component, pageProps }: AppProps) => {
       <Head>
         <title>HELP:US</title>
         <link rel="favicon" href="/favicon.ico" />
-        <link
+        {/* <link
           href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap"
           rel="stylesheet"
-        ></link>
+        ></link> */}
       </Head>
       <Script
         src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"
