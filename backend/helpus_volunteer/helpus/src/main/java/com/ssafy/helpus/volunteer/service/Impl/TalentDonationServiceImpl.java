@@ -111,4 +111,22 @@ public class TalentDonationServiceImpl implements TalentDonationService {
         return resultMap;
     }
 
+    @Override
+    @Transactional
+    public Map<String, Object> deleteTalentDonation(Long volunteerId) throws Exception {
+        log.info("TalentDonationService deleteTalentDonation call");
+
+        Map<String, Object> resultMap = new HashMap<>();
+
+        Optional<Volunteer> volunteer = volunteerRepository.findById(volunteerId);
+        if(!volunteer.isPresent()){
+            resultMap.put("message", "해당게시물은 없습니다");
+            return resultMap;
+        }
+        volunteerRepository.deleteById(volunteerId);
+
+        resultMap.put("message", "삭제성공");
+        return resultMap;
+    }
+
 }

@@ -14,13 +14,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/TalentDonation")
+@RequestMapping("/talentDonation")
 @CrossOrigin(origins = {"*"}, maxAge = 6000)
 public class TalentDonationController {
 
@@ -81,6 +80,23 @@ public class TalentDonationController {
         } catch (Exception e){
             log.error(e.getMessage());
             resultMap.put("message", "error");
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity(resultMap, status);
+    }
+    @ApiOperation(value = "봉사 글 삭제")
+    @DeleteMapping("{volunteerId}")
+    public ResponseEntity deleteTalentDonation(@PathVariable Long  volunteerId){
+        log.info("TalentDonationController deleteTalentDonation call");
+
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.OK;
+        try {
+            resultMap = talentDonationService.deleteTalentDonation(volunteerId);
+        }catch (Exception e){
+            log.error(e.getMessage());
+
+            resultMap.put("message", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return new ResponseEntity(resultMap, status);
