@@ -11,6 +11,12 @@ import { CssBaseline } from "@mui/material";
 
 // import CustomFont from "../public/GowunDodum-Regular.ttf";
 
+declare global {
+  interface Window {
+    kakao: any;
+  }
+}
+
 const MyApp: FC = ({ Component, pageProps }: AppProps) => {
   const theme = createTheme({
     typography: {

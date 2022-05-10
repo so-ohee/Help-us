@@ -174,8 +174,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 // ];
 
 const DonationOrgDetail: FC = () => {
-  const imageList = [testImage, testImage, testImage, testImage, testImage];
-
   const router = useRouter();
 
   // console.log("라우터 쿼리는", router.query.id);

@@ -19,6 +19,14 @@ export const donationDetail = async (id) => {
 
 // ----------------------- 9081 ------------------------------
 
+// 봉사 글 상세 조회
+export const volunteerDetail = async (id) => {
+  return await axios({
+    method: "GET",
+    url: `/9081/volunteer/${id}`,
+  });
+};
+
 // ----------------------- 9082 ------------------------------
 
 // 이메일 중복 체크
