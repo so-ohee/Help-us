@@ -199,20 +199,20 @@ const SignupList = () => {
                 싸피재단
             </DialogTitle>
             <DialogContent>
-                <DialogContentText>
-                    02-1234-1234
+                <DialogContentText style={{fontSize:'18px'}}>
+                    연락처 : 02-1234-1234
                 </DialogContentText>
-                <DialogContentText>
-                    ssafy@ssafy.com
+                <DialogContentText style={{fontSize:'18px'}}>
+                    이메일 : ssafy@ssafy.com
                 </DialogContentText>
-                <DialogContentText>
-                    서울 강남구 언주로 508 서울상록빌딩
+                <DialogContentText style={{fontSize:'18px'}}>
+                    주 &nbsp; 소 : 서울 강남구 언주로 508 서울상록빌딩
                 </DialogContentText>
-                <DialogContentText>
-                    소개글입니다. 소개글입니다. 소개글입니다. 소개글입니다. 
+                <DialogContentText style={{fontSize:'18px'}}>
+                    가입일 : 2022-05-04 14:54
                 </DialogContentText>
-                <DialogContentText>
-                    2022-05-04 14:54 가입
+                <DialogContentText style={{fontSize:'18px'}}>
+                    소개글 : 소개글입니다. 소개글입니다. 소개글입니다. 소개글입니다. 
                 </DialogContentText>
                 <img 
                     width='550px'
@@ -238,18 +238,18 @@ const SignupList = () => {
                 <div style={{marginRight:'auto'}}>
                     {
                         step === 'ing' ? (
-                            <div>
+                            <div  style={{fontSize:'20px'}}>
                                 사업자등록번호 조회중입니다. <CircularProgress size='20px' color="primary"/>
                             </div>
                         ) :
                         (
                             step === 'success' ? (
-                                <div>
+                                <div style={{fontSize:'20px'}}>
                                     {code} {myMsg}
                                 </div>
                             ) :
                             (
-                                <div>
+                                <div  style={{fontSize:'20px'}}>
                                 사업자등록번호 조회에 실패하였습니다.
                                 </div>
                             )

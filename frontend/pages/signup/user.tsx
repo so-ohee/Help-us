@@ -14,7 +14,6 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Dialog from '@mui/material/Dialog';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import styled from 'styled-components';
 import { emailCheck, phoneAuth } from "../../function/axios";
 
@@ -236,8 +235,6 @@ const User: FC = () => {
     
 
 
-    const theme = createTheme();
-
     // 시간 초 -> 분,초
     const minsec = (e:number) => {
         const m = (e-e%60)/60
@@ -285,7 +282,6 @@ const User: FC = () => {
     
     return(
         <>
-            <ThemeProvider theme={theme}>
             <Container component="main" maxWidth="sm">
                 <CssBaseline />
                 <Box
@@ -516,7 +512,6 @@ const User: FC = () => {
                 </Box>
                 </Box>
             </Container>
-            </ThemeProvider>
 
 
          </>

@@ -9,7 +9,6 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Dialog from '@mui/material/Dialog';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import styled from 'styled-components';
 import { emailCheck, emailAuth, signupOrg } from "../../function/axios";
 import { useRouter } from "next/router";
@@ -26,6 +25,37 @@ const CustomDisableInput = styled(TextField)(() => ({
   color: "#000"
 }
 }));
+
+const UpdateButton = styled(Button)({
+    backgroundColor: "#5B321E",
+    color: "white",
+    fontWeight: "bold",
+    "&:hover": {
+      backgroundColor: "#CDAD78",
+      color: "white",
+    },
+  });
+
+
+const TextField1 = styled(TextField)({
+      '& label.Mui-focused': {
+        color: '#5B321E',
+      },
+    //   '& .MuiInput-underline:after': {
+    //     borderBottomColor: 'yellow',
+    //   },
+      '& .MuiOutlinedInput-root': {
+        // '& fieldset': {
+        //   borderColor: 'white',
+        // },
+        // '&:hover fieldset': {
+        //   borderColor: 'white',
+        // },
+        '&.Mui-focused fieldset': {
+          borderColor: '#CDAD78',
+        },
+      },
+  })
 
 
 const Org: FC = () => {
@@ -264,7 +294,6 @@ const Org: FC = () => {
         setOpen(false);
         open2.current = false
     };
-    const theme = createTheme();
 
     // 시간 초 -> 분,초
     const minsec = (e) => {
@@ -279,9 +308,10 @@ const Org: FC = () => {
 
     // 파일 선택시
     const onImageChange = (e) => {
-        // console.log(e.target.files[0])
-        setRegiName(e.target.files[0].name)
-        setRegi(e.target.files[0])
+        if (e.target.files.length > 0){
+            setRegiName(e.target.files[0].name)
+            setRegi(e.target.files[0])
+        }
     }
 
     // 업로드 버튼 클릭시
@@ -291,7 +321,6 @@ const Org: FC = () => {
     
     return(
         <>
-            <ThemeProvider theme={theme}>
             <Container component="main" maxWidth="sm">
                 <CssBaseline />
                 <Box
@@ -325,14 +354,14 @@ const Org: FC = () => {
                             />
                         </Grid>
                         <Grid item xs={1}>
-                        <Button
+                        <UpdateButton
                             sx={{ mt: 1, mb:1, mx:1}}
                             variant="contained"
                             disabled={!checkEmail || authMail}
                             onClick={() => onClickAuth()}
                         >
                         인증
-                        </Button>
+                        </UpdateButton>
                         </Grid>
                         {
                             authMail ?
@@ -365,7 +394,7 @@ const Org: FC = () => {
                                 <div style={{marginTop:'35px', marginLeft:'5px'}}>
                                     {minsec(sec)}
                                 </div>
-                                <Button
+                                <UpdateButton
                                 sx={{ mt: 2, mb:1, mx:2}}
                                 variant="contained"
                                 // disabled={!checkEmail || authMail}
@@ -379,7 +408,7 @@ const Org: FC = () => {
                                 }}
                                 >
                                 다시 인증하기
-                                </Button>
+                                </UpdateButton>
                                 </>
                             )
                             : null
@@ -387,13 +416,13 @@ const Org: FC = () => {
                         {
                             authEnd ?
                             (
-                                <Button
+                                <UpdateButton
                                 sx={{ mt: 2, mb:1, mx:1}}
                                 variant="contained"
                                 disabled={true}
                                 >
                                 인증 완료
-                                </Button>
+                                </UpdateButton>
                             )
                             : null
                         }
@@ -502,13 +531,13 @@ const Org: FC = () => {
                             disabled={true}
                             />
                         </Grid>
-                        <Button
+                        <UpdateButton
                         sx={{ mt: 2, mb:1, mx:1}}
                         variant="contained"
                         onClick={handleClickOpen}
                         >
                         우편번호 찾기
-                        </Button>
+                        </UpdateButton>
 
                         <Grid item xs={12}>
                             <CustomDisableInput
@@ -560,13 +589,13 @@ const Org: FC = () => {
                             disabled={true}
                             />
                         </Grid>
-                        <Button
+                        <UpdateButton
                             sx={{ mt: 2, mb:1, mx:1}}
                             variant="contained"
                             onClick={clickImageUpload}
                         >
                         업로드
-                        </Button>
+                        </UpdateButton>
                         <input 
                             type="file" 
                             accept='image/*'
@@ -576,7 +605,7 @@ const Org: FC = () => {
                         />
                     </Grid>
 
-                    <Button
+                    <UpdateButton
                         fullWidth
                         variant="contained"
                         sx={{ mt: 3, mb: 2 }}
@@ -584,12 +613,11 @@ const Org: FC = () => {
                         disabled={!checkPw || !authEnd || name.length === 0 || phone.length === 0 || addr.length === 0 || regiName.length === 0}
                     >
                         회원가입
-                    </Button>
+                    </UpdateButton>
                     <br /><br />
                 </Box>
                 </Box>
             </Container>
-            </ThemeProvider>
 
 
 
