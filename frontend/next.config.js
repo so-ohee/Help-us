@@ -32,6 +32,9 @@ module.exports = {
       },
     ];
   },
+  images: {
+    domains: ['c106-helpus.s3.ap-northeast-2.amazonaws.com'],
+  }
 };
 
 
