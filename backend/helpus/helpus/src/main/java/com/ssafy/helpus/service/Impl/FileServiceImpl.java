@@ -1,6 +1,9 @@
 package com.ssafy.helpus.service.Impl;
 
+import com.ssafy.helpus.model.HelpDesk;
+import com.ssafy.helpus.model.HelpDeskImage;
 import com.ssafy.helpus.model.Member;
+import com.ssafy.helpus.repository.DeskImageRepository;
 import com.ssafy.helpus.service.FileService;
 import com.ssafy.helpus.service.S3Service;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +19,7 @@ import java.util.List;
 public class FileServiceImpl implements FileService {
 
     private final S3Service s3Service;
+    private final DeskImageRepository deskImageRepository;
 
     @Override
     public boolean fileExtensionCheck(List<MultipartFile> files) throws Exception {
@@ -38,5 +42,18 @@ public class FileServiceImpl implements FileService {
     @Override
     public void memberFileDelete(Member member) throws Exception {
 
+    }
+
+    @Override
+    public void deskFileSave(HelpDesk desk, List<MultipartFile> files) throws Exception {
+        log.debug("FileService deskFileSave call");
+
+        for (MultipartFile mfile : files) {
+            String imgURL = s3Service.upload(mfile);  //S3에 파일 업로드 후 URL 가져오기
+            HelpDeskImage file = HelpDeskImage.builder()
+                    .url(imgURL)
+                    .helpDesk(desk).build();
+            deskImageRepository.save(file); //DB에 S3 URL 저장
+        }
     }
 }
