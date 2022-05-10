@@ -6,7 +6,9 @@ const Signup: FC = () => {
     const router = useRouter()
     return (
     <>
-        <Button>
+        <Button
+            onClick={() => router.push('/signup/user')}
+        >
             일반 회원가입
         </Button>
         

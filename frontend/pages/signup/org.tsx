@@ -13,6 +13,9 @@ import styled from 'styled-components';
 import { emailCheck, emailAuth, signupOrg } from "../../function/axios";
 import { useRouter } from "next/router";
 
+
+
+
 const FormHelperTexts = styled(FormHelperText)`
 width: 100%;
 padding-left: 16px;
@@ -41,9 +44,9 @@ const TextField1 = styled(TextField)({
       '& label.Mui-focused': {
         color: '#5B321E',
       },
-    //   '& .MuiInput-underline:after': {
-    //     borderBottomColor: 'yellow',
-    //   },
+      '& .MuiInput-underline:after': {
+        borderBottomColor: 'yellow',
+      },
       '& .MuiOutlinedInput-root': {
         // '& fieldset': {
         //   borderColor: 'white',
@@ -611,6 +614,7 @@ const Org: FC = () => {
                         sx={{ mt: 3, mb: 2 }}
                         onClick={onSubmit}
                         disabled={!checkPw || !authEnd || name.length === 0 || phone.length === 0 || addr.length === 0 || regiName.length === 0}
+                        style={{height:'45px'}}
                     >
                         회원가입
                     </UpdateButton>

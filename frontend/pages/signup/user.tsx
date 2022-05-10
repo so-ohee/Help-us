@@ -15,7 +15,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Dialog from '@mui/material/Dialog';
 import styled from 'styled-components';
-import { emailCheck, phoneAuth } from "../../function/axios";
+import { emailCheck, phoneAuth, signupUser } from "../../function/axios";
+import { useRouter } from "next/router";
 
 const FormHelperTexts = styled(FormHelperText)`
 width: 100%;
@@ -29,9 +30,19 @@ const CustomDisableInput = styled(TextField)(() => ({
   color: "#000"
 }
 }));
+const UpdateButton = styled(Button)({
+    backgroundColor: "#5B321E",
+    color: "white",
+    fontWeight: "bold",
+    "&:hover": {
+      backgroundColor: "#CDAD78",
+      color: "white",
+    },
+  });
 
 
 const User: FC = () => {
+    const router = useRouter()
 
     const testCode ='66666'
     const timeLimit = 180
@@ -230,7 +241,22 @@ const User: FC = () => {
 
     // 회원가입 버튼 누를시
     const onSubmit = () => {
-        console.log(email,password,name,phone,intro)
+        // console.log(email,password,name,phone,intro)
+        const data = {
+            "email": email,
+            "password": password,
+            "name": name,
+            "tel": phone,
+            "info": intro,
+            "warnCount":0,
+            "createDate": new Date()
+        }
+        signupUser(data)
+        .then(res => {
+            router.push('/')
+            // alert('회원가입이 완료되었습니다.')
+        })
+        .catch(() => alert('다시 입력해주세요.'))
     }
     
 
@@ -396,20 +422,19 @@ const User: FC = () => {
                             onChange={(e) => setPhone(e.target.value)}
                             disabled={authPhone}
                             // color="black"
-                            autoFocus
                             inputProps={{ maxLength: 13 }}
                             // error={emailMsg.length > 0}
                             />
                         </Grid>
                         <Grid item xs={1}>
-                        <Button
+                        <UpdateButton
                             sx={{ mt: 1, mb:1, mx:1}}
                             variant="contained"
                             disabled={phone.length < 12 || authPhone}
                             onClick={() => onClickAuth()}
                         >
                         인증
-                        </Button>
+                        </UpdateButton>
                         </Grid>
                         {
                             authPhone ?
@@ -442,7 +467,7 @@ const User: FC = () => {
                                 <div style={{marginTop:'35px', marginLeft:'5px'}}>
                                     {minsec(sec)}
                                 </div>
-                                <Button
+                                <UpdateButton
                                 sx={{ mt: 2, mb:1, mx:2}}
                                 variant="contained"
                                 // disabled={!checkEmail || authMail}
@@ -456,7 +481,7 @@ const User: FC = () => {
                                 }}
                                 >
                                 다시 인증하기
-                                </Button>
+                                </UpdateButton>
                                 </>
                             )
                             : null
@@ -464,13 +489,13 @@ const User: FC = () => {
                         {
                             authEnd ?
                             (
-                                <Button
+                                <UpdateButton
                                 sx={{ mt: 2, mb:1, mx:1}}
                                 variant="contained"
                                 disabled={true}
                                 >
                                 인증 완료
-                                </Button>
+                                </UpdateButton>
                             )
                             : null
                         }
@@ -500,15 +525,16 @@ const User: FC = () => {
 
 
                     </Grid>
-                    <Button
+                    <UpdateButton
                         fullWidth
                         variant="contained"
                         sx={{ mt: 3, mb: 2 }}
                         onClick={onSubmit}
+                        style={{height:'45px'}}
                         disabled={!checkPw || !authEnd || name.length === 0 || !checkEmail}
                     >
                     회원가입
-                    </Button>
+                    </UpdateButton>
                 </Box>
                 </Box>
             </Container>

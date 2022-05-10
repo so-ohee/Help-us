@@ -4,7 +4,8 @@ import axios from "axios";
 // proxy
 // 9080: 기부 'http://k6c106.p.ssafy.io:9080'
 // 9081: 봉사 'http://k6c106.p.ssafy.io:9081'
-// 9082: 회원가입, 로그인 'http://k6c106.p.ssafy.io:9082'
+// 9082: 회원가입, 유저 정보 'http://k6c106.p.ssafy.io:9082'
+// 8000: 로그인 'http://k6c106.p.ssafy.io:8000'
 
 
 
@@ -87,7 +88,7 @@ export const signupOrg = async (data, img) => {
   const newForm = new FormData();
   newForm.append("member", new Blob([JSON.stringify(data)], { type: "application/json" }))
   newForm.append("registration",img)
-  newForm.append("profile",img)
+  // newForm.append("profile",img)
 
   return await axios({
     url:'/9082/member/org', 
@@ -96,6 +97,49 @@ export const signupOrg = async (data, img) => {
       'Content-Type':'multipart/form-data',
     },
     data: newForm,
+  })
+}
+
+// 일반 회원가입
+export const signupUser = async () => {
+
+    const data = {
+      "email": "test123@test.com",
+      "password": "test1",
+      "name": "c",
+      "tel": "01010001000",
+      "info":"a",
+      "warnCount":0,
+      "createDate": new Date()
+  }
+  
+    // const newForm = new FormData();
+    // newForm.append("member", new Blob([JSON.stringify(data)], { type: "application/json" }))
+
+  
+    return await axios({
+      url:'/9082/member/user', 
+      method:'POST',
+      // headers:{
+      //   'Content-Type':'multipart/form-data',
+      // },
+      data: data,
+    })
+  }
+
+
+
+// ----------------------- 8000 ------------------------------ 
+
+// 로그인
+export const login = async (email,pw) => {
+  return await axios({
+    method:'POST',
+    url:'/8000/api/member/login',
+    data: {
+      "email" : email,
+      'password' : pw
+    },
   })
 }
 

@@ -53,6 +53,14 @@ const Navbar: FC<LoginProps> = ({ value }) => {
               </Typography>  
               <Typography variant="h6" sx={{ mx: 2 }}>
                 <Link 
+                  onClick={() => router.push('/login')} 
+                  underline="none" 
+                  color="inherit"
+                  style={{cursor:'pointer'}}
+                >로그인</Link>  
+              </Typography>  
+              <Typography variant="h6" sx={{ mx: 2 }}>
+                <Link 
                   onClick={() => router.push('/signup')} 
                   underline="none" 
                   color="inherit"

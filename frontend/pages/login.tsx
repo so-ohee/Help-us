@@ -6,6 +6,7 @@ import TextField from '@mui/material/TextField';
 import logo3 from "../public/images/logo3.png";
 import Image from "next/image";
 import { styled } from "@mui/material/styles";
+import { login } from "../function/axios";
 
 
 
@@ -47,6 +48,14 @@ const Login: FC = () => {
     const [id, setId] = useState('')
     const [pw, setPw] = useState('')
 
+    const onLogin = () => [
+        login(id,pw)
+        .then(res => {
+            console.log(res.headers.authorization)
+            console.log(res)
+        })
+    ]
+
     return (
     <>
          <div style={{maxWidth:'400px', minHeight:'600px', margin:'auto', textAlign: 'center'}}>
@@ -79,6 +88,7 @@ const Login: FC = () => {
                 fullWidth
                 variant="contained"
                 style={{marginTop:'20px', height:'45px', fontSize:'18px'}}
+                onClick={onLogin}
             >
                 로그인
             </UpdateButton>

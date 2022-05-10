@@ -26,6 +26,10 @@ module.exports = {
         source: "/9081/:path*",
         destination: 'http://k6c106.p.ssafy.io:9081/:path*',
       },
+      {
+        source: "/8000/:path*",
+        destination: 'http://k6c106.p.ssafy.io:8000/:path*',
+      },
     ];
   },
 };
