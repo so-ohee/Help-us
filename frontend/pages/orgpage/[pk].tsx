@@ -1,7 +1,7 @@
 import { FC } from "react";
 import Image from "next/image";
-import orgDefaultImage from "../../public/images/orgDefaultImage.png";
 import { useState } from "react";
+import { styled } from "@mui/material/styles";
 import {
   Container,
   Grid,
@@ -11,11 +11,30 @@ import {
   Tabs,
   Tab,
   Box,
+  CssBaseline,
 } from "@mui/material";
+import BusinessIcon from "@mui/icons-material/Business";
+import CallIcon from "@mui/icons-material/Call";
+import MailIcon from "@mui/icons-material/Mail";
+import DonationCardOrg from "@/components/DonationCardOrg";
+import DonationCardOrgFinish from "@/components/DonationCardOrgFinish";
+import ReviewCard from "@/components/ReviewCard";
+
+import TestImage from "../../public/images/testImage.jpg";
+
+const UpdateButton = styled(Button)({
+  backgroundColor: "#5B321E",
+  color: "white",
+  fontWeight: "bold",
+  "&:hover": {
+    backgroundColor: "#CDAD78",
+    color: "white",
+  },
+  // width: "50px",
+});
 
 interface TabPanelProps {
   children?: React.ReactNode;
-  dir?: string;
   index: number;
   value: number;
 }
@@ -27,8 +46,8 @@ function TabPanel(props: TabPanelProps) {
     <div
       role="tabpanel"
       hidden={value !== index}
-      id={`full-width-tabpanel-${index}`}
-      aria-labelledby={`full-width-tab-${index}`}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
       {value === index && (
@@ -40,91 +59,323 @@ function TabPanel(props: TabPanelProps) {
   );
 }
 
+interface StyledTabsProps {
+  children?: React.ReactNode;
+  value: number;
+  onChange: (event: React.SyntheticEvent, newValue: number) => void;
+}
+
+const StyledTabs = styled((props: StyledTabsProps) => (
+  <Tabs
+    {...props}
+    TabIndicatorProps={{ children: <span className="MuiTabs-indicatorSpan" /> }}
+  />
+))({
+  "& .MuiTabs-indicator": {
+    display: "flex",
+    justifyContent: "center",
+    backgroundColor: "transparent",
+  },
+  "& .MuiTabs-indicatorSpan": {
+    // maxWidth: 40,
+    width: 100,
+    backgroundColor: "#CDAD78",
+  },
+});
+
+interface StyledTabProps {
+  label: string;
+}
+
+const StyledTab = styled((props: StyledTabProps) => (
+  <Tab disableRipple {...props} />
+))(({ theme }) => ({
+  textTransform: "none",
+  fontWeight: theme.typography.fontWeightRegular,
+  fontSize: theme.typography.pxToRem(15),
+  marginRight: theme.spacing(1),
+  color: "#8a867e",
+  "&.Mui-selected": {
+    color: "#CDAD78",
+  },
+  "&.Mui-focusVisible": {
+    backgroundColor: "rgba(100, 95, 228, 0.32)",
+  },
+}));
+
 function a11yProps(index: number) {
   return {
-    id: `full-width-tab-${index}`,
-    "aria-controls": `full-width-tabpanel-${index}`,
+    id: `simple-tab-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`,
   };
 }
 
 const OrgPage: FC = () => {
-  const [tabValue, setTabValue] = useState<number>(0);
+  const [value, setValue] = useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setTabValue(newValue);
+    setValue(newValue);
   };
 
   return (
-    <div className="viewContainer">
-      <Container>
-        <Grid container>
-          <Grid xs={3}>
-            <Image
-              src={orgDefaultImage}
-              alt="orgImage"
-              width="300px"
-              height="300px"
-            />
+    <Box sx={{ display: "flex" }}>
+      <CssBaseline />
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          // height: "100vh",
+          overflow: "auto",
+          mt: 0,
+        }}
+      >
+        <Container
+          maxWidth="lg"
+          sx={{
+            mt: 4,
+            mb: 4,
+            bgcolor: "#FCF8F0",
+            borderRadius: 1.25,
+            // height: "350px",
+          }}
+        >
+          <Grid container spacing={2} minHeight="350px">
+            <Grid item xs={3}>
+              <div
+                style={{
+                  borderRadius: "3%",
+                  overflow: "hidden",
+                  marginTop: "6px",
+                  // height: "300px",
+                }}
+              >
+                <Image
+                  src={TestImage}
+                  alt="orgImage"
+                  width="300px"
+                  height="300px"
+                />
+              </div>
+            </Grid>
+            <Grid item xs={9}>
+              <Typography sx={{ mt: 0 }} variant="h4" fontWeight="bold">
+                수원시광교노인복지관
+              </Typography>
+              <Grid
+                sx={{ mt: 2 }}
+                container
+                direction="row"
+                alignItems="center"
+              >
+                <BusinessIcon sx={{ mr: 2 }} />
+                <Typography align="center">
+                  경기도 수원시 팔달구 중부대로 222번길 22 2-22
+                </Typography>
+              </Grid>
+              <Grid
+                sx={{ mt: 2 }}
+                container
+                direction="row"
+                alignItems="center"
+              >
+                <CallIcon sx={{ mr: 2 }} />
+                <Typography align="center">010-7777-7777</Typography>
+              </Grid>
+              <Grid
+                sx={{ mt: 2 }}
+                container
+                direction="row"
+                alignItems="center"
+              >
+                <MailIcon sx={{ mr: 2 }} />
+                <Typography align="center">test@gmail.com</Typography>
+              </Grid>
+              <Box
+                sx={{
+                  bgcolor: "#f5e1be",
+                  borderRadius: 1.25,
+                  // height: "120px",
+                }}
+                minHeight="120px"
+              >
+                <Typography sx={{ p: 2, mt: 1 }}>
+                  아무래도 다시 돌아갈 순 없어 아무런 표정도 없이 이런 말하는
+                  그런 내가 잔인한가요 제발 내 마음 설레이게 자꾸만 바라보게
+                  하지 말아요 아무 일 없던 것처럼 그냥 스쳐지나갈 미련인 걸
+                  알아요 아무리 사랑한다 말했어도 다시 돌아올 수 없는 그 때 그
+                  맘이 부른다고 다시 오나요 아무래도 다시 돌아갈 순 없어 아무런
+                  표정도 없이 이런 말하는 그런 내가 잔인한가요
+                </Typography>
+              </Box>
+            </Grid>
           </Grid>
-          <Grid xs={8}>
-            <Typography sx={{ mt: 2 }}>기관명 : 행복 복지관</Typography>
-            <Typography sx={{ mt: 2 }}>
-              기관 주소 : 경기도 수원시 팔달구 중부대로 222번길 22 2-22
-            </Typography>
-            <Typography sx={{ mt: 2 }}>기관 번호 : 010-7777-7777</Typography>
-            <Typography sx={{ mt: 2 }}>기관 이메일 : test@gmail.com</Typography>
-            <Typography sx={{ mt: 2 }}>
-              기관 소개 : 아무래도 다시 돌아갈 순 없어 아무런 표정도 없이 이런
-              말하는 그런 내가 잔인한가요 제발 내 마음 설레이게 자꾸만 바라보게
-              하지 말아요 아무 일 없던 것처럼 그냥 스쳐지나갈 미련인 걸 알아요
-              아무리 사랑한다 말했어도 다시 돌아올 수 없는 그 때 그 맘이
-              부른다고 다시 오나요 아무래도 다시 돌아갈 순 없어 아무런 표정도
-              없이 이런 말하는 그런 내가 잔인한가요
-            </Typography>
-          </Grid>
-          <Grid xs={1}>
-            <Button variant="contained">수정</Button>
-          </Grid>
-        </Grid>
-        <Box sx={{ width: "100%", mt: 5 }}>
-          <Tabs
-            value={tabValue}
-            onChange={handleChange}
-            textColor="secondary"
-            indicatorColor="secondary"
-            aria-label="secondary tabs example"
-          >
-            <Tab label="기부" {...a11yProps(0)} />
-            <Tab label="봉사" {...a11yProps(1)} />
-            <Tab label="기부 후기" {...a11yProps(2)} />
-            <Tab label="배송 현황" {...a11yProps(3)} />
-            <Tab label="기부 현황" {...a11yProps(4)} />
-            <Tab label="봉사 현황" {...a11yProps(5)} />
-            <Tab label="문의 내역" {...a11yProps(6)} />
-          </Tabs>
-          <TabPanel value={tabValue} index={0}>
-            Item One
-          </TabPanel>
-          <TabPanel value={tabValue} index={1}>
-            Item Two
-          </TabPanel>
-          <TabPanel value={tabValue} index={2}>
-            Item Three
-          </TabPanel>
-        </Box>
-        {/* <Typography variant="h4" sx={{ mt: 5 }}>
-          배송 현황
-        </Typography> */}
-      </Container>
-      <style jsx>
-        {`
-          .viewContainer {
-            padding: 150px 200px;
-            min-width: 1300px;
-          }
-        `}
-      </style>
-    </div>
+          <Box sx={{ width: "100%", mt: 2 }}>
+            <Box sx={{ bgcolor: "#FCF8F0", borderRadius: 1.25 }}>
+              <StyledTabs
+                value={value}
+                onChange={handleChange}
+                aria-label="styled tabs example"
+              >
+                <StyledTab
+                  sx={{ fontWeight: "bold" }}
+                  label="기부"
+                  {...a11yProps(0)}
+                />
+                <StyledTab
+                  sx={{ fontWeight: "bold" }}
+                  label="봉사"
+                  {...a11yProps(1)}
+                />
+                <StyledTab
+                  sx={{ fontWeight: "bold" }}
+                  label="후기"
+                  {...a11yProps(2)}
+                />
+              </StyledTabs>
+              {/* <Box sx={{ p: 3 }} /> */}
+              <TabPanel value={value} index={0}>
+                <div>
+                  <Box
+                    sx={{
+                      display: "grid",
+                      gridTemplateColumns: "repeat(auto-fill, 500px)",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      marginTop: 5,
+                      rowGap: 5,
+                      columnGap: 10,
+                    }}
+                  >
+                    <DonationCardOrg />
+                    <DonationCardOrg />
+                  </Box>
+                  <Box
+                    sx={{
+                      display: "grid",
+                      gridTemplateColumns: "repeat(auto-fill, 500px)",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      marginTop: 5,
+                      rowGap: 5,
+                      columnGap: 10,
+                    }}
+                  >
+                    <DonationCardOrg />
+                    <DonationCardOrg />
+                  </Box>
+                  <Box
+                    sx={{
+                      display: "grid",
+                      gridTemplateColumns: "repeat(auto-fill, 500px)",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      marginTop: 5,
+                      rowGap: 5,
+                      columnGap: 10,
+                    }}
+                  >
+                    <DonationCardOrg />
+                    <DonationCardOrg />
+                  </Box>
+                </div>
+              </TabPanel>
+              <TabPanel value={value} index={1}>
+                <div>
+                  <Box
+                    sx={{
+                      display: "grid",
+                      gridTemplateColumns: "repeat(auto-fill, 500px)",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      marginTop: 5,
+                      rowGap: 5,
+                      columnGap: 10,
+                    }}
+                  >
+                    <DonationCardOrgFinish />
+                    <DonationCardOrgFinish />
+                  </Box>
+                  <Box
+                    sx={{
+                      display: "grid",
+                      gridTemplateColumns: "repeat(auto-fill, 500px)",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      marginTop: 5,
+                      rowGap: 5,
+                      columnGap: 10,
+                    }}
+                  >
+                    <DonationCardOrgFinish />
+                    <DonationCardOrgFinish />
+                  </Box>
+                  <Box
+                    sx={{
+                      display: "grid",
+                      gridTemplateColumns: "repeat(auto-fill, 500px)",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      marginTop: 5,
+                      rowGap: 5,
+                      columnGap: 10,
+                    }}
+                  >
+                    <DonationCardOrgFinish />
+                    <DonationCardOrgFinish />
+                  </Box>
+                </div>
+              </TabPanel>
+              <TabPanel value={value} index={2}>
+                <div>
+                  <Box
+                    sx={{
+                      display: "grid",
+                      gridTemplateColumns: "repeat(auto-fill, 500px)",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      marginTop: 5,
+                      rowGap: 5,
+                      columnGap: 10,
+                    }}
+                  >
+                    <ReviewCard />
+                    <ReviewCard />
+                  </Box>
+                  <Box
+                    sx={{
+                      display: "grid",
+                      gridTemplateColumns: "repeat(auto-fill, 500px)",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      marginTop: 5,
+                      rowGap: 5,
+                      columnGap: 10,
+                    }}
+                  >
+                    <ReviewCard />
+                    <ReviewCard />
+                  </Box>
+                  <Box
+                    sx={{
+                      display: "grid",
+                      gridTemplateColumns: "repeat(auto-fill, 500px)",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      marginTop: 5,
+                      rowGap: 5,
+                      columnGap: 10,
+                    }}
+                  >
+                    <ReviewCard />
+                    <ReviewCard />
+                  </Box>
+                </div>
+              </TabPanel>
+            </Box>
+          </Box>
+        </Container>
+      </Box>
+    </Box>
   );
 };
 
