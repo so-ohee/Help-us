@@ -1,6 +1,8 @@
-package com.ssafy.helpus.service;
+package com.ssafy.helpus.service.Impl;
 
 import com.ssafy.helpus.model.Member;
+import com.ssafy.helpus.service.FileService;
+import com.ssafy.helpus.service.S3Service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -11,7 +13,7 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class FileServiceImpl implements FileService{
+public class FileServiceImpl implements FileService {
 
     private final S3Service s3Service;
 
