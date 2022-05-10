@@ -24,12 +24,14 @@ const SignupList = () => {
     const numRegex = /\d{3}-\d{2}-\d{5}/g
     const imgUrl = 
     // "http://img1.bizhows.com/bhfile01/__CM_FILE_DATA/202104/15/14/2438331_1618465806169.jpg"
-    // "https://www.draps.co.kr/app/dubu_board/docs/imgs/f/sm_f15967052034313_lg_i15942817778905_%ED%9A%8C%EC%9B%90%EC%A6%9D_0000_%EC%84%B8%EA%B8%88%EA%B3%84%EC%82%B0%EC%84%9C%EC%9A%A9_%EC%82%AC%EC%97%85%EC%9E%90%EB%93%B1%EB%A1%9D%EC%A6%9D_%EB%93%9C%EB%A6%BC%EC%97%90%EC%9D%B4%ED%94%BC%EC%97%90%EC%8A%A4.jpg"
-    "https://beautifulfund.org/bf/files/common/img/business_license.jpg"
+    "https://www.draps.co.kr/app/dubu_board/docs/imgs/f/sm_f15967052034313_lg_i15942817778905_%ED%9A%8C%EC%9B%90%EC%A6%9D_0000_%EC%84%B8%EA%B8%88%EA%B3%84%EC%82%B0%EC%84%9C%EC%9A%A9_%EC%82%AC%EC%97%85%EC%9E%90%EB%93%B1%EB%A1%9D%EC%A6%9D_%EB%93%9C%EB%A6%BC%EC%97%90%EC%9D%B4%ED%94%BC%EC%97%90%EC%8A%A4.jpg"
+    // "https://beautifulfund.org/bf/files/common/img/business_license.jpg"
+    // 'http://aircurt.cafe24.com/default/img/contents/img_01.gif'
     const [step, setStep] = useState<string>('ing')
     const [num, setNum] = useState('')
     const [msg, setMsg] = useState('')
     const [myMsg, setMyMsg] = useState('')
+    const [code, setCode] = useState('')
  
     // 다이얼로그
     const [open, setOpen] = useState(false);
@@ -42,7 +44,7 @@ const SignupList = () => {
         .then(res => {
             for (var i = 0; i < res.data.images[0].fields.length; i++) {
                 if (res.data.images[0].fields[i].inferText.match(numRegex)) {
-                    console.log(res.data.images[0].fields[i].inferText.match(numRegex)[0])
+                    setCode(res.data.images[0].fields[i].inferText.match(numRegex)[0])
                     axios.post('https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=vl6BtUPxAdH%2B8i7%2BYzrw9O%2B%2BL22Wxl591V%2BofSgRDIWQCzZrtPYVNJ8%2FzYbqAc%2BNngCsQOLYKuRTl0GZCJoXmQ%3D%3D', {
                         "b_no": [res.data.images[0].fields[i].inferText.match(numRegex)[0].replace(/-/g,'')]
                     })
@@ -243,7 +245,7 @@ const SignupList = () => {
                         (
                             step === 'success' ? (
                                 <div>
-                                    {myMsg}
+                                    {code} {myMsg}
                                 </div>
                             ) :
                             (

@@ -2,8 +2,11 @@ import { FC } from "react";
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { useState, useEffect, useRef } from 'react';
+import { OCR_kakao } from "function/axios";
 
 const CheckCerti: FC = () => {
+
+
 
   const [num1, setNum1] = useState('')
   const [num2, setNum2] = useState('')
@@ -14,6 +17,8 @@ const CheckCerti: FC = () => {
   const input3 = useRef(null)
   const input4 = useRef(null)
 
+  const imageUpload = useRef(null)
+  // const [certiFile, setCertiFile] = useState('')
 
   useEffect(() => {
     setNum1(autoUpper(num1))
@@ -49,12 +54,65 @@ const CheckCerti: FC = () => {
   }
   
 
+  const authRegex = /[0-9A-Z]{4}-[0-9A-Z]{4}-[0-9A-Z]{4}-[0-9A-Z]{4}/g
+
+
+  // 파일 선택시
+  const onImageChange = (e) => {
+    OCR_kakao(e.target.files[0])
+    .then(res => {
+      for (var i = 0; i < res.data.result.length; i++) {
+        if (res.data.result[i].recognition_words[0].match(authRegex)) {
+            setNum1(res.data.result[i].recognition_words[0].match(authRegex)[0].slice(0,4))
+            setNum2(res.data.result[i].recognition_words[0].match(authRegex)[0].slice(5,9))
+            setNum3(res.data.result[i].recognition_words[0].match(authRegex)[0].slice(10,14))
+            setNum4(res.data.result[i].recognition_words[0].match(authRegex)[0].slice(15,19))
+            break;
+        }
+        // console.log(res.data.result[i].recognition_words[0])
+        // else if (i+1 === res.data.images[0].fields.length ) { // 사업자등록번호 못 찾은 경우,
+        //     setStep('failed')
+        // }
+      }
+    })
+  }
+
+
+  // 업로드 버튼 클릭시
+  const clickImageUpload = () => {
+      imageUpload.current.click()
+  }
+
   return (
   <>
     <div style={{maxWidth:'800px', minHeight:'600px', margin:'auto', textAlign: 'center'}}>
-      <h1>증명서 진위 확인</h1>
+      
+      <div style={{justifyContent: 'center', display: 'flex'}}>
+        <div style={{width:'100px'}}></div>
+        <h1>증명서 진위 확인</h1>
+        <Button 
+          variant="contained" 
+          style={{margin:'10px', marginTop:'15px'}}
+          size='small'
+          onClick={clickImageUpload}
+        >
+          사진 업로드
+        </Button>
+        <input 
+          type="file" 
+          accept='image/*'
+          ref={imageUpload}
+          onChange={onImageChange}
+          style={{display:"none"}}
+        />
+      </div>
+      
       <br></br>
+
+
+      
       <div style={{display: 'flex', justifyContent: 'center'}}>
+        <span style={{margin:'3px', alignItems: 'center', fontSize:'20px', marginRight:'10px'}}>문서확인번호: </span>
         <TextField 
           label="" 
           variant="outlined" 
@@ -106,6 +164,7 @@ const CheckCerti: FC = () => {
         >
           확인
         </Button>
+
       </div>
 
     </div>
