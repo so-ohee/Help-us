@@ -25,9 +25,10 @@ public class ApplyController {
 
     private final ApplyService applyService;
 
-    @ApiOperation(value = "기부 글 등록")
+    @ApiOperation(value = "기부 신청")
     @PostMapping
-    public ResponseEntity applyDonation (@Valid @RequestBody ApplyReqDto apply, @RequestHeader HttpHeaders headers) {
+    public ResponseEntity applyDonation (@Valid @RequestBody ApplyReqDto apply,
+                                         @RequestHeader HttpHeaders headers) {
         log.info("ApplyController applyDonation call");
 
         Map<String, Object> resultMap = new HashMap<>();
@@ -64,8 +65,8 @@ public class ApplyController {
     }
 
     @ApiOperation(value = "배송 완료")
-    @PutMapping("{donationApplyId}/{memberId}")
-    public ResponseEntity deliveryCompleted(@PathVariable Long donationApplyId, @PathVariable Long memberId) {
+    @PutMapping("{donationApplyId}")
+    public ResponseEntity deliveryCompleted(@PathVariable Long donationApplyId) {
         log.info("ApplyController deliveryCompleted call");
 
         Map<String, Object> resultMap = new HashMap<>();
