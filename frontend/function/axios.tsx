@@ -101,28 +101,21 @@ export const signupOrg = async (data, img) => {
 }
 
 // 일반 회원가입
-export const signupUser = async () => {
+export const signupUser = async (data) => {
 
-    const data = {
-      "email": "test123@test.com",
-      "password": "test1",
-      "name": "c",
-      "tel": "01010001000",
-      "info":"a",
-      "warnCount":0,
-      "createDate": new Date()
-  }
-  
-    // const newForm = new FormData();
-    // newForm.append("member", new Blob([JSON.stringify(data)], { type: "application/json" }))
-
+  //   const data = {
+  //     "email": "test123@test.com",
+  //     "password": "test1",
+  //     "name": "c",
+  //     "tel": "01010001000",
+  //     "info":"a",
+  //     "warnCount":0,
+  //     "createDate": new Date()
+  // }
   
     return await axios({
       url:'/9082/member/user', 
       method:'POST',
-      // headers:{
-      //   'Content-Type':'multipart/form-data',
-      // },
       data: data,
     })
   }
