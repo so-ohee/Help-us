@@ -18,6 +18,8 @@ import {
 } from "@mui/material";
 import { tableCellClasses } from "@mui/material/TableCell";
 import { FC } from "react";
+import InsertLinkIcon from "@mui/icons-material/InsertLink";
+import Link from "next/link";
 
 const mdTheme = createTheme();
 
@@ -65,93 +67,42 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 const dummyData = [
   {
     donationApplyId: 1,
-    title: "엉키는 마음은 꿈에선 다 잊게 영원처럼 안아줘",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
+    donationId: 1,
+    title: "기부가 필요합니다.",
+    memberId: 1,
+    name: "이다예 복지관",
+    donationDate: "2022-05-20",
+    parcel: "대한통운",
+    invoice: 222222,
+    productName: "감자",
+    count: 5,
+    status: "배송대기",
   },
   {
-    donationApplyId: 2,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
+    donationApplyId: 1,
+    donationId: 1,
+    title: "기부가 필요합니다.",
+    memberId: 1,
+    name: "이다예 복지관",
+    donationDate: "2022-05-20",
+    parcel: "대한통운",
+    invoice: 222222,
+    productName: "감자",
+    count: 5,
+    status: "배송대기",
   },
   {
-    donationApplyId: 3,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-  },
-  {
-    donationApplyId: 4,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-  },
-  {
-    donationApplyId: 5,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-  },
-  {
-    donationApplyId: 6,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-  },
-  {
-    donationApplyId: 7,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-  },
-  {
-    donationApplyId: 8,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-  },
-  {
-    donationApplyId: 9,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-  },
-  {
-    donationApplyId: 10,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
+    donationApplyId: 1,
+    donationId: 1,
+    title: "기부가 필요합니다.",
+    memberId: 1,
+    name: "이다예 복지관",
+    donationDate: "2022-05-20",
+    parcel: "대한통운",
+    invoice: 222222,
+    productName: "감자",
+    count: 5,
+    status: "배송대기",
   },
 ];
 
@@ -179,25 +130,28 @@ const UserMypageDelivery: FC = () => {
                     번호
                   </StyledTableCell>
                   <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                    제목
+                    기관명
                   </StyledTableCell>
                   <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                    물품 상세
+                    기부글
                   </StyledTableCell>
                   <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                    송장
+                    물품명
                   </StyledTableCell>
                   <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                    배송 상태
+                    수량
                   </StyledTableCell>
                   <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                    기부 신청일
+                    기한
                   </StyledTableCell>
                   <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                    배송 조회
+                    상태
                   </StyledTableCell>
                   <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                    현황
+                    배송조회
+                  </StyledTableCell>
+                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                    송장입력
                   </StyledTableCell>
                 </TableRow>
               </TableHead>
@@ -207,20 +161,31 @@ const UserMypageDelivery: FC = () => {
                     <StyledTableCell align="center">
                       {data.donationApplyId}
                     </StyledTableCell>
-                    <StyledTableCell align="center" sx={{ width: 400 }}>
-                      {data.title}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {data.productList}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
+                    <StyledTableCell align="center" sx={{ width: 200 }}>
                       {data.name}
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      {data.expressNum}
+                      <Link href={"/detail/donationorg/1"}>
+                        <Button>
+                          <InsertLinkIcon
+                            sx={{
+                              color: "#5B321E",
+                            }}
+                          />
+                        </Button>
+                      </Link>
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {data.productName}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {data.count}
                     </StyledTableCell>
                     <StyledTableCell align="center">
                       {data.donationDate}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {data.status}
                     </StyledTableCell>
                     <StyledTableCell align="center">
                       <CustomButton2 sx={{ width: 40, height: 30 }}>

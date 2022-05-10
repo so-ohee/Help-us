@@ -6,173 +6,171 @@ import axios from "axios";
 // 9081: 봉사 'http://k6c106.p.ssafy.io:9081'
 // 9082: 회원가입, 로그인 'http://k6c106.p.ssafy.io:9082'
 
-
-
-
-
 // ----------------------- 9080 ------------------------------
 
-
-
-
-
-
-
-
+// 물품 기부 상세 조회
+export const donationDetail = async (id) => {
+  return await axios({
+    method: "GET",
+    url: `/9080/donation/${id}`,
+  });
+};
 
 // ----------------------- 9081 ------------------------------
-
-
-
-
-
-
-
-
-
-
-
-
 
 // ----------------------- 9082 ------------------------------
 
 // 이메일 중복 체크
 export const emailCheck = async (email) => {
   return await axios({
-    method:'POST',
-    url:'/9082/member/email-check',
+    method: "POST",
+    url: "/9082/member/email-check",
     data: {
-      "email" : email
+      email: email,
     },
-  })
-}
+  });
+};
 
 // 이메일 인증 메일 발송
 export const emailAuth = async (email) => {
   return await axios({
-    method:'POST',
-    url:'/9082/member/email-auth',
+    method: "POST",
+    url: "/9082/member/email-auth",
     data: {
-      "email" : email
+      email: email,
     },
-  })
-}
+  });
+};
 
 // 휴대폰 인증 문자 발송
 export const phoneAuth = async (phone) => {
   return await axios({
-    method:'POST',
-    url:'/9082/member/phone-auth',
+    method: "POST",
+    url: "/9082/member/phone-auth",
     data: {
-      "number" : phone
+      number: phone,
     },
-  })
-}
+  });
+};
 
 // 기관 회원가입
 export const signupOrg = async (data, img) => {
-
-//   const data = {
-//     "email": "test5@test.com",
-//     "password": "test1",
-//     "name": "c",
-//     "tel": "01010001000",
-//     "address":"test1",
-//     "info":"a",
-//     "orgZipcode":"aa",
-//     "warnCount":0,
-//     "createDate": new Date()
-// }
+  //   const data = {
+  //     "email": "test5@test.com",
+  //     "password": "test1",
+  //     "name": "c",
+  //     "tel": "01010001000",
+  //     "address":"test1",
+  //     "info":"a",
+  //     "orgZipcode":"aa",
+  //     "warnCount":0,
+  //     "createDate": new Date()
+  // }
 
   const newForm = new FormData();
-  newForm.append("member", new Blob([JSON.stringify(data)], { type: "application/json" }))
-  newForm.append("registration",img)
-  newForm.append("profile",img)
+  newForm.append(
+    "member",
+    new Blob([JSON.stringify(data)], { type: "application/json" })
+  );
+  newForm.append("registration", img);
+  newForm.append("profile", img);
 
   return await axios({
-    url:'/9082/member/org', 
-    method:'POST',
-    headers:{
-      'Content-Type':'multipart/form-data',
+    url: "/9082/member/org",
+    method: "POST",
+    headers: {
+      "Content-Type": "multipart/form-data",
     },
     data: newForm,
-  })
-}
-
+  });
+};
 
 // ------------------------- 기타 ------------------------------
 
 // ocr
 export const OCR = async (url) => {
-
-  let data = 
-  {
-    "version": "V2",
-    "requestId": "string",
-    "timestamp": 0,
-    "lang":"ko",
-    "images": [
+  let data = {
+    version: "V2",
+    requestId: "string",
+    timestamp: 0,
+    lang: "ko",
+    images: [
       {
-        "format": "png",
-        "name": "test 1",
-        "url": url,
-      }
-    ]
-  }
+        format: "png",
+        name: "test 1",
+        url: url,
+      },
+    ],
+  };
 
   return await axios({
-    // url:'https://bec8udp05h.apigw.ntruss.com/custom/v1/15684/b2ab54fd83e5770a4f755bd8d556a8b0815ad072db3cd9bae4a86827b995edee/general', 
-    url:'/ocr', 
+    // url:'https://bec8udp05h.apigw.ntruss.com/custom/v1/15684/b2ab54fd83e5770a4f755bd8d556a8b0815ad072db3cd9bae4a86827b995edee/general',
+    url: "/ocr",
 
-    method:'POST',
-    headers:{
-      'Accept':'application/json',
-      'X-OCR-SECRET':'ZXB2ZWZJZ3NNTnpTUVhpZlVGa3RuY0JTd0hrWGpnUW8='
-   },
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "X-OCR-SECRET": "ZXB2ZWZJZ3NNTnpTUVhpZlVGa3RuY0JTd0hrWGpnUW8=",
+    },
     data: data,
-  })
-}
+  });
+};
 
 // ocr_file
 export const OCR_file = async (img) => {
-
-  const data_ = {version: "V2",requestId: "string",timestamp: 0, lang:"ko",images: [{ format: "png", name: "string"}]}
+  const data_ = {
+    version: "V2",
+    requestId: "string",
+    timestamp: 0,
+    lang: "ko",
+    images: [{ format: "png", name: "string" }],
+  };
 
   const newForm = new FormData();
-  newForm.append("message", new Blob([JSON.stringify({"version": "V2","requestId": "string","timestamp": 0,"images": [{ "format": "png", "name": "string"}]})], { type: "application/json" }))
-  newForm.append("file",img)
+  newForm.append(
+    "message",
+    new Blob(
+      [
+        JSON.stringify({
+          version: "V2",
+          requestId: "string",
+          timestamp: 0,
+          images: [{ format: "png", name: "string" }],
+        }),
+      ],
+      { type: "application/json" }
+    )
+  );
+  newForm.append("file", img);
 
   return await axios({
-    // url:'https://bec8udp05h.apigw.ntruss.com/custom/v1/15684/b2ab54fd83e5770a4f755bd8d556a8b0815ad072db3cd9bae4a86827b995edee/general', 
-    url:'/ocr', 
+    // url:'https://bec8udp05h.apigw.ntruss.com/custom/v1/15684/b2ab54fd83e5770a4f755bd8d556a8b0815ad072db3cd9bae4a86827b995edee/general',
+    url: "/ocr",
 
-    method:'POST',
-    headers:{
-      'Accept':'multipart/form-data',
+    method: "POST",
+    headers: {
+      Accept: "multipart/form-data",
       // 'Content-Type':'multipart/form-data',
-      'X-OCR-SECRET':'ZXB2ZWZJZ3NNTnpTUVhpZlVGa3RuY0JTd0hrWGpnUW8='
+      "X-OCR-SECRET": "ZXB2ZWZJZ3NNTnpTUVhpZlVGa3RuY0JTd0hrWGpnUW8=",
     },
     data: newForm,
-  })
-}
-
+  });
+};
 
 // ocr_kakao
 export const OCR_kakao = async (img) => {
-
-
   const newForm = new FormData();
-  newForm.append("image",img)
+  newForm.append("image", img);
 
   return await axios({
-    url:'https://dapi.kakao.com/v2/vision/text/ocr', 
+    url: "https://dapi.kakao.com/v2/vision/text/ocr",
 
-    method:'POST',
-    headers:{
-      'Accept':'multipart/form-data',
+    method: "POST",
+    headers: {
+      Accept: "multipart/form-data",
       // 'Content-Type':'multipart/form-data',
-      'Authorization':'KakaoAK 5f6cb439fd56b3078f112ab72cd15263'
+      Authorization: "KakaoAK 5f6cb439fd56b3078f112ab72cd15263",
     },
     data: newForm,
-  })
-}
+  });
+};
