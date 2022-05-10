@@ -242,7 +242,7 @@ const User: FC = () => {
     // 회원가입 버튼 누를시
     const onSubmit = () => {
         // console.log(email,password,name,phone,intro)
-        const data = {
+        const data_ = {
             "email": email,
             "password": password,
             "name": name,
@@ -251,8 +251,8 @@ const User: FC = () => {
             "warnCount":0,
             "createDate": new Date()
         }
-        signupUser(data)
-        .then(res => {
+        signupUser(data_)
+        .then(() => {
             router.push('/')
             // alert('회원가입이 완료되었습니다.')
         })
