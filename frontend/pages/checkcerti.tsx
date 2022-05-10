@@ -3,6 +3,20 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { useState, useEffect, useRef } from 'react';
 import { OCR_kakao } from "function/axios";
+import { styled } from "@mui/material/styles";
+
+
+const UpdateButton = styled(Button)({
+  backgroundColor: "#5B321E",
+  color: "white",
+  fontWeight: "bold",
+  "&:hover": {
+    backgroundColor: "#CDAD78",
+    color: "white",
+  },
+});
+
+
 
 const CheckCerti: FC = () => {
 
@@ -90,14 +104,14 @@ const CheckCerti: FC = () => {
       <div style={{justifyContent: 'center', display: 'flex'}}>
         <div style={{width:'100px'}}></div>
         <h1>증명서 진위 확인</h1>
-        <Button 
+        <UpdateButton 
           variant="contained" 
           style={{margin:'10px', marginTop:'15px'}}
           size='small'
           onClick={clickImageUpload}
         >
           사진 업로드
-        </Button>
+        </UpdateButton>
         <input 
           type="file" 
           accept='image/*'
@@ -157,13 +171,13 @@ const CheckCerti: FC = () => {
           onChange={(e) => setNum4(e.target.value)}
         />
 
-        <Button 
+        <UpdateButton 
           variant="contained" 
           style={{marginLeft:'10px'}}
           disabled={num1.length!=4 || num2.length!=4 || num3.length!=4 || num4.length!=4} 
         >
           확인
-        </Button>
+        </UpdateButton>
 
       </div>
 

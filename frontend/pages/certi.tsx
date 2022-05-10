@@ -14,7 +14,18 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import CircularProgress from '@mui/material/CircularProgress';
 import html2canvas from 'html2canvas'
+import { styled } from "@mui/material/styles";
 
+
+const UpdateButton = styled(Button)({
+  backgroundColor: "#5B321E",
+  color: "white",
+  fontWeight: "bold",
+  "&:hover": {
+    backgroundColor: "#CDAD78",
+    color: "white",
+  },
+});
 
 
 const Certi: FC = () => {
@@ -152,7 +163,7 @@ const Certi: FC = () => {
               <TableRow >
                 <TableCell sx={{ width: 60 }} align="center">
                   <Checkbox 
-                    style={{padding:'0px'}}
+                    style={{padding:'0px', color: "#5B321E"}}
                     checked={checked.length === list.length}
                     onChange={checkButton}
                   />
@@ -175,6 +186,7 @@ const Certi: FC = () => {
                         onChange={handleChange}
                         name={`list-${idx}`}
                         value={idx}
+                        style ={{color: "#5B321E"}}
                       />
                     </TableCell>
                     <TableCell align="center" >{idx+1}</TableCell>
@@ -190,14 +202,14 @@ const Certi: FC = () => {
           </Table>
         </TableContainer>
 
-        <Button
+        <UpdateButton
           variant="contained" 
           style={{marginTop:'20px'}}
           onClick={() => onClick()}
           disabled={checked.length === 0}
         >
           확인서 발급
-        </Button>
+        </UpdateButton>
       </div>
 
       {
