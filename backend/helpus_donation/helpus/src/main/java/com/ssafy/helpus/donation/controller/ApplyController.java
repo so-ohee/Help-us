@@ -3,6 +3,7 @@ package com.ssafy.helpus.donation.controller;
 import com.ssafy.helpus.donation.dto.Apply.ApplyReqDto;
 import com.ssafy.helpus.donation.dto.Apply.WaybillReqDto;
 import com.ssafy.helpus.donation.service.ApplyService;
+import com.ssafy.helpus.member.service.MemberService;
 import com.ssafy.helpus.utils.Message;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,7 @@ import java.util.Map;
 public class ApplyController {
 
     private final ApplyService applyService;
+    private final MemberService memberService;
 
     @ApiOperation(value = "기부 신청")
     @PostMapping
@@ -83,17 +85,17 @@ public class ApplyController {
     }
 
     @ApiOperation(value = "기부 현황 목록 조회")
-    @GetMapping("{type}")
-    public ResponseEntity applyList(@PathVariable String type,
-                                            @RequestParam(required = false) Long donationId,
-                                            @RequestParam(required = false, defaultValue = "1") int page, @RequestHeader HttpHeaders headers) {
+    @GetMapping("{type}/{memberId}")
+    public ResponseEntity applyList (@PathVariable String type,
+                                     @PathVariable Long memberId,
+                                     @RequestParam(required = false) Long donationId,
+                                     @RequestParam(required = false, defaultValue = "1") int page) {
         log.info("ApplyController applyList call");
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.OK;
         try {
-            Long memberId = Long.valueOf(headers.get("memberId").get(0));
-            String role = headers.get("role").get(0);
+            String role = memberService.getMemberRole(memberId);
             if(role.equals("USER"))
                 resultMap = applyService.userApplyList(memberId, type, page-1);
             else if(role.equals("ORG"))
