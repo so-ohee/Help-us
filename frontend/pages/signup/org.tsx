@@ -105,12 +105,11 @@ const Org: FC = () => {
                 .then(res => {
                     if (res.data === true){
                         setEmailMsg("")
+                        setCheckEmail(true);
                     }else {
                         setEmailMsg("중복된 이메일입니다.")
                     }
                 })
-                setEmailMsg("");
-                setCheckEmail(true);
             }
           }
         }, 500);
@@ -560,7 +559,7 @@ const Org: FC = () => {
                         variant="contained"
                         sx={{ mt: 3, mb: 2 }}
                         onClick={onSubmit}
-                        // disabled={!checkPw || !authEnd || name.length === 0 || phone.length === 0 || addr.length === 0 || regiName.length === 0}
+                        disabled={!checkPw || !authEnd || name.length === 0 || phone.length === 0 || addr.length === 0 || regiName.length === 0}
                     >
                         회원가입
                     </Button>

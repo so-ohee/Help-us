@@ -16,6 +16,7 @@ import Container from '@mui/material/Container';
 import Dialog from '@mui/material/Dialog';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import styled from 'styled-components';
+import { emailCheck, phoneAuth } from "../../function/axios";
 
 const FormHelperTexts = styled(FormHelperText)`
 width: 100%;
@@ -33,10 +34,11 @@ const CustomDisableInput = styled(TextField)(() => ({
 
 const User: FC = () => {
 
-    const checkNum = '123456'
+    // const checkNum = '123456'
     const timeLimit = 180
 
     const [phone, setPhone] = useState('')
+    const [checkNum, setCheckNum] = useState('000000')
 
     const [pwMsg1, setPwMsg1] = useState("");
     const [pwMsg2, setPwMsg2] = useState("");
@@ -67,8 +69,9 @@ const User: FC = () => {
         password: "",
         passwordConfirm: "",
         name: "",
+        intro: "",
       });
-      const { email, password, passwordConfirm, name } =
+      const { email, password, passwordConfirm, name, intro } =
         inputs;
       const onChange = (e) => {
         const { value, name } = e.target;
@@ -96,22 +99,16 @@ const User: FC = () => {
                 setEmailMsg("올바른 이메일 형식이 아닙니다.");
             } 
             else {
-                setEmailMsg("");
-                setCheckEmail(true);
+                emailCheck(email)
+                .then(res => {
+                    if (res.data === true){
+                        setEmailMsg("")
+                        setCheckEmail(true);
+                    }else {
+                        setEmailMsg("중복된 이메일입니다.")
+                    }
+                })
             }
-            //   // 이메일 중복검사
-            //   axios({
-            //     method: "get",
-            //     url: "/user/checkemail?email=" + email,
-            //   })
-            //     .then((res) => {
-            //       setEmailMsg("사용하셔도 좋습니다.");
-            //       setCheckEmail(true);
-            //     })
-            //     .catch((err) => {
-            //       setEmailMsg("중복된 이메일입니다.");
-            //     });
-            // }
           }
         }, 500);
         return () => clearTimeout(debounce);
@@ -177,9 +174,27 @@ const User: FC = () => {
         
     }, [password, passwordConfirm]);
 
+    // 인증 클릭시
+    const onClickAuth = () => {
+        phoneAuth(phone.replace(/-/g,''))
+        .then(res => {
+            if(res.data.result === 'true'){
+                setCheckNum(res.data.code)
+                setAuthPhone(true)
+            }else{
+                alert('다시 입력해주세요.')
+            }
+        })
+        .catch(() => {
+            alert('다시 입력해주세요.')
+        })
+        // console.log(phone.replace(/-/g,''))
+        // setAuthPhone(true)
+    }
+
     // 인증번호 처리
     useEffect(() => {
-        if (authnum.length >= 6){
+        if (authnum.length >= 5){
             if (authnum === checkNum){
                 // alert('인증되었습니다.')
                 setAuthEnd(true)
@@ -205,6 +220,7 @@ const User: FC = () => {
                     setAuthPhone(false)
                     setAuthMsg('')
                     setAuthnum('')
+                    setCheckNum('000000')
                 }
 
             }, 1000)
@@ -213,16 +229,9 @@ const User: FC = () => {
     }, [authPhone, authEnd])
 
     // 회원가입 버튼 누를시
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        console.log(data)
-        console.log({
-          email: data.get('email'),
-          password: data.get('password'),
-          
-        });
-      };
+    const onSubmit = () => {
+        console.log(email,password,name,phone,intro)
+    }
     
 
 
@@ -286,13 +295,10 @@ const User: FC = () => {
                     alignItems: 'center',
                 }}
                 >
-                <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                    <LockOutlinedIcon />
-                </Avatar>
-                <Typography component="h1" variant="h5">
+                <Typography component="h1" variant="h5" style={{fontWeight:'bold'}}>
                     일반 회원가입
                 </Typography>
-                <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+                <Box component="form" noValidate sx={{ mt: 3 }}>
                     <Grid container spacing={1}>
                         <Grid item xs={12}>
                             <TextField
@@ -403,7 +409,7 @@ const User: FC = () => {
                             sx={{ mt: 1, mb:1, mx:1}}
                             variant="contained"
                             disabled={phone.length < 12 || authPhone}
-                            onClick={() => setAuthPhone(true)}
+                            onClick={() => onClickAuth()}
                         >
                         인증
                         </Button>
@@ -423,7 +429,7 @@ const User: FC = () => {
                                     onChange={(e) => setAuthnum(e.target.value)}
                                     disabled={authEnd}
                                     // color="black"
-                                    inputProps={{ maxLength: 6 }}
+                                    inputProps={{ maxLength: 5 }}
                                     error={authMsg.length > 0}
                                     />
                                 </Grid>
@@ -449,6 +455,7 @@ const User: FC = () => {
                                     setSec(timeLimit)
                                     setAuthMsg('')
                                     setAuthnum('')
+                                    setCheckNum('000000')
                                 }}
                                 >
                                 다시 인증하기
@@ -488,6 +495,8 @@ const User: FC = () => {
                             rows={3}
                             id="intro"
                             label="소개"
+                            value={intro}
+                            onChange={onChange}
                             inputProps={{ maxLength: 200 }}
                             />
                         </Grid>
@@ -495,15 +504,14 @@ const User: FC = () => {
 
                     </Grid>
                     <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    sx={{ mt: 3, mb: 2 }}
+                        fullWidth
+                        variant="contained"
+                        sx={{ mt: 3, mb: 2 }}
+                        onClick={onSubmit}
+                        disabled={!checkPw || !authEnd || name.length === 0 || !checkEmail}
                     >
-                    Sign Up
+                    회원가입
                     </Button>
-                    <Grid container justifyContent="flex-end">
-                    </Grid>
                 </Box>
                 </Box>
             </Container>

@@ -58,6 +58,17 @@ export const emailAuth = async (email) => {
   })
 }
 
+// 휴대폰 인증 문자 발송
+export const phoneAuth = async (phone) => {
+  return await axios({
+    method:'POST',
+    url:'/9082/member/phone-auth',
+    data: {
+      "number" : phone
+    },
+  })
+}
+
 
 
 // ------------------------- 기타 ------------------------------
