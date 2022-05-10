@@ -25,6 +25,7 @@ public class CommentServiceImpl implements CommentService {
     private final MemberService memberService;
 
     @Override
+    @Transactional
     public Map<String, Object> registerComment(CommentDto commentDto, int memberId) throws Exception {
         log.info("CommentService registerComment call");
 
@@ -36,6 +37,8 @@ public class CommentServiceImpl implements CommentService {
                 .helpDesk(deskRepository.findById(commentDto.getHelpDeskId()).get()).build();
 
         commentRepository.save(comment);
+
+        comment.getHelpDesk().setStatus("등록");
 
         resultMap.put("message", Message.COMMENT_REGISTER_SUCCESS);
         return resultMap;
@@ -53,6 +56,8 @@ public class CommentServiceImpl implements CommentService {
             return resultMap;
         }
 
+        if(comment.get().getHelpDesk().getHelpDeskComments().size()==1)
+            comment.get().getHelpDesk().setStatus("미등록");
         commentRepository.deleteById(commentId);
 
         resultMap.put("message", Message.COMMENT_DELETE_SUCCESS);
