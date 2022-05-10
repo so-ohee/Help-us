@@ -4,6 +4,7 @@ import com.ssafy.helpus.volunteer.dto.TalentDonationReqDto;
 import com.ssafy.helpus.volunteer.dto.TalentDonationUpdateReqDto;
 import com.ssafy.helpus.volunteer.service.FileService;
 import com.ssafy.helpus.volunteer.service.TalentDonationService;
+import com.ssafy.helpus.volunteer.service.VolunteerService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +26,7 @@ public class TalentDonationController {
 
     private final TalentDonationService talentDonationService;
     private final FileService fileService;
+    private final VolunteerService volunteerService;
 
 
     @ApiOperation(value = "재능기부 글 등록")
@@ -96,6 +98,23 @@ public class TalentDonationController {
         }catch (Exception e){
             log.error(e.getMessage());
 
+            resultMap.put("message", e.getMessage());
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity(resultMap, status);
+    }
+    @GetMapping("/")
+    public ResponseEntity listVolunteer(@RequestParam(defaultValue = "1") int page){
+
+        log.info("VolunteerController listVolunteer call");
+        String category = "ORG";
+
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.ACCEPTED;
+        try {
+            resultMap = talentDonationService.listTalenDonation(category, page-1);
+        }catch (Exception e){
+            log.info(e.getMessage());
             resultMap.put("message", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }

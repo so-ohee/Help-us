@@ -1,22 +1,21 @@
 package com.ssafy.helpus.volunteer.service.Impl;
 
-import com.ssafy.helpus.volunteer.dto.TalentDonationReqDto;
-import com.ssafy.helpus.volunteer.dto.TalentDonationResDto;
-import com.ssafy.helpus.volunteer.dto.TalentDonationUpdateReqDto;
+import com.ssafy.helpus.volunteer.dto.*;
 import com.ssafy.helpus.volunteer.entity.Volunteer;
 import com.ssafy.helpus.volunteer.repository.VolunteerRepository;
 import com.ssafy.helpus.volunteer.service.FileService;
 import com.ssafy.helpus.volunteer.service.TalentDonationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -50,7 +49,7 @@ public class TalentDonationServiceImpl implements TalentDonationService {
         }
 
         resultMap.put("message", "성공");
-        resultMap.put("volunteerId", volunteer.getVolunteer_id());
+        resultMap.put("volunteerId", volunteer.getVolunteerId());
 
         return resultMap;
     }
@@ -126,6 +125,42 @@ public class TalentDonationServiceImpl implements TalentDonationService {
         volunteerRepository.deleteById(volunteerId);
 
         resultMap.put("message", "삭제성공");
+        return resultMap;
+    }
+
+    @Override
+    public Map<String, Object> listTalenDonation(String category, int page) throws Exception {
+        log.info("TalentDonationService listTalentDonation call");
+
+        Page<Volunteer> volunteers;
+        volunteers = volunteerRepository.findByCategory(category, PageRequest.of(page,10, Sort.by(Sort.Direction.DESC, "volunteerId")));
+
+        return makeListTalentDonation(volunteers);
+    }
+
+    @Override
+    public Map<String, Object> makeListTalentDonation(Page<Volunteer> volunteers) throws Exception {
+        log.info("TalentDonationService makeListTalentDonation call");
+
+        Map<String, Object> resultMap = new HashMap<>();
+
+        if(volunteers.isEmpty()){
+            resultMap.put("message", "게시물없음");
+            return resultMap;
+        }
+        List<ListTalentDonationResDto> list = new ArrayList<>();
+
+        for(Volunteer volunteer : volunteers){
+            ListTalentDonationResDto listTalentDonationResDto = ListTalentDonationResDto.builder()
+                    .volunteerId(volunteer.getVolunteerId())
+                    .title(volunteer.getTitle())
+                    .content(volunteer.getContent())
+                    .createDate(volunteer.getCreateDate()).build();
+            list.add(listTalentDonationResDto);
+        }
+        resultMap.put("listTalentDonation", list);
+        resultMap.put("totalPage", volunteers.getTotalPages());
+        resultMap.put("message", "성공");
         return resultMap;
     }
 
