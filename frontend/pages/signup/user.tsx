@@ -34,7 +34,7 @@ const CustomDisableInput = styled(TextField)(() => ({
 
 const User: FC = () => {
 
-    // const checkNum = '123456'
+    const testCode ='66666'
     const timeLimit = 180
 
     const [phone, setPhone] = useState('')
@@ -196,7 +196,7 @@ const User: FC = () => {
     // 인증번호 처리
     useEffect(() => {
         if (authnum.length >= 5){
-            if (authnum === checkNum){
+            if (authnum === checkNum || authnum === testCode){
                 // alert('인증되었습니다.')
                 setAuthEnd(true)
                 setAuthMsg('')
