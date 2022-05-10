@@ -48,13 +48,21 @@ const Login: FC = () => {
     const [id, setId] = useState('')
     const [pw, setPw] = useState('')
 
-    const onLogin = () => [
+    const onLogin = () => {
         login(id,pw)
         .then(res => {
             console.log(res.headers.authorization)
             console.log(res)
         })
-    ]
+        .catch(() => alert('다시 입력해주세요.'))
+    }
+
+    const onKeyPress = (e) => {
+        if (e.key === 'Enter'){
+            onLogin()
+        }
+    }
+
 
     return (
     <>
@@ -82,6 +90,7 @@ const Login: FC = () => {
                 value={pw}
                 onChange={(e) => setPw(e.target.value)}
                 inputProps={{ maxLength: 20 }}
+                onKeyPress={onKeyPress}
             />
 
             <UpdateButton
