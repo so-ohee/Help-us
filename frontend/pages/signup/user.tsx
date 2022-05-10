@@ -108,6 +108,7 @@ const User: FC = () => {
                         setEmailMsg("중복된 이메일입니다.")
                     }
                 })
+                .catch(() => setEmailMsg("중복된 이메일입니다."))
             }
           }
         }, 500);

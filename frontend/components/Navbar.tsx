@@ -2,6 +2,7 @@ import react, { FC, ReactNode, useState } from 'react';
 import { AppBar, Container, Toolbar, Typography, styled, Box, Stack, Link } from "@mui/material/";
 import Image from 'next/image';
 import logo from "../public/images/logo3.png";
+import { useRouter } from "next/router";
 
 
 export interface LoginProps {
@@ -17,6 +18,7 @@ const ColorAppbar = styled(AppBar) ({
 
 const Navbar: FC<LoginProps> = ({ value }) => {
   const [ isLogin, setIsLogin ] = useState<boolean>(value);
+  const router = useRouter()
 
   return (
     <ColorAppbar position="static" elevation={0}>
@@ -45,9 +47,19 @@ const Navbar: FC<LoginProps> = ({ value }) => {
             </Stack>
           </Box>
           <Box>
-            <Typography variant="h6" sx={{ mx: 2 }}>
-              <Link underline="none" color="inherit">마이 페이지</Link>  
-            </Typography>  
+            <Stack direction="row">
+              <Typography variant="h6" sx={{ mx: 2 }}>
+                <Link underline="none" color="inherit">마이 페이지</Link>  
+              </Typography>  
+              <Typography variant="h6" sx={{ mx: 2 }}>
+                <Link 
+                  onClick={() => router.push('/signup')} 
+                  underline="none" 
+                  color="inherit"
+                  style={{cursor:'pointer'}}
+                >회원가입</Link>  
+              </Typography>  
+            </Stack>
           </Box> 
         </Toolbar>
       </Container>

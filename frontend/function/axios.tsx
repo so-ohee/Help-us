@@ -69,6 +69,35 @@ export const phoneAuth = async (phone) => {
   })
 }
 
+// 기관 회원가입
+export const signupOrg = async (data, img) => {
+
+//   const data = {
+//     "email": "test5@test.com",
+//     "password": "test1",
+//     "name": "c",
+//     "tel": "01010001000",
+//     "address":"test1",
+//     "info":"a",
+//     "orgZipcode":"aa",
+//     "warnCount":0,
+//     "createDate": new Date()
+// }
+
+  const newForm = new FormData();
+  newForm.append("member", new Blob([JSON.stringify(data)], { type: "application/json" }))
+  newForm.append("registration",img)
+  newForm.append("profile",img)
+
+  return await axios({
+    url:'/9082/member/org', 
+    method:'POST',
+    headers:{
+      'Content-Type':'multipart/form-data',
+    },
+    data: newForm,
+  })
+}
 
 
 // ------------------------- 기타 ------------------------------

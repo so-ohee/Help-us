@@ -11,7 +11,8 @@ import Container from '@mui/material/Container';
 import Dialog from '@mui/material/Dialog';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import styled from 'styled-components';
-import { emailCheck, emailAuth } from "../../function/axios";
+import { emailCheck, emailAuth, signupOrg } from "../../function/axios";
+import { useRouter } from "next/router";
 
 const FormHelperTexts = styled(FormHelperText)`
 width: 100%;
@@ -28,6 +29,7 @@ const CustomDisableInput = styled(TextField)(() => ({
 
 
 const Org: FC = () => {
+    const router = useRouter()
 
 
     const timeLimit = 180
@@ -110,6 +112,7 @@ const Org: FC = () => {
                         setEmailMsg("중복된 이메일입니다.")
                     }
                 })
+                .catch(() => setEmailMsg("중복된 이메일입니다."))
             }
           }
         }, 500);
@@ -226,7 +229,25 @@ const Org: FC = () => {
         // if (!checkPw || !authEnd || name.length === 0 || phone.length === 0 || addr.length === 0 || regiName.length === 0){
         //     alert('모든 항목을 입력해주세요.')
         // }
-        console.log(email,password,name,phone,post,addr, addr2, intro, regi)
+        // console.log(email,password,name,phone,post,addr, addr2, intro, regi)
+        const data = {
+            "email": email,
+            "password": password,
+            "name": name,
+            "tel": phone,
+            "address": addr+' '+addr2,
+            "info": intro,
+            "orgZipcode": post,
+            "warnCount": 0,
+            "createDate": new Date()
+        }
+        signupOrg(data, regi)
+        .then(res => {
+            // console.log(res)
+            alert('회원가입이 완료되었습니다. 관리자의 승인 이후 글 작성이 가능합니다.')
+            router.push('/')
+        })
+        .catch(() => alert('다시 작성하여주세요.'))
     }
     
 
