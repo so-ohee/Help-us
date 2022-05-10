@@ -37,6 +37,10 @@ import MailIcon from "@mui/icons-material/Mail";
 import testImage from "../../../public/images/testImage.jpg";
 import goodImage from "../../../public/images/good.jpg";
 
+import Comment from "../../../components/Comment";
+
+// import { CommentData } from "../../../interfaces";
+
 const CustomButton = styled(Button)({
   backgroundColor: "#5B321E",
   color: "white",
@@ -169,8 +173,82 @@ const dummyData = [
   },
 ];
 
+export interface CommentData {
+  commentId: number;
+  memberId: number;
+  name: string;
+  profile: string;
+  content: string;
+  parentId: number;
+  parentName: string;
+  createDate: any;
+}
+
 const TalentDetail: FC = () => {
   const imageList = [testImage, testImage, testImage, testImage, testImage];
+
+  const comments = [
+    {
+      commentId: 3,
+      memberId: 1,
+      name: "a",
+      profile: "a",
+      content: "댓글3",
+      parentId: null,
+      parentName: null,
+      createDate: "2022-05-09T11:08:06",
+    },
+    {
+      commentId: 9,
+      memberId: 2,
+      name: "na",
+      profile: "a",
+      content: "3의 대댓글",
+      parentId: 1,
+      parentName: "a",
+      createDate: "2022-05-09T14:55:07",
+    },
+    {
+      commentId: 1,
+      memberId: 3,
+      name: "banana",
+      profile: "a",
+      content: "댓글",
+      parentId: null,
+      parentName: null,
+      createDate: "2022-05-09T11:07:12",
+    },
+    {
+      commentId: 5,
+      memberId: 2,
+      name: "na",
+      profile: "a",
+      content: "1의 대댓글",
+      parentId: 1,
+      parentName: "banana",
+      createDate: "2022-05-09T11:08:50",
+    },
+    {
+      commentId: 6,
+      memberId: 1,
+      name: "a",
+      profile: "a",
+      content: "삭제된 댓글입니다.",
+      parentId: 1,
+      parentName: "na",
+      createDate: "2022-05-09T11:09:08",
+    },
+    {
+      commentId: 7,
+      memberId: 1,
+      name: "a",
+      profile: "a",
+      content: "6의 대댓글",
+      parentId: 1,
+      parentName: "na",
+      createDate: "2022-05-09T11:09:40",
+    },
+  ];
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -293,7 +371,7 @@ const TalentDetail: FC = () => {
           </Typography>
           <Divider color="#CDAD78" sx={{ my: 2, borderBottomWidth: 5 }} />
           <Typography variant="h5" fontWeight="bold" sx={{ mx: 5 }}>
-            댓글 10
+            댓글 {comments.length}
           </Typography>
           <Stack
             justifyContent="space-between"
@@ -308,6 +386,11 @@ const TalentDetail: FC = () => {
             <CustomButton variant="contained" size="small" sx={{ width: 30 }}>
               등록
             </CustomButton>
+          </Stack>
+          <Stack>
+            {comments.map((item) => (
+              <Comment comment={item} />
+            ))}
           </Stack>
         </Container>
       </Box>

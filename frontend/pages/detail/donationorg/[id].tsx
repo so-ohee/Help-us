@@ -33,6 +33,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import BusinessIcon from "@mui/icons-material/Business";
 import CallIcon from "@mui/icons-material/Call";
 import MailIcon from "@mui/icons-material/Mail";
+import InsertLinkIcon from "@mui/icons-material/InsertLink";
 
 import testImage from "../../../public/images/testImage.jpg";
 
@@ -520,16 +521,25 @@ const DonationOrgDetail: FC = () => {
                       </Stack>
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      <Button
-                        onClick={() =>
-                          window.open(
-                            `https://search.shopping.naver.com/search/all?where=all&frm=NVSCTAB&query=${data.productName}`,
-                            "_blank"
-                          )
-                        }
+                      <Tooltip
+                        title="외부 쇼핑몰 사이트로 이동합니다."
+                        placement="top-end"
                       >
-                        쇼핑몰 링크
-                      </Button>
+                        <Button
+                          onClick={() =>
+                            window.open(
+                              `https://search.shopping.naver.com/search/all?where=all&frm=NVSCTAB&query=${data.productName}`,
+                              "_blank"
+                            )
+                          }
+                        >
+                          <InsertLinkIcon
+                            sx={{
+                              color: "#5B321E",
+                            }}
+                          />
+                        </Button>
+                      </Tooltip>
                     </StyledTableCell>
                     <StyledTableCell align="center">
                       <FormGroup row>

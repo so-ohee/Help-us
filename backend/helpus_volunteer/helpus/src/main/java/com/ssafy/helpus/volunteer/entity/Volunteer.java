@@ -20,7 +20,7 @@ import java.util.List;
 public class Volunteer {
     @Id @Column(name = "volunteer_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long volunteer_id;
+    private Long volunteerId;
 
     @Column(name = "member_id", nullable = false, updatable = false)
     private Long memberId;
@@ -78,7 +78,6 @@ public class Volunteer {
         this.applicant = applicant;
         this.volDate = volDate;
         this.category = category;
-
     }
 
 

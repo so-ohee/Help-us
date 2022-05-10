@@ -103,4 +103,42 @@ public class VolunteerController {
         return new ResponseEntity(resultMap, status);
     }
 
+    @ApiOperation(value = "봉사신청")
+    @PutMapping("/apply/{volunteerId}")
+    public ResponseEntity applyVolunteer(@PathVariable Long volunteerId, @RequestHeader HttpHeaders headers){
+        log.info("VolunteerController applyVolunteer call");
+
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.OK;
+
+        try {
+            Long memberId = Long.valueOf(headers.get("memberId").get(0));
+            String role = headers.get("role").get(0);
+            resultMap = volunteerService.applyVolunteer(volunteerId, memberId, role);
+        }catch (Exception e){
+            log.error(e.getMessage());
+            resultMap.put("message", e.getMessage());
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity(resultMap, status);
+    }
+
+    @GetMapping("/")
+    public ResponseEntity listVolunteer(@RequestParam(defaultValue = "1") int page){
+
+        log.info("VolunteerController listVolunteer call");
+        String category = "USER";
+
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.ACCEPTED;
+        try {
+            resultMap = volunteerService.listVolunteer(category, page-1);
+        }catch (Exception e){
+            log.info(e.getMessage());
+            resultMap.put("message", e.getMessage());
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity(resultMap, status);
+    }
+
 }

@@ -2,6 +2,8 @@ package com.ssafy.helpus.volunteer.service;
 
 import com.ssafy.helpus.volunteer.dto.TalentDonationUpdateReqDto;
 import com.ssafy.helpus.volunteer.dto.TalentDonationReqDto;
+import com.ssafy.helpus.volunteer.entity.Volunteer;
+import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -16,4 +18,8 @@ public interface TalentDonationService {
     Map<String, Object> getTalentDonation(Long volunteerId) throws Exception;
     // 재능기부 글 삭제
     Map<String, Object> deleteTalentDonation(Long volunteerId) throws Exception;
+    // 봉사글 목록
+    Map<String, Object> listTalenDonation (String category, int page) throws Exception;
+    // 목록만들기
+    Map<String, Object> makeListTalentDonation (Page<Volunteer> volunteers) throws Exception;
 }
