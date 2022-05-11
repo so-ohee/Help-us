@@ -4,6 +4,7 @@ package com.ssafy.helpus.volunteer.entity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -11,11 +12,12 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
-@Table(name = "volunteer_comment")
-public class VolunteerComment {
+@Table(name = "comment")
+public class Comment {
     @Id
-    @Column(name = "volunteer_comment_id")
+    @Column(name = "comment_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long commentId;
 
@@ -42,7 +44,7 @@ public class VolunteerComment {
     private LocalDateTime createDate;
 
     @Builder
-    public VolunteerComment(Long commentId, Long volunteerId, Long memberId, String content, int commentGroup, int depth, Long parentCommentId) {
+    public Comment(Long commentId, Long volunteerId, Long memberId, String content, int commentGroup, int depth, Long parentCommentId) {
         this.commentId = commentId;
         this.volunteerId = volunteerId;
         this.memberId = memberId;

@@ -42,4 +42,40 @@ public class CommeentController {
         return new ResponseEntity(resultMap, status);
     }
 
+    @ApiOperation(value = "댓글 조회")
+    @GetMapping("/{volunteerId}")
+    public ResponseEntity listComment(@PathVariable Long volunteerId, @RequestParam(required = false, defaultValue = "1") int page) {
+        log.info("CommentController listComment call");
+
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.OK;
+        try {
+            resultMap = commentService.listComment(volunteerId, page-1);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+
+            resultMap.put("message", e.getMessage());
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity(resultMap, status);
+    }
+
+    @ApiOperation(value = "댓글 삭제")
+    @DeleteMapping("{commentId}")
+    public ResponseEntity deleteComment(@PathVariable Long commentId){
+        log.info("CommentController deleteComment call");
+
+        Map<String, Object> resultMap = new HashMap<>();
+
+        HttpStatus status = HttpStatus.OK;
+        try {
+            resultMap = commentService.deleteComment(commentId);
+        }catch (Exception e){
+            log.error(e.getMessage());
+            resultMap.put("message", e.getMessage());
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity(resultMap, status);
+    }
+
 }
