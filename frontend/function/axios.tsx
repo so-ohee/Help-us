@@ -157,6 +157,42 @@ export const getMypage = async (token) => {
   });
 };
 
+
+
+
+
+
+
+// -------------------------관리자페이지-------------------------
+
+// 전체 회원 조회
+export const getAllUser = async (token, page) => {
+  return await axios({
+    method: "GET",
+    url: `/8000/member/admin/${page}`,
+    headers: {
+      Authorization: token,
+    },
+  });
+};
+
+// 회원 경고
+export const warning = async (token, id) => {
+  return await axios({
+    method: "PUT",
+    url: '/8000/member/admin/warning',
+    headers: {
+      Authorization: token,
+    },
+    data: {
+      'memberId': id
+    }
+  });
+};
+
+
+
+
 // ------------------------- 기타 ------------------------------
 
 // ocr

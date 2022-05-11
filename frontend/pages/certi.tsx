@@ -16,7 +16,6 @@ import DialogTitle from '@mui/material/DialogTitle';
 import CircularProgress from '@mui/material/CircularProgress';
 import html2canvas from 'html2canvas'
 import { styled } from "@mui/material/styles";
-import { tableCellClasses } from "@mui/material/TableCell";
 
 
 const UpdateButton = styled(Button)({
@@ -106,6 +105,7 @@ const Certi: FC = () => {
   let year = now.getFullYear()
   let month = now.getMonth() + 1
   let date = now.getDate()
+  let dateFormat = year+"-"+(("00"+month.toString()).slice(-2))+"-"+(("00"+date.toString()).slice(-2));
 
 
   // 버튼 클릭시
@@ -141,7 +141,7 @@ const Certi: FC = () => {
   // div -> png
   const onHtmlToPng = () => {
     html2canvas(document.getElementById('div')).then(canvas=>{
-      onSave(canvas.toDataURL('image/png'), '기부내역확인서.png')
+      onSave(canvas.toDataURL('image/png'), `기부내역확인서_${dateFormat}.png`)
     })
   }
   const onSave = (uri, filename) => {
@@ -241,7 +241,7 @@ const Certi: FC = () => {
                 <h1 style={{display: 'flex', justifyContent: 'center'}}>기부내역</h1>
                 <div style={{minHeight:'500px'}}>
                   <TableContainer  style={{display: 'flex', justifyContent: 'center'}}>
-                    <Table style={{backgroundColor:'transparent'}}>
+                    <Table>
                       <TableHead >
                         <TableRow>
                           <TableCell sx={{ width: 70 }} align="center" style={{padding:'12px'}}>번호</TableCell>
