@@ -116,63 +116,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   height: 62,
 }));
 
-// const dummyData = [
-//   {
-//     donationApplyId: 1,
-//     productName: "휴지",
-//     totalCount: 100,
-//     productInfo: "브랜드는 상관 없습니다.",
-//     finishCount: 30,
-//     deliveryCount: 30,
-//     percent: 70,
-//   },
-//   {
-//     donationApplyId: 1,
-//     productName: "물티슈",
-//     totalCount: 50,
-//     productInfo: "브랜드는 상관 없습니다.",
-//     finishCount: 30,
-//     deliveryCount: 10,
-//     percent: 70,
-//   },
-//   {
-//     donationApplyId: 1,
-//     productName: "감자",
-//     totalCount: 26,
-//     productInfo: "브랜드는 상관 없습니다.",
-//     finishCount: 11,
-//     deliveryCount: 5,
-//     percent: 70,
-//   },
-//   {
-//     donationApplyId: 1,
-//     productName: "라면",
-//     totalCount: 500,
-//     productInfo: "맵지 않은 제품으로 부탁드립니다.",
-//     finishCount: 30,
-//     deliveryCount: 200,
-//     percent: 70,
-//   },
-//   {
-//     donationApplyId: 1,
-//     productName: "치킨",
-//     totalCount: 10,
-//     productInfo: "브랜드는 상관 없습니다.",
-//     finishCount: 2,
-//     deliveryCount: 4,
-//     percent: 70,
-//   },
-//   {
-//     donationApplyId: 1,
-//     productName: "치즈",
-//     totalCount: 50,
-//     productInfo: "브랜드는 상관 없습니다.",
-//     finishCount: 30,
-//     deliveryCount: 10,
-//     percent: 70,
-//   },
-// ];
-
 const DonationOrgDetail: FC = () => {
   const router = useRouter();
 

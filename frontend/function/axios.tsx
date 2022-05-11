@@ -2,7 +2,7 @@ import { FC } from "react";
 import axios from "axios";
 
 // proxy
-// 9080: 기부 'http://k6c106.p.ssafy.io:9080'
+// 9080: 기부, 후기 'http://k6c106.p.ssafy.io:9080'
 // 9081: 봉사 'http://k6c106.p.ssafy.io:9081'
 // 9082: 회원가입, 유저 정보 'http://k6c106.p.ssafy.io:9082'
 // 8000: 로그인 'http://k6c106.p.ssafy.io:8000'
@@ -14,6 +14,15 @@ export const donationDetail = async (id) => {
   return await axios({
     method: "GET",
     url: `/9080/donation/${id}`,
+  });
+};
+
+// 후기 페이지 - 후기 목록 조회
+export const getReviewList = async (params) => {
+  return await axios({
+    method: "GET",
+    url: `/9080/d.confirm`,
+    params: params,
   });
 };
 
