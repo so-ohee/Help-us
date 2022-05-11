@@ -1,5 +1,7 @@
 package com.ssafy.helpus.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -29,7 +31,7 @@ public class HelpDesk {
     private String content;
 
     @Column(name = "visible")
-    private int visible;
+    private String visible;
 
     @Column(name = "create_date")
     private LocalDateTime createDate;
@@ -38,16 +40,19 @@ public class HelpDesk {
     private LocalDateTime update_date;
 
     @Column(name = "status")
-    private int status;
+    private String status;
 
     @ManyToOne
     @JoinColumn(name = "member_id")
+    @JsonBackReference
     private Member member;
 
     @OneToMany(mappedBy = "helpDesk",cascade = CascadeType.ALL)
+//    @JsonManagedReference(value = "helpDesk-helpDeskComments")
     private List<HelpDeskComment> helpDeskComments = new ArrayList<>();
 
     @OneToMany(mappedBy = "helpDesk",cascade = CascadeType.ALL)
+//    @JsonManagedReference(value = "helpDesk-helpDeskImages")
     private List<HelpDeskImage> helpDeskImages = new ArrayList<>();
 
 }

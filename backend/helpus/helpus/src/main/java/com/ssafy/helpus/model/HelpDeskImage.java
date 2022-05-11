@@ -1,5 +1,6 @@
 package com.ssafy.helpus.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -25,9 +26,11 @@ public class HelpDeskImage {
 
     @ManyToOne
     @JoinColumn(name = "member_id")
+    @JsonBackReference(value = "image-member")
     private Member member;
 
     @ManyToOne
     @JoinColumn(name = "help_desk_id")
+    @JsonBackReference(value = "image-desk")
     private HelpDesk helpDesk;
 }

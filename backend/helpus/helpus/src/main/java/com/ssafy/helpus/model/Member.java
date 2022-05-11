@@ -1,5 +1,9 @@
 package com.ssafy.helpus.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -58,11 +62,18 @@ public class Member {
     private LocalDateTime createDate;
 
     @OneToMany(mappedBy = "member",cascade = CascadeType.ALL)
+//    @JsonManagedReference(value = "member-certifications")
     private List<Certification> certifications = new ArrayList<>();
 
     @OneToMany(mappedBy = "member",cascade = CascadeType.ALL)
+//    @JsonManagedReference(value = "member-helpDesks")
     private List<HelpDesk> helpDesks = new ArrayList<>();
 
     @OneToMany(mappedBy = "member",cascade = CascadeType.ALL)
+//    @JsonManagedReference(value = "member-helpDeskComments")
     private List<HelpDeskComment> helpDeskComments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member",cascade = CascadeType.ALL)
+//    @JsonManagedReference(value = "member-helpDeskImages")
+    private List<HelpDeskImage> helpDeskImages = new ArrayList<>();
 }

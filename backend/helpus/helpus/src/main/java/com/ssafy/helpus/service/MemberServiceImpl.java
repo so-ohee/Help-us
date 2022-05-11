@@ -2,22 +2,18 @@ package com.ssafy.helpus.service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.netflix.discovery.converters.Auto;
 import com.ssafy.helpus.config.jwt.JwtProperties;
 import com.ssafy.helpus.model.Member;
 import com.ssafy.helpus.repository.MemberRepository;
-import javassist.Loader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -133,7 +129,9 @@ public class MemberServiceImpl implements MemberService{
         try {
             Member m = memberRepository.findByMemberId(id);
             String preUrl = m.getProfile();
-            s3Service.delete(preUrl);
+            if(preUrl != null){
+                s3Service.delete(preUrl);
+            }
             String newUrl = s3Service.upload(newProfile);
             m.setProfile(newUrl);
             m.setInfo(newInfo);
@@ -222,6 +220,16 @@ public class MemberServiceImpl implements MemberService{
         }
         else
             return false;
+    }
+
+    @Override
+    public List<Member> getMembersByEmail(String content) {
+        return memberRepository.findByEmailContains(content);
+    }
+
+    @Override
+    public List<Member> getMembersByName(String content) {
+        return memberRepository.findByNameContains(content);
     }
 
     @Override

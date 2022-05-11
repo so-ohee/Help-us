@@ -43,7 +43,7 @@ public class JwtFilter extends AbstractGatewayFilterFactory<JwtFilter.Config> {
             else{
                 int memberId = jwt.getClaim("memberId").asInt();
                 String role = jwt.getClaim("role").asString();
-                req.mutate().header("memberId", String.valueOf(memberId)).header("role",role).build();
+                req.mutate().header("memberIdByToken", String.valueOf(memberId)).header("role",role).build();
                 return chain.filter(exchange.mutate().request(req).build());
             }
         });

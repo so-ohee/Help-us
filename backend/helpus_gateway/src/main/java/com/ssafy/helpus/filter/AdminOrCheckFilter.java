@@ -18,30 +18,30 @@ import reactor.core.publisher.Mono;
 import java.util.Objects;
 
 @Component
-public class OrgFilter extends AbstractGatewayFilterFactory<OrgFilter.Config> {
+public class AdminOrCheckFilter extends AbstractGatewayFilterFactory<AdminOrCheckFilter.Config> {
     public static class Config{
 
     }
-    public OrgFilter(){
-        super(OrgFilter.Config.class);
+    public AdminOrCheckFilter(){
+        super(AdminOrCheckFilter.Config.class);
     }
     @Override
-    public GatewayFilter apply(OrgFilter.Config config) {
+    public GatewayFilter apply(AdminOrCheckFilter.Config config) {
         return ((exchange, chain) -> {
             ServerHttpRequest req = exchange.getRequest();
-            if(!req.getHeaders().containsKey(HttpHeaders.AUTHORIZATION)){
+            if(!req.getHeaders().containsKey("role")){
                 return onError(exchange, "키가 없음", HttpStatus.UNAUTHORIZED);
             }
-            String auth = Objects.requireNonNull(req.getHeaders().get(HttpHeaders.AUTHORIZATION).get(0));
-            String token = auth.replace("Bearer ","").trim();
-            DecodedJWT jwt = getDecodedJWT(token);
-            if(jwt == null){
-                return onError(exchange,"키가 유효하지 않음", HttpStatus.UNAUTHORIZED);
+            String role = Objects.requireNonNull(req.getHeaders().get("role").get(0));
+
+            if(role.equals("ADMIN")){
+                return chain.filter(exchange);
             }
-            else{
-                String role = String.valueOf(jwt.getClaim("role"));
-                if(!role.equals("ORG") || !role.equals("ADMIN"))
-                    return onError(exchange,"권한 없음", HttpStatus.UNAUTHORIZED);
+            else {
+                int memberId = Integer.parseInt(Objects.requireNonNull(req.getHeaders().get("memberId").get(0)));
+                int memberIdByToken = Integer.parseInt(Objects.requireNonNull(req.getHeaders().get("memberIdByToken").get(0)));
+                if(memberId != memberIdByToken)
+                    return onError(exchange,"본인이 아님", HttpStatus.UNAUTHORIZED);
                 return chain.filter(exchange);
             }
         });
@@ -52,18 +52,5 @@ public class OrgFilter extends AbstractGatewayFilterFactory<OrgFilter.Config> {
 
         System.out.println(e);
         return res.setComplete();
-    }
-    private DecodedJWT getDecodedJWT(String token){
-        try {
-            Algorithm algo = Algorithm.HMAC256("helpus");
-            JWTVerifier verifier = JWT.require(algo).withIssuer("auth").build();
-            DecodedJWT jwt = verifier.verify(token);
-            System.out.println("--------------------------------------------------------");
-            System.out.println(jwt.getClaim("userId"));
-            return jwt;
-
-        }catch (JWTVerificationException e){
-            return null;
-        }
     }
 }
