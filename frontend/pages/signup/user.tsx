@@ -263,9 +263,11 @@ const User: FC = () => {
     const onLogin = () => {
         login(email, password)
         .then(res => {
-            console.log(res.headers.authorization)
-            console.log(res)
+            // console.log(res.headers.authorization)
+            // console.log(res)
             localStorage.setItem('jwt', res.headers.authorization)
+            localStorage.setItem('id', res.data.memberId)
+            localStorage.setItem('role', res.data.role)
             location.href='/'
             // router.push('/')
         })

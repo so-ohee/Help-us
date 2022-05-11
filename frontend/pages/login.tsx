@@ -51,9 +51,11 @@ const Login: FC = () => {
     const onLogin = () => {
         login(id,pw)
         .then(res => {
-            console.log(res.headers.authorization)
-            console.log(res)
+            // console.log(res.headers.authorization)
+            // console.log(res)
             localStorage.setItem('jwt', res.headers.authorization)
+            localStorage.setItem('id', res.data.memberId)
+            localStorage.setItem('role', res.data.role)
             location.href='/'
             // router.push('/')
         })

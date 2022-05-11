@@ -18,17 +18,29 @@ const ColorAppbar = styled(AppBar) ({
 
 const Navbar: FC<LoginProps> = ({ value }) => {
   const [ isLogin, setIsLogin ] = useState<boolean>(value);
+  const [role, setRole] = useState('')
   const router = useRouter()
 
   const onLogout = () => {
     localStorage.removeItem('jwt')
+    localStorage.removeItem('id')
+    localStorage.removeItem('role')
     // router.push('/')
     location.href='/'
+  }
+
+  const onMyPage = () => {
+    if (localStorage.getItem('role') === 'USER'){
+      router.push('/userpage/my')
+    }else{
+      router.push('/orgpage/my')
+    }
   }
 
   useEffect(() => {
     if (localStorage.getItem('jwt')){
       setIsLogin(true)
+      setRole(localStorage.getItem('role'))
     }else{
       setIsLogin(false)
     }
@@ -62,21 +74,53 @@ const Navbar: FC<LoginProps> = ({ value }) => {
           </Box>
           <Box>
             <Stack direction="row">
-              <Typography variant="h6" sx={{ mx: 2 }}>
-                <Link underline="none" color="inherit">마이 페이지</Link>  
-              </Typography> 
+
               {
                 isLogin ? (
-                  <>
-                    <Typography variant="h6" sx={{ mx: 2 }}>
-                      <Link 
-                        onClick={onLogout} 
-                        underline="none" 
-                        color="inherit"
-                        style={{cursor:'pointer'}}
-                      >로그아웃</Link>  
-                    </Typography>  
-                  </>
+                  (
+                    role === 'ADMIN' ? (
+                      <>
+                        <Typography variant="h6" sx={{ mx: 2 }}>
+                          <Link 
+                            onClick={() => router.push('/admin')} 
+                            underline="none" 
+                            color="inherit"
+                            style={{cursor:'pointer'}}
+                          >관리자 페이지</Link>  
+                        </Typography> 
+    
+                        <Typography variant="h6" sx={{ mx: 2 }}>
+                          <Link 
+                            onClick={onLogout} 
+                            underline="none" 
+                            color="inherit"
+                            style={{cursor:'pointer'}}
+                          >로그아웃</Link>  
+                        </Typography>  
+                      </>
+                    ) :
+                    (
+                      <>
+                        <Typography variant="h6" sx={{ mx: 2 }}>
+                          <Link 
+                            onClick={onMyPage}
+                            underline="none" 
+                            color="inherit"
+                            style={{cursor:'pointer'}}
+                          >마이페이지</Link>  
+                        </Typography> 
+    
+                        <Typography variant="h6" sx={{ mx: 2 }}>
+                          <Link 
+                            onClick={onLogout} 
+                            underline="none" 
+                            color="inherit"
+                            style={{cursor:'pointer'}}
+                          >로그아웃</Link>  
+                        </Typography>  
+                      </>
+                    )
+                  )
                 ) : (
                   <>
                     <Typography variant="h6" sx={{ mx: 2 }}>
@@ -87,6 +131,7 @@ const Navbar: FC<LoginProps> = ({ value }) => {
                         style={{cursor:'pointer'}}
                       >로그인</Link>  
                     </Typography>  
+
                     <Typography variant="h6" sx={{ mx: 2 }}>
                       <Link 
                         onClick={() => router.push('/signup')} 
