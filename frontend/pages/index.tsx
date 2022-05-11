@@ -1,25 +1,8 @@
 import react, { useState } from "react";
 import type { NextPage } from "next";
-<<<<<<< HEAD
-import {
-  Box,
-  Grid,
-  Tab,
-  Typography,
-  Stack,
-  Link,
-  InputLabel,
-  MenuItem,
-  FormControl,
-  Tabs,
-} from "@mui/material/";
-import { TabContext, TabList, TabPanel } from "@mui/lab/";
-import Head from "next/head";
-=======
 import { Box, Grid, Tab, Typography, Stack, Link, InputLabel, MenuItem, FormControl, Tabs } from "@mui/material/";
 import {TabContext, TabList, TabPanel} from '@mui/lab/';
 import { styled, ThemeProvider, createTheme } from "@mui/material/styles";
->>>>>>> feature/create
 import Image from "next/image";
 import { useRouter } from "next/router";
 import DonationCard from "../components/DonationCard";

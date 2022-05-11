@@ -125,11 +125,17 @@ const DonationOrg: FC = (props, ) => {
     setId(Id)
   }, [id])
 
+  const [isSSR, setIsSSR] = useState(true);
+
+  useEffect(() => {
+    setIsSSR(false);
+  }, []);
+
 
   return (
     <ThemeProvider theme={theme}>
       <Grid container justifyContent="center" alignItems="center">
-        <Stack >
+      { !isSSR && <Stack >
             <Box sx={{ display: 'flex', justifyContent: 'flex-end'}}>
               <CustomButton variant="contained" href="/donation">
                 목록으로
@@ -254,6 +260,7 @@ const DonationOrg: FC = (props, ) => {
                 <CustomButton size="large" variant="contained" type="submit" onSubmit={handleSubmit}>등록하기</CustomButton>
               </Box>
         </Stack>
+        }
       </Grid>
     </ThemeProvider>  
   );
