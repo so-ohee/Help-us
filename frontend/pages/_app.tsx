@@ -24,6 +24,11 @@ const MyApp: FC = ({ Component, pageProps }: AppProps) => {
       // fontFamily: "Noto Serif KR",
       fontFamily: "Noto Sans KR",
     },
+    palette: {
+      primary: {
+        main: '#5B321E'
+      }
+    }
   });
 
   // const theme = createTheme();

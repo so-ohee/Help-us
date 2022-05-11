@@ -11,6 +11,18 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
+import { styled } from "@mui/material/styles";
+
+
+const UpdateButton = styled(Button)({
+    backgroundColor: "#5B321E",
+    color: "white",
+    fontWeight: "bold",
+    "&:hover": {
+      backgroundColor: "#CDAD78",
+      color: "white",
+    },
+  });
 
 
 const UserList = () => {
@@ -36,9 +48,9 @@ const UserList = () => {
                     </Select>
                 </FormControl>
                 <TextField size="small" />
-                <Button variant="contained" style={{padding:'8px'}} >
+                <UpdateButton variant="contained" style={{padding:'8px'}} >
                     검색
-                </Button>
+                </UpdateButton>
             </div>
             
 
@@ -58,7 +70,7 @@ const UserList = () => {
                         <TableCell>싸피재단</TableCell>
                         <TableCell>ssafy@ssafy.com</TableCell>
                         <TableCell>2 
-                            <Button variant="contained" size="small" style={{marginLeft:'15px'}} >경고</Button>
+                            <UpdateButton variant="contained" size="small" style={{marginLeft:'15px'}} >경고</UpdateButton>
                         </TableCell>
                     </TableRow>
 
@@ -67,7 +79,7 @@ const UserList = () => {
                         <TableCell>싸피재단</TableCell>
                         <TableCell>ssafy@ssafy.com</TableCell>
                         <TableCell>2 
-                            <Button variant="contained" size="small" style={{marginLeft:'15px'}} >경고</Button>
+                            <UpdateButton variant="contained" size="small" style={{marginLeft:'15px'}} >경고</UpdateButton>
                         </TableCell>
                     </TableRow>
 

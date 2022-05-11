@@ -122,6 +122,16 @@ export const signupUser = async (data) => {
   });
 };
 
+
+// 회원정보 조회
+export const userDetail = async (id) => {
+  return await axios({
+    method: "GET",
+    url: `/9082/member/${id}`,
+  });
+};
+
+
 // ----------------------- 8000 ------------------------------
 
 // 로그인

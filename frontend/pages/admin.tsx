@@ -9,6 +9,8 @@ import UserList from "../components/UserList";
 
 
 
+
+
 const Admin: FC = () => {
   const [value, setValue] = useState('1');
 
@@ -17,7 +19,7 @@ const Admin: FC = () => {
   };
   return (
     <>
-      <Box sx={{ maxWidth: '600px', typography: 'body1', margin: 'auto'}}>
+      <Box sx={{ maxWidth: '600px', typography: 'body1', margin: 'auto', minHeight:'600px'}}>
         <TabContext value={value}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <TabList onChange={handleChange} variant="fullWidth">

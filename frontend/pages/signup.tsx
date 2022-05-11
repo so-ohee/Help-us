@@ -45,7 +45,6 @@ const Signup: FC = () => {
                 </UpdateButton>
             </div>
         </div>
-
     </div>
     </>
     )
