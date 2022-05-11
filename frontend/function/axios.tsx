@@ -136,6 +136,17 @@ export const login = async (email, pw) => {
   });
 };
 
+// 마이페이지 정보 조회
+export const getMypage = async (token) => {
+  return await axios({
+    method: "GET",
+    url: "/8000/member",
+    headers: {
+      Authorization: token,
+    },
+  });
+};
+
 // ------------------------- 기타 ------------------------------
 
 // ocr
@@ -223,5 +234,13 @@ export const OCR_kakao = async (img) => {
       Authorization: "KakaoAK 5f6cb439fd56b3078f112ab72cd15263",
     },
     data: newForm,
+  });
+};
+
+// 택배 조회 api
+export const getPostCompany = async () => {
+  return await axios({
+    method: "GET",
+    url: `https://info.sweettracker.co.kr/api/v1/companylist?t_key=${process.env.NEXT_PUBLIC_POST_TRACKER_API_KEY}`,
   });
 };

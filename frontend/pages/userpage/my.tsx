@@ -1,6 +1,5 @@
-import { FC } from "react";
+import { FC, useState, useEffect } from "react";
 import Image from "next/image";
-import { useState } from "react";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 import {
   Container,
@@ -25,6 +24,9 @@ import MailIcon from "@mui/icons-material/Mail";
 
 import TestImage from "../../public/images/testImage.jpg";
 import goodImage from "../../public/images/good.jpg";
+
+// api
+import { getMypage } from "function/axios";
 
 const mdTheme = createTheme();
 
@@ -61,6 +63,17 @@ const UpdateButton2 = styled(Button)({
 });
 
 const UserMypage: FC = () => {
+  // const [myInfo, setMyInfo] = useState<any>(null);
+
+  // useEffect(() => {
+  //   const token = localStorage.getItem("jwt");
+  //   console.log("token은", token);
+  //   getMypage(token).then((res) => {
+  //     // setMyInfo(res.data);
+  //     console.log("가져온 data:", res);
+  //   });
+  // }, []);
+
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
