@@ -190,6 +190,33 @@ export const warning = async (token, id) => {
   });
 };
 
+// 가입 대기 기관 리스트
+export const waitingList = async (token, page) => {
+  return await axios({
+    method: "GET",
+    url: `/8000/member/admin/waiting-list/${page}`,
+    headers: {
+      Authorization: token,
+    },
+  });
+};
+
+// 기관 회원가입 승인
+export const approveSignup = async (token, id) => {
+  return await axios({
+    method: "PUT",
+    url: '/8000/member/admin/permission',
+    headers: {
+      Authorization: token,
+    },
+    data: {
+      "member_id": id,
+      "permission": true
+    }
+  });
+};
+
+
 
 
 

@@ -17,7 +17,7 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import TextField from '@mui/material/TextField';
 import CircularProgress from '@mui/material/CircularProgress';
-import { OCR, userDetail } from "../function/axios";
+import { OCR, userDetail, waitingList, approveSignup } from "../function/axios";
 import { styled } from "@mui/material/styles";
 
 
@@ -45,6 +45,9 @@ const SignupList = () => {
     const [myMsg, setMyMsg] = useState('')
     const [code, setCode] = useState('')
 
+    const [orgList, setOrgList] = useState([])
+    const [page, setPage] = useState<number>(1)
+    const [totalPage, setTotalPage] = useState<number>(1)
 
     // 기관 정보
     const [name, setName] = useState('')
@@ -54,25 +57,25 @@ const SignupList = () => {
     const [day, setDay] = useState('')
     const [intro, setIntro] = useState('')
     const [img, setImg] = useState('')
+    const [memberId, setMemberId] = useState('')
 
-    const orgList = [
-        {
-            id: 22,
-            name: '싸피재단',
-            day: '2022-05-11 15:30'
-        },
-        {
-            id: 33,
-            name: '싸피재단',
-            day: '2022-05-11 15:30'
-        },
-        {
-            id: 34,
-            name: '싸피재단',
-            day: '2022-05-11 15:30'
-        },
-    ]
+    useEffect(() => {
+        waitingList(localStorage.getItem('jwt'), 1)
+        .then(res => {
+            // console.log(res.data[1].members)
+            setOrgList(res.data[1].members)
 
+        })
+    },[])
+
+    const paginate = (page_) => {
+        setPage(page_)
+        waitingList(localStorage.getItem('jwt'),page_)
+        .then(res => {
+            setOrgList(res.data[1].members)
+            setTotalPage((res.data[0].total_page-1-(res.data[0].total_page-1)%10)/10)
+        })
+    }
 
 
  
@@ -88,6 +91,7 @@ const SignupList = () => {
             setDay(res.data.createDate)
             setIntro(res.data.info)
             setImg(res.data.registration)
+            setMemberId(res.data.memberId)
 
             // ocr
 
@@ -113,7 +117,7 @@ const SignupList = () => {
                 }
             })
             .catch(err => {
-                console.log(err)
+                // console.log(err)
                 setStep('failed')
             }
             )
@@ -157,7 +161,15 @@ const SignupList = () => {
             setMsg(res.data.data[0].b_stt +' '+ res.data.data[0].tax_type)
         })
         .catch(err => console.log(err))
+    }
 
+    // 회원가입 승인
+    const approve = () => {
+        approveSignup(localStorage.getItem('jwt'), memberId)
+        .then(res => {
+            paginate(page)
+        })
+        handleClose()
     }
 
 
@@ -215,12 +227,13 @@ const SignupList = () => {
                             <TableCell>
                                 <span                     
                                     style={{cursor:'pointer'}}
-                                    onClick={() => handleClickOpen(e.id)}
+                                    onClick={() => handleClickOpen(e.memberId)}
                                 >
                                     {e.name}
                                 </span>
                             </TableCell>
-                            <TableCell>{e.day}</TableCell>
+                            {/* <TableCell>{Date.parse(e.createDate)}</TableCell> */}
+                            <TableCell>{e.createDate}</TableCell>
                         </TableRow>
                         )
                     }
@@ -297,7 +310,7 @@ const SignupList = () => {
                         )
                     }
                 </div>
-                <UpdateButton variant="contained" onClick={handleClose}>승인</UpdateButton>
+                <UpdateButton variant="contained" onClick={approve}>승인</UpdateButton>
                 {/* <Button onClick={handleClose}>거절</Button> */}
             </DialogActions>
 
