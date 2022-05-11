@@ -1,6 +1,7 @@
 import { FC, useState, useEffect } from "react";
 import Image from "next/image";
 import logo3 from "../public/images/logo3.png";
+import logo4 from "../public/images/logo100x100.png";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -15,6 +16,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import CircularProgress from '@mui/material/CircularProgress';
 import html2canvas from 'html2canvas'
 import { styled } from "@mui/material/styles";
+import { tableCellClasses } from "@mui/material/TableCell";
 
 
 const UpdateButton = styled(Button)({
@@ -117,7 +119,10 @@ const Certi: FC = () => {
   // 증명번호 생성 후, 증명서 생성
   useEffect(() => {
     if (certiNum !== ''){
-      onHtmlToPng()
+      setTimeout(function() {
+        onHtmlToPng()
+      }, 1000);
+      // onHtmlToPng()
     }
   },[certiNum])
 
@@ -155,7 +160,12 @@ const Certi: FC = () => {
     <>
       <div style={{maxWidth:'700px', minHeight:'600px', margin:'auto', textAlign: 'center'}}>
         <h1>나의 기부내역</h1>
-        <br></br>
+        <Image 
+          src= {logo4}
+          alt=""
+          width={1}
+          height={1}
+        />
 
         <TableContainer component={Paper}>
           <Table sx={{ maxWidth: 800 }}>
@@ -230,10 +240,10 @@ const Certi: FC = () => {
                 <br />
                 <h1 style={{display: 'flex', justifyContent: 'center'}}>기부내역</h1>
                 <div style={{minHeight:'500px'}}>
-                  <TableContainer component={Paper} style={{display: 'flex', justifyContent: 'center'}}>
-                    <Table >
+                  <TableContainer  style={{display: 'flex', justifyContent: 'center'}}>
+                    <Table style={{backgroundColor:'transparent'}}>
                       <TableHead >
-                        <TableRow >
+                        <TableRow>
                           <TableCell sx={{ width: 70 }} align="center" style={{padding:'12px'}}>번호</TableCell>
                           <TableCell sx={{ width: 200 }} style={{padding:'12px'}}>기관명</TableCell>
                           <TableCell sx={{ width: 170 }} style={{padding:'12px'}}>물품</TableCell>
@@ -246,7 +256,7 @@ const Certi: FC = () => {
                       {
                         checked.map((e, idx) => {
                           return (
-                            <TableRow key={idx}>
+                            <TableRow key={idx} >
                               <TableCell align="center" style={{padding:'12px'}}>{idx+1}</TableCell>
                               <TableCell style={{padding:'12px'}}>{list[e].org}</TableCell>
                               <TableCell style={{padding:'12px'}}>{list[e].item}</TableCell>
@@ -265,11 +275,17 @@ const Certi: FC = () => {
                 <h2 style={{display: 'flex', justifyContent: 'center', marginBottom:'10px'}}>{year}년 {month}월 {date}일</h2>
                 <div style={{display: 'flex', justifyContent: 'center'}}>
                   <span style={{fontSize:'40px', fontWeight:'bold', marginTop:'20px', marginLeft:'90px'}}>헬프어스</span>
-                  <Image 
+                  {/* <Image 
                     src= {logo3}
                     alt=""
                     width={100}
                     height={100}
+                  /> */}
+                  <Image 
+                    src= {logo4}
+                    alt=""
+                    // width={100}
+                    // height={100}
                   />
                 </div>
 
