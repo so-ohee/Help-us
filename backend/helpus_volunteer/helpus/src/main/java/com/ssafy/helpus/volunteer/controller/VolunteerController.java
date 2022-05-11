@@ -85,7 +85,7 @@ public class VolunteerController {
         return new ResponseEntity(resultMap, status);
     }
 
-    @ApiOperation(value = "봉사 글 삭제")
+    @ApiOperation(value = "봉사 글 마감")
     @DeleteMapping("{volunteerId}")
     public ResponseEntity endVolunteer(@PathVariable Long volunteerId){
         log.info("VolunteerController endVolunteer call");

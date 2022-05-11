@@ -148,7 +148,7 @@ public class VolunteerServiceImpl implements VolunteerService{
         Optional<Volunteer> volunteer = volunteerRepository.findById(volunteerId);
 
         if(!volunteer.isPresent() || volunteer.get().getStatus()==1){
-            resultMap.put("message", "조회불가");
+            resultMap.put("message", "마감처리 불가");
             return resultMap;
         }
 
@@ -176,11 +176,24 @@ public class VolunteerServiceImpl implements VolunteerService{
             return resultMap;
         }
 
-        int now = volunteer.get().getApplicant();
-        volunteer.get().setApplicant(now+1);
+        List<VolunteerApply> list = volunteerApplyRepository.findByVolunteer(volunteer.get());
+        if(list!=null){
+            for(int i=0; i<list.size(); i++){
+                if(list.get(i).getMemberId()==memberId){
+                    resultMap.put("message", "이미 지원했습니다");
+                    return resultMap;
+                }
+            }
+        }
+
+        int now = volunteer.get().getApplicant()+1;
+        volunteer.get().setApplicant(now);
+        System.out.println("now :"+now);
 
         int now_people = volunteer.get().getPeople();
-        double now_percent = now+1/now_people;
+        System.out.println("people :"+now_people);
+        double now_percent = (double)now/(double)now_people * 100.0;
+        System.out.println("percent :" + now_percent);
         volunteer.get().setPercent(now_percent);
 
         VolunteerApply volunteerApply = VolunteerApply.builder()
