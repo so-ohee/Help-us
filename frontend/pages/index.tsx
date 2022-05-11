@@ -1,5 +1,6 @@
 import react, { useState } from "react";
 import type { NextPage } from "next";
+<<<<<<< HEAD
 import {
   Box,
   Grid,
@@ -14,6 +15,11 @@ import {
 } from "@mui/material/";
 import { TabContext, TabList, TabPanel } from "@mui/lab/";
 import Head from "next/head";
+=======
+import { Box, Grid, Tab, Typography, Stack, Link, InputLabel, MenuItem, FormControl, Tabs } from "@mui/material/";
+import {TabContext, TabList, TabPanel} from '@mui/lab/';
+import { styled, ThemeProvider, createTheme } from "@mui/material/styles";
+>>>>>>> feature/create
 import Image from "next/image";
 import { useRouter } from "next/router";
 import DonationCard from "../components/DonationCard";
@@ -22,6 +28,19 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import volunteer1 from "../public/images/volunteer1.jpg";
 
 const Home: NextPage = () => {
+  const theme = createTheme({
+    typography: {
+      // fontFamily: "Gowun Dodum",
+      // fontFamily: "Noto Serif KR",
+      fontFamily: "Noto Sans KR",
+    },
+    palette: {
+      primary: {
+        main: '#5B321E',
+      },
+    },
+  });
+
   const router = useRouter();
   const [value, setValue] = useState("1");
   const [option, setOption] = useState("");
@@ -34,7 +53,7 @@ const Home: NextPage = () => {
   };
 
   return (
-    <div>
+    <ThemeProvider theme={theme}>
       <Grid container justifyContent="center" alignItems="center">
         <Box textAlign="center" sx={{ mt: 5, mb: 10 }}>
           <Image
@@ -146,7 +165,7 @@ const Home: NextPage = () => {
           </Box>
         </Box>
       </Grid>
-    </div>
+    </ThemeProvider>
   );
 };
 

@@ -1,5 +1,8 @@
 import { FC } from "react";
 import axios from "axios";
+import { content } from "html2canvas/dist/types/css/property-descriptors/content";
+import endOfDecadeWithOptions from "date-fns/esm/fp/endOfDecadeWithOptions/index.js";
+import { id } from "date-fns/locale";
 
 // proxy
 // 9080: 기부, 후기 'http://k6c106.p.ssafy.io:9080'
@@ -173,9 +176,17 @@ export const getUserInfo = async (id) => {
   });
 };
 
-
-
-
+// 물품 기부 등록 
+export const createDonation = async (id, donation: Object, files: Object) => {
+  return await axios({
+    method: 'POST',
+    url: '/9080/donation',
+    data: {donation, files},
+    headers : {
+      memberId : id,
+    }
+  })
+}
 
 
 
