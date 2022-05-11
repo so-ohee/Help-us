@@ -53,6 +53,9 @@ const Login: FC = () => {
         .then(res => {
             console.log(res.headers.authorization)
             console.log(res)
+            localStorage.setItem('jwt', res.headers.authorization)
+            location.href='/'
+            // router.push('/')
         })
         .catch(() => alert('다시 입력해주세요.'))
     }
@@ -62,6 +65,8 @@ const Login: FC = () => {
             onLogin()
         }
     }
+    // localStorage.setItem('key', '12')
+    // console.log(localStorage.getItem('key'))
 
 
     return (

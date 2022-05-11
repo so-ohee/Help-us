@@ -15,7 +15,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Dialog from '@mui/material/Dialog';
 import styled from 'styled-components';
-import { emailCheck, phoneAuth, signupUser } from "../../function/axios";
+import { emailCheck, phoneAuth, signupUser, login } from "../../function/axios";
 import { useRouter } from "next/router";
 
 const FormHelperTexts = styled(FormHelperText)`
@@ -253,12 +253,24 @@ const User: FC = () => {
         }
         signupUser(data_)
         .then(() => {
-            router.push('/')
+            onLogin()
+            // router.push('/')
             // alert('회원가입이 완료되었습니다.')
         })
         .catch(() => alert('다시 입력해주세요.'))
     }
     
+    const onLogin = () => {
+        login(email, password)
+        .then(res => {
+            console.log(res.headers.authorization)
+            console.log(res)
+            localStorage.setItem('jwt', res.headers.authorization)
+            location.href='/'
+            // router.push('/')
+        })
+        // .catch(() => alert('다시 입력해주세요.'))
+    }
 
 
     // 시간 초 -> 분,초

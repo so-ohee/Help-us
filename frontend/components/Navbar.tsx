@@ -1,4 +1,4 @@
-import react, { FC, ReactNode, useState } from 'react';
+import react, { FC, ReactNode, useState, useEffect } from 'react';
 import { AppBar, Container, Toolbar, Typography, styled, Box, Stack, Link } from "@mui/material/";
 import Image from 'next/image';
 import logo from "../public/images/logo3.png";
@@ -19,6 +19,20 @@ const ColorAppbar = styled(AppBar) ({
 const Navbar: FC<LoginProps> = ({ value }) => {
   const [ isLogin, setIsLogin ] = useState<boolean>(value);
   const router = useRouter()
+
+  const onLogout = () => {
+    localStorage.removeItem('jwt')
+    // router.push('/')
+    location.href='/'
+  }
+
+  useEffect(() => {
+    if (localStorage.getItem('jwt')){
+      setIsLogin(true)
+    }else{
+      setIsLogin(false)
+    }
+  },[])
 
   return (
     <ColorAppbar position="static" elevation={0}>
@@ -50,23 +64,41 @@ const Navbar: FC<LoginProps> = ({ value }) => {
             <Stack direction="row">
               <Typography variant="h6" sx={{ mx: 2 }}>
                 <Link underline="none" color="inherit">마이 페이지</Link>  
-              </Typography>  
-              <Typography variant="h6" sx={{ mx: 2 }}>
-                <Link 
-                  onClick={() => router.push('/login')} 
-                  underline="none" 
-                  color="inherit"
-                  style={{cursor:'pointer'}}
-                >로그인</Link>  
-              </Typography>  
-              <Typography variant="h6" sx={{ mx: 2 }}>
-                <Link 
-                  onClick={() => router.push('/signup')} 
-                  underline="none" 
-                  color="inherit"
-                  style={{cursor:'pointer'}}
-                >회원가입</Link>  
-              </Typography>  
+              </Typography> 
+              {
+                isLogin ? (
+                  <>
+                    <Typography variant="h6" sx={{ mx: 2 }}>
+                      <Link 
+                        onClick={onLogout} 
+                        underline="none" 
+                        color="inherit"
+                        style={{cursor:'pointer'}}
+                      >로그아웃</Link>  
+                    </Typography>  
+                  </>
+                ) : (
+                  <>
+                    <Typography variant="h6" sx={{ mx: 2 }}>
+                      <Link 
+                        onClick={() => router.push('/login')} 
+                        underline="none" 
+                        color="inherit"
+                        style={{cursor:'pointer'}}
+                      >로그인</Link>  
+                    </Typography>  
+                    <Typography variant="h6" sx={{ mx: 2 }}>
+                      <Link 
+                        onClick={() => router.push('/signup')} 
+                        underline="none" 
+                        color="inherit"
+                        style={{cursor:'pointer'}}
+                      >회원가입</Link>  
+                    </Typography> 
+                  </>
+                )
+              } 
+ 
             </Stack>
           </Box> 
         </Toolbar>

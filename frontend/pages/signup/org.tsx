@@ -10,7 +10,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Dialog from '@mui/material/Dialog';
 import styled from 'styled-components';
-import { emailCheck, emailAuth, signupOrg } from "../../function/axios";
+import { emailCheck, emailAuth, signupOrg, login } from "../../function/axios";
 import { useRouter } from "next/router";
 
 
@@ -278,12 +278,25 @@ const Org: FC = () => {
         signupOrg(data, regi)
         .then(res => {
             // console.log(res)
+            onLogin()
             alert('회원가입이 완료되었습니다. 관리자의 승인 이후 글 작성이 가능합니다.')
-            router.push('/')
+
+            // router.push('/')
         })
         .catch(() => alert('다시 작성하여주세요.'))
     }
     
+    const onLogin = () => {
+        login(email, password)
+        .then(res => {
+            console.log(res.headers.authorization)
+            console.log(res)
+            localStorage.setItem('jwt', res.headers.authorization)
+            location.href='/'
+            // router.push('/')
+        })
+        // .catch(() => alert('다시 입력해주세요.'))
+    }
 
     // 우편번호 찾기 클릭시
     const [open, setOpen] = useState<boolean>(false);
