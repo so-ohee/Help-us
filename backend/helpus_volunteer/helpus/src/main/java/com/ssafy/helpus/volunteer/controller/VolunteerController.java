@@ -141,4 +141,21 @@ public class VolunteerController {
         return new ResponseEntity(resultMap, status);
     }
 
+    @GetMapping("/main")
+    public ResponseEntity mainListVolunteer(@RequestParam(required = false,defaultValue = "최신순") String order, @RequestParam(required = false, defaultValue = "1") int page){
+        log.info("VolunteerController mainListVolunteer call");
+
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.OK;
+        try {
+            resultMap = volunteerService.mainListVolunteer(order, page-1);
+        }catch (Exception e){
+            log.error(e.getMessage());
+
+            resultMap.put("message", e.getMessage());
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity(resultMap, status);
+    }
+
 }
