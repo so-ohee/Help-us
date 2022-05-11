@@ -1,9 +1,16 @@
-import { FC, useState } from "react";
-import { Box, Grid, Button, Typography, Stack, TextField, TextareaAutosize } from "@mui/material/";
+import { FC, useEffect, useState } from "react";
+import axios from 'axios';
+import dayjs from "dayjs";
+import Image from "next/image";
+import { Box, Grid, Button, Typography, Stack, TextField, Input } from "@mui/material/";
 import { styled, ThemeProvider, createTheme } from "@mui/material/styles";
-import { CKEditor } from 'ckeditor4-react';
-import DatePicker from "../../components/DatePicker";
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { Divider } from "@material-ui/core";
+import { createDonation } from "../../function/axios";
+import Logo from "../../public/images/logo4.png";
+
 
 const CustomButton = styled(Button)({
   backgroundColor: "#5B321E",
@@ -20,7 +27,8 @@ const OutlinedButton = styled(Button)({
   color: "#5B321E"
 })
 
-const DonationOrg: FC = () => {
+const DonationOrg: FC = (props, ) => {
+  if (typeof window == 'undefined') return null
   const theme = createTheme({
     typography: {
       // fontFamily: "Gowun Dodum",
@@ -33,30 +41,90 @@ const DonationOrg: FC = () => {
       },
     },
   });
+ 
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [ image, setImage ] = useState({image_file: [], preview_URL: Logo,});
+  const [ imageList, setImageList ] = useState([]);
+  const [endDate, setEndDate] = useState('');
+  const [formValues, setFormValues] = useState([{productName: "", totalCount: 0, explain: ""}]);
+  const [loaded, setLoaded] = useState(false);
+  const [ id, setId ] = useState<any>(0);
+  let inputRef: any;
 
-  const [value, setValue] =useState<Date | null>(null);
-  const [formValues, setFormValues] = useState([{name: "", count: "", explain: ""}]);
-
+  // 물품 수량 설명 form 설정
   const handleChange = (i, e) => {
+    console.log(e.target.value)
     const newFormValues = [...formValues];
     newFormValues[i][e.target.name] = e.target.value;
+    // console.log(newFormValues)
     setFormValues(newFormValues)
   }
 
+  // 물품 input칸 추가
   const addFormFields = () => {
-    setFormValues([...formValues, { name: "", count: "", explain: ""}])
+    setFormValues([...formValues, { productName: "", totalCount: 0, explain: ""}])
   }
-
+  // 물품 input칸 삭제
   const removeFormFields = (i) => {
     const newFormValues = [...formValues];
     newFormValues.splice(i, 1);
     setFormValues(newFormValues)
   }
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    alert(JSON.stringify(formValues));
+  // 이미지 업로드
+  const onChangeImage = (e) => {
+    const file = e.target.files[0];
+    e.preventDefault();
+    let fileReader = new FileReader();
+    let filesInArr = Array.from(e.target.files);
+
+      if (e.target.files[0]) {
+        fileReader.readAsDataURL(e.target.files[0]);
+      }
+      let new_image;
+      fileReader.onload = () => {
+        new_image = fileReader.result;
+        setImage({
+          image_file: filesInArr,
+          preview_URL: new_image,
+        });
+        setLoaded(true);
+      };
+      try {
+        console.log(image)
+      } catch (err) {
+        console.log("Error uploading file: ", err);
+      } 
   }
+
+  // 물품 기부 등록 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // alert(JSON.stringify(formValues));
+    const formData = new FormData();
+    image?.image_file.map((eachfile) => formData.append("path", eachfile));
+    console.log(formData)
+
+    const id = localStorage.getItem("id")
+
+    const donation = {
+      "title" : title,
+      "content" : content,
+      "endDate" : endDate,
+      "products" : formValues
+    }
+    const files = formData;
+    createDonation(id, donation, files)
+      .then(res=> console.log(res + '성공'))
+      .catch(err => console.log(err + '실패'))
+  }
+
+  useEffect(() => {
+    const Id = localStorage.getItem("id")
+    setId(Id)
+  }, [id])
+
 
   return (
     <ThemeProvider theme={theme}>
@@ -76,14 +144,53 @@ const DonationOrg: FC = () => {
               </OutlinedButton>
             </Box>
               <Box sx={{ my : 3}}>
-                <TextField fullWidth label="제목"  />
+                <TextField fullWidth label="제목" onChange={e => setTitle(e.target.value)} />
               </Box>
-              <CKEditor
-                initData={<p>내용</p>}
+              <TextField 
+                fullWidth
+                multiline
+                minRows={15}
+                placeholder="내용"
+                onChange={e => setContent(e.target.value)}
               />
+              <Stack direction="row" sx={{my: 2, display: 'flex', justifyContent: 'space-between'}}>
+                <input 
+                  type="file" 
+                  id="chooseFile" 
+                  accept="image/*" 
+                  ref={(refParam) => (inputRef = refParam)}
+                  onChange={onChangeImage} 
+                  style={{ display: 'none' }}
+                />
+                <Box width={220} height={220} sx={{backgroundColor: '#FCF8F0', cursor: "pointer" }}>
+                {loaded === false || loaded === true ? (
+                  <Image 
+                    src={image.preview_URL}
+                    alt="이미지"
+                    width="220"
+                    height="220"
+                    onClick={() => inputRef.click()}
+                  />
+                  // <image onClick={() => inputRef.click()}>{imagePreview}</image>
+                ) : (
+                  <span>이미지를 불러오는 중입니다.</span>
+                )}
+                </Box>
+              </Stack>
               <Stack direction="row" sx={{ mt: 5, alignItems: 'center'}}>
                 <Typography variant="h5" sx={{mr : 2, fontWeight: 'bold'}}>종료일</Typography>
-                <DatePicker />
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <DatePicker
+                    label="날짜"
+                    value={endDate}
+                    inputFormat={"yyyy-MM-dd"}
+                    mask={"____-__-__"}
+                    onChange={(date) => {
+                      setEndDate(dayjs(date).format("YYYY-MM-DD"));
+                    }}
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                </LocalizationProvider>
               </Stack>
               <Stack direction="row" sx={{mt : 5, mb: 2, justifyContent: 'space-between' }}>
                 <Stack direction="row">
@@ -102,7 +209,7 @@ const DonationOrg: FC = () => {
                 </Box>
               </Stack>
               <Divider />
-              <form  onSubmit={handleSubmit}>
+              <form>
                 {formValues.map((element, index) => (
                   <div className="form-inline" key={index}>
                     <Stack direction="row" sx={{mt :2}}>
@@ -110,8 +217,8 @@ const DonationOrg: FC = () => {
                         <TextField 
                         label="품명"
                         variant="outlined"
-                        name="name"
-                        value={element.name || ""}
+                        name="productName"
+                        value={element.productName || ""}
                         onChange={e => handleChange(index, e)}
                         />
                       </Box>
@@ -119,8 +226,8 @@ const DonationOrg: FC = () => {
                         <TextField 
                         label="수량"
                         variant="outlined"
-                        name="count"
-                        value={element.count || ""}
+                        name="totalCount"
+                        value={element.totalCount || ''}
                         onChange={e => handleChange(index, e)}
                         />
                       </Box>
@@ -144,7 +251,7 @@ const DonationOrg: FC = () => {
                 ))}
             </form>
               <Box sx={{my: 5, display: 'flex', justifyContent: 'center'}}>
-                <CustomButton size="large" variant="contained" type="submit">등록하기</CustomButton>
+                <CustomButton size="large" variant="contained" type="submit" onSubmit={handleSubmit}>등록하기</CustomButton>
               </Box>
         </Stack>
       </Grid>
