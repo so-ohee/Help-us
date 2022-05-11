@@ -86,7 +86,7 @@ public class TalentDonationController {
         }
         return new ResponseEntity(resultMap, status);
     }
-    @ApiOperation(value = "봉사 글 삭제")
+    @ApiOperation(value = "재능기부 글 삭제")
     @DeleteMapping("{volunteerId}")
     public ResponseEntity deleteTalentDonation(@PathVariable Long  volunteerId){
         log.info("TalentDonationController deleteTalentDonation call");
@@ -106,7 +106,7 @@ public class TalentDonationController {
     @GetMapping("/")
     public ResponseEntity listVolunteer(@RequestParam(defaultValue = "1") int page){
 
-        log.info("VolunteerController listVolunteer call");
+        log.info("TalentDonationController listVolunteer call");
         String category = "USER";
 
         Map<String, Object> resultMap = new HashMap<>();
@@ -115,6 +115,23 @@ public class TalentDonationController {
             resultMap = talentDonationService.listTalenDonation(category, page-1);
         }catch (Exception e){
             log.info(e.getMessage());
+            resultMap.put("message", e.getMessage());
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity(resultMap, status);
+    }
+
+    @GetMapping("/main")
+    public ResponseEntity mainListTalentDonation(@RequestParam(required = false,defaultValue = "최신순") String order, @RequestParam(required = false, defaultValue = "1") int page){
+        log.info("TalentDonationController mainListTalentDonation call");
+
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.OK;
+        try {
+            resultMap = talentDonationService.mainListTalentDonation(order, page-1);
+        }catch (Exception e){
+            log.error(e.getMessage());
+
             resultMap.put("message", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }

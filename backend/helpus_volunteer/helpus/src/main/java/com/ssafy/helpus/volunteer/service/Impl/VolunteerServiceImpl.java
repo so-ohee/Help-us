@@ -1,11 +1,9 @@
 package com.ssafy.helpus.volunteer.service.Impl;
 
-import com.ssafy.helpus.volunteer.dto.ListVolunteerResDto;
-import com.ssafy.helpus.volunteer.dto.VolunteerReqDto;
-import com.ssafy.helpus.volunteer.dto.VolunteerResDto;
-import com.ssafy.helpus.volunteer.dto.VolunteerUpdateReqDto;
+import com.ssafy.helpus.volunteer.dto.*;
 import com.ssafy.helpus.volunteer.entity.Volunteer;
 import com.ssafy.helpus.volunteer.entity.VolunteerApply;
+import com.ssafy.helpus.volunteer.enumClass.VolunteerOrder;
 import com.ssafy.helpus.volunteer.repository.VolunteerApplyRepository;
 import com.ssafy.helpus.volunteer.repository.VolunteerRepository;
 import com.ssafy.helpus.volunteer.service.FileService;
@@ -188,13 +186,12 @@ public class VolunteerServiceImpl implements VolunteerService{
 
         int now = volunteer.get().getApplicant()+1;
         volunteer.get().setApplicant(now);
-        System.out.println("now :"+now);
-
         int now_people = volunteer.get().getPeople();
-        System.out.println("people :"+now_people);
         double now_percent = (double)now/(double)now_people * 100.0;
-        System.out.println("percent :" + now_percent);
         volunteer.get().setPercent(now_percent);
+        if (now==now_people){
+            volunteer.get().setStatus(1);
+        }
 
         VolunteerApply volunteerApply = VolunteerApply.builder()
                .status(1)
@@ -249,5 +246,21 @@ public class VolunteerServiceImpl implements VolunteerService{
         return resultMap;
     }
 
+    @Override
+    public Map<String, Object> mainListVolunteer(String order, int page) throws Exception{
+        log.info("VolunteerService mainListVolunteer call");
+
+        Sort sort = gerOrder(order);
+        Page<Volunteer> volunteers = volunteerRepository.findByCategoryAndStatus("ORG", 0, PageRequest.of(page,6,sort));
+        return makeListVolunteer(volunteers);
+    }
+
+    public Sort gerOrder(String order) {
+        //정렬(최신, 달성률 높은, 달성률 낮은, 오래된)
+        if(order.equals(VolunteerOrder.최신순.toString())) { return Sort.by("volunteerId").descending(); }
+        else if(order.equals(VolunteerOrder.오래된순.toString())) { return Sort.by("volunteerId").ascending(); }
+        else if(order.equals(VolunteerOrder.높은순.toString())) { return Sort.by("percent").descending(); }
+        else { return Sort.by("percent").ascending(); }
+    }
 
 }

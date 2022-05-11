@@ -2,6 +2,7 @@ package com.ssafy.helpus.volunteer.service.Impl;
 
 import com.ssafy.helpus.volunteer.dto.*;
 import com.ssafy.helpus.volunteer.entity.Volunteer;
+import com.ssafy.helpus.volunteer.enumClass.VolunteerOrder;
 import com.ssafy.helpus.volunteer.repository.VolunteerRepository;
 import com.ssafy.helpus.volunteer.service.FileService;
 import com.ssafy.helpus.volunteer.service.TalentDonationService;
@@ -162,6 +163,25 @@ public class TalentDonationServiceImpl implements TalentDonationService {
         resultMap.put("totalPage", volunteers.getTotalPages());
         resultMap.put("message", "성공");
         return resultMap;
+    }
+
+    @Override
+    public Map<String, Object> mainListTalentDonation(String order, int page) throws Exception {
+        log.info("VolunteerService mainListVolunteer call");
+
+        Sort sort = gerOrder(order);
+        Page<Volunteer> volunteers = volunteerRepository.findByCategoryAndStatus("USER", 0, PageRequest.of(page,6,sort));
+        return makeListTalentDonation(volunteers);
+    }
+
+    public Sort gerOrder(String order) {
+        //정렬(최신, 달성률 높은, 달성률 낮은, 오래된)
+        if(order.equals(VolunteerOrder.최신순.toString())) { return Sort.by("volunteerId").descending(); }
+        else
+            //if(order.equals(VolunteerOrder.오래된순.toString()))
+        { return Sort.by("volunteerId").ascending(); }
+        //else if(order.equals(VolunteerOrder.높은순.toString())) { return Sort.by("percent").descending(); }
+        //else { return Sort.by("percent").ascending();}
     }
 
 }
