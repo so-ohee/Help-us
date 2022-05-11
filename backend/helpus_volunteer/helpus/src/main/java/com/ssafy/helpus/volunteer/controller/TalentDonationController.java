@@ -107,7 +107,7 @@ public class TalentDonationController {
     public ResponseEntity listVolunteer(@RequestParam(defaultValue = "1") int page){
 
         log.info("VolunteerController listVolunteer call");
-        String category = "ORG";
+        String category = "USER";
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.ACCEPTED;

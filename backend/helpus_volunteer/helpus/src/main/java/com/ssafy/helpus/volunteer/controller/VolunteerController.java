@@ -127,7 +127,7 @@ public class VolunteerController {
     public ResponseEntity listVolunteer(@RequestParam(defaultValue = "1") int page){
 
         log.info("VolunteerController listVolunteer call");
-        String category = "USER";
+        String category = "ORG";
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.ACCEPTED;
