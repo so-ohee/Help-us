@@ -3,6 +3,7 @@ package com.ssafy.helpus.service;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.netflix.discovery.converters.Auto;
+import com.ssafy.helpus.config.jwt.JwtProperties;
 import com.ssafy.helpus.model.Member;
 import com.ssafy.helpus.repository.MemberRepository;
 import javassist.Loader;
@@ -56,6 +57,25 @@ public class MemberServiceImpl implements MemberService{
         }catch (Exception e){
             return false;
         }
+    }
+
+    @Override
+    public Member checkMember(Member member) {
+        Member result = memberRepository.findByEmail(member.getEmail());
+        return result;
+    }
+
+    @Override
+    public String login(Member member) {
+
+        String jwtToken = JWT.create()
+                .withIssuer("auth")
+                //토큰의 만료 시간 설정
+                .withExpiresAt(new Date(System.currentTimeMillis()+ JwtProperties.EXPIRATION_TIME))
+                .withClaim("memberId",member.getMemberId())
+                .withClaim("role",member.getRole())
+                .sign(Algorithm.HMAC256(JwtProperties.SECRET));
+        return jwtToken;
     }
 
     @Override
