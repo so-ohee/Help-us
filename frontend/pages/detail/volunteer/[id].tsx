@@ -180,23 +180,69 @@ const VolunteerDetail: FC = () => {
                 </CustomButton>
               </Stack>
               {/* 게시글 이미지 */}
-              <Stack justifyContent="center" alignItems="center" sx={{ mb: 5 }}>
+              <Stack
+                direction="row"
+                alignItems="center"
+                justifyContent="center"
+                sx={{ mb: 3 }}
+              >
+                <Stack
+                  justifyContent="center"
+                  alignItems="center"
+                  sx={{ mb: 0, mr: 5 }}
+                >
+                  <CustomCarousel item={volunteerDetails.images} />
+                </Stack>
+                <Stack>
+                  <Box
+                    sx={{
+                      mt: 2,
+                      bgcolor: "#f5e1be",
+                      borderRadius: 1.25,
+                      // height: "120px",
+                    }}
+                    height="500px"
+                    width="500px"
+                  >
+                    <Typography sx={{ p: 2, mt: 0 }}>
+                      {/* {volunteerDetails.content} */}
+                      Gandriz Bez Vardiem Tev pieder viss Kas ar mani ir noticis
+                      Tev pieder viss Tev pieder viss Neviens to nav sapratis
+                      Tev pieder viss, un tas ir ta Vakars, nakts un rits bez
+                      vardiem, Vakars, nakts un rits bez vardiem, (Gendriz bez
+                      vardiem) Man zudis viss- Laimes krekia uz otru pusiGandriz
+                      Bez Vardiem Tev pieder viss Kas ar mani ir noticis Tev
+                      pieder viss Tev pieder viss Neviens to nav sapratis Tev
+                      pieder viss, un tas ir ta Vakars, nakts un rits bez
+                      vardiem, Vakars, nakts un rits bez vardiem, (Gendriz bez
+                      vardiem) Man zudis viss- Laimes krekia uz otru pusiGandriz
+                      Bez Vardiem Tev pieder viss Kas ar mani ir noticis Tev p
+                    </Typography>
+                  </Box>
+                </Stack>
+              </Stack>
+              {/* <Stack justifyContent="center" alignItems="center" sx={{ mb: 5 }}>
                 <CustomCarousel item={volunteerDetails.images} />
               </Stack>
-              {/* <Stack direction="row" justifyContent="center" spacing={5}>
-            {dummyData.images.map((item) => (
-              <div
-                style={{
-                  // borderRadius: "5px",
-                  overflow: "hidden",
-                  height: "200px",
-                }}
-              >
-                <Image src={item} alt="orgImage" width="200px" height="200px" />
-              </div>
-            ))}
-          </Stack> */}
-              <Stack>
+              <Stack direction="row" justifyContent="center" spacing={5}>
+                {volunteerDetails.images.map((item) => (
+                  <div
+                    style={{
+                      // borderRadius: "5px",
+                      overflow: "hidden",
+                      height: "200px",
+                    }}
+                  >
+                    <Image
+                      src={item}
+                      alt="orgImage"
+                      width="200px"
+                      height="200px"
+                    />
+                  </div>
+                ))}
+              </Stack> */}
+              {/* <Stack>
                 <Box
                   sx={{
                     mt: 2,
@@ -210,7 +256,7 @@ const VolunteerDetail: FC = () => {
                     {volunteerDetails.content}
                   </Typography>
                 </Box>
-              </Stack>
+              </Stack> */}
               <Typography variant="h6" fontWeight="bold" sx={{ ml: 5, mt: 2 }}>
                 모집 인원수 : {volunteerDetails.people}명
               </Typography>

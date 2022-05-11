@@ -12,7 +12,7 @@ interface Iimages {
 const Container = styled.div`
   /* overflow: hidden; */
   background-color: "#ffffff";
-  width: 300px;
+  width: 500px;
   margin-left: 0px;
 `;
 
@@ -42,8 +42,8 @@ const CustomCarousel: FC<Iimages> = ({ item }) => {
               <Image
                 src={image}
                 alt="등록 이미지"
-                width="300px"
-                height="300px"
+                width="500px"
+                height="500px"
               />
             </ImageContainer>
           </div>
