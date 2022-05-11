@@ -33,4 +33,10 @@ public class ListTalentDonationResDto {
     @ApiModelProperty(value = "수정일")
     private LocalDateTime updateDate;
 
+    @ApiModelProperty(value = "기관 프로필 사진")
+    private String profile;
+
+    @ApiModelProperty(value = "기관명")
+    private String name;
+
 }

@@ -53,4 +53,10 @@ public class ListVolunteerResDto {
     @ApiModelProperty(value = "퍼센트")
     private double percent;
 
+    @ApiModelProperty(value = "기관 프로필 사진")
+    private String profile;
+
+    @ApiModelProperty(value = "기관명")
+    private String name;
+
 }

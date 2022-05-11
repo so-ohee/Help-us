@@ -7,6 +7,7 @@ import com.ssafy.helpus.volunteer.enumClass.VolunteerOrder;
 import com.ssafy.helpus.volunteer.repository.VolunteerApplyRepository;
 import com.ssafy.helpus.volunteer.repository.VolunteerRepository;
 import com.ssafy.helpus.volunteer.service.FileService;
+import com.ssafy.helpus.volunteer.service.MemberService;
 import com.ssafy.helpus.volunteer.service.VolunteerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +30,7 @@ public class VolunteerServiceImpl implements VolunteerService{
     private final VolunteerRepository volunteerRepository;
     private final FileService fileService;
     private final VolunteerApplyRepository volunteerApplyRepository;
+    private final MemberService memberService;
 
     @Override
     public Map<String, Object> registerVoluneer(VolunteerReqDto volunteerReqDto, Long memberId, MultipartFile[] files, String role) throws Exception {
@@ -139,6 +141,24 @@ public class VolunteerServiceImpl implements VolunteerService{
 
     @Override
     @Transactional
+    public Map<String, Object> deleteVolunteer(Long volunteerId) throws Exception {
+        log.info("VolunteerService deleteVolunteer call");
+
+        Map<String, Object> resultMap = new HashMap<>();
+
+        Optional<Volunteer> volunteer = volunteerRepository.findById(volunteerId);
+        if(!volunteer.isPresent()){
+            resultMap.put("message", "해당게시물은 없습니다");
+            return resultMap;
+        }
+        volunteerRepository.deleteById(volunteerId);
+
+        resultMap.put("message", "삭제성공");
+        return resultMap;
+    }
+
+    @Override
+    @Transactional
     public Map<String, Object> endVolunteer(Long volunteerId) throws Exception {
         log.info("VolunteerService endVolunteer call");
         Map<String, Object> resultMap = new HashMap<>();
@@ -227,6 +247,9 @@ public class VolunteerServiceImpl implements VolunteerService{
         List<ListVolunteerResDto> list = new ArrayList<>();
         // 기관명 추가
         for(Volunteer volunteer : volunteers){
+
+            Map<String, String> member = memberService.getMember(volunteer.getMemberId());
+
             ListVolunteerResDto listVolunteerResDto = ListVolunteerResDto.builder()
                     .volunteerId(volunteer.getVolunteerId())
                     .title(volunteer.getTitle())
@@ -237,6 +260,8 @@ public class VolunteerServiceImpl implements VolunteerService{
                     .volDate(volunteer.getVolDate())
                     .volAddress(volunteer.getVolAddress())
                     .volZipcode(volunteer.getVolZipcode())
+                    .name(member.get("name"))
+                    .profile(member.get("profile"))
                     .createDate(volunteer.getCreateDate()).build();
             list.add(listVolunteerResDto);
         }

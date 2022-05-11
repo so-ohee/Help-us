@@ -5,6 +5,7 @@ import com.ssafy.helpus.volunteer.entity.Volunteer;
 import com.ssafy.helpus.volunteer.enumClass.VolunteerOrder;
 import com.ssafy.helpus.volunteer.repository.VolunteerRepository;
 import com.ssafy.helpus.volunteer.service.FileService;
+import com.ssafy.helpus.volunteer.service.MemberService;
 import com.ssafy.helpus.volunteer.service.TalentDonationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +26,7 @@ public class TalentDonationServiceImpl implements TalentDonationService {
 
     private final VolunteerRepository volunteerRepository;
     private final FileService fileService;
+    private final MemberService memberService;
 
     @Override
     public Map<String, Object> registerTalentDonation(TalentDonationReqDto talentDonationReqDto, Long memberId, MultipartFile[] files, String role) throws Exception {
@@ -152,10 +154,14 @@ public class TalentDonationServiceImpl implements TalentDonationService {
         List<ListTalentDonationResDto> list = new ArrayList<>();
 
         for(Volunteer volunteer : volunteers){
+            Map<String, String> member = memberService.getMember(volunteer.getMemberId());
+
             ListTalentDonationResDto listTalentDonationResDto = ListTalentDonationResDto.builder()
                     .volunteerId(volunteer.getVolunteerId())
                     .title(volunteer.getTitle())
                     .content(volunteer.getContent())
+                    .name(member.get("name"))
+                    .profile(member.get("profile"))
                     .createDate(volunteer.getCreateDate()).build();
             list.add(listTalentDonationResDto);
         }
