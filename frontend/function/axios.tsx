@@ -26,6 +26,27 @@ export const getReviewList = async (params) => {
   });
 };
 
+// 마이페이지(개인) - 송장 입력 목록 조회
+export const getApplyList = async (id, params) => {
+  return await axios({
+    method: "GET",
+    url: `/9080/d.apply/tracking/${id}`,
+    params: params,
+  });
+};
+
+// 마이페이지(개인) - 후원 송장 입력
+export const sendApply = async (id, params) => {
+  return await axios({
+    method: "PUT",
+    url: "/9080/d.apply",
+    headers: {
+      memberId: id,
+    },
+    data: params,
+  });
+};
+
 // ----------------------- 9081 ------------------------------
 
 // 봉사 글 상세 조회
@@ -122,7 +143,6 @@ export const signupUser = async (data) => {
   });
 };
 
-
 // 회원정보 조회
 export const userDetail = async (id) => {
   return await axios({
@@ -130,7 +150,6 @@ export const userDetail = async (id) => {
     url: `/9082/member/${id}`,
   });
 };
-
 
 // ----------------------- 8000 ------------------------------
 
@@ -147,13 +166,10 @@ export const login = async (email, pw) => {
 };
 
 // 마이페이지 정보 조회
-export const getMypage = async (token) => {
+export const getUserInfo = async (id) => {
   return await axios({
     method: "GET",
-    url: "/8000/member",
-    headers: {
-      Authorization: token,
-    },
+    url: `/8000/api/member/${id}`,
   });
 };
 

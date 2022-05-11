@@ -36,18 +36,19 @@ const CustomCarousel: FC<Iimages> = ({ item }) => {
   return (
     <Container>
       <StyledSlider {...settings}>
-        {item.map((image, i) => (
-          <div key={i}>
-            <ImageContainer>
-              <Image
-                src={image}
-                alt="등록 이미지"
-                width="500px"
-                height="500px"
-              />
-            </ImageContainer>
-          </div>
-        ))}
+        {item &&
+          item.map((image, i) => (
+            <div key={i}>
+              <ImageContainer>
+                <Image
+                  src={image}
+                  alt="등록 이미지"
+                  width="500px"
+                  height="500px"
+                />
+              </ImageContainer>
+            </div>
+          ))}
       </StyledSlider>
     </Container>
   );
@@ -65,5 +66,5 @@ const settings = {
   slidesToScroll: 1,
   // centerMode: true,
   // centerPadding: "350px",
-  // arrows: true,
+  arrows: false,
 };
