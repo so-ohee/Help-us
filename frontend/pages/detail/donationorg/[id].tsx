@@ -37,9 +37,11 @@ import InsertLinkIcon from "@mui/icons-material/InsertLink";
 
 import testImage from "../../../public/images/testImage.jpg";
 
-// api
-import { donationDetail } from "function/axios";
+import CustomCarousel from "@/components/Carousel";
+
 import { useRouter } from "next/router";
+// api
+import { donationDetail, getUserInfo } from "function/axios";
 
 const CustomButton = styled(Button)({
   backgroundColor: "#5B321E",
@@ -120,114 +122,168 @@ const DonationOrgDetail: FC = () => {
   const router = useRouter();
 
   // console.log("라우터 쿼리는", router.query.id);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [donationDetails, setDonationDetails] = useState<any>(null);
+
+  const [donationDetails, setDonationDetails] = useState<any>("");
+
+  const [orgInfo, setOrgInfo] = useState<any>("");
+
+  const [orgId, setOrgId] = useState<any>("");
+
+  const [detailLoading, setDetailLoading] = useState<boolean>(false);
+
+  // const accessToken = localStorage.getItem("jwt");
+  // console.log(accessToken);
+
+  const params = {
+    donationId: 20,
+    donationProductId: 19,
+    count: 3,
+  };
 
   useEffect(() => {
     if (router.isReady) {
       donationDetail(router.query.id).then((res) => {
         setDonationDetails(res.data.donation);
-        setLoading(true);
-        console.log(donationDetails);
+        setDetailLoading(true);
       });
     }
   }, [router.isReady]);
 
+  useEffect(() => {
+    if (detailLoading) {
+      getUserInfo(donationDetails.memberId).then((res) => {
+        setOrgInfo(res.data);
+      });
+    }
+  }, [detailLoading]);
+
   return (
-    <>
-      {loading ? (
-        <Box sx={{ display: "flex" }}>
-          <CssBaseline />
-          <Box
-            component="main"
-            sx={{
-              flexGrow: 1,
-              // height: "100vh",
-              overflow: "auto",
-              mt: 0,
-            }}
-          >
-            <Container
-              maxWidth="lg"
-              sx={{
-                mt: 4,
-                mb: 4,
-                bgcolor: "#FCF8F0",
-                borderRadius: 1.25,
-                // height: "350px",
-              }}
-            >
-              <Grid container>
-                <Grid sx={{ mr: 2 }}>
-                  <div
-                    style={{
-                      borderRadius: "5px",
-                      overflow: "hidden",
-                      marginTop: "6px",
-                    }}
-                  >
-                    <Image
-                      src={testImage}
-                      alt="orgImage"
-                      width="150px"
-                      height="150px"
-                    />
-                  </div>
-                </Grid>
-                <Grid>
-                  <Typography sx={{ mt: 0.5 }} variant="h6" fontWeight="bold">
-                    복지관 이름
-                  </Typography>
-                  <Grid
-                    sx={{ mt: 2 }}
-                    container
-                    direction="row"
-                    alignItems="center"
-                  >
-                    <BusinessIcon sx={{ mr: 2 }} />
-                    <Typography align="center">복지관 주소</Typography>
-                  </Grid>
-                  <Grid
-                    sx={{ mt: 2 }}
-                    container
-                    direction="row"
-                    alignItems="center"
-                  >
-                    <CallIcon sx={{ mr: 2 }} />
-                    <Typography align="center">010-7777-7777</Typography>
-                  </Grid>
-                  <Grid
-                    sx={{ mt: 2 }}
-                    container
-                    direction="row"
-                    alignItems="center"
-                  >
-                    <MailIcon sx={{ mr: 2 }} />
-                    <Typography align="center">test@gmail.com</Typography>
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Stack
-                justifyContent="space-between"
+    <Box sx={{ display: "flex" }}>
+      <CssBaseline />
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          // height: "100vh",
+          overflow: "auto",
+          mt: 0,
+        }}
+      >
+        <Container
+          maxWidth="lg"
+          sx={{
+            mt: 4,
+            mb: 4,
+            bgcolor: "#FCF8F0",
+            borderRadius: 1.25,
+            // height: "350px",
+          }}
+        >
+          <Grid container>
+            <Grid sx={{ mr: 2 }}>
+              <div
+                style={{
+                  borderRadius: "5px",
+                  overflow: "hidden",
+                  marginTop: "6px",
+                }}
+              >
+                <Image
+                  src={testImage}
+                  alt="orgImage"
+                  width="150px"
+                  height="150px"
+                />
+              </div>
+            </Grid>
+            <Grid>
+              <Typography sx={{ mt: 0.5 }} variant="h6" fontWeight="bold">
+                {orgInfo ? orgInfo.name : null}
+              </Typography>
+              <Grid
+                sx={{ mt: 2 }}
+                container
                 direction="row"
-                sx={{ mt: 1.5, mb: 3 }}
                 alignItems="center"
               >
-                <Typography variant="h4" fontWeight="bold" sx={{ mt: 3 }}>
-                  {donationDetails.title}
+                <BusinessIcon sx={{ mr: 2 }} />
+                <Typography align="center">
+                  {orgInfo ? orgInfo.address : null}
                 </Typography>
-                <Link href="/donation">
-                  <CustomButton
-                    variant="contained"
-                    size="small"
-                    sx={{ width: 30 }}
-                  >
-                    목록
-                  </CustomButton>
-                </Link>
-              </Stack>
-              {/* 게시글 이미지 */}
-              <Stack direction="row" justifyContent="center" spacing={5}>
+              </Grid>
+              <Grid
+                sx={{ mt: 2 }}
+                container
+                direction="row"
+                alignItems="center"
+              >
+                <CallIcon sx={{ mr: 2 }} />
+                <Typography align="center">
+                  {orgInfo ? orgInfo.tel : null}
+                </Typography>
+              </Grid>
+              <Grid
+                sx={{ mt: 2 }}
+                container
+                direction="row"
+                alignItems="center"
+              >
+                <MailIcon sx={{ mr: 2 }} />
+                <Typography align="center">
+                  {orgInfo ? orgInfo.email : null}
+                </Typography>
+              </Grid>
+            </Grid>
+          </Grid>
+          <Stack
+            justifyContent="space-between"
+            direction="row"
+            sx={{ mt: 1.5, mb: 3 }}
+            alignItems="center"
+          >
+            <Typography variant="h4" fontWeight="bold" sx={{ mt: 3 }}>
+              {donationDetails ? donationDetails.title : null}
+            </Typography>
+            <Link href="/donation">
+              <CustomButton variant="contained" size="small" sx={{ width: 30 }}>
+                목록
+              </CustomButton>
+            </Link>
+          </Stack>
+          {/* 게시글 이미지 */}
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="center"
+            sx={{ mb: 3 }}
+          >
+            <Stack
+              justifyContent="center"
+              alignItems="center"
+              sx={{ mb: 0, mr: 5 }}
+            >
+              <CustomCarousel
+                item={donationDetails ? donationDetails.images : null}
+              />
+            </Stack>
+            <Stack>
+              <Box
+                sx={{
+                  my: "auto",
+                  bgcolor: "#f5e1be",
+                  borderRadius: 1.25,
+                  // height: "120px",
+                }}
+                height="470px"
+                width="500px"
+              >
+                <Typography sx={{ p: 2, mt: 0 }}>
+                  {donationDetails ? donationDetails.content : null}
+                </Typography>
+              </Box>
+            </Stack>
+          </Stack>
+          {/* <Stack direction="row" justifyContent="center" spacing={5}>
                 {donationDetails.images.map((item) => (
                   <div
                     style={{
@@ -259,391 +315,374 @@ const DonationOrgDetail: FC = () => {
                     {donationDetails.content}
                   </Typography>
                 </Box>
-              </Stack>
-              <Stack
-                justifyContent="space-between"
-                direction="row"
-                sx={{ mt: 1.5, mb: 3 }}
-                alignItems="center"
-              >
-                <Stack direction="row">
-                  <Typography
-                    variant="h6"
-                    fontWeight="bold"
-                    sx={{ mt: 3, mr: 2 }}
-                  >
-                    종료일
-                  </Typography>
-                  <Typography variant="h6" sx={{ mt: 3 }}>
-                    {donationDetails.endDate}
-                  </Typography>
-                </Stack>
-                <Stack direction="row">
-                  <Typography
-                    variant="h6"
-                    fontWeight="bold"
-                    sx={{ mt: 3, mr: 2 }}
-                  >
-                    작성일
-                  </Typography>
-                  <Typography variant="h6" sx={{ mt: 3 }}>
-                    {donationDetails.createDate.substr(0, 10)}
-                  </Typography>
-                </Stack>
-              </Stack>
-              <Stack
-                justifyContent="space-between"
-                direction="row"
-                sx={{ mt: 1.5, mb: 3 }}
-                alignItems="center"
-              >
-                <Stack direction="row" alignItems="center">
-                  <Typography
-                    variant="h4"
-                    fontWeight="bold"
-                    sx={{ mt: 3, mr: 2 }}
-                  >
-                    기부 물품
-                  </Typography>
-                  {/* <Typography variant="h6" sx={{ mt: 3 }}>
+              </Stack> */}
+          <Stack
+            justifyContent="space-between"
+            direction="row"
+            sx={{ mt: 1.5, mb: 3 }}
+            alignItems="center"
+          >
+            <Stack direction="row">
+              <Typography variant="h6" fontWeight="bold" sx={{ mt: 3, mr: 2 }}>
+                종료일
+              </Typography>
+              <Typography variant="h6" sx={{ mt: 3 }}>
+                {donationDetails ? donationDetails.endDate : null}
+              </Typography>
+            </Stack>
+            <Stack direction="row">
+              <Typography variant="h6" fontWeight="bold" sx={{ mt: 3, mr: 2 }}>
+                작성일
+              </Typography>
+              <Typography variant="h6" sx={{ mt: 3 }}>
+                {donationDetails ? donationDetails.createDate : null}
+              </Typography>
+            </Stack>
+          </Stack>
+          <Stack
+            justifyContent="space-between"
+            direction="row"
+            sx={{ mt: 1.5, mb: 3 }}
+            alignItems="center"
+          >
+            <Stack direction="row" alignItems="center">
+              <Typography variant="h4" fontWeight="bold" sx={{ mt: 3, mr: 2 }}>
+                기부 물품
+              </Typography>
+              {/* <Typography variant="h6" sx={{ mt: 3 }}>
                     총 9명의 회원이 기부했습니다.
                   </Typography> */}
-                </Stack>
-                <Stack direction="row" alignItems="center">
-                  <Stack
-                    sx={{
-                      width: 300,
-                      height: 10,
-                    }}
-                    direction="row"
-                    alignItems="center"
-                  >
-                    <Box
-                      sx={{
-                        borderRadius: 1.25,
-                        width: 80,
-                        height: 25,
-                        bgcolor: "#CDAD78",
-                      }}
-                    ></Box>
-                    <Typography sx={{ fontSize: 13, width: 40, ml: 1 }}>
-                      완료
-                    </Typography>
-                    <Box
-                      sx={{
-                        borderRadius: 1.25,
-                        width: 80,
-                        height: 25,
-                        bgcolor: "#FCE2A6",
-                      }}
-                    ></Box>
-                    <Typography sx={{ fontSize: 13, width: 60, ml: 1 }}>
-                      배송 중
-                    </Typography>
-                    <Box
-                      sx={{
-                        borderRadius: 1.25,
-                        width: 80,
-                        height: 25,
-                        bgcolor: "#dbd5ca",
-                      }}
-                    ></Box>
-                    <Typography sx={{ fontSize: 13, width: 40, ml: 1 }}>
-                      대기
-                    </Typography>
-                  </Stack>
-                  <CustomButton2 sx={{ height: "30px", ml: 5 }}>
-                    유통기한 가이드
-                  </CustomButton2>
-                </Stack>
-              </Stack>
-              <TableContainer component={Paper} sx={{ mt: 5 }}>
-                <Table sx={{ minWidth: 700 }} aria-label="customized table">
-                  <TableHead>
-                    <TableRow>
-                      <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                        물품명
-                      </StyledTableCell>
-                      <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                        상세 설명
-                      </StyledTableCell>
-                      <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                        진행률
-                      </StyledTableCell>
-                      <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                        구매 링크
-                      </StyledTableCell>
-                      <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                        기부 신청
-                      </StyledTableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {donationDetails.products.map((data) => (
-                      <StyledTableRow key={data.donationApplyId}>
-                        <StyledTableCell align="center">
-                          {data.productName}
-                        </StyledTableCell>
-                        <StyledTableCell align="center" sx={{ width: 400 }}>
-                          {data.productInfo}
-                        </StyledTableCell>
-                        <StyledTableCell align="center">
-                          <Stack
-                            sx={{
-                              width: 300,
-                            }}
-                            direction="row"
-                            alignItems="center"
-                          >
-                            {data.finishCount === 0 ? null : (
-                              <Stack
-                                direction="column"
-                                sx={{
-                                  width: `${
-                                    (data.finishCount / data.totalCount) * 100
-                                  }%`,
-                                }}
-                              >
-                                <Box
-                                  sx={{
-                                    borderTopLeftRadius: 5,
-                                    borderBottomLeftRadius: 5,
-                                    height: 25,
-                                    bgcolor: "#CDAD78",
-                                  }}
-                                  justifyContent="center"
-                                  flexDirection="column"
-                                  display="flex"
-                                ></Box>
-                                <Typography sx={{ fontSize: 11 }}>
-                                  {(
-                                    (data.finishCount / data.totalCount) *
-                                    100
-                                  ).toFixed()}
-                                  %
-                                </Typography>
-                              </Stack>
-                            )}
-                            {data.deliveryCount === 0 ? null : (
-                              <Stack
-                                direction="column"
-                                sx={{
-                                  width: `${
-                                    (data.deliveryCount / data.totalCount) * 100
-                                  }%`,
-                                }}
-                              >
-                                <Box
-                                  sx={{
-                                    height: 25,
-                                    bgcolor: "#FCE2A6",
-                                  }}
-                                  justifyContent="center"
-                                  flexDirection="column"
-                                  display="flex"
-                                ></Box>
-                                <Typography sx={{ fontSize: 11 }}>
-                                  {(
-                                    (data.deliveryCount / data.totalCount) *
-                                    100
-                                  ).toFixed()}
-                                  %
-                                </Typography>
-                              </Stack>
-                            )}
-                            {data.finishCount === 0 &&
-                            data.deliveryCount !== 0 ? (
-                              <Stack
-                                direction="column"
-                                sx={{
-                                  width: `${
-                                    (data.deliveryCount / data.totalCount) * 100
-                                  }%`,
-                                }}
-                              >
-                                <Box
-                                  sx={{
-                                    borderTopLeftRadius: 5,
-                                    borderBottomLeftRadius: 5,
-                                    height: 25,
-                                    bgcolor: "#FCE2A6",
-                                  }}
-                                  justifyContent="center"
-                                  flexDirection="column"
-                                  display="flex"
-                                ></Box>
-                                <Typography sx={{ fontSize: 11 }}>
-                                  {(
-                                    (data.deliveryCount / data.totalCount) *
-                                    100
-                                  ).toFixed()}
-                                  %
-                                </Typography>
-                              </Stack>
-                            ) : null}
-                            {data.totalCount -
-                              data.deliveryCount -
-                              data.finishCount !==
-                              0 && data.finishCount !== 0 ? (
-                              <Stack
-                                direction="column"
-                                sx={{
-                                  width: `${
-                                    ((data.totalCount -
-                                      data.deliveryCount -
-                                      data.finishCount) /
-                                      data.totalCount) *
-                                    100
-                                  }%`,
-                                }}
-                              >
-                                <Box
-                                  sx={{
-                                    borderTopRightRadius: 5,
-                                    borderBottomRightRadius: 5,
-                                    height: 25,
-                                    bgcolor: "#dbd5ca",
-                                  }}
-                                  justifyContent="center"
-                                  flexDirection="column"
-                                  display="flex"
-                                ></Box>
-                                <Typography sx={{ fontSize: 11 }}>
-                                  {(
-                                    ((data.totalCount -
-                                      data.deliveryCount -
-                                      data.finishCount) /
-                                      data.totalCount) *
-                                    100
-                                  ).toFixed()}
-                                  %
-                                </Typography>
-                              </Stack>
-                            ) : null}
-                            {data.totalCount -
-                              data.deliveryCount -
-                              data.finishCount !==
-                              0 &&
-                            data.finishCount === 0 &&
-                            data.deliveryCount === 0 ? (
-                              <Stack
-                                direction="column"
-                                sx={{
-                                  width: `${
-                                    ((data.totalCount -
-                                      data.deliveryCount -
-                                      data.finishCount) /
-                                      data.totalCount) *
-                                    100
-                                  }%`,
-                                }}
-                              >
-                                <Box
-                                  sx={{
-                                    borderTopLeftRadius: 5,
-                                    borderBottomLeftRadius: 5,
-                                    borderTopRightRadius: 5,
-                                    borderBottomRightRadius: 5,
-                                    height: 25,
-                                    bgcolor: "#dbd5ca",
-                                  }}
-                                  justifyContent="center"
-                                  flexDirection="column"
-                                  display="flex"
-                                ></Box>
-                                <Typography sx={{ fontSize: 11 }}>
-                                  {(
-                                    ((data.totalCount -
-                                      data.deliveryCount -
-                                      data.finishCount) /
-                                      data.totalCount) *
-                                    100
-                                  ).toFixed()}
-                                  %
-                                </Typography>
-                              </Stack>
-                            ) : null}
-                            <Typography
-                              align="center"
-                              sx={{ ml: 1, fontSize: 14, width: 50 }}
-                            >
-                              {data.finishCount}/{data.totalCount}
-                            </Typography>
-                          </Stack>
-                        </StyledTableCell>
-                        <StyledTableCell align="center">
-                          <Tooltip
-                            title="외부 쇼핑몰 사이트로 이동합니다."
-                            placement="top-end"
-                          >
-                            <Button
-                              onClick={() =>
-                                window.open(
-                                  `https://search.shopping.naver.com/search/all?where=all&frm=NVSCTAB&query=${data.productName}`,
-                                  "_blank"
-                                )
-                              }
-                            >
-                              <InsertLinkIcon
-                                sx={{
-                                  color: "#5B321E",
-                                }}
-                              />
-                            </Button>
-                          </Tooltip>
-                        </StyledTableCell>
-                        <StyledTableCell align="center">
-                          <FormGroup row>
-                            <TextField
-                              // type="number"
-                              size="small"
-                              sx={{ width: 60 }}
-                              style={{ backgroundColor: "#ffffff" }}
-                            />
-                            <CustomButton3
-                              style={{
-                                borderTopRightRadius: 5,
-                                borderBottomRightRadius: 5,
-                                borderTopLeftRadius: 0,
-                                borderBottomLeftRadius: 0,
-                              }}
-                            >
-                              신청
-                            </CustomButton3>
-                          </FormGroup>
-                        </StyledTableCell>
-                      </StyledTableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-              <Divider color="#CDAD78" sx={{ my: 4, borderBottomWidth: 5 }} />
-              <Typography variant="h5" fontWeight="bold" sx={{ mx: 5 }}>
-                댓글 10
-              </Typography>
+            </Stack>
+            <Stack direction="row" alignItems="center">
               <Stack
-                justifyContent="space-between"
+                sx={{
+                  width: 300,
+                  height: 10,
+                }}
                 direction="row"
-                sx={{ mt: 1.5, mb: 3, mx: 5 }}
                 alignItems="center"
               >
-                <CssTextField
-                  sx={{ backgroundColor: "#ffffff", width: 1000 }}
-                  size="small"
-                />
-                <CustomButton
-                  variant="contained"
-                  size="small"
-                  sx={{ width: 30 }}
-                >
-                  등록
-                </CustomButton>
+                <Box
+                  sx={{
+                    borderRadius: 1.25,
+                    width: 80,
+                    height: 25,
+                    bgcolor: "#CDAD78",
+                  }}
+                ></Box>
+                <Typography sx={{ fontSize: 13, width: 40, ml: 1 }}>
+                  완료
+                </Typography>
+                <Box
+                  sx={{
+                    borderRadius: 1.25,
+                    width: 80,
+                    height: 25,
+                    bgcolor: "#FCE2A6",
+                  }}
+                ></Box>
+                <Typography sx={{ fontSize: 13, width: 60, ml: 1 }}>
+                  배송 중
+                </Typography>
+                <Box
+                  sx={{
+                    borderRadius: 1.25,
+                    width: 80,
+                    height: 25,
+                    bgcolor: "#dbd5ca",
+                  }}
+                ></Box>
+                <Typography sx={{ fontSize: 13, width: 40, ml: 1 }}>
+                  대기
+                </Typography>
               </Stack>
-            </Container>
-          </Box>
-        </Box>
-      ) : null}
-    </>
+              <CustomButton2 sx={{ height: "30px", ml: 5 }}>
+                유통기한 가이드
+              </CustomButton2>
+            </Stack>
+          </Stack>
+          <TableContainer component={Paper} sx={{ mt: 5 }}>
+            <Table sx={{ minWidth: 700 }} aria-label="customized table">
+              <TableHead>
+                <TableRow>
+                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                    물품명
+                  </StyledTableCell>
+                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                    상세 설명
+                  </StyledTableCell>
+                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                    진행률
+                  </StyledTableCell>
+                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                    구매 링크
+                  </StyledTableCell>
+                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                    기부 신청
+                  </StyledTableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {donationDetails &&
+                  donationDetails.products.map((data) => (
+                    <StyledTableRow key={data.donationApplyId}>
+                      <StyledTableCell align="center">
+                        {data.productName}
+                      </StyledTableCell>
+                      <StyledTableCell align="center" sx={{ width: 400 }}>
+                        {data.productInfo}
+                      </StyledTableCell>
+                      <StyledTableCell align="center">
+                        <Stack
+                          sx={{
+                            width: 300,
+                          }}
+                          direction="row"
+                          alignItems="center"
+                        >
+                          {data.finishCount === 0 ? null : (
+                            <Stack
+                              direction="column"
+                              sx={{
+                                width: `${
+                                  (data.finishCount / data.totalCount) * 100
+                                }%`,
+                              }}
+                            >
+                              <Box
+                                sx={{
+                                  borderTopLeftRadius: 5,
+                                  borderBottomLeftRadius: 5,
+                                  height: 25,
+                                  bgcolor: "#CDAD78",
+                                }}
+                                justifyContent="center"
+                                flexDirection="column"
+                                display="flex"
+                              ></Box>
+                              <Typography sx={{ fontSize: 11 }}>
+                                {(
+                                  (data.finishCount / data.totalCount) *
+                                  100
+                                ).toFixed()}
+                                %
+                              </Typography>
+                            </Stack>
+                          )}
+                          {data.deliveryCount === 0 ? null : (
+                            <Stack
+                              direction="column"
+                              sx={{
+                                width: `${
+                                  (data.deliveryCount / data.totalCount) * 100
+                                }%`,
+                              }}
+                            >
+                              <Box
+                                sx={{
+                                  height: 25,
+                                  bgcolor: "#FCE2A6",
+                                }}
+                                justifyContent="center"
+                                flexDirection="column"
+                                display="flex"
+                              ></Box>
+                              <Typography sx={{ fontSize: 11 }}>
+                                {(
+                                  (data.deliveryCount / data.totalCount) *
+                                  100
+                                ).toFixed()}
+                                %
+                              </Typography>
+                            </Stack>
+                          )}
+                          {data.finishCount === 0 &&
+                          data.deliveryCount !== 0 ? (
+                            <Stack
+                              direction="column"
+                              sx={{
+                                width: `${
+                                  (data.deliveryCount / data.totalCount) * 100
+                                }%`,
+                              }}
+                            >
+                              <Box
+                                sx={{
+                                  borderTopLeftRadius: 5,
+                                  borderBottomLeftRadius: 5,
+                                  height: 25,
+                                  bgcolor: "#FCE2A6",
+                                }}
+                                justifyContent="center"
+                                flexDirection="column"
+                                display="flex"
+                              ></Box>
+                              <Typography sx={{ fontSize: 11 }}>
+                                {(
+                                  (data.deliveryCount / data.totalCount) *
+                                  100
+                                ).toFixed()}
+                                %
+                              </Typography>
+                            </Stack>
+                          ) : null}
+                          {data.totalCount -
+                            data.deliveryCount -
+                            data.finishCount !==
+                            0 && data.finishCount !== 0 ? (
+                            <Stack
+                              direction="column"
+                              sx={{
+                                width: `${
+                                  ((data.totalCount -
+                                    data.deliveryCount -
+                                    data.finishCount) /
+                                    data.totalCount) *
+                                  100
+                                }%`,
+                              }}
+                            >
+                              <Box
+                                sx={{
+                                  borderTopRightRadius: 5,
+                                  borderBottomRightRadius: 5,
+                                  height: 25,
+                                  bgcolor: "#dbd5ca",
+                                }}
+                                justifyContent="center"
+                                flexDirection="column"
+                                display="flex"
+                              ></Box>
+                              <Typography sx={{ fontSize: 11 }}>
+                                {(
+                                  ((data.totalCount -
+                                    data.deliveryCount -
+                                    data.finishCount) /
+                                    data.totalCount) *
+                                  100
+                                ).toFixed()}
+                                %
+                              </Typography>
+                            </Stack>
+                          ) : null}
+                          {data.totalCount -
+                            data.deliveryCount -
+                            data.finishCount !==
+                            0 &&
+                          data.finishCount === 0 &&
+                          data.deliveryCount === 0 ? (
+                            <Stack
+                              direction="column"
+                              sx={{
+                                width: `${
+                                  ((data.totalCount -
+                                    data.deliveryCount -
+                                    data.finishCount) /
+                                    data.totalCount) *
+                                  100
+                                }%`,
+                              }}
+                            >
+                              <Box
+                                sx={{
+                                  borderTopLeftRadius: 5,
+                                  borderBottomLeftRadius: 5,
+                                  borderTopRightRadius: 5,
+                                  borderBottomRightRadius: 5,
+                                  height: 25,
+                                  bgcolor: "#dbd5ca",
+                                }}
+                                justifyContent="center"
+                                flexDirection="column"
+                                display="flex"
+                              ></Box>
+                              <Typography sx={{ fontSize: 11 }}>
+                                {(
+                                  ((data.totalCount -
+                                    data.deliveryCount -
+                                    data.finishCount) /
+                                    data.totalCount) *
+                                  100
+                                ).toFixed()}
+                                %
+                              </Typography>
+                            </Stack>
+                          ) : null}
+                          <Typography
+                            align="center"
+                            sx={{ ml: 1, fontSize: 14, width: 50 }}
+                          >
+                            {data.finishCount}/{data.totalCount}
+                          </Typography>
+                        </Stack>
+                      </StyledTableCell>
+                      <StyledTableCell align="center">
+                        <Tooltip
+                          title="외부 쇼핑몰 사이트로 이동합니다."
+                          placement="top-end"
+                        >
+                          <Button
+                            onClick={() =>
+                              window.open(
+                                `https://search.shopping.naver.com/search/all?where=all&frm=NVSCTAB&query=${data.productName}`,
+                                "_blank"
+                              )
+                            }
+                          >
+                            <InsertLinkIcon
+                              sx={{
+                                color: "#5B321E",
+                              }}
+                            />
+                          </Button>
+                        </Tooltip>
+                      </StyledTableCell>
+                      <StyledTableCell align="center">
+                        <FormGroup row>
+                          <TextField
+                            // type="number"
+                            size="small"
+                            sx={{ width: 60 }}
+                            style={{ backgroundColor: "#ffffff" }}
+                          />
+                          <CustomButton3
+                            style={{
+                              borderTopRightRadius: 5,
+                              borderBottomRightRadius: 5,
+                              borderTopLeftRadius: 0,
+                              borderBottomLeftRadius: 0,
+                            }}
+                          >
+                            신청
+                          </CustomButton3>
+                        </FormGroup>
+                      </StyledTableCell>
+                    </StyledTableRow>
+                  ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <Divider color="#CDAD78" sx={{ my: 4, borderBottomWidth: 5 }} />
+          <Typography variant="h5" fontWeight="bold" sx={{ mx: 5 }}>
+            댓글 10
+          </Typography>
+          <Stack
+            justifyContent="space-between"
+            direction="row"
+            sx={{ mt: 1.5, mb: 3, mx: 5 }}
+            alignItems="center"
+          >
+            <CssTextField
+              sx={{ backgroundColor: "#ffffff", width: 1000 }}
+              size="small"
+            />
+            <CustomButton variant="contained" size="small" sx={{ width: 30 }}>
+              등록
+            </CustomButton>
+          </Stack>
+        </Container>
+      </Box>
+    </Box>
   );
 };
 

@@ -196,12 +196,12 @@ const VolunteerDetail: FC = () => {
                 <Stack>
                   <Box
                     sx={{
-                      mt: 2,
+                      my: "auto",
                       bgcolor: "#f5e1be",
                       borderRadius: 1.25,
                       // height: "120px",
                     }}
-                    height="500px"
+                    height="470px"
                     width="500px"
                   >
                     <Typography sx={{ p: 2, mt: 0 }}>

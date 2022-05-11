@@ -19,6 +19,7 @@ import {
   TextField,
   InputLabel,
   MenuItem,
+  Modal,
 } from "@mui/material";
 import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
 import { tableCellClasses } from "@mui/material/TableCell";
@@ -26,8 +27,12 @@ import { FC, useState, useEffect } from "react";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
 import Link from "next/link";
 
+import PostInfo from "../../../components/PostInfo";
+
+import Pagination from "@/components/Pagination";
+
 // api
-import { getPostCompany } from "../../../function/axios";
+import { getApplyList } from "../../../function/axios";
 
 const CustomButton = styled(Button)({
   backgroundColor: "#5B321E",
@@ -110,6 +115,19 @@ const CssAutocomplete = styled(Autocomplete)({
   },
 });
 
+const style = {
+  position: "absolute" as "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "#e9e1d3",
+  // border: "2px solid #000",
+  borderRadius: 2,
+  // boxShadow: 24,
+  p: 2,
+};
+
 const dummyData = [
   {
     donationApplyId: 1,
@@ -122,7 +140,7 @@ const dummyData = [
     invoice: 222222,
     productName: "감자",
     count: 5,
-    status: "배송대기",
+    status: "배송 중",
   },
   {
     donationApplyId: 2,
@@ -131,8 +149,8 @@ const dummyData = [
     memberId: 1,
     name: "이다예 복지관",
     donationDate: "2022-05-20",
-    parcel: "대한통운",
-    invoice: 222222,
+    parcel: null,
+    invoice: null,
     productName: "감자",
     count: 5,
     status: "배송대기",
@@ -148,169 +166,139 @@ const dummyData = [
     invoice: 222222,
     productName: "감자",
     count: 5,
-    status: "배송대기",
+    status: "배송 중",
   },
 ];
 
 const UserMypageDelivery: FC = () => {
-  const [loading, setLoading] = useState<boolean>(false);
+  // pagination
+  const [curPage, setCurPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const paginate = (pageNumber) => setCurPage(pageNumber);
 
-  // 택배사 리스트 api
-  const [companyList, setCompanyList] = useState<any[]>([]);
-
-  // 송장 정보 입력 - 택배사
-  const [company, setCompany] = useState<any>("");
-
-  const filterOptions = createFilterOptions({
-    stringify: ({ Name }) => `${Name}`,
-  });
-
-  const getCompany = (event, value) => {
-    setCompany(value.Code);
-    console.log("선택된", company);
+  const params = {
+    page: curPage + 1,
   };
 
+  const [loading, setLoading] = useState<boolean>(true);
+
+  const [applyList, setApplyList] = useState<any>("");
+
+  useEffect(() => {}, []);
+
   useEffect(() => {
-    getPostCompany().then((res) => {
-      setCompanyList(res.data.Company);
+    const id = localStorage.getItem("id");
+    getApplyList(id, params).then((res) => {
+      setApplyList(res.data.apply);
+      setTotalPages(res.data.totalPage);
     });
-    setLoading(true);
-  }, []);
+  }, [curPage]);
 
   return (
-    <>
-      {companyList ? (
-        <Box sx={{ display: "flex" }}>
-          <CssBaseline />
-          <UserMypageSidebar />
-          <Box
-            component="main"
-            sx={{
-              flexGrow: 1,
-              height: "100vh",
-              overflow: "auto",
-              mt: 0,
-            }}
-          >
-            <Container maxWidth="lg" sx={{}}>
-              <Typography variant="h4">기부 물품 배송 관리</Typography>
-              <TableContainer component={Paper} sx={{ mt: 5 }}>
-                <Table sx={{ minWidth: 700 }} aria-label="customized table">
-                  <TableHead>
-                    <TableRow>
-                      <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                        번호
+    <Box sx={{ display: "flex" }}>
+      <CssBaseline />
+      <UserMypageSidebar />
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          height: "100vh",
+          overflow: "auto",
+          mt: 0,
+        }}
+      >
+        <Container maxWidth="lg" sx={{}}>
+          <Typography variant="h4">기부 물품 배송 관리</Typography>
+          <TableContainer component={Paper} sx={{ mt: 5 }}>
+            <Table sx={{ minWidth: 700 }} aria-label="customized table">
+              <TableHead>
+                <TableRow>
+                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                    기관명
+                  </StyledTableCell>
+                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                    기부글
+                  </StyledTableCell>
+                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                    물품명
+                  </StyledTableCell>
+                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                    수량
+                  </StyledTableCell>
+                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                    기한
+                  </StyledTableCell>
+                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                    상태
+                  </StyledTableCell>
+                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                    배송조회
+                  </StyledTableCell>
+                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                    송장입력
+                  </StyledTableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {applyList &&
+                  applyList.map((data) => (
+                    <StyledTableRow key={data.donationApplyId}>
+                      <StyledTableCell align="center" sx={{ width: 200 }}>
+                        {data.name}
                       </StyledTableCell>
-                      <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                        기관명
+                      <StyledTableCell align="center">
+                        <Link href={"/detail/donationorg/1"}>
+                          <Button>
+                            <InsertLinkIcon
+                              sx={{
+                                color: "#5B321E",
+                              }}
+                            />
+                          </Button>
+                        </Link>
                       </StyledTableCell>
-                      <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                        기부글
+                      <StyledTableCell align="center">
+                        {data.productName}
                       </StyledTableCell>
-                      <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                        물품명
+                      <StyledTableCell align="center">
+                        {data.count}
                       </StyledTableCell>
-                      <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                        수량
+                      <StyledTableCell align="center">
+                        {data.donationDate}
                       </StyledTableCell>
-                      <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                        기한
+                      <StyledTableCell align="center">
+                        {data.status}
                       </StyledTableCell>
-                      <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                        상태
+                      <StyledTableCell align="center">
+                        <CustomButton2 sx={{ width: 40, height: 30 }}>
+                          조회
+                        </CustomButton2>
                       </StyledTableCell>
-                      <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                        배송조회
+                      <StyledTableCell align="center">
+                        {data.parcel === null ? (
+                          <PostInfo
+                            donationApplyId={data.donationApplyId}
+                            memberId={data.memberId}
+                          />
+                        ) : (
+                          <Typography>등록 완료</Typography>
+                        )}
                       </StyledTableCell>
-                      <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                        송장입력
-                      </StyledTableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {dummyData.map((data) => (
-                      <StyledTableRow key={data.donationApplyId}>
-                        <StyledTableCell align="center">
-                          {data.donationApplyId}
-                        </StyledTableCell>
-                        <StyledTableCell align="center" sx={{ width: 200 }}>
-                          {data.name}
-                        </StyledTableCell>
-                        <StyledTableCell align="center">
-                          <Link href={"/detail/donationorg/1"}>
-                            <Button>
-                              <InsertLinkIcon
-                                sx={{
-                                  color: "#5B321E",
-                                }}
-                              />
-                            </Button>
-                          </Link>
-                        </StyledTableCell>
-                        <StyledTableCell align="center">
-                          {data.productName}
-                        </StyledTableCell>
-                        <StyledTableCell align="center">
-                          {data.count}
-                        </StyledTableCell>
-                        <StyledTableCell align="center">
-                          {data.donationDate}
-                        </StyledTableCell>
-                        <StyledTableCell align="center">
-                          {data.status}
-                        </StyledTableCell>
-                        <StyledTableCell align="center">
-                          <CustomButton2 sx={{ width: 40, height: 30 }}>
-                            조회
-                          </CustomButton2>
-                        </StyledTableCell>
-                        <StyledTableCell align="center">
-                          <Stack direction="row">
-                            <Stack alignItems="center">
-                              <CssAutocomplete
-                                onChange={getCompany}
-                                sx={{
-                                  backgroundColor: "#ffffff",
-                                  width: 150,
-                                  m: 1,
-                                }}
-                                freeSolo
-                                disableClearable
-                                options={companyList}
-                                getOptionLabel={(option) => option["Name"]}
-                                filterOptions={filterOptions}
-                                renderInput={(params) => (
-                                  <CssTextField
-                                    // onChange={getCompany}
-                                    {...params}
-                                    label="택배사"
-                                    InputProps={{
-                                      ...params.InputProps,
-                                      type: "search",
-                                    }}
-                                  />
-                                )}
-                              />
-                              <CssTextField
-                                sx={{ backgroundColor: "#ffffff", width: 150 }}
-                                size="small"
-                              />
-                            </Stack>
-                            <Stack justifyContent="center">
-                              <CustomButton>입력</CustomButton>
-                            </Stack>
-                          </Stack>
-                        </StyledTableCell>
-                      </StyledTableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Container>
-          </Box>
-        </Box>
-      ) : null}
-    </>
+                    </StyledTableRow>
+                  ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <Stack alignItems="center" sx={{ mb: 2, mt: 2 }}>
+            <Pagination
+              curPage={curPage}
+              paginate={paginate}
+              totalPage={totalPages}
+            />
+          </Stack>
+        </Container>
+      </Box>
+    </Box>
   );
 };
 

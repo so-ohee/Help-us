@@ -24,11 +24,12 @@ import MailIcon from "@mui/icons-material/Mail";
 
 import TestImage from "../../public/images/testImage.jpg";
 import goodImage from "../../public/images/good.jpg";
+import userDefaultImage from "../../public/images/userDefaultImage.png";
+
+import { useRouter } from "next/router";
 
 // api
-import { getMypage } from "function/axios";
-
-const mdTheme = createTheme();
+import { getUserInfo } from "function/axios";
 
 const useStyles = makeStyles((theme) => ({
   customHoverFocus: {
@@ -63,144 +64,107 @@ const UpdateButton2 = styled(Button)({
 });
 
 const UserMypage: FC = () => {
-  // const [myInfo, setMyInfo] = useState<any>(null);
+  const router = useRouter();
 
-  // useEffect(() => {
-  //   const token = localStorage.getItem("jwt");
-  //   console.log("token은", token);
-  //   getMypage(token).then((res) => {
-  //     // setMyInfo(res.data);
-  //     console.log("가져온 data:", res);
-  //   });
-  // }, []);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const [myInfo, setMyInfo] = useState<any>(null);
+
+  useEffect(() => {
+    const token = localStorage.getItem("id");
+    getUserInfo(token).then((res) => {
+      setMyInfo(res.data);
+      setLoading(true);
+    });
+  }, []);
 
   return (
-    <Box sx={{ display: "flex" }}>
-      <CssBaseline />
-      <UserMypageSidebar />
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          height: "100vh",
-          overflow: "auto",
-          mt: 0,
-        }}
-      >
-        <Container
-          maxWidth="lg"
-          sx={{
-            mt: 4,
-            mb: 4,
-            bgcolor: "#FCF8F0",
-            borderRadius: 1.25,
-            // height: "350px",
-          }}
-        >
-          <Grid container spacing={2} minHeight="350px">
-            <Grid item xs={3}>
-              <div
-                style={{
-                  borderRadius: "5px",
-                  overflow: "hidden",
-                  marginTop: "6px",
-                }}
-              >
-                <Image
-                  src={goodImage}
-                  alt="orgImage"
-                  width="300px"
-                  height="300px"
-                />
-              </div>
-            </Grid>
-            <Grid item xs={8}>
-              <Typography sx={{ mt: 0 }} variant="h4" fontWeight="bold">
-                이다예
-              </Typography>
-              <Grid
-                sx={{ mt: 2 }}
-                container
-                direction="row"
-                alignItems="center"
-              >
-                <MailIcon sx={{ mr: 2 }} />
-                <Typography align="center">test@gmail.com</Typography>
+    <>
+      {loading ? (
+        <Box sx={{ display: "flex" }}>
+          <CssBaseline />
+          <UserMypageSidebar />
+          <Box
+            component="main"
+            sx={{
+              flexGrow: 1,
+              height: "100vh",
+              overflow: "auto",
+              mt: 0,
+            }}
+          >
+            <Container
+              maxWidth="lg"
+              sx={{
+                mt: 4,
+                mb: 4,
+                bgcolor: "#FCF8F0",
+                borderRadius: 1.25,
+                // width: "1000px",
+                // height: "350px",
+              }}
+            >
+              <Grid container minHeight="250px">
+                <Grid item xs={2} sx={{ my: "auto", mr: 3 }}>
+                  <div
+                    style={{
+                      borderRadius: "5px",
+                      overflow: "hidden",
+                      marginTop: "6px",
+                    }}
+                  >
+                    {myInfo.profile === null ? (
+                      <Image
+                        src={userDefaultImage}
+                        alt="orgImage"
+                        width="200px"
+                        height="200px"
+                      />
+                    ) : (
+                      <Image
+                        src={myInfo.profile}
+                        alt="orgImage"
+                        width="200px"
+                        height="200px"
+                      />
+                    )}
+                  </div>
+                </Grid>
+                <Grid item xs={8} sx={{ my: "auto", mr: 5 }}>
+                  <Typography sx={{ mt: 0 }} variant="h4" fontWeight="bold">
+                    {myInfo.name}
+                  </Typography>
+                  <Grid
+                    sx={{ mt: 1 }}
+                    container
+                    direction="row"
+                    alignItems="center"
+                  >
+                    <MailIcon sx={{ mr: 1 }} />
+                    <Typography align="center">{myInfo.email}</Typography>
+                  </Grid>
+                  <Box
+                    sx={{
+                      bgcolor: "#f5e1be",
+                      borderRadius: 1.25,
+                      // height: "120px",
+                    }}
+                    minHeight="120px"
+                  >
+                    <Typography sx={{ p: 2, mt: 1 }}>{myInfo.info}</Typography>
+                  </Box>
+                </Grid>
+                <Grid item xs={1} justifyContent="right">
+                  <UpdateButton variant="contained" sx={{ mb: 15 }}>
+                    수정
+                  </UpdateButton>
+                </Grid>
               </Grid>
-              <Grid
-                sx={{ mt: 2 }}
-                container
-                direction="row"
-                alignItems="center"
-              >
-                <Typography fontWeight="bold" align="center">
-                  기부 횟수 : 4
-                </Typography>
-              </Grid>
-              <Grid
-                sx={{ mt: 2 }}
-                container
-                direction="row"
-                alignItems="center"
-              >
-                <Typography fontWeight="bold" align="center">
-                  봉사 시간 : 8
-                </Typography>
-              </Grid>
-              {/* <Grid
-                sx={{ mt: 2 }}
-                container
-                direction="row"
-                alignItems="center"
-              >
-                <BusinessIcon sx={{ mr: 2 }} />
-                <Typography align="center">
-                  경기도 수원시 팔달구 중부대로 222번길 22 2-22
-                </Typography>
-              </Grid>
-              <Grid
-                sx={{ mt: 2 }}
-                container
-                direction="row"
-                alignItems="center"
-              >
-                <CallIcon sx={{ mr: 2 }} />
-                <Typography align="center">010-7777-7777</Typography>
-              </Grid> */}
-
-              <Box
-                sx={{
-                  bgcolor: "#f5e1be",
-                  borderRadius: 1.25,
-                  // height: "120px",
-                }}
-                minHeight="120px"
-              >
-                <Typography sx={{ p: 2, mt: 1 }}>
-                  아무래도 다시 돌아갈 순 없어 아무런 표정도 없이 이런 말하는
-                  그런 내가 잔인한가요 제발 내 마음 설레이게 자꾸만 바라보게
-                  하지 말아요 아무 일 없던 것처럼 그냥 스쳐지나갈 미련인 걸
-                  알아요 아무리 사랑한다 말했어도 다시 돌아올 수 없는 그 때 그
-                  맘이 부른다고 다시 오나요 아무래도 다시 돌아갈 순 없어 아무런
-                  표정도 없이 이런 말하는 그런 내가 잔인한가요
-                </Typography>
-              </Box>
-            </Grid>
-            <Grid item xs={1}>
-              <UpdateButton variant="contained" sx={{ mb: 15 }}>
-                수정
-              </UpdateButton>
-              {/* <UpdateButton variant="contained" size="small">
-                  <EditIcon />
-                </UpdateButton> */}
-              {/* <IconButton aria-label="edit" className={classes.customColor}>
-                  <EditIcon />
-                </IconButton> */}
-            </Grid>
-          </Grid>
-        </Container>
-      </Box>
-    </Box>
+            </Container>
+          </Box>
+        </Box>
+      ) : null}
+    </>
   );
 };
 
