@@ -16,7 +16,10 @@ import {
   Button,
 } from "@mui/material";
 import { tableCellClasses } from "@mui/material/TableCell";
-import { FC } from "react";
+import { FC, useState, useEffect } from "react";
+
+import { getCSList } from "function/axios";
+import Pagination from "@/components/Pagination";
 
 const CustomButton = styled(Button)({
   backgroundColor: "#5B321E",
@@ -164,6 +167,29 @@ const dummyData = [
 ];
 
 const UserMypageCs: FC = () => {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [csList, setCSList] = useState<any>(null);
+
+  // pagination
+  const [curPage, setCurPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const paginate = (pageNumber) => setCurPage(pageNumber);
+
+  const params = {
+    memberId: "",
+    page: curPage + 1,
+  };
+
+  useEffect(() => {
+    params.memberId = localStorage.getItem("id");
+    getCSList(params).then((res) => {
+      setCSList(res.data.desk);
+      setTotalPages(res.data.totalPage);
+      // console.log("data는", reviewList);
+      setLoading(true);
+    });
+  }, [curPage]);
+
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -187,10 +213,16 @@ const UserMypageCs: FC = () => {
                     번호
                   </StyledTableCell>
                   <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                    카테고리
+                  </StyledTableCell>
+                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
                     제목
                   </StyledTableCell>
                   <StyledTableCell align="center" sx={{ fontSize: 17 }}>
                     작성일
+                  </StyledTableCell>
+                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                    공개 여부
                   </StyledTableCell>
                   <StyledTableCell align="center" sx={{ fontSize: 17 }}>
                     답변 여부
@@ -198,26 +230,29 @@ const UserMypageCs: FC = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {dummyData.map((data) => (
-                  <StyledTableRow key={data.donationApplyId}>
-                    <StyledTableCell align="center">
-                      {data.donationApplyId}
-                    </StyledTableCell>
-                    <StyledTableCell align="center" sx={{ width: 400 }}>
-                      {data.title}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {data.donationDate}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {data.fact === true ? (
-                        <Typography>완료</Typography>
-                      ) : (
-                        <Typography>미완료</Typography>
-                      )}
-                    </StyledTableCell>
-                  </StyledTableRow>
-                ))}
+                {csList &&
+                  csList.map((data) => (
+                    <StyledTableRow key={data.helpDeskId}>
+                      <StyledTableCell align="center">
+                        {data.helpDeskId}
+                      </StyledTableCell>
+                      <StyledTableCell align="center">
+                        {data.category}
+                      </StyledTableCell>
+                      <StyledTableCell align="center" sx={{ width: 400 }}>
+                        {data.title}
+                      </StyledTableCell>
+                      <StyledTableCell align="center">
+                        {data.createDate.substr(0, 10)}
+                      </StyledTableCell>
+                      <StyledTableCell align="center">
+                        {data.visible}
+                      </StyledTableCell>
+                      <StyledTableCell align="center">
+                        {data.status}
+                      </StyledTableCell>
+                    </StyledTableRow>
+                  ))}
               </TableBody>
             </Table>
           </TableContainer>

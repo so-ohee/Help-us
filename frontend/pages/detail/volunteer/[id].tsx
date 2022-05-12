@@ -205,8 +205,8 @@ const VolunteerDetail: FC = () => {
                     width="500px"
                   >
                     <Typography sx={{ p: 2, mt: 0 }}>
-                      {/* {volunteerDetails.content} */}
-                      Gandriz Bez Vardiem Tev pieder viss Kas ar mani ir noticis
+                      {volunteerDetails.content}
+                      {/* Gandriz Bez Vardiem Tev pieder viss Kas ar mani ir noticis
                       Tev pieder viss Tev pieder viss Neviens to nav sapratis
                       Tev pieder viss, un tas ir ta Vakars, nakts un rits bez
                       vardiem, Vakars, nakts un rits bez vardiem, (Gendriz bez
@@ -216,7 +216,7 @@ const VolunteerDetail: FC = () => {
                       pieder viss, un tas ir ta Vakars, nakts un rits bez
                       vardiem, Vakars, nakts un rits bez vardiem, (Gendriz bez
                       vardiem) Man zudis viss- Laimes krekia uz otru pusiGandriz
-                      Bez Vardiem Tev pieder viss Kas ar mani ir noticis Tev p
+                      Bez Vardiem Tev pieder viss Kas ar mani ir noticis Tev p */}
                     </Typography>
                   </Box>
                 </Stack>
@@ -326,7 +326,7 @@ const VolunteerDetail: FC = () => {
               </Stack>
               {/* 카카오 맵 */}
               <Stack sx={{ width: 800, height: 300, mt: 3, ml: 20 }}>
-                <VolunteerDetailMap item={dummyData} />
+                <VolunteerDetailMap item={volunteerDetails} />
               </Stack>
               {/* <Box
                 sx={{

@@ -2,6 +2,7 @@ import { Box, Button, Stack, Typography, Grid } from "@mui/material";
 import Image from "next/image";
 import react, { FC, useState } from "react";
 import TestImage from "../public/images/testImage.jpg";
+import defaultImage from "../public/images/defaultImage.png";
 import Chip from "@mui/material/Chip";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 
@@ -15,7 +16,11 @@ const CustomButton = styled(Button)({
   },
 });
 
-const DonationCardOrg: FC = () => {
+interface IDonationCardOrg {
+  item: any;
+}
+
+const DonationCardOrg: FC<IDonationCardOrg> = ({ item }) => {
   return (
     <div>
       <Box
@@ -38,13 +43,23 @@ const DonationCardOrg: FC = () => {
               width: "35%",
             }}
           >
-            <Image
-              width="100%"
-              height="145"
-              src={TestImage}
-              alt="Donation Image"
-              layout="responsive"
-            />
+            {item.profile === null ? (
+              <Image
+                width="100%"
+                height="145"
+                src={defaultImage}
+                alt="Donation Image"
+                layout="responsive"
+              />
+            ) : (
+              <Image
+                width="100%"
+                height="145"
+                src={item.profile}
+                alt="Donation Image"
+                layout="responsive"
+              />
+            )}
           </Box>
           <Box
             sx={{
@@ -59,7 +74,7 @@ const DonationCardOrg: FC = () => {
             <Box>
               {/* 제목은 17자까지만 보여주기??*/}
               <Typography sx={{ fontWeight: "bold", fontSize: 17, mt: 0.5 }}>
-                운동회를 위한 기부가 필요합니다.
+                {item.title}
               </Typography>
               <Grid
                 container
@@ -73,7 +88,48 @@ const DonationCardOrg: FC = () => {
                 }}
                 direction="row"
               >
-                <Grid sx={{ mx: 1.1, mt: 1 }}>
+                {item.products.map((product, i) => (
+                  <Grid sx={{ mx: 1.1, mt: 1 }} key={i}>
+                    <Chip
+                      label={product.productName}
+                      size="small"
+                      sx={{
+                        backgroundColor: "#FCE2A6",
+                        width: 65,
+                        fontSize: 11,
+                      }}
+                    />
+                    <Stack
+                      sx={{
+                        width: 65,
+                        height: 10,
+                        borderRadius: 5,
+                      }}
+                      direction="row"
+                      alignItems="center"
+                    >
+                      <Box
+                        sx={{
+                          borderTopLeftRadius: 5,
+                          borderBottomLeftRadius: 5,
+                          width: `${product.percent}%`,
+                          height: 5,
+                          bgcolor: "#CDAD78",
+                        }}
+                      ></Box>
+                      <Box
+                        sx={{
+                          borderTopRightRadius: 5,
+                          borderBottomRightRadius: 5,
+                          width: `${100 - product.percent}%`,
+                          height: 5,
+                          bgcolor: "#dbd5ca",
+                        }}
+                      ></Box>
+                    </Stack>
+                  </Grid>
+                ))}
+                {/* <Grid sx={{ mx: 1.1, mt: 1 }}>
                   <Chip
                     label="두부"
                     size="small"
@@ -224,45 +280,7 @@ const DonationCardOrg: FC = () => {
                       }}
                     ></Box>
                   </Stack>
-                </Grid>
-                <Grid sx={{ mx: 1.1, mt: 1 }}>
-                  <Chip
-                    label="두부"
-                    size="small"
-                    sx={{
-                      backgroundColor: "#FCE2A6",
-                      width: 65,
-                      fontSize: 11,
-                    }}
-                  />
-                  <Stack
-                    sx={{
-                      width: 65,
-                      height: 10,
-                    }}
-                    direction="row"
-                    alignItems="center"
-                  >
-                    <Box
-                      sx={{
-                        borderTopLeftRadius: 5,
-                        borderBottomLeftRadius: 5,
-                        width: "40%",
-                        height: 5,
-                        bgcolor: "#CDAD78",
-                      }}
-                    ></Box>
-                    <Box
-                      sx={{
-                        borderTopRightRadius: 5,
-                        borderBottomRightRadius: 5,
-                        width: "60%",
-                        height: 5,
-                        bgcolor: "#dbd5ca",
-                      }}
-                    ></Box>
-                  </Stack>
-                </Grid>
+                </Grid> */}
               </Grid>
               {/* 진행률 표시 바 */}
               <Stack
