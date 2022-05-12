@@ -78,7 +78,7 @@ const UserList = () => {
         getAllUser(localStorage.getItem('jwt'),page_)
         .then(res => {
             setList(res.data[1].members)
-            setTotalPage((res.data[0].total_page-1-(res.data[0].total_page-1)%10)/10)
+            setTotalPage((res.data[0].total_page-1-(res.data[0].total_page-1)%10)/10 +1)
         })
     }
 
@@ -88,7 +88,8 @@ const UserList = () => {
         .then(res => {
             setList(res.data[1].members)
             // console.log((res.data[0].total_page-1-(res.data[0].total_page-1)%10)/10)
-            setTotalPage((res.data[0].total_page-1-(res.data[0].total_page-1)%10)/10)
+            setTotalPage((res.data[0].total_page-1-(res.data[0].total_page-1)%10)/10 +1)
+            // console.log(res)
         })
     },[])
 
@@ -200,12 +201,15 @@ const UserList = () => {
                     </Box>
                 </Modal>
             </div>
-
-            <Pagination
-                curPage={page}
-                paginate={paginate}
-                totalPage={totalPage}
-            />
+            
+            <div style={{display:'flex', justifyContent:'center', marginTop:'20px'}}>
+                <Pagination
+                    curPage={page}
+                    paginate={paginate}
+                    totalPage={totalPage}
+                    
+                />
+            </div>
 
         </>
 

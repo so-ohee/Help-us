@@ -70,26 +70,30 @@ const Pagination: FC<IPagination> = ({ paginate, curPage, totalPage }) => {
   const [pageNumbers, setPageNumbers] = useState([]);
 
   const goPrevPage = () => {
-    paginate(curPage - 1);
+    if (curPage !== 1){
+      paginate(curPage - 1);
+    }
   };
 
   const goNextPage = () => {
-    paginate(curPage + 1);
+    if (curPage !== totalPage){
+      paginate(curPage + 1);
+    }
   };
 
   useEffect(() => {
     const numArr = [];
 
     if (totalPage <= 5) {
-      for (let i = 0; i < totalPage; i++) {
+      for (let i = 1; i <= totalPage; i++) {
         numArr.push(i);
       }
     } else if (curPage < 3) {
-      for (let i = 0; i < 5; i++) {
+      for (let i = 1; i <= 5; i++) {
         numArr.push(i);
       }
     } else if (curPage > totalPage - 3) {
-      for (let i = totalPage - 5; i < totalPage; i++) {
+      for (let i = totalPage - 4; i <= totalPage; i++) {
         numArr.push(i);
       }
     } else {
@@ -103,7 +107,7 @@ const Pagination: FC<IPagination> = ({ paginate, curPage, totalPage }) => {
   return (
     <>
       <Stack direction="row" alignItems="center">
-        <ArrowButton onClick={() => paginate(0)}>
+        <ArrowButton onClick={() => paginate(1)}>
           <KeyboardDoubleArrowLeftIcon
             sx={{
               color: "#5B321E",
@@ -118,18 +122,19 @@ const Pagination: FC<IPagination> = ({ paginate, curPage, totalPage }) => {
           />
         </ArrowButton>
 
-        {pageNumbers.map((number) =>
+        {pageNumbers.map((number, idx) =>
           number === curPage ? (
             <CustomButton
               variant="contained"
               onClick={() => paginate(number)}
               size="small"
+              key={idx}
             >
-              {number + 1}
+              {number}
             </CustomButton>
           ) : (
-            <CustomButton2 onClick={() => paginate(number)} size="small">
-              {number + 1}
+            <CustomButton2 onClick={() => paginate(number)} size="small" key={idx}>
+              {number}
             </CustomButton2>
           )
         )}
@@ -141,7 +146,7 @@ const Pagination: FC<IPagination> = ({ paginate, curPage, totalPage }) => {
             }}
           />
         </ArrowButton>
-        <ArrowButton onClick={() => paginate(totalPage - 1)}>
+        <ArrowButton onClick={() => paginate(totalPage)}>
           <KeyboardDoubleArrowRightIcon
             sx={{
               color: "#5B321E",

@@ -115,6 +115,9 @@ const SignupList = () => {
                         setStep('failed')
                     }
                 }
+                if(res.data.images[0].fields.length === 0){
+                    setStep('failed')
+                }
             })
             .catch(err => {
                 // console.log(err)

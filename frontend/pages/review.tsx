@@ -54,12 +54,12 @@ const Review: FC = () => {
   const [reviewList, setReviewList] = useState<any>(null);
 
   // pagination
-  const [curPage, setCurPage] = useState(0);
+  const [curPage, setCurPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const paginate = (pageNumber) => setCurPage(pageNumber);
 
   const params = {
-    page: curPage + 1,
+    page: curPage,
   };
 
   useEffect(() => {
@@ -67,6 +67,7 @@ const Review: FC = () => {
       setReviewList(res.data.confirm);
       setTotalPages(res.data.totalPage);
       // console.log("data는", reviewList);
+      // console.log(res)
       setLoading(true);
     });
   }, [curPage]);
