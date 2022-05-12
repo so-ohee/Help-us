@@ -52,7 +52,7 @@ const Certi: FC = () => {
     tokenCheck()
     .then(res => {
       if (res){
-        // console.log(res)
+        console.log(res)
         setName(res.data.name)
         setEmail(res.data.email)
         setPhone(res.data.tel)

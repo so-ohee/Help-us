@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 import {
@@ -10,6 +10,8 @@ import {
   CssBaseline,
   IconButton,
   Stack,
+  Modal,
+  TextField
 } from "@mui/material";
 import OrgMypageSidebar from "../../components/OrgMypageSidebar";
 import Link from "next/link";
@@ -24,7 +26,7 @@ import MailIcon from "@mui/icons-material/Mail";
 import TestImage from "../../public/images/testImage.jpg";
 
 // api
-import { getUserInfo } from "function/axios";
+import { getUserInfo, userEdit } from "function/axios";
 
 const useStyles = makeStyles((theme) => ({
   customHoverFocus: {
@@ -58,6 +60,30 @@ const UpdateButton2 = styled(Button)({
   // width: "50px",
 });
 
+
+// 모달
+const OutlinedButton = styled(Button)({
+  border: "1px solid #5B321E",
+  color: "#5B321E"
+})
+
+const style = {
+  position: 'absolute' as 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 500,
+  bgcolor: 'background.paper',
+  // border: '1px solid #000',
+  borderRadius:'2%',
+  boxShadow: 24,
+  padding: 1,
+  paddingLeft: 3,
+  paddingRight: 3,
+};
+// 모달 끝
+
+
 const OrgMypage: FC = () => {
   // const accessToken = localStorage.getItem("jwt");
   // console.log(accessToken);
@@ -74,6 +100,49 @@ const OrgMypage: FC = () => {
       setLoading(true);
     });
   }, []);
+
+
+    // 모달
+    const imageUpload = useRef(null)
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => {
+      setIntro(myInfo.info)
+      setProfile('')
+      setProfileName('')
+      setOpen(true)
+    }
+    const handleClose = () => {
+        setOpen(false)
+    }
+    const [intro, setIntro] = useState('')
+    const [profileName, setProfileName] = useState('')
+    const [profile, setProfile] = useState('')
+  
+    // 파일 선택시
+    const onImageChange = (e) => {
+      if (e.target.files.length > 0){
+          setProfileName(e.target.files[0].name)
+          setProfile(e.target.files[0])
+        }
+      }
+  
+    // 업로드 버튼 클릭시
+    const clickImageUpload = () => {
+        imageUpload.current.click()
+    }
+  
+    // 수정 버튼 클릭시
+    const clickEdit = () => {
+      userEdit(localStorage.getItem('jwt'), myInfo.memberId, intro, profile)
+      .then(res => {
+        handleClose()
+        location.reload()
+      })
+      .catch(err => console.log(err))
+    }
+  
+    // 모달 끝
+
 
   return (
     <>
@@ -161,13 +230,84 @@ const OrgMypage: FC = () => {
                   </Box>
                 </Grid>
                 <Grid item xs={1}>
-                  <UpdateButton variant="contained" sx={{ mb: 15 }}>
+                  <UpdateButton onClick={handleOpen} variant="contained" sx={{ mb: 15 }}>
                     수정
                   </UpdateButton>
                 </Grid>
               </Grid>
             </Container>
           </Box>
+
+
+          {/* 회원수정 모달창 */}
+            <div>
+              <Modal
+                open={open}
+                // onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+              <Box sx={style}>
+                <Typography id="modal-modal-title" variant="h6" component="h2" style={{fontWeight:'bold'}}>
+                    회원정보 수정 -사진과 소개글 두개 다 입력(수정중)
+                </Typography>
+
+
+                <div style={{marginTop:'15px', marginBottom:'10px'}}>
+                  <TextField
+                    name="regi"
+                    required
+                    // fullWidth
+                    id="regi"
+                    label="프로필 사진"
+                    value={profileName}
+                    disabled={true}
+                  />
+
+                  <UpdateButton
+                    sx={{ mt: 1, mb:1, mx:1}}
+                    variant="contained"
+                    onClick={clickImageUpload}
+                  >
+                  업로드
+                  </UpdateButton>
+                  <input 
+                    type="file" 
+                    accept='image/*'
+                    ref={imageUpload}
+                    onChange={onImageChange}
+                    style={{display:"none"}}
+                  />
+                </div>
+
+                <TextField
+                  name="intro"
+                  fullWidth       
+                  multiline
+                  rows={3}
+                  id="intro"
+                  label="소개"
+                  value={intro}
+                  onChange={(e) => setIntro(e.target.value)}
+                  inputProps={{ maxLength: 200 }}
+                />
+
+                <div style={{marginTop:'10px', display:'flex', justifyContent:'end'}}>
+                    <UpdateButton 
+                        style={{marginRight:'3px'}}
+                        onClick={clickEdit}
+                    >수정</UpdateButton>
+                    <OutlinedButton
+                        onClick={handleClose}
+                    >취소</OutlinedButton>
+                </div>
+              </Box>
+            </Modal>
+          </div>
+          {/* 회원수정 모달창 끝 */}
+
+
+
         </Box>
       ) : null}
     </>

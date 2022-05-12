@@ -283,6 +283,36 @@ export const tokenCheck = async () => {
   }
 };
 
+// 회원 수정
+export const userEdit = async (token, id, intro, file) => {
+  
+  const data = {
+    "info": intro
+  }
+
+  const newForm = new FormData();
+  newForm.append(
+    "member",
+    new Blob([JSON.stringify(data)], { type: "application/json" })
+  );
+  newForm.append("profile", file);
+
+
+  return await axios({
+    method: "PUT",
+    url: '/8000/member/update',
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Authorization: token,
+      memberId: id
+    },
+      
+    data: newForm,
+  });
+};
+
+
+
 
 
 
