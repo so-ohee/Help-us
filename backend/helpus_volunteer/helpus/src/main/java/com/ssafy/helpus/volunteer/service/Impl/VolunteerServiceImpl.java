@@ -163,7 +163,7 @@ public class VolunteerServiceImpl implements VolunteerService{
         }
         volunteerRepository.deleteById(volunteerId);
 
-        resultMap.put("message", "삭제성공");
+        resultMap.put("message", "삭제 성공");
         return resultMap;
     }
 

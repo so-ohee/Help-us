@@ -97,7 +97,7 @@ public class VolunteerController {
         }catch (Exception e){
             log.error(e.getMessage());
 
-            resultMap.put("message", e.getMessage());
+            resultMap.put("message", "실패");
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return new ResponseEntity(resultMap, status);
@@ -116,7 +116,7 @@ public class VolunteerController {
         }catch (Exception e){
             log.error(e.getMessage());
 
-            resultMap.put("Message", e.getMessage());
+            resultMap.put("Message", "실패");
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return new ResponseEntity(resultMap, status);
