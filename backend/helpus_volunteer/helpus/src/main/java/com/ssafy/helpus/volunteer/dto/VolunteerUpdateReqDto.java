@@ -1,5 +1,6 @@
 package com.ssafy.helpus.volunteer.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -43,6 +44,7 @@ public class VolunteerUpdateReqDto {
     private int time;
 
     @ApiModelProperty(value = "봉사일")
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm")
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm")
     private LocalDateTime volDate;
 }

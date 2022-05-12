@@ -37,12 +37,12 @@ public class VolunteerController {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.CREATED;
         try {
-                Long memberId = Long.valueOf(headers.get("memberId").get(0));
+                Long memberId = Long.valueOf(headers.get("memberIdByToken").get(0));
                 String role = headers.get("role").get(0);
                 resultMap = volunteerService.registerVoluneer(volunteerReqDto, memberId, files, role);
         } catch (Exception e){
             log.error(e.getMessage());
-            resultMap.put("message", e.getMessage());
+            resultMap.put("message", "실패");
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return new ResponseEntity(resultMap, status);
@@ -97,7 +97,7 @@ public class VolunteerController {
         }catch (Exception e){
             log.error(e.getMessage());
 
-            resultMap.put("message", e.getMessage());
+            resultMap.put("message", "실패");
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return new ResponseEntity(resultMap, status);
@@ -116,7 +116,7 @@ public class VolunteerController {
         }catch (Exception e){
             log.error(e.getMessage());
 
-            resultMap.put("Message", e.getMessage());
+            resultMap.put("Message", "실패");
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return new ResponseEntity(resultMap, status);
@@ -131,7 +131,7 @@ public class VolunteerController {
         HttpStatus status = HttpStatus.OK;
 
         try {
-            Long memberId = Long.valueOf(headers.get("memberId").get(0));
+            Long memberId = Long.valueOf(headers.get("memberIdByToken").get(0));
             String role = headers.get("role").get(0);
             resultMap = volunteerService.applyVolunteer(volunteerId, memberId, role);
         }catch (Exception e){
@@ -160,6 +160,7 @@ public class VolunteerController {
         return new ResponseEntity(resultMap, status);
     }
 
+    //4
     @ApiOperation(value = "봉사 목록 메인페이지에 나오는거")
     @GetMapping("/main")
     public ResponseEntity mainListVolunteer(@RequestParam(required = false,defaultValue = "최신순") String order, @RequestParam(required = false, defaultValue = "1") int page){
@@ -172,7 +173,7 @@ public class VolunteerController {
         }catch (Exception e){
             log.error(e.getMessage());
 
-            resultMap.put("message", e.getMessage());
+            resultMap.put("message", "실패");
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return new ResponseEntity(resultMap, status);
@@ -190,7 +191,7 @@ public class VolunteerController {
         }catch (Exception e){
             log.error(e.getMessage());
 
-            resultMap.put("message", e.getMessage());
+            resultMap.put("message", "게시물 조회 실패");
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return new ResponseEntity(resultMap, status);
@@ -208,7 +209,7 @@ public class VolunteerController {
         }catch (Exception e){
             log.error(e.getMessage());
 
-            resultMap.put("message", e.getMessage());
+            resultMap.put("message", "조회 실패");
             stat = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return new ResponseEntity(resultMap, stat);

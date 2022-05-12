@@ -38,7 +38,7 @@ public class TalentDonationController {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.CREATED;
         try {
-                Long memberId = Long.valueOf(headers.get("memberId").get(0));
+                Long memberId = Long.valueOf(headers.get("memberIdByToken").get(0));
                 String role = headers.get("role").get(0);
                 resultMap = talentDonationService.registerTalentDonation(talentDonationReqDto, memberId, files, role);
         } catch (Exception e){
@@ -98,7 +98,7 @@ public class TalentDonationController {
         }catch (Exception e){
             log.error(e.getMessage());
 
-            resultMap.put("message", e.getMessage());
+            resultMap.put("message", "삭제 실패");
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return new ResponseEntity(resultMap, status);
@@ -152,7 +152,7 @@ public class TalentDonationController {
             resultMap = talentDonationService.myTalentDonationList(memberId, page-1);
         }catch (Exception e){
             log.info(e.getMessage());
-            resultMap.put("message", e.getMessage());
+            resultMap.put("message", "조회 실패");
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return new ResponseEntity(resultMap, status);

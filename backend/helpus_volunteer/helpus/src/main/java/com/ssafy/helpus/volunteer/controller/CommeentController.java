@@ -32,11 +32,11 @@ public class CommeentController {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.CREATED;
         try {
-            Long memberId = Long.valueOf(headers.get("memberId").get(0));
+            Long memberId = Long.valueOf(headers.get("memberIdByToken").get(0));
             resultMap = commentService.registerComment(commentReqDto, memberId);
         } catch (Exception e) {
             log.error(e.getMessage());
-            resultMap.put("message", e.getMessage());
+            resultMap.put("message", "댓글 등록 실패");
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return new ResponseEntity(resultMap, status);
@@ -54,7 +54,7 @@ public class CommeentController {
         } catch (Exception e) {
             log.error(e.getMessage());
 
-            resultMap.put("message", e.getMessage());
+            resultMap.put("message", "댓글 조회 실패");
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return new ResponseEntity(resultMap, status);
@@ -72,7 +72,7 @@ public class CommeentController {
             resultMap = commentService.deleteComment(commentId);
         }catch (Exception e){
             log.error(e.getMessage());
-            resultMap.put("message", e.getMessage());
+            resultMap.put("message", "댓글 삭제 실패");
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return new ResponseEntity(resultMap, status);

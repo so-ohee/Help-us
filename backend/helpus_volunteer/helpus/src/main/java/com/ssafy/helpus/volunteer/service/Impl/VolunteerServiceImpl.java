@@ -93,6 +93,10 @@ public class VolunteerServiceImpl implements VolunteerService{
         volunteer.get().setTime(volunteerUpdateReqDto.getTime());
         volunteer.get().setVolDate(volunteerUpdateReqDto.getVolDate());
         volunteer.get().setUpdateDate(LocalDateTime.now());
+        double now_people = volunteerUpdateReqDto.getPeople();
+        double now_applicant = volunteer.get().getApplicant();
+        double now_percent = now_applicant/now_people*100.0;
+        volunteer.get().setPercent(now_percent);
 
         if(files == null){
             fileService.volunteerFileDelete(volunteer.get().getImages());
@@ -159,7 +163,7 @@ public class VolunteerServiceImpl implements VolunteerService{
         }
         volunteerRepository.deleteById(volunteerId);
 
-        resultMap.put("message", "삭제성공");
+        resultMap.put("message", "삭제 성공");
         return resultMap;
     }
 
@@ -248,7 +252,7 @@ public class VolunteerServiceImpl implements VolunteerService{
         Map<String, Object> resultMap = new HashMap<>();
 
         if(volunteers.isEmpty()){
-            resultMap.put("message", "게시물없음");
+            resultMap.put("message", "게시글 없음");
             return resultMap;
         }
         List<ListVolunteerResDto> list = new ArrayList<>();

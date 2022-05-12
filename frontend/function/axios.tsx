@@ -89,6 +89,38 @@ export const getDeliveryList = async (id, params) => {
   });
 };
 
+// 기부 뉴스
+export const getNewsList = async (params) => {
+  return await axios({
+    method: "GET",
+    url: `/9080/news`,
+    params: params,
+  });
+};
+
+// 물품 기부글 작성
+export const createDonation = async (id, token, donation, files) => {
+  const newForm = new FormData();
+
+  newForm.append(
+    "donation",
+    new Blob([JSON.stringify(donation)], { type: "application/json" })
+  );
+
+  files?.map((file) => newForm.append("files", file));
+
+  // newForm.append("files", files);
+
+  return await axios({
+    method: "POST",
+    url: "/8000/donation",
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Authorization: token,
+    },
+    data: newForm,
+  });
+};
 // ----------------------- 9081 ------------------------------
 
 // 봉사 글 상세 조회
@@ -258,18 +290,6 @@ export const getUserInfo = async (id) => {
   });
 };
 
-// 물품 기부 등록
-export const createDonation = async (id, donation: Object, files: Object) => {
-  return await axios({
-    method: "POST",
-    url: "/9080/donation",
-    data: { donation, files },
-    headers: {
-      memberId: id,
-    },
-  });
-};
-
 // -------------------------관리자페이지-------------------------
 
 // 전체 회원 조회
@@ -363,10 +383,9 @@ export const tokenCheck = async () => {
 
 // 회원 수정
 export const userEdit = async (token, id, intro, file) => {
-  
   const data = {
-    "info": intro
-  }
+    info: intro,
+  };
 
   const newForm = new FormData();
   newForm.append(
@@ -375,25 +394,18 @@ export const userEdit = async (token, id, intro, file) => {
   );
   newForm.append("profile", file);
 
-
   return await axios({
     method: "PUT",
-    url: '/8000/member/update',
+    url: "/8000/member/update",
     headers: {
       "Content-Type": "multipart/form-data",
       Authorization: token,
-      memberId: id
+      memberId: id,
     },
-      
+
     data: newForm,
   });
 };
-
-
-
-
-
-
 
 // ------------------------- 기타 ------------------------------
 
