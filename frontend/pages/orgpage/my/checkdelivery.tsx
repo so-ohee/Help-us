@@ -16,9 +16,10 @@ import {
   Button,
 } from "@mui/material";
 import { tableCellClasses } from "@mui/material/TableCell";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 
-const mdTheme = createTheme();
+// api
+import { getDeliveryList } from "function/axios";
 
 const CustomButton = styled(Button)({
   backgroundColor: "#5B321E",
@@ -155,90 +156,160 @@ const dummyData = [
 ];
 
 const orgpageMyCheckDelivery: FC = () => {
+  // 배송 현황 리스트
+  const [deliveryList, setDeliveryList] = useState<any>("");
+
+  useEffect(() => {
+    const memberId = localStorage.getItem("id");
+    const params = {
+      page: 1,
+    };
+    getDeliveryList(memberId, params).then((res) => {
+      setDeliveryList(res.data.apply);
+    });
+  }, []);
   return (
-    <Box sx={{ display: "flex" }}>
-      <CssBaseline />
-      <OrgMypageSidebar />
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          height: "100vh",
-          overflow: "auto",
-          mt: 0,
-        }}
-      >
-        <Container maxWidth="lg" sx={{}}>
-          <Typography variant="h4">배송 현황</Typography>
-          <TableContainer component={Paper} sx={{ mt: 5 }}>
-            <Table sx={{ minWidth: 700 }} aria-label="customized table">
-              <TableHead>
-                <TableRow>
-                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                    번호
-                  </StyledTableCell>
-                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                    제목
-                  </StyledTableCell>
-                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                    물품 상세
-                  </StyledTableCell>
-                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                    빌송인
-                  </StyledTableCell>
-                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+    <>
+      <Box sx={{ display: "flex" }}>
+        <CssBaseline />
+        <OrgMypageSidebar />
+        <Box
+          component="main"
+          sx={{
+            flexGrow: 1,
+            height: "100vh",
+            overflow: "auto",
+            mt: 0,
+          }}
+        >
+          <Container maxWidth="lg" sx={{}}>
+            <Typography variant="h4">배송 현황</Typography>
+            <TableContainer component={Paper} sx={{ mt: 5 }}>
+              <Table sx={{ minWidth: 700 }} aria-label="customized table">
+                <TableHead>
+                  <TableRow>
+                    <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                      기부 번호
+                    </StyledTableCell>
+                    <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                      글 제목
+                    </StyledTableCell>
+                    <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                      물품 상세
+                    </StyledTableCell>
+                    <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                      수량
+                    </StyledTableCell>
+                    <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                      빌송인
+                    </StyledTableCell>
+                    {/* <StyledTableCell align="center" sx={{ fontSize: 17 }}>
                     송장 번호
-                  </StyledTableCell>
-                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                    기부 신청일
-                  </StyledTableCell>
-                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                    배송 조회
-                  </StyledTableCell>
-                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                    현황
-                  </StyledTableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {dummyData.map((data) => (
-                  <StyledTableRow key={data.donationApplyId}>
-                    <StyledTableCell align="center">
-                      {data.donationApplyId}
+                  </StyledTableCell> */}
+                    <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                      기부 신청일
                     </StyledTableCell>
-                    <StyledTableCell align="center" sx={{ width: 400 }}>
-                      {data.title}
+                    <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                      배송 조회
                     </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {data.productList}
+                    <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                      현황
                     </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {data.name}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {data.expressNum}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {data.donationDate}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      <CustomButton2 sx={{ width: 40, height: 30 }}>
-                        조회
-                      </CustomButton2>
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      <CustomButton sx={{ width: 80, height: 30 }}>
-                        도착 완료
-                      </CustomButton>
-                    </StyledTableCell>
-                  </StyledTableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Container>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {deliveryList &&
+                    deliveryList.map((data) => (
+                      <StyledTableRow key={data.donationApplyId}>
+                        <StyledTableCell align="center">
+                          {data.donationApplyId}
+                        </StyledTableCell>
+                        <StyledTableCell align="center" sx={{ width: 300 }}>
+                          {data.title}
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                          {data.productName}
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                          {data.count}
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                          {data.name}
+                        </StyledTableCell>
+                        {/* <StyledTableCell align="center">
+                        {data.expressNum}
+                      </StyledTableCell> */}
+                        <StyledTableCell align="center">
+                          {data.donationDate}
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                          <>
+                            <form
+                              action="http://info.sweettracker.co.kr/tracking/5"
+                              method="post"
+                            >
+                              <div className="no">
+                                <label>API key</label>
+                                <input
+                                  type="text"
+                                  id="t_key"
+                                  name="t_key"
+                                  placeholder="제공받은 APIKEY"
+                                  value={
+                                    process.env.NEXT_PUBLIC_POST_TRACKER_API_KEY
+                                  }
+                                />
+                              </div>
+                              <div className="no">
+                                <label>택배사 코드</label>
+                                <input
+                                  type="text"
+                                  name="t_code"
+                                  id="t_code"
+                                  placeholder="택배사 코드"
+                                  value={data.parcel}
+                                />
+                              </div>
+                              <div className="no">
+                                <label>운송장 번호</label>
+                                <input
+                                  type="text"
+                                  name="t_invoice"
+                                  id="t_invoice"
+                                  placeholder="운송장 번호"
+                                  value={data.invoice}
+                                />
+                              </div>
+                              <CustomButton2
+                                sx={{ width: 80, height: 30 }}
+                                type="submit"
+                              >
+                                조회하기
+                              </CustomButton2>
+                            </form>
+                          </>
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                          <CustomButton sx={{ width: 80, height: 30 }}>
+                            도착 완료
+                          </CustomButton>
+                        </StyledTableCell>
+                      </StyledTableRow>
+                    ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Container>
+        </Box>
       </Box>
-    </Box>
+      <style jsx>
+        {`
+          .no {
+            display: none;
+          }
+        `}
+      </style>
+    </>
   );
 };
 

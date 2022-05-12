@@ -1,11 +1,31 @@
-import { FC, useState } from "react";
-import { Box, Grid, Tab, Typography, Stack, Button, InputBase, Paper, Tabs } from "@mui/material/";
-import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material/";
+import { FC, useState, useEffect } from "react";
+
+import { getCSList } from "function/axios";
+import Pagination from "@/components/Pagination";
+import {
+  Box,
+  Grid,
+  Tab,
+  Typography,
+  Stack,
+  Button,
+  InputBase,
+  Paper,
+  Tabs,
+} from "@mui/material/";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material/";
 import { tableCellClasses } from "@mui/material/TableCell";
 import { styled } from "@mui/material/styles";
-import SearchIcon from '@mui/icons-material/Search';
-import IconButton from '@mui/material/IconButton';
-import Image from 'next/image';
+import SearchIcon from "@mui/icons-material/Search";
+import IconButton from "@mui/material/IconButton";
+import Image from "next/image";
 import volunteer1 from "../public/images/volunteer1.jpg";
 
 const CustomButton = styled(Button)({
@@ -39,7 +59,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
   height: 62,
 }));
-
 
 const dummyData = [
   {
@@ -144,44 +163,70 @@ const dummyData = [
   },
 ];
 
-
 const CsMain: FC = () => {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [csList, setCSList] = useState<any>(null);
 
+  // pagination
+  const [curPage, setCurPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const paginate = (pageNumber) => setCurPage(pageNumber);
+
+  const params = {
+    memberId: "",
+    page: curPage + 1,
+  };
+
+  useEffect(() => {
+    params.memberId = localStorage.getItem("id");
+    getCSList(params).then((res) => {
+      setCSList(res.data.desk);
+      setTotalPages(res.data.totalPage);
+      // console.log("data는", reviewList);
+      setLoading(true);
+    });
+  }, [curPage]);
 
   return (
     <div>
       <Grid container justifyContent="center" alignItems="center">
         <Stack>
-          <Box textAlign="center" >
-            <Image 
-              src= {volunteer1}
+          <Box textAlign="center">
+            <Image
+              src={volunteer1}
               alt="volunteer first"
               width={1200}
               height={200}
             />
           </Box>
-          <Box sx={{ fontWeight: 'bold', my: 5}}>
-            <Typography variant="h4" textAlign="center">문의 게시판</Typography>
+          <Box sx={{ fontWeight: "bold", my: 5 }}>
+            <Typography variant="h4" textAlign="center">
+              문의 게시판
+            </Typography>
           </Box>
-          <Box sx={{display: 'flex', justifyContent: 'flex-end'}}>
-            <CustomButton variant="contained" href="create/cs">글 작성</CustomButton>
+          <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+            <CustomButton variant="contained" href="create/cs">
+              글 작성
+            </CustomButton>
           </Box>
-          <Box sx={{display: 'flex', justifyContent: 'flex-end', mt : 1}}>
+          <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 1 }}>
             <Paper
               component="form"
-              sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 250 }}
+              sx={{
+                p: "2px 4px",
+                display: "flex",
+                alignItems: "center",
+                width: 250,
+              }}
             >
-              <InputBase
-                sx={{ ml: 1, flex: 1 }}
-                placeholder="검색"
-              />
-              <IconButton type="submit" sx={{ p: '10px' }} >
+              <InputBase sx={{ ml: 1, flex: 1 }} placeholder="검색" />
+              <IconButton type="submit" sx={{ p: "10px" }}>
                 <SearchIcon />
               </IconButton>
             </Paper>
           </Box>
-            <Stack>
-              <TableContainer component={Paper} sx={{ my: 5 }}>
+          <Stack>
+            <TableContainer component={Paper} sx={{ my: 5 }}>
               <Table sx={{ minWidth: 700 }} aria-label="customized table">
                 <TableHead>
                   <TableRow>
