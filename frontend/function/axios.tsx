@@ -254,6 +254,35 @@ export const searchUser = async (token, type, keyword, page) => {
   });
 };
 
+// 토큰 체크
+export const tokenCheck = async () => {
+
+  const token = localStorage.getItem('jwt')
+
+  if (token){
+    return await axios({
+      method: "GET",
+      url: '/8000/member',
+      headers: {
+        Authorization: token,
+      },
+    })
+    // .then(res => console.log(res))
+    .catch(() => {
+      localStorage.removeItem('jwt')
+      localStorage.removeItem('id')
+      localStorage.removeItem('role')
+      location.href='/'
+    })
+  }
+  else{
+    localStorage.removeItem('jwt')
+    localStorage.removeItem('id')
+    localStorage.removeItem('role')
+    location.href='/'
+  }
+};
+
 
 
 

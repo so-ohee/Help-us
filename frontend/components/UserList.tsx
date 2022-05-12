@@ -59,6 +59,8 @@ const UserList = () => {
 
     // 검색
     const [keyword, setKeyword] = useState('')
+    const [keyword2, setKeyword2] = useState('')
+    const [searchWay2, setSearchWay2] = useState('')
 
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
@@ -78,14 +80,14 @@ const UserList = () => {
 
     const paginate = (page_) => {
         setPage(page_)
-        if (keyword === ''){
+        if (keyword2 === ''){
             getAllUser(localStorage.getItem('jwt'),page_)
             .then(res => {
                 setList(res.data[1].members)
                 setTotalPage((res.data[0].total_page-1-(res.data[0].total_page-1)%10)/10 +1)
             })
         }else{
-            searchUser(localStorage.getItem('jwt'), searchWay, keyword, page_)
+            searchUser(localStorage.getItem('jwt'), searchWay2, keyword2, page_)
             .then(res => {
                 // console.log(res)
                 setList(res.data[1].members)
@@ -110,6 +112,8 @@ const UserList = () => {
     // 검색
     const onSearch = () => {
         setPage(1)
+        setKeyword2(keyword)
+        setSearchWay2(searchWay)
         if (keyword === ''){
             getAllUser(localStorage.getItem('jwt'), 1)
             .then(res => {

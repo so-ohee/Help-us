@@ -16,6 +16,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import CircularProgress from '@mui/material/CircularProgress';
 import html2canvas from 'html2canvas'
 import { styled } from "@mui/material/styles";
+import { tokenCheck } from "../function/axios";
 
 
 const UpdateButton = styled(Button)({
@@ -38,9 +39,26 @@ const Certi: FC = () => {
   const [certiNum, setCertiNum] = useState('')
   const [full, setFull] = useState([])
 
+  // 유저 정보
+  const [name, setName] = useState()
+  const [email, setEmail] = useState()
+  const [phone, setPhone] = useState()
+
 
   // 기부 목록 받아오기
   useEffect(() => {
+
+    // 유저 정보 받아오기
+    tokenCheck()
+    .then(res => {
+      if (res){
+        // console.log(res)
+        setName(res.data.name)
+        setEmail(res.data.email)
+        setPhone(res.data.tel)
+      }
+    })
+
     const givenList =[
       {
         org: '싸피재단',
@@ -72,7 +90,7 @@ const Certi: FC = () => {
     setFull(arr)
   },[])
 
-  // 체크박시 선택시
+  // 체크박스 선택시
   const handleChange = (e) => {
     if (checked.includes(Number(e.target.value))){
       setChecked(checked.filter(idx => idx !== Number(e.target.value)))
@@ -141,7 +159,7 @@ const Certi: FC = () => {
   // div -> png
   const onHtmlToPng = () => {
     html2canvas(document.getElementById('div')).then(canvas=>{
-      onSave(canvas.toDataURL('image/png'), `기부내역확인서_${dateFormat}.png`)
+      onSave(canvas.toDataURL('image/png'), `기부내역확인서 ${dateFormat} ${name}.png`)
     })
   }
   const onSave = (uri, filename) => {
@@ -233,9 +251,9 @@ const Certi: FC = () => {
 
                 <div style={{border:'1px solid black', padding:'50px', paddingBottom:'30px'}}>
                 <span style={{display: 'flex', justifyContent: 'center', margin:'30px', fontSize:'40px', fontWeight:'bold'}}>기부내역 확인서</span>
-                <h2>성 &nbsp; 함 : 김싸피</h2>
-                <h2>연락처 : 010-1234-1234</h2>
-                <h2>이메일 : ssafy@ssafy.com</h2>
+                <h2>성 &nbsp; 함 : {name}</h2>
+                <h2>연락처 : {phone}</h2>
+                <h2>이메일 : {email}</h2>
                 
                 <br />
                 <h1 style={{display: 'flex', justifyContent: 'center'}}>기부내역</h1>

@@ -61,12 +61,13 @@ const SignupList = () => {
     const [memberId, setMemberId] = useState('')
 
     useEffect(() => {
-        waitingList(localStorage.getItem('jwt'), 1)
-        .then(res => {
-            // console.log(res.data[1].members)
-            setOrgList(res.data[1].members)
+        // waitingList(localStorage.getItem('jwt'), 1)
+        // .then(res => {
+        //     // console.log(res.data[1].members)
+        //     setOrgList(res.data[1].members)
 
-        })
+        // })
+        paginate(1)
     },[])
 
     const paginate = (page_) => {
@@ -171,7 +172,8 @@ const SignupList = () => {
     const approve = () => {
         approveSignup(localStorage.getItem('jwt'), memberId)
         .then(res => {
-            paginate(page)
+            paginate(1)
+            setPage(1)
         })
         handleClose()
     }
