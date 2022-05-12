@@ -1,6 +1,7 @@
 package com.ssafy.helpus.volunteer.service.Impl;
 
 import com.ssafy.helpus.volunteer.dto.*;
+import com.ssafy.helpus.volunteer.entity.Member;
 import com.ssafy.helpus.volunteer.entity.Volunteer;
 import com.ssafy.helpus.volunteer.entity.VolunteerApply;
 import com.ssafy.helpus.volunteer.enumClass.VolunteerOrder;
@@ -11,6 +12,7 @@ import com.ssafy.helpus.volunteer.service.MemberService;
 import com.ssafy.helpus.volunteer.service.VolunteerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.joda.time.DateTime;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -51,6 +53,7 @@ public class VolunteerServiceImpl implements VolunteerService{
                 .volAddress(volunteerReqDto.getVolAddress())
                 .people(volunteerReqDto.getPeople())
                 .applicant(0)
+                .time(volunteerReqDto.getTime())
                 .volDate(volunteerReqDto.getVolDate())
                 .category(role)
                 .build();
@@ -86,6 +89,7 @@ public class VolunteerServiceImpl implements VolunteerService{
         volunteer.get().setVolZipcode(volunteerUpdateReqDto.getVolZipcode());
         volunteer.get().setVolAddress(volunteerUpdateReqDto.getVolAddress());
         volunteer.get().setPeople(volunteerUpdateReqDto.getPeople());
+        volunteer.get().setTime(volunteerUpdateReqDto.getTime());
         volunteer.get().setVolDate(volunteerUpdateReqDto.getVolDate());
         volunteer.get().setUpdateDate(LocalDateTime.now());
 
@@ -131,6 +135,7 @@ public class VolunteerServiceImpl implements VolunteerService{
                 .volZipcode(volunteer.get().getVolZipcode())
                 .applicant(volunteer.get().getApplicant())
                 .people(volunteer.get().getPeople())
+                .time(volunteer.get().getTime())
                 .percent(volunteer.get().getPercent())
                 .images(fileService.getVolunteerFileList(volunteer.get().getImages())).build();
 
@@ -214,8 +219,9 @@ public class VolunteerServiceImpl implements VolunteerService{
         }
 
         VolunteerApply volunteerApply = VolunteerApply.builder()
-               .status(1)
+               .status(0)
                .volunteer(volunteer.get())
+                .writerId(volunteer.get().getMemberId())
                .memberId(memberId).build();
 
         volunteerApplyRepository.save(volunteerApply);
@@ -260,6 +266,7 @@ public class VolunteerServiceImpl implements VolunteerService{
                     .volDate(volunteer.getVolDate())
                     .volAddress(volunteer.getVolAddress())
                     .volZipcode(volunteer.getVolZipcode())
+                    .time(volunteer.getTime())
                     .name(member.get("name"))
                     .profile(member.get("profile"))
                     .createDate(volunteer.getCreateDate()).build();
@@ -278,6 +285,20 @@ public class VolunteerServiceImpl implements VolunteerService{
         Sort sort = gerOrder(order);
         Page<Volunteer> volunteers = volunteerRepository.findByCategoryAndStatus("ORG", 0, PageRequest.of(page,6,sort));
         return makeListVolunteer(volunteers);
+    }
+
+    @Override
+    public Map<String, String> getVolunteer(Long volunteerId) {
+
+        log.info("VolunteerService getVolunteer call");
+
+        Map<String, String> map = new HashMap<>();
+        Volunteer volunteer = volunteerRepository.findById(volunteerId).get();
+        int time = volunteer.getTime();
+        map.put("time", Integer.toString(time));
+        map.put("title", volunteer.getTitle());
+
+        return map;
     }
 
     public Sort gerOrder(String order) {

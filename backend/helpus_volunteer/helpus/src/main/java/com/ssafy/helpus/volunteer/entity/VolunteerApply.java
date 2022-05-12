@@ -28,11 +28,15 @@ public class VolunteerApply {
     @Column
     private  int status;
 
+    @Column(name = "writer_id", nullable = false, updatable = false)
+    private Long writerId;
+
     @Builder
-    public VolunteerApply(Volunteer volunteer, Long memberId, int status){
+    public VolunteerApply(Volunteer volunteer, Long memberId, int status, Long writerId){
         this.volunteer = volunteer;
         this.memberId = memberId;
         this.status = status;
+        this.writerId = writerId;
     }
 
 }

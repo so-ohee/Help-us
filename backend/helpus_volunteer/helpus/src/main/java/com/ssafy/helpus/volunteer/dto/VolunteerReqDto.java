@@ -28,6 +28,9 @@ public class VolunteerReqDto {
     @ApiModelProperty(value = "봉사 인원")
     private int people;
 
+    @ApiModelProperty(value = "봉사 인원")
+    private int time;
+
     @ApiModelProperty(value = "봉사일")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate volDate;

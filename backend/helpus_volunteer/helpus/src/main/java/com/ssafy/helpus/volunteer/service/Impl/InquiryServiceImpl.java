@@ -1,12 +1,15 @@
 package com.ssafy.helpus.volunteer.service.Impl;
 
+import com.ssafy.helpus.volunteer.dto.ListApplyResDto;
 import com.ssafy.helpus.volunteer.dto.ListVolunteerResDto;
 import com.ssafy.helpus.volunteer.entity.Volunteer;
+import com.ssafy.helpus.volunteer.entity.VolunteerApply;
 import com.ssafy.helpus.volunteer.enumClass.VolunteerOrder;
 import com.ssafy.helpus.volunteer.repository.VolunteerApplyRepository;
 import com.ssafy.helpus.volunteer.repository.VolunteerRepository;
 import com.ssafy.helpus.volunteer.service.InquiryService;
 import com.ssafy.helpus.volunteer.service.MemberService;
+import com.ssafy.helpus.volunteer.service.VolunteerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -27,6 +30,7 @@ public class InquiryServiceImpl implements InquiryService {
     private final VolunteerRepository volunteerRepository;
     private final VolunteerApplyRepository volunteerApplyRepository;
     private final MemberService memberService;
+    private final VolunteerService volunteerService;
 
 
     @Override
@@ -41,7 +45,7 @@ public class InquiryServiceImpl implements InquiryService {
 
     @Override
     public Map<String, Object> makeListOrg(Page<Volunteer> volunteers) throws Exception {
-        log.info("VolunteerService makerVolunteerList call");
+        log.info("InquiryService makeListOrg call");
 
         Map<String, Object> resultMap = new HashMap<>();
 
@@ -50,7 +54,7 @@ public class InquiryServiceImpl implements InquiryService {
             return resultMap;
         }
         List<ListVolunteerResDto> list = new ArrayList<>();
-        // 기관명 추가
+
         for (Volunteer volunteer : volunteers) {
 
             Map<String, String> member = memberService.getMember(volunteer.getMemberId());
@@ -76,7 +80,46 @@ public class InquiryServiceImpl implements InquiryService {
         return resultMap;
     }
 
+    @Override
+    public Map<String, Object> listApply(Long memberId, String order, int page) throws Exception {
+        log.info("InquiryService listApply call");
 
+        Sort sort = gerOrder(order);
+        Page<VolunteerApply> volunteerApplies = volunteerApplyRepository.findByWriterId(memberId, PageRequest.of(page,6,sort));
+        return makeListApply(volunteerApplies);
+    }
+
+    @Override
+    public Map<String, Object> makeListApply(Page<VolunteerApply> volunteerApplies) throws Exception {
+        log.info("InquiryService makeListApply call");
+
+        Map<String, Object> resultMap = new HashMap<>();
+
+        if (volunteerApplies.isEmpty()) {
+            resultMap.put("message", "지원자 없음");
+            return resultMap;
+        }
+
+        List<ListApplyResDto> list = new ArrayList<>();
+
+        for (VolunteerApply volunteerApply : volunteerApplies) {
+
+            Map<String, String> member = memberService.getMember(volunteerApply.getMemberId());
+            //Map<String, String> volunteer = volunteerService.getVolunteer(volunteerApply.getVolunteer());
+
+            ListApplyResDto listApplyResDto = ListApplyResDto.builder()
+                    .name(member.get("name"))
+                    .profile(member.get("profile"))
+                    .build();
+            list.add(listApplyResDto);
+        }
+        resultMap.put("listApply", list);
+        resultMap.put("totalPage", volunteerApplies.getTotalPages());
+        resultMap.put("message", "성공");
+        return resultMap;
+
+
+    }
 
 
     public Sort gerOrder(String order) {

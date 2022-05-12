@@ -50,7 +50,7 @@ public class CommentServiceImpl implements CommentService {
                     .build();
             commentRepository.save(comment);
 
-            resultMap.put("message", "대댓글작성 성공");
+            resultMap.put("message", commentReqDto.getContent());
             return resultMap;
         }
         else{
@@ -69,7 +69,7 @@ public class CommentServiceImpl implements CommentService {
                     .build();
             commentRepository.save(comment);
 
-            resultMap.put("message", "댓글 작성 성공");
+            resultMap.put("message", commentReqDto.getContent());
             return resultMap;
         }
     }

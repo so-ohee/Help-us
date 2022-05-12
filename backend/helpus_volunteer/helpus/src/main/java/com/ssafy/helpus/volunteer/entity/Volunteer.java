@@ -64,11 +64,14 @@ public class Volunteer {
     @Column(insertable = false)
     private double percent;
 
+    @Column(insertable = false)
+    private int time;
+
     @OneToMany(mappedBy = "volunteer")
     List<VolunteerImage> images = new ArrayList<>();
 
     @Builder
-    public Volunteer(Long memberId, String title, String content, int volZipcode, String volAddress, int people, int applicant, LocalDate volDate, String category){
+    public Volunteer(Long memberId, String title, String content, int volZipcode, String volAddress, int people, int applicant, LocalDate volDate, String category, int time){
         this.memberId = memberId;
         this.title = title;
         this.content = content;
@@ -78,6 +81,7 @@ public class Volunteer {
         this.applicant = applicant;
         this.volDate = volDate;
         this.category = category;
+        this.time = time;
     }
 
 

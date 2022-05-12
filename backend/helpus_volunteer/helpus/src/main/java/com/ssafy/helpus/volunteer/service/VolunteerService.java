@@ -30,4 +30,6 @@ public interface VolunteerService {
     // 봉사 글 목록 - 메인
     Map<String, Object> mainListVolunteer(String order, int page) throws Exception;
 
+    Map<String, String> getVolunteer(Long volunteerId);
+
 }
