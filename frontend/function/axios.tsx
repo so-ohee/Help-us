@@ -243,6 +243,17 @@ export const approveSignup = async (token, id) => {
   });
 };
 
+// 회원 검색
+export const searchUser = async (token, type, keyword, page) => {
+  return await axios({
+    method: "GET",
+    url: `/8000/member/admin/search/${type}/${keyword}/${page}`,
+    headers: {
+      Authorization: token,
+    },
+  });
+};
+
 
 
 

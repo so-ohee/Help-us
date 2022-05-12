@@ -12,7 +12,7 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 import { styled } from "@mui/material/styles";
-import { getAllUser, warning } from "../function/axios";
+import { getAllUser, warning, searchUser } from "../function/axios";
 import Pagination from './Pagination';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -57,6 +57,9 @@ const UserList = () => {
     const [page, setPage] = useState(1)
     const [totalPage, setTotalPage] = useState<number>(1)
 
+    // 검색
+    const [keyword, setKeyword] = useState('')
+
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => {
@@ -75,16 +78,26 @@ const UserList = () => {
 
     const paginate = (page_) => {
         setPage(page_)
-        getAllUser(localStorage.getItem('jwt'),page_)
-        .then(res => {
-            setList(res.data[1].members)
-            setTotalPage((res.data[0].total_page-1-(res.data[0].total_page-1)%10)/10 +1)
-        })
+        if (keyword === ''){
+            getAllUser(localStorage.getItem('jwt'),page_)
+            .then(res => {
+                setList(res.data[1].members)
+                setTotalPage((res.data[0].total_page-1-(res.data[0].total_page-1)%10)/10 +1)
+            })
+        }else{
+            searchUser(localStorage.getItem('jwt'), searchWay, keyword, page_)
+            .then(res => {
+                // console.log(res)
+                setList(res.data[1].members)
+                setTotalPage((res.data[0].total_page-1-(res.data[0].total_page-1)%10)/10 +1)
+            })
+        }
+
     }
 
 
     useEffect(() => {
-        getAllUser(localStorage.getItem('jwt'),1)
+        getAllUser(localStorage.getItem('jwt'), 1)
         .then(res => {
             setList(res.data[1].members)
             // console.log((res.data[0].total_page-1-(res.data[0].total_page-1)%10)/10)
@@ -92,6 +105,35 @@ const UserList = () => {
             // console.log(res)
         })
     },[])
+
+
+    // 검색
+    const onSearch = () => {
+        setPage(1)
+        if (keyword === ''){
+            getAllUser(localStorage.getItem('jwt'), 1)
+            .then(res => {
+                setList(res.data[1].members)
+                setTotalPage((res.data[0].total_page-1-(res.data[0].total_page-1)%10)/10 +1)
+            })
+        }else{
+            searchUser(localStorage.getItem('jwt'), searchWay, keyword, 1)
+            .then(res => {
+                // console.log(res)
+                setList(res.data[1].members)
+                setTotalPage((res.data[0].total_page-1-(res.data[0].total_page-1)%10)/10 +1)
+            })
+        }
+
+    }
+
+    const onKeyPress = (e) => {
+        if (e.key === 'Enter'){
+            onSearch()
+        }
+    }
+
+
 
 
     // 리스트에서 경고 누름
@@ -119,17 +161,22 @@ const UserList = () => {
             <div style={{marginBottom:'20px', display: 'flex', justifyContent: 'flex-end'}}>
                 <FormControl sx={{  minWidth: 126 }} size="small">
                     <Select
-                    value={searchWay}
-                    onChange={handleChange}
-                    displayEmpty
-                    inputProps={{ 'aria-label': 'Without label' }}
+                        value={searchWay}
+                        onChange={handleChange}
+                        displayEmpty
+                        inputProps={{ 'aria-label': 'Without label' }}
                     >
                     <MenuItem value={'name'}>기관명/이름</MenuItem>
                     <MenuItem value={'email'}>이메일</MenuItem>
                     </Select>
                 </FormControl>
-                <TextField size="small" />
-                <UpdateButton variant="contained" style={{padding:'8px'}} >
+                <TextField 
+                    size="small"
+                    value={keyword}
+                    onChange={(e) => setKeyword(e.target.value)} 
+                    onKeyPress={onKeyPress}
+                />
+                <UpdateButton variant="contained" style={{padding:'8px'}} onClick={onSearch} >
                     검색
                 </UpdateButton>
             </div>
