@@ -24,8 +24,6 @@ public class InquiryController {
     @GetMapping("org/{memberId}")
     public ResponseEntity getOrgVolunteer(@PathVariable Long memberId, @RequestParam(required = false, defaultValue = "최신순") String order,
                                           @RequestParam(required = false, defaultValue = "1") int page){
-
-        String category = "ORG";
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.OK;
         try {
@@ -38,5 +36,27 @@ public class InquiryController {
         }
         return new ResponseEntity(resultMap, status);
     }
+
+    @ApiOperation(value = "봉사 현황 조회")
+    @GetMapping("/apply/{memberId}")
+    public ResponseEntity getOrgApplicant(@PathVariable Long memberId, @RequestParam(required = false, defaultValue = "최신순") String order,
+                                          @RequestParam(required = false, defaultValue = "1") int page){
+
+
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.OK;
+        try {
+            resultMap = inquiryService.listApply(memberId, order, page-1);
+        }catch (Exception e){
+            log.error(e.getMessage());
+
+            resultMap.put("message", e.getMessage());
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+
+        return new ResponseEntity(resultMap, status);
+    }
+
+
 
 }
