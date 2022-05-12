@@ -60,109 +60,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   height: 62,
 }));
 
-const dummyData = [
-  {
-    donationApplyId: 1,
-    title: "엉키는 마음은 꿈에선 다 잊게 영원처럼 안아줘",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-    fact: true,
-  },
-  {
-    donationApplyId: 2,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-    fact: true,
-  },
-  {
-    donationApplyId: 3,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-    fact: true,
-  },
-  {
-    donationApplyId: 4,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-    fact: true,
-  },
-  {
-    donationApplyId: 5,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-    fact: true,
-  },
-  {
-    donationApplyId: 6,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-    fact: true,
-  },
-  {
-    donationApplyId: 7,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-    fact: true,
-  },
-  {
-    donationApplyId: 8,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-    fact: false,
-  },
-  {
-    donationApplyId: 9,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-    fact: false,
-  },
-  {
-    donationApplyId: 10,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-    fact: false,
-  },
-];
-
 const CsMain: FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [csList, setCSList] = useState<any>(null);
@@ -234,10 +131,10 @@ const CsMain: FC = () => {
                       번호
                     </StyledTableCell>
                     <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                      제목
+                      카테고리
                     </StyledTableCell>
                     <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                      작성자
+                      제목
                     </StyledTableCell>
                     <StyledTableCell align="center" sx={{ fontSize: 17 }}>
                       작성일
@@ -245,32 +142,35 @@ const CsMain: FC = () => {
                     <StyledTableCell align="center" sx={{ fontSize: 17 }}>
                       공개 여부
                     </StyledTableCell>
+                    <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                      답변 여부
+                    </StyledTableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {dummyData.map((data) => (
-                    <StyledTableRow key={data.donationApplyId}>
-                      <StyledTableCell align="center">
-                        {data.donationApplyId}
-                      </StyledTableCell>
-                      <StyledTableCell align="center" sx={{ width: 400 }}>
-                        {data.title}
-                      </StyledTableCell>
-                      <StyledTableCell align="center">
-                        {data.name}
-                      </StyledTableCell>
-                      <StyledTableCell align="center">
-                        {data.donationDate}
-                      </StyledTableCell>
-                      <StyledTableCell align="center">
-                        {data.fact === true ? (
-                          <Typography>공개</Typography>
-                        ) : (
-                          <Typography>비공개</Typography>
-                        )}
-                      </StyledTableCell>
-                    </StyledTableRow>
-                  ))}
+                  {csList &&
+                    csList.map((data) => (
+                      <StyledTableRow key={data.helpDeskId}>
+                        <StyledTableCell align="center">
+                          {data.helpDeskId}
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                          {data.category}
+                        </StyledTableCell>
+                        <StyledTableCell align="center" sx={{ width: 400 }}>
+                          {data.title}
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                          {data.createDate.substr(0, 10)}
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                          {data.visible}
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                          {data.status}
+                        </StyledTableCell>
+                      </StyledTableRow>
+                    ))}
                 </TableBody>
               </Table>
             </TableContainer>
