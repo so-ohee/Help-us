@@ -73,7 +73,7 @@ public class TalentDonationController {
     @ApiOperation(value = "재능기부 글 조회")
     @GetMapping("{volunteerId}")
     public ResponseEntity getTalentDonation(@PathVariable Long volunteerId){
-        log.info("TalentDonationController getVolunteer call");
+        log.info("TalentDonationController getTalentDonation call");
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.OK;
@@ -103,6 +103,8 @@ public class TalentDonationController {
         }
         return new ResponseEntity(resultMap, status);
     }
+
+    @ApiOperation(value = "재능기부 글 목록")
     @GetMapping("/")
     public ResponseEntity listVolunteer(@RequestParam(defaultValue = "1") int page){
 
@@ -121,6 +123,7 @@ public class TalentDonationController {
         return new ResponseEntity(resultMap, status);
     }
 
+    @ApiOperation(value = "재능기부 글 목록 정렬")
     @GetMapping("/main")
     public ResponseEntity mainListTalentDonation(@RequestParam(required = false,defaultValue = "최신순") String order, @RequestParam(required = false, defaultValue = "1") int page){
         log.info("TalentDonationController mainListTalentDonation call");
@@ -132,6 +135,23 @@ public class TalentDonationController {
         }catch (Exception e){
             log.error(e.getMessage());
 
+            resultMap.put("message", e.getMessage());
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity(resultMap, status);
+    }
+
+    @ApiOperation(value = "내가 올린 재능기부 글 목록")
+    @GetMapping("/mylist/{memberId}")
+    public ResponseEntity myTalentDonationList(@PathVariable Long memberId, @RequestParam(required = false, defaultValue = "1") int page){
+        log.info("TalentDonationController myTalentDonationList call");
+
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.OK;
+        try {
+            resultMap = talentDonationService.myTalentDonationList(memberId, page-1);
+        }catch (Exception e){
+            log.info(e.getMessage());
             resultMap.put("message", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }

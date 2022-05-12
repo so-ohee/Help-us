@@ -24,8 +24,8 @@ public class VolunteerResDto {
     private String content;
 
     @ApiModelProperty(value = "봉사 날짜")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate volDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm")
+    private LocalDateTime volDate;
 
     @ApiModelProperty(value = "봉사 주소")
     private String volAddress;
@@ -47,6 +47,9 @@ public class VolunteerResDto {
 
     @ApiModelProperty(value = "퍼센트")
     private double percent;
+
+    @ApiModelProperty(value = "봉사 인원")
+    private int time;
 
     @ApiModelProperty(value = "파일")
     private List<String> images;

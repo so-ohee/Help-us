@@ -44,7 +44,7 @@ public class HelpDeskController {
                 resultMap.put("message", Message.FILE_EXTENSION_EXCEPTION);
                 status = HttpStatus.BAD_REQUEST;
             } else {
-                int memberId = Integer.parseInt((headers.get("memberId").get(0)));
+                int memberId = Integer.parseInt((headers.get("memberIdByToken").get(0)));
                 resultMap = helpDeskService.registerDesk(desk, memberId, files);
             }
         } catch (Exception e) {
@@ -101,7 +101,7 @@ public class HelpDeskController {
 
     @ApiOperation(value = "고객센터 글 목록 조회")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "category", value = "카테고리", required = false, example = "문의, 정보, 신고, 도움",
+            @ApiImplicitParam(name = "category", value = "카테고리", required = false, example = "문의, 정보수정, 신고, 도움",
                     dataType = "String", paramType = "query"),
             @ApiImplicitParam(name = "word", value = "검색어", required = false,
                     dataType = "String", paramType = "query"),

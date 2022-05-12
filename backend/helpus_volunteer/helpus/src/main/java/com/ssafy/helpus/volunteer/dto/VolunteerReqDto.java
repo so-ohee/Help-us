@@ -1,5 +1,6 @@
 package com.ssafy.helpus.volunteer.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -7,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @ApiModel(value = "봉사 글 등록")
 @Getter
@@ -28,8 +30,12 @@ public class VolunteerReqDto {
     @ApiModelProperty(value = "봉사 인원")
     private int people;
 
+    @ApiModelProperty(value = "봉사 시간")
+    private int time;
+
     @ApiModelProperty(value = "봉사일")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate volDate;
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm")
+    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm")
+    private LocalDateTime volDate;
 
 }

@@ -279,7 +279,7 @@ const Org: FC = () => {
         .then(res => {
             // console.log(res)
             onLogin()
-            alert('회원가입이 완료되었습니다. 관리자의 승인 이후 글 작성이 가능합니다.')
+            alert('회원가입이 완료되었습니다. 관리자 승인 이후 글 작성이 가능합니다.')
 
             // router.push('/')
         })

@@ -160,6 +160,7 @@ public class VolunteerController {
         return new ResponseEntity(resultMap, status);
     }
 
+    @ApiOperation(value = "봉사 목록 메인페이지에 나오는거")
     @GetMapping("/main")
     public ResponseEntity mainListVolunteer(@RequestParam(required = false,defaultValue = "최신순") String order, @RequestParam(required = false, defaultValue = "1") int page){
         log.info("VolunteerController mainListVolunteer call");
@@ -175,6 +176,42 @@ public class VolunteerController {
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return new ResponseEntity(resultMap, status);
+    }
+
+    @ApiOperation(value = "기업입장에서 내가 올린 봉사목록")
+    @GetMapping("/mylist/{memberId}")
+    public ResponseEntity myVolunteerList(@PathVariable Long memberId, @RequestParam(required = false, defaultValue = "1") int page){
+        log.info("VolunteerController myVolunteerList call");
+
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.OK;
+        try {
+            resultMap = volunteerService.myVolunteerList(memberId, page-1);
+        }catch (Exception e){
+            log.error(e.getMessage());
+
+            resultMap.put("message", e.getMessage());
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity(resultMap, status);
+    }
+
+    @ApiOperation(value = "내가 봉사한 봉사목록")
+    @GetMapping("/doVolunteer/{memberId}")
+    public ResponseEntity doVolunteerList(@PathVariable Long memberId, @RequestParam(required = false, defaultValue = "1") int page){
+        log.info("VolunteerController doVolunteerList call");
+
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus stat = HttpStatus.OK;
+        try {
+            resultMap = volunteerService.doVolunteerList(memberId, page-1);
+        }catch (Exception e){
+            log.error(e.getMessage());
+
+            resultMap.put("message", e.getMessage());
+            stat = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity(resultMap, stat);
     }
 
 

@@ -19,6 +19,7 @@ import TextField from '@mui/material/TextField';
 import CircularProgress from '@mui/material/CircularProgress';
 import { OCR, userDetail, waitingList, approveSignup } from "../function/axios";
 import { styled } from "@mui/material/styles";
+import Pagination from './Pagination';
 
 
 const UpdateButton = styled(Button)({
@@ -60,12 +61,13 @@ const SignupList = () => {
     const [memberId, setMemberId] = useState('')
 
     useEffect(() => {
-        waitingList(localStorage.getItem('jwt'), 1)
-        .then(res => {
-            // console.log(res.data[1].members)
-            setOrgList(res.data[1].members)
+        // waitingList(localStorage.getItem('jwt'), 1)
+        // .then(res => {
+        //     // console.log(res.data[1].members)
+        //     setOrgList(res.data[1].members)
 
-        })
+        // })
+        paginate(1)
     },[])
 
     const paginate = (page_) => {
@@ -73,7 +75,7 @@ const SignupList = () => {
         waitingList(localStorage.getItem('jwt'),page_)
         .then(res => {
             setOrgList(res.data[1].members)
-            setTotalPage((res.data[0].total_page-1-(res.data[0].total_page-1)%10)/10)
+            setTotalPage((res.data[0].total_page-1-(res.data[0].total_page-1)%10)/10 +1)
         })
     }
 
@@ -114,6 +116,9 @@ const SignupList = () => {
                     else if (i+1 === res.data.images[0].fields.length ) { // 사업자등록번호 못 찾은 경우,
                         setStep('failed')
                     }
+                }
+                if(res.data.images[0].fields.length === 0){
+                    setStep('failed')
                 }
             })
             .catch(err => {
@@ -167,7 +172,8 @@ const SignupList = () => {
     const approve = () => {
         approveSignup(localStorage.getItem('jwt'), memberId)
         .then(res => {
-            paginate(page)
+            paginate(1)
+            setPage(1)
         })
         handleClose()
     }
@@ -207,6 +213,24 @@ const SignupList = () => {
         }, [num])
 
 
+    // // 타임스탬프로 변환
+    // const Unix_timestampConv = (e) =>{
+    //     return Math.floor(e / 1000);
+    // }
+
+    // 타임스탬프 값을 년월일로 변환
+    const Unix_timestamp = (t) => {
+        var date = new Date(t);
+        date.setHours(date.getHours()+9)
+        var year = date.getFullYear();
+        var month = "0" + (date.getMonth()+1);
+        var day = "0" + date.getDate();
+        var hour = "0" + date.getHours();
+        var minute = "0" + date.getMinutes();
+        return year + "-" + month.substr(-2) + "-" + day.substr(-2) + " " + hour.substr(-2) + ":" + minute.substr(-2)
+    }
+
+
     return (
         <>
         <TableContainer component={Paper}>
@@ -232,8 +256,8 @@ const SignupList = () => {
                                     {e.name}
                                 </span>
                             </TableCell>
-                            {/* <TableCell>{Date.parse(e.createDate)}</TableCell> */}
-                            <TableCell>{e.createDate}</TableCell>
+                            <TableCell>{Unix_timestamp(Date.parse(e.createDate))}</TableCell>
+                            {/* <TableCell>{e.createDate}</TableCell> */}
                         </TableRow>
                         )
                     }
@@ -263,7 +287,7 @@ const SignupList = () => {
                     주 &nbsp; 소 : {addr}
                 </DialogContentText>
                 <DialogContentText style={{fontSize:'18px'}}>
-                    가입일 : {day}
+                    가입일 : {Unix_timestamp(day)}
                 </DialogContentText>
                 <DialogContentText style={{fontSize:'18px'}}>
                     소개글 : {intro}
@@ -327,6 +351,15 @@ const SignupList = () => {
             </IconButton>
 
         </Dialog>
+
+        <div style={{display:'flex', justifyContent:'center', marginTop:'20px'}}>
+            <Pagination
+                curPage={page}
+                paginate={paginate}
+                totalPage={totalPage}
+                
+            />
+        </div>
 
         </>
 

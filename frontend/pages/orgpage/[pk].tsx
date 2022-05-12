@@ -233,7 +233,7 @@ const OrgPage: FC = () => {
                 />
               </StyledTabs>
               {/* <Box sx={{ p: 3 }} /> */}
-              <TabPanel value={value} index={0}>
+              {/* <TabPanel value={value} index={0}>
                 <div>
                   <Box
                     sx={{
@@ -370,7 +370,7 @@ const OrgPage: FC = () => {
                     <ReviewCard />
                   </Box>
                 </div>
-              </TabPanel>
+              </TabPanel> */}
             </Box>
           </Box>
         </Container>

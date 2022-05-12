@@ -74,6 +74,7 @@ const Login: FC = () => {
     return (
     <>
          <div style={{maxWidth:'400px', minHeight:'600px', margin:'auto', textAlign: 'center'}}>
+         <br />
          <Image src={logo3} width="200" height="200" />
             <TextField1
                 name="id"

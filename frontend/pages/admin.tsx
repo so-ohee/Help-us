@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useState, useEffect } from "react";
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
@@ -6,7 +6,8 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import SignupList from "../components/SignupList";
 import UserList from "../components/UserList";
-
+import { useRouter } from "next/router";
+import { tokenCheck } from "../function/axios";
 
 
 
@@ -17,6 +18,14 @@ const Admin: FC = () => {
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
+  
+  const router = useRouter()
+
+  useEffect(() => {
+      tokenCheck()
+      // .then(res => console.log(res))
+  },[])
+
   return (
     <>
       <Box sx={{ maxWidth: '600px', typography: 'body1', margin: 'auto', minHeight:'600px'}}>

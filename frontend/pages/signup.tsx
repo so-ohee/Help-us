@@ -18,6 +18,7 @@ const UpdateButton = styled(Button)({
 
 const Signup: FC = () => {
     const router = useRouter()
+
     return (
     <>
     <div style={{ maxWidth:'800px', minHeight:'500px', margin:'auto', textAlign: 'center'}}>

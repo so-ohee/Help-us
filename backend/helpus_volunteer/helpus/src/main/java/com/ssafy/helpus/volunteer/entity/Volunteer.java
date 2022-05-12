@@ -47,8 +47,8 @@ public class Volunteer {
     private int applicant;
 
     @Column(name = "vol_date")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate volDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm")
+    private LocalDateTime volDate;
 
     @Column(name = "create_date", insertable = false, updatable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm")
@@ -64,11 +64,14 @@ public class Volunteer {
     @Column(insertable = false)
     private double percent;
 
+    @Column
+    private int time;
+
     @OneToMany(mappedBy = "volunteer")
     List<VolunteerImage> images = new ArrayList<>();
 
     @Builder
-    public Volunteer(Long memberId, String title, String content, int volZipcode, String volAddress, int people, int applicant, LocalDate volDate, String category){
+    public Volunteer(Long memberId, String title, String content, int volZipcode, String volAddress, int people, int applicant, LocalDateTime volDate, String category, int time){
         this.memberId = memberId;
         this.title = title;
         this.content = content;
@@ -78,6 +81,7 @@ public class Volunteer {
         this.applicant = applicant;
         this.volDate = volDate;
         this.category = category;
+        this.time = time;
     }
 
 

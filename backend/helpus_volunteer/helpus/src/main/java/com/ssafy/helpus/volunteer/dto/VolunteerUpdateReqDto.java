@@ -8,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @ApiModel(value = "봉사 글 수정")
 @Getter
@@ -38,7 +39,10 @@ public class VolunteerUpdateReqDto {
     @ApiModelProperty(value = "봉사 인원")
     private int people;
 
+    @ApiModelProperty(value = "봉사 인원")
+    private int time;
+
     @ApiModelProperty(value = "봉사일")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate volDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm")
+    private LocalDateTime volDate;
 }
