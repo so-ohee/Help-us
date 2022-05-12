@@ -173,11 +173,11 @@ const UserMypage: FC = () => {
                 // height: "350px",
               }}
             >
-              <Grid container minHeight="250px">
-                <Grid item xs={2} sx={{ my: "auto", mr: 3 }}>
+              <Grid container spacing={2} minHeight="350px">
+                <Grid item xs={3} >
                   <div
                     style={{
-                      borderRadius: "5px",
+                      borderRadius: "20%",
                       overflow: "hidden",
                       marginTop: "6px",
                     }}
@@ -186,32 +186,44 @@ const UserMypage: FC = () => {
                       <Image
                         src={userDefaultImage}
                         alt="orgImage"
-                        width="200px"
-                        height="200px"
+                        width="300px"
+                        height="300px"
                       />
                     ) : (
                       <Image
                         src={myInfo.profile}
                         alt="orgImage"
-                        width="200px"
-                        height="200px"
+                        width="300px"
+                        height="300px"
                       />
                     )}
                   </div>
                 </Grid>
-                <Grid item xs={8} sx={{ my: "auto", mr: 5 }}>
+                <Grid item xs={8}>
                   <Typography sx={{ mt: 0 }} variant="h4" fontWeight="bold">
                     {myInfo.name}
                   </Typography>
+
                   <Grid
-                    sx={{ mt: 1 }}
+                    sx={{ mt: 2 }}
                     container
                     direction="row"
                     alignItems="center"
                   >
-                    <MailIcon sx={{ mr: 1 }} />
+                    <CallIcon sx={{ mr: 2 }} />
+                    <Typography align="center">{myInfo.tel}</Typography>
+                  </Grid>
+
+                  <Grid
+                    sx={{ mt: 2 }}
+                    container
+                    direction="row"
+                    alignItems="center"
+                  >
+                    <MailIcon sx={{ mr: 2 }} />
                     <Typography align="center">{myInfo.email}</Typography>
                   </Grid>
+                  <br />
                   <Box
                     sx={{
                       bgcolor: "#f5e1be",
@@ -223,7 +235,7 @@ const UserMypage: FC = () => {
                     <Typography sx={{ p: 2, mt: 1 }}>{myInfo.info}</Typography>
                   </Box>
                 </Grid>
-                <Grid item xs={1} justifyContent="right">
+                <Grid item xs={1} >
                   <UpdateButton onClick={handleOpen} variant="contained" sx={{ mb: 15 }}>
                     수정
                   </UpdateButton>
