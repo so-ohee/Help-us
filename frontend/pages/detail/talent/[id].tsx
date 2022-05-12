@@ -371,7 +371,7 @@ const TalentDetail: FC = () => {
           </Typography>
           <Divider color="#CDAD78" sx={{ my: 2, borderBottomWidth: 5 }} />
           <Typography variant="h5" fontWeight="bold" sx={{ mx: 5 }}>
-            댓글 {comments.length}
+            댓글 
           </Typography>
           <Stack
             justifyContent="space-between"

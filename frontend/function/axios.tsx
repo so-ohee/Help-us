@@ -60,6 +60,35 @@ export const volunteerDetail = async (id) => {
   });
 };
 
+// 봉사 상세 페이지 댓글 작성
+export const volunteerComment = async (id, params) => {
+  return await axios({
+    method: "POST",
+    url: "/9081/v.comment",
+    headers: {
+      memberId : id
+    },
+    data: params
+  })
+}
+
+// 봉사 상세 페이지 댓글 조회
+export const volunteerCommentList = async (id, params) => {
+  return await axios({
+    method: "GET",
+    url: `/9081/v.comment/${id}`,
+    params : params
+  });
+};
+
+// 봉사 상세 페이지 댓글 삭제
+export const volunteerCommentDelete = async (id) => {
+  return await axios({
+    method: "DELETE",
+    url: `/9081/v.comment/${id}`
+  })
+}
+
 // ----------------------- 9082 ------------------------------
 
 // 이메일 중복 체크

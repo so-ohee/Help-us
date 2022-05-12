@@ -26,6 +26,8 @@ import ReplyIcon from "@mui/icons-material/Reply";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 import CommentInput from "./CommentInput";
+// api
+import {volunteerCommentDelete} from "function/axios";
 
 const CssTextField = styled(TextField)({
   "& label.Mui-focused": {
@@ -76,6 +78,12 @@ const Comment: FC<CommentData> = ({ comment }) => {
     setInputStatus(!inputStatus);
   };
 
+  //댓글 삭제
+  // const removeComment = (id) => {
+  //   volunteerCommentDelete(comment.)
+  //     .then()
+  // }
+  console.log(comment)
   return (
     <>
       <>
@@ -106,7 +114,11 @@ const Comment: FC<CommentData> = ({ comment }) => {
                 >
                   답글쓰기
                 </Button>
-                <Typography>{comment.createDate.substr(0, 10)}</Typography>
+                {comment ? (
+                  <Typography>
+                      {comment.createDate}
+                  </Typography>
+                ) : (null)}
                 <Button
                   variant="contained"
                   color="error"
@@ -143,7 +155,7 @@ const Comment: FC<CommentData> = ({ comment }) => {
                   sx={{ ml: 1, color: "#3470ca", fontSize: 14 }}
                   fontWeight="bold"
                 >
-                  @{comment.parentName}
+                  {comment.parentName}
                 </Typography>
                 <Typography sx={{ ml: 1 }}>{comment.content}</Typography>
               </Stack>
@@ -154,12 +166,15 @@ const Comment: FC<CommentData> = ({ comment }) => {
                 >
                   답글쓰기
                 </Button>
-                <Typography>{comment.createDate.substr(0, 10)}</Typography>
+                {comment ? (
+                  <Typography>{comment.createDate}</Typography>
+                ) : (null)}
                 <Button
                   variant="contained"
                   color="error"
                   size="small"
                   sx={{ width: 10, mr: 5, ml: 2 }}
+                  // onClick={()=> removeComment(comment.id)}
                 >
                   삭제
                 </Button>
