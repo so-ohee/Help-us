@@ -1,6 +1,6 @@
 import { FC, useState, useEffect } from "react";
 
-import { getCSList } from "function/axios";
+import { getNewsList } from "function/axios";
 import Pagination from "@/components/Pagination";
 import {
   Box,
@@ -60,9 +60,9 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   height: 62,
 }));
 
-const CsMain: FC = () => {
+const NewsMain: FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
-  const [csList, setCSList] = useState<any>(null);
+  const [newsList, setNewsList] = useState<any>(null);
 
   // pagination
   const [curPage, setCurPage] = useState(0);
@@ -74,8 +74,8 @@ const CsMain: FC = () => {
   };
 
   useEffect(() => {
-    getCSList(params).then((res) => {
-      setCSList(res.data.desk);
+    getNewsList(params).then((res) => {
+      setNewsList(res.data.news);
       setTotalPages(res.data.totalPage);
       // console.log("data는", reviewList);
       setLoading(true);
@@ -96,29 +96,8 @@ const CsMain: FC = () => {
           </Box>
           <Box sx={{ fontWeight: "bold", my: 5 }}>
             <Typography variant="h4" textAlign="center">
-              문의 게시판
+              기부 News
             </Typography>
-          </Box>
-          <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-            <CustomButton variant="contained" href="create/cs">
-              글 작성
-            </CustomButton>
-          </Box>
-          <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 1 }}>
-            <Paper
-              component="form"
-              sx={{
-                p: "2px 4px",
-                display: "flex",
-                alignItems: "center",
-                width: 250,
-              }}
-            >
-              <InputBase sx={{ ml: 1, flex: 1 }} placeholder="검색" />
-              <IconButton type="submit" sx={{ p: "10px" }}>
-                <SearchIcon />
-              </IconButton>
-            </Paper>
           </Box>
           <Stack>
             <TableContainer component={Paper} sx={{ my: 5 }}>
@@ -126,46 +105,31 @@ const CsMain: FC = () => {
                 <TableHead>
                   <TableRow>
                     <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                      번호
-                    </StyledTableCell>
-                    <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                      카테고리
-                    </StyledTableCell>
-                    <StyledTableCell align="center" sx={{ fontSize: 17 }}>
                       제목
+                    </StyledTableCell>
+                    <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                      내용
                     </StyledTableCell>
                     <StyledTableCell align="center" sx={{ fontSize: 17 }}>
                       작성일
                     </StyledTableCell>
-                    <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                      공개 여부
-                    </StyledTableCell>
-                    <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                      답변 여부
-                    </StyledTableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {csList &&
-                    csList.map((data) => (
-                      <StyledTableRow key={data.helpDeskId}>
-                        <StyledTableCell align="center">
-                          {data.helpDeskId}
-                        </StyledTableCell>
-                        <StyledTableCell align="center">
-                          {data.category}
-                        </StyledTableCell>
+                  {newsList &&
+                    newsList.map((data) => (
+                      <StyledTableRow
+                        key={data.title}
+                        onClick={() => window.open(`${data.link}`)}
+                      >
                         <StyledTableCell align="center" sx={{ width: 400 }}>
                           {data.title}
                         </StyledTableCell>
                         <StyledTableCell align="center">
-                          {data.createDate.substr(0, 10)}
+                          {data.description}
                         </StyledTableCell>
                         <StyledTableCell align="center">
-                          {data.visible}
-                        </StyledTableCell>
-                        <StyledTableCell align="center">
-                          {data.status}
+                          {data.date}
                         </StyledTableCell>
                       </StyledTableRow>
                     ))}
@@ -179,4 +143,4 @@ const CsMain: FC = () => {
   );
 };
 
-export default CsMain;
+export default NewsMain;
