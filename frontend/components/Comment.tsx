@@ -80,10 +80,11 @@ const Comment: FC<CommentData> = ({ comment }) => {
 
   //댓글 삭제
   // const removeComment = (id) => {
-  //   volunteerCommentDelete(comment.)
+  //   volunteerCommentDelete(comment.id)
   //     .then()
   // }
-  console.log(comment)
+  // console.log(comment)
+  
   return (
     <>
       <>

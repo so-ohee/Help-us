@@ -1,4 +1,4 @@
-import react, { useState } from "react";
+import react, { useEffect, useState } from "react";
 import type { NextPage } from "next";
 import { Box, Grid, Tab, Typography, Stack, Link, InputLabel, MenuItem, FormControl, Tabs } from "@mui/material/";
 import {TabContext, TabList, TabPanel} from '@mui/lab/';
@@ -9,6 +9,9 @@ import DonationCard from "../components/DonationCard";
 import VolunteerCard from "../components/VolunteerCard";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import volunteer1 from "../public/images/volunteer1.jpg";
+
+// api
+import { getDonation } from "function/axios";
 
 const Home: NextPage = () => {
   const theme = createTheme({
@@ -27,6 +30,7 @@ const Home: NextPage = () => {
   const router = useRouter();
   const [value, setValue] = useState("1");
   const [option, setOption] = useState("");
+  const [ donationList, setDonationList ] = useState([]);
 
   const tabHandleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
@@ -34,6 +38,13 @@ const Home: NextPage = () => {
   const optionHandleChange = (event: SelectChangeEvent) => {
     setOption(event.target.value as string);
   };
+
+  // 물품 기부 목록 불러오기
+  useEffect(() => {
+    getDonation()
+      .then(res => setDonationList(res.data.donation))
+      console.log(donationList)
+  })
 
   return (
     <ThemeProvider theme={theme}>
@@ -46,7 +57,7 @@ const Home: NextPage = () => {
             height={200}
           />
         </Box>
-        <Box>
+        <Stack direction="row" >
           <TabContext value={value}>
             <Stack direction="row" justifyContent="space-between">
               <Tabs onChange={tabHandleChange}>
@@ -76,19 +87,28 @@ const Home: NextPage = () => {
               </Box>
             </Stack>
             <TabPanel value="1">
-              <Box sx={{ mt: 3 }}>
-                <Stack direction="row" spacing={5} sx={{ mb: 5 }}>
+              <Box 
+              sx={{
+                display: "grid",
+                gridTemplate: "repeat(auto-fill, 200px)",
+                justifyContent: "space-between"
+              }}
+              >
+                {donationList && donationList.map((item) => (
+                  <Stack direction="row" spacing={5} sx={{ mb: 5 }}>
+                    <DonationCard donation={item} />
+                </Stack>
+                ))}
+                {/* <Stack direction="row" spacing={5} sx={{ mb: 5 }}>
                   <DonationCard />
                   <DonationCard />
                 </Stack>
+                  <DonationCard />
+                  <DonationCard />
                 <Stack direction="row" spacing={5} sx={{ mb: 5 }}>
                   <DonationCard />
                   <DonationCard />
-                </Stack>
-                <Stack direction="row" spacing={5} sx={{ mb: 5 }}>
-                  <DonationCard />
-                  <DonationCard />
-                </Stack>
+                </Stack> */}
               </Box>
             </TabPanel>
             <TabPanel value="2">
@@ -118,7 +138,7 @@ const Home: NextPage = () => {
               </Box>
             </TabPanel>
           </TabContext>
-        </Box>
+        </Stack>
         <Box>
           <Box
             sx={{

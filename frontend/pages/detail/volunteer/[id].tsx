@@ -36,6 +36,7 @@ import testImage from "../../../public/images/testImage.jpg";
 import CustomCarousel from "../../../components/Carousel";
 import VolunteerDetailMap from "../../../components/VolunteerDetailMap";
 import Comment from "../../../components/Comment";
+import Pagination from "../../../components/Pagination";
 
 // api
 import { volunteerDetail, volunteerCommentList, volunteerComment } from "function/axios";
@@ -103,7 +104,7 @@ const VolunteerDetail: FC = () => {
     volunteerCommentList(router.query.id, params).then((res) => {
       setCommentList(res.data.comment);
       setTotalPages(res.data.totalPage);
-      console.log("data는", commentList);
+      // console.log("data는", commentList);
       setLoading(true);
     });
   }, [curPage, router.isReady]);
@@ -405,7 +406,7 @@ const VolunteerDetail: FC = () => {
               </Stack>
               <Divider color="#CDAD78" sx={{ my: 4, borderBottomWidth: 5 }} />
               <Typography variant="h5" fontWeight="bold" sx={{ mx: 5 }}>
-                댓글 {commentList.length}개
+                댓글 
               </Typography>
               <Box>
                 <Stack
@@ -427,6 +428,9 @@ const VolunteerDetail: FC = () => {
                     {commentList && commentList.map((item) => (
                       <Comment comment={item} />
                     ))}
+              </Box>
+              <Box sx={{ display: 'flex', justifyContent: 'center', my : 5}}>
+                <Pagination paginate={paginate} curPage={curPage} totalPage={totalPages} />
               </Box>
             </Container>
           </Box>

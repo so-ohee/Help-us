@@ -12,6 +12,15 @@ import { id } from "date-fns/locale";
 
 // ----------------------- 9080 ------------------------------
 
+// 물품 기부 목록
+export const getDonation = async () => {
+  return await axios({
+    method: "GET",
+    url: '/9080/donation/main'
+  })
+}
+
+
 // 물품 기부 상세 조회
 export const donationDetail = async (id) => {
   return await axios({
