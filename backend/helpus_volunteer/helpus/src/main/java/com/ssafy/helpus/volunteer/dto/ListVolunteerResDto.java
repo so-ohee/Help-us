@@ -29,8 +29,8 @@ public class ListVolunteerResDto {
     private String content;
 
     @ApiModelProperty(value = "봉사 날짜")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate volDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm")
+    private LocalDateTime volDate;
 
     @ApiModelProperty(value = "봉사 주소")
     private String volAddress;

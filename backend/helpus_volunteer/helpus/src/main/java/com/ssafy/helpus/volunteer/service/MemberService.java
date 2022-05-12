@@ -8,6 +8,4 @@ public interface MemberService {
 
     String getMemberName(Long memberId);
 
-    String getMemberRole(Long memberId);
-
 }

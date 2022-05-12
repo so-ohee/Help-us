@@ -45,6 +45,8 @@ public class VolunteerServiceImpl implements VolunteerService{
             return resultMap;
         }
 
+        System.out.println(volunteerReqDto.getTime());
+
         Volunteer volunteer = Volunteer.builder()
                 .memberId(memberId)
                 .title(volunteerReqDto.getTitle())
@@ -221,7 +223,7 @@ public class VolunteerServiceImpl implements VolunteerService{
         VolunteerApply volunteerApply = VolunteerApply.builder()
                .status(0)
                .volunteer(volunteer.get())
-                .writerId(volunteer.get().getMemberId())
+                .writeId(volunteer.get().getMemberId())
                .memberId(memberId).build();
 
         volunteerApplyRepository.save(volunteerApply);

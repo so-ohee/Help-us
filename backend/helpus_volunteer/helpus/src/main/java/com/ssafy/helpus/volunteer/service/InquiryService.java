@@ -15,4 +15,6 @@ public interface InquiryService {
     Map<String, Object> listApply (Long memberId,String order, int page) throws Exception;
     // 지원자 목록 만들기
     Map<String, Object> makeListApply (Page<VolunteerApply> volunteerApplies) throws Exception;
+    // 참석여부 변경
+    Map<String, Object> checkApply (Long volunteerApplyId, int status) throws Exception;
 }

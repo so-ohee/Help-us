@@ -4,9 +4,9 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Column;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -21,9 +21,13 @@ public class ListApplyResDto {
     @ApiModelProperty(value = "제목")
     private String title;
 
-    @ApiModelProperty(value = "작성일")
+    @ApiModelProperty(value = "봉사 활동 시간")
+    private int time;
+
+    @ApiModelProperty(value = "봉사 시작 날짜")
     @Column(name = "vol_date")
-    private LocalDate volDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm")
+    private LocalDateTime volDate;
 
     @ApiModelProperty(value = "프로필 사진")
     private String profile;
@@ -32,6 +36,9 @@ public class ListApplyResDto {
     private String name;
 
     @ApiModelProperty(value = "참석여부")
-    private String status;
+    private int status;
+
+    @ApiModelProperty(value = "회원 아이디")
+    private Long memberId;
 
 }

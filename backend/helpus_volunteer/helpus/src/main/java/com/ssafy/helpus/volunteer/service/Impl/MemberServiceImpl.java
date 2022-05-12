@@ -23,6 +23,7 @@ public class MemberServiceImpl implements MemberService {
 
         Map<String, String> map = new HashMap<>();
         Member member = memberRepository.findById(memberId).get();
+        map.put("memberId", Long.toString(member.getMemberId()));
         map.put("name", member.getName());
         map.put("profile", member.getProfile());
 
@@ -37,10 +38,4 @@ public class MemberServiceImpl implements MemberService {
        return memberRepository.findById(memberId).get().getName();
     }
 
-    @Override
-    public String getMemberRole(Long memberId) {
-        log.info("MemberService getMemberRole");
-
-        return memberRepository.findById(memberId).get().getRole();
-    }
 }

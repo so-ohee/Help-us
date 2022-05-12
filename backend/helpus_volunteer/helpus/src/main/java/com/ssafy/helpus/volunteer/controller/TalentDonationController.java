@@ -73,7 +73,7 @@ public class TalentDonationController {
     @ApiOperation(value = "재능기부 글 조회")
     @GetMapping("{volunteerId}")
     public ResponseEntity getTalentDonation(@PathVariable Long volunteerId){
-        log.info("TalentDonationController getVolunteer call");
+        log.info("TalentDonationController getTalentDonation call");
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.OK;
