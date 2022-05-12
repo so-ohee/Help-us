@@ -62,4 +62,7 @@ public class ListVolunteerResDto {
     @ApiModelProperty(value = "기관명")
     private String name;
 
+    @ApiModelProperty(value = "봉사 참여 여부")
+    private int status;
+
 }

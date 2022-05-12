@@ -160,6 +160,7 @@ public class TalentDonationServiceImpl implements TalentDonationService {
                     .volunteerId(volunteer.getVolunteerId())
                     .title(volunteer.getTitle())
                     .content(volunteer.getContent())
+                    .memberId(Long.parseLong(member.get("memberId")))
                     .name(member.get("name"))
                     .profile(member.get("profile"))
                     .createDate(volunteer.getCreateDate()).build();
@@ -179,6 +180,41 @@ public class TalentDonationServiceImpl implements TalentDonationService {
         Page<Volunteer> volunteers = volunteerRepository.findByCategoryAndStatus("USER", 0, PageRequest.of(page,6,sort));
         return makeListTalentDonation(volunteers);
     }
+
+    @Override
+    public Map<String, Object> myTalentDonationList(Long memberId, int page) throws Exception {
+
+        Map<String, Object> resultMap = new HashMap<>();
+
+        Page<Volunteer> volunteers = volunteerRepository.findByMemberId(memberId, PageRequest.of(page, 10, Sort.by("volunteerId").ascending()));
+
+        if(volunteers.isEmpty()){
+            resultMap.put("message", "게시물 없음");
+            return resultMap;
+        }
+
+        List<ListTalentDonationResDto> list = new ArrayList<>();
+
+        for(Volunteer volunteer : volunteers){
+            Map<String, String> member = memberService.getMember(volunteer.getMemberId());
+
+            ListTalentDonationResDto listTalentDonationResDto = ListTalentDonationResDto.builder()
+                    .volunteerId(volunteer.getVolunteerId())
+                    .title(volunteer.getTitle())
+                    .content(volunteer.getContent())
+                    .memberId(Long.parseLong(member.get("memberId")))
+                    .name(member.get("name"))
+                    .profile(member.get("profile"))
+                    .createDate(volunteer.getCreateDate()).build();
+            list.add(listTalentDonationResDto);
+        }
+        resultMap.put("listTalentDonation", list);
+        resultMap.put("totalPage", volunteers.getTotalPages());
+        resultMap.put("message", "성공");
+        return resultMap;
+
+    }
+
 
     public Sort gerOrder(String order) {
         //정렬(최신, 달성률 높은, 달성률 낮은, 오래된)

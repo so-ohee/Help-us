@@ -24,4 +24,6 @@ public interface TalentDonationService {
     Map<String, Object> makeListTalentDonation (Page<Volunteer> volunteers) throws Exception;
     // 재능기부 글 목록 - 메인
     Map<String, Object> mainListTalentDonation(String order, int page) throws Exception;
+    // 내가 작성한 재능기부 글 목록
+    Map<String, Object> myTalentDonationList(Long memberId, int page) throws Exception;
 }

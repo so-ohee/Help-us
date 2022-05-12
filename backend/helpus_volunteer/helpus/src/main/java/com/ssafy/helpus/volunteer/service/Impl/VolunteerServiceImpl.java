@@ -1,7 +1,7 @@
 package com.ssafy.helpus.volunteer.service.Impl;
 
 import com.ssafy.helpus.volunteer.dto.*;
-import com.ssafy.helpus.volunteer.entity.Member;
+
 import com.ssafy.helpus.volunteer.entity.Volunteer;
 import com.ssafy.helpus.volunteer.entity.VolunteerApply;
 import com.ssafy.helpus.volunteer.enumClass.VolunteerOrder;
@@ -12,7 +12,6 @@ import com.ssafy.helpus.volunteer.service.MemberService;
 import com.ssafy.helpus.volunteer.service.VolunteerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.joda.time.DateTime;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -253,7 +252,7 @@ public class VolunteerServiceImpl implements VolunteerService{
             return resultMap;
         }
         List<ListVolunteerResDto> list = new ArrayList<>();
-        // 기관명 추가
+
         for(Volunteer volunteer : volunteers){
 
             Map<String, String> member = memberService.getMember(volunteer.getMemberId());
@@ -269,6 +268,7 @@ public class VolunteerServiceImpl implements VolunteerService{
                     .volAddress(volunteer.getVolAddress())
                     .volZipcode(volunteer.getVolZipcode())
                     .time(volunteer.getTime())
+                    .memberId(Long.parseLong(member.get("memberId")))
                     .name(member.get("name"))
                     .profile(member.get("profile"))
                     .createDate(volunteer.getCreateDate()).build();
@@ -290,18 +290,58 @@ public class VolunteerServiceImpl implements VolunteerService{
     }
 
     @Override
-    public Map<String, String> getVolunteer(Long volunteerId) {
+    public Map<String, Object> myVolunteerList(Long memberId, int page) throws Exception {
+        log.info("VolunteerService myVolunteerList call");
 
-        log.info("VolunteerService getVolunteer call");
+        Map<String, Object> resultMap = new HashMap<>();
+        Page<Volunteer> volunteers = volunteerRepository.findByMemberId(memberId, PageRequest.of(page, 10, Sort.by("status").ascending()));
 
-        Map<String, String> map = new HashMap<>();
-        Volunteer volunteer = volunteerRepository.findById(volunteerId).get();
-        int time = volunteer.getTime();
-        map.put("time", Integer.toString(time));
-        map.put("title", volunteer.getTitle());
-
-        return map;
+        return makeListVolunteer(volunteers);
     }
+
+    @Override
+    public Map<String, Object> doVolunteerList(Long memberId, int page) throws Exception {
+        log.info("VolunteerService doVolunteerList call");
+
+        Map<String, Object> resultMap = new HashMap<>();
+        Page<VolunteerApply> volunteerApplies = volunteerApplyRepository.findByMemberId(memberId, PageRequest.of(page, 10, Sort.by("status").ascending()));
+
+        if(volunteerApplies.isEmpty()){
+            resultMap.put("message", "봉사한 항목 없음");
+            return resultMap;
+        }
+        List<ListVolunteerResDto> list = new ArrayList<>();
+
+        for(VolunteerApply volunteerApply : volunteerApplies){
+
+            Map<String, String> member = memberService.getMember(volunteerApply.getVolunteer().getMemberId());
+
+            ListVolunteerResDto listVolunteerResDto = ListVolunteerResDto.builder()
+                    .volunteerId(volunteerApply.getVolunteer().getVolunteerId())
+                    .title(volunteerApply.getVolunteer().getTitle())
+                    .content(volunteerApply.getVolunteer().getContent())
+                    .applicant(volunteerApply.getVolunteer().getApplicant())
+                    .people(volunteerApply.getVolunteer().getPeople())
+                    .percent(volunteerApply.getVolunteer().getPercent())
+                    .volDate(volunteerApply.getVolunteer().getVolDate())
+                    .volAddress(volunteerApply.getVolunteer().getVolAddress())
+                    .volZipcode(volunteerApply.getVolunteer().getVolZipcode())
+                    .time(volunteerApply.getVolunteer().getTime())
+                    .memberId(Long.parseLong(member.get("memberId")))
+                    .name(member.get("name"))
+                    .profile(member.get("profile"))
+                    .status(volunteerApply.getStatus())
+                    .createDate(volunteerApply.getVolunteer().getCreateDate()).build();
+            list.add(listVolunteerResDto);
+        }
+
+        resultMap.put("listVolunteer", list);
+        resultMap.put("totalPage", volunteerApplies.getTotalPages());
+        resultMap.put("message", "성공");
+        return resultMap;
+
+    }
+
 
     public Sort gerOrder(String order) {
         //정렬(최신, 달성률 높은, 달성률 낮은, 오래된)

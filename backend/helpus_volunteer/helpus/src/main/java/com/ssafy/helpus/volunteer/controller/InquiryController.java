@@ -21,7 +21,7 @@ public class InquiryController {
     private final InquiryService inquiryService;
 
     @ApiOperation(value = "기업 등록 글 목록")
-    @GetMapping("org/{memberId}")
+    @GetMapping("{memberId}")
     public ResponseEntity getOrgVolunteer(@PathVariable Long memberId, @RequestParam(required = false, defaultValue = "최신순") String order,
                                           @RequestParam(required = false, defaultValue = "1") int page){
         Map<String, Object> resultMap = new HashMap<>();
@@ -37,7 +37,7 @@ public class InquiryController {
         return new ResponseEntity(resultMap, status);
     }
 
-    @ApiOperation(value = "봉사 현황 조회")
+    @ApiOperation(value = "기업이 올린 봉사글에 대한 봉사 현황 조회")
     @GetMapping("/apply/{memberId}")
     public ResponseEntity getOrgApplicant(@PathVariable Long memberId, @RequestParam(required = false, defaultValue = "최신순") String order,
                                           @RequestParam(required = false, defaultValue = "1") int page){

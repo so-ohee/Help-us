@@ -68,6 +68,9 @@ public class InquiryServiceImpl implements InquiryService {
                     .volDate(volunteer.getVolDate())
                     .volAddress(volunteer.getVolAddress())
                     .volZipcode(volunteer.getVolZipcode())
+                    .time(volunteer.getTime())
+                    .status(volunteer.getStatus())
+                    .memberId(Long.parseLong(member.get("memberId")))
                     .name(member.get("name"))
                     .profile(member.get("profile"))
                     .createDate(volunteer.getCreateDate()).build();

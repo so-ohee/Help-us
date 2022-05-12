@@ -13,4 +13,5 @@ import java.util.List;
 public interface VolunteerApplyRepository extends JpaRepository <VolunteerApply, Long>{
      List<VolunteerApply> findByVolunteer(Volunteer volunteer);
      Page<VolunteerApply> findByWriteId(Long writeId, Pageable pageable);
+     Page<VolunteerApply> findByMemberId(Long memberId, Pageable pageable);
 }

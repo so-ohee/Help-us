@@ -11,4 +11,5 @@ public interface VolunteerRepository extends JpaRepository<Volunteer, Long> {
     Page<Volunteer> findByCategory(String category, Pageable pageable);
     Page<Volunteer> findByCategoryAndStatus(String category, int status, Pageable pageable);
     Page<Volunteer> findByMemberId(Long memberId, Pageable pageable);
+
 }
