@@ -209,7 +209,7 @@ public class VolunteerController {
         }catch (Exception e){
             log.error(e.getMessage());
 
-            resultMap.put("message", e.getMessage());
+            resultMap.put("message", "조회 실패");
             stat = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return new ResponseEntity(resultMap, stat);

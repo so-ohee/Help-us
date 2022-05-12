@@ -152,7 +152,7 @@ public class TalentDonationController {
             resultMap = talentDonationService.myTalentDonationList(memberId, page-1);
         }catch (Exception e){
             log.info(e.getMessage());
-            resultMap.put("message", e.getMessage());
+            resultMap.put("message", "조회 실패");
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return new ResponseEntity(resultMap, status);
