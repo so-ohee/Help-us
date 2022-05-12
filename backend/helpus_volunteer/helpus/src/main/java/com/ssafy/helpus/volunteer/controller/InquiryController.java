@@ -20,6 +20,7 @@ public class InquiryController {
 
     private final InquiryService inquiryService;
 
+    //1
     @ApiOperation(value = "기업 등록 글 목록")
     @GetMapping("{memberId}")
     public ResponseEntity getOrgVolunteer(@PathVariable Long memberId, @RequestParam(required = false, defaultValue = "최신순") String order,
@@ -31,12 +32,13 @@ public class InquiryController {
         }catch (Exception e){
             log.error(e.getMessage());
 
-            resultMap.put("message", e.getMessage());
+            resultMap.put("message", "실패");
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return new ResponseEntity(resultMap, status);
     }
 
+    //2
     @ApiOperation(value = "기업이 올린 봉사글에 대한 봉사 현황 조회")
     @GetMapping("/apply/{memberId}")
     public ResponseEntity getOrgApplicant(@PathVariable Long memberId, @RequestParam(required = false, defaultValue = "최신순") String order,
@@ -56,6 +58,7 @@ public class InquiryController {
         return new ResponseEntity(resultMap, status);
     }
 
+    //3
     @ApiOperation(value = "참석여부 변경")
     @PutMapping("/apply/{volunteerApplyId}/{status}")
     public ResponseEntity checkApply(@PathVariable Long volunteerApplyId, @PathVariable int status){
@@ -66,7 +69,7 @@ public class InquiryController {
             resultMap = inquiryService.checkApply(volunteerApplyId, status);
         }catch (Exception e){
             log.error(e.getMessage());
-            resultMap.put("message,", e.getMessage());
+            resultMap.put("message,", "실패");
             stat = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return new ResponseEntity(resultMap, stat);

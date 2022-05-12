@@ -248,7 +248,7 @@ public class VolunteerServiceImpl implements VolunteerService{
         Map<String, Object> resultMap = new HashMap<>();
 
         if(volunteers.isEmpty()){
-            resultMap.put("message", "게시물없음");
+            resultMap.put("message", "게시글 없음");
             return resultMap;
         }
         List<ListVolunteerResDto> list = new ArrayList<>();

@@ -160,6 +160,7 @@ public class VolunteerController {
         return new ResponseEntity(resultMap, status);
     }
 
+    //4
     @ApiOperation(value = "봉사 목록 메인페이지에 나오는거")
     @GetMapping("/main")
     public ResponseEntity mainListVolunteer(@RequestParam(required = false,defaultValue = "최신순") String order, @RequestParam(required = false, defaultValue = "1") int page){
@@ -172,7 +173,7 @@ public class VolunteerController {
         }catch (Exception e){
             log.error(e.getMessage());
 
-            resultMap.put("message", e.getMessage());
+            resultMap.put("message", "실패");
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return new ResponseEntity(resultMap, status);
@@ -190,7 +191,7 @@ public class VolunteerController {
         }catch (Exception e){
             log.error(e.getMessage());
 
-            resultMap.put("message", e.getMessage());
+            resultMap.put("message", "게시물 조회 실패");
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return new ResponseEntity(resultMap, status);
