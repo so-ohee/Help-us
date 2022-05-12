@@ -93,6 +93,10 @@ public class VolunteerServiceImpl implements VolunteerService{
         volunteer.get().setTime(volunteerUpdateReqDto.getTime());
         volunteer.get().setVolDate(volunteerUpdateReqDto.getVolDate());
         volunteer.get().setUpdateDate(LocalDateTime.now());
+        double now_people = volunteerUpdateReqDto.getPeople();
+        double now_applicant = volunteer.get().getApplicant();
+        double now_percent = now_applicant/now_people*100.0;
+        volunteer.get().setPercent(now_percent);
 
         if(files == null){
             fileService.volunteerFileDelete(volunteer.get().getImages());
