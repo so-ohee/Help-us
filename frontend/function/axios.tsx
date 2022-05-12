@@ -50,6 +50,36 @@ export const sendApply = async (id, params) => {
   });
 };
 
+// 마이페이지(개인) - 후원 송장 수정
+export const updateApply = async (id, params) => {
+  return await axios({
+    method: "PUT",
+    url: "/9080/d.apply",
+    headers: {
+      memberId: id,
+    },
+    data: params,
+  });
+};
+
+// 마이페이지(기관) - 기부글 목록 조회
+export const getDonationList = async (params) => {
+  return await axios({
+    method: "GET",
+    url: "/9080/donation",
+    params: params,
+  });
+};
+
+// 마이페이지(기관) - 배송 현황 조회
+export const getDeliveryList = async (id, params) => {
+  return await axios({
+    method: "GET",
+    url: `/9080/d.apply/tracking/${id}`,
+    params: params,
+  });
+};
+
 // ----------------------- 9081 ------------------------------
 
 // 봉사 글 상세 조회
@@ -154,6 +184,20 @@ export const userDetail = async (id) => {
   });
 };
 
+// 고객센터 등록
+// 고객센터 수정
+// 고객센터 댓글 등록
+// 고객센터 댓글 삭제
+// 고객센터 상세 조회
+// 고객센터 목록 조회
+export const getCSList = async (params) => {
+  return await axios({
+    method: "GET",
+    url: `/9082/desk`,
+    params: params,
+  });
+};
+
 // ----------------------- 8000 ------------------------------
 
 // 로그인
@@ -176,19 +220,17 @@ export const getUserInfo = async (id) => {
   });
 };
 
-// 물품 기부 등록 
+// 물품 기부 등록
 export const createDonation = async (id, donation: Object, files: Object) => {
   return await axios({
-    method: 'POST',
-    url: '/9080/donation',
-    data: {donation, files},
-    headers : {
-      memberId : id,
-    }
-  })
-}
-
-
+    method: "POST",
+    url: "/9080/donation",
+    data: { donation, files },
+    headers: {
+      memberId: id,
+    },
+  });
+};
 
 // -------------------------관리자페이지-------------------------
 
@@ -207,13 +249,13 @@ export const getAllUser = async (token, page) => {
 export const warning = async (token, id) => {
   return await axios({
     method: "PUT",
-    url: '/8000/member/admin/warning',
+    url: "/8000/member/admin/warning",
     headers: {
       Authorization: token,
     },
     data: {
-      'memberId': id
-    }
+      memberId: id,
+    },
   });
 };
 
@@ -232,20 +274,16 @@ export const waitingList = async (token, page) => {
 export const approveSignup = async (token, id) => {
   return await axios({
     method: "PUT",
-    url: '/8000/member/admin/permission',
+    url: "/8000/member/admin/permission",
     headers: {
       Authorization: token,
     },
     data: {
-      "member_id": id,
-      "permission": true
-    }
+      member_id: id,
+      permission: true,
+    },
   });
 };
-
-
-
-
 
 // ------------------------- 기타 ------------------------------
 
@@ -337,7 +375,7 @@ export const OCR_kakao = async (img) => {
   });
 };
 
-// 택배 조회 api
+// 택배사 리스트 조회 api
 export const getPostCompany = async () => {
   return await axios({
     method: "GET",

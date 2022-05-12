@@ -22,6 +22,7 @@ import CallIcon from "@mui/icons-material/Call";
 import MailIcon from "@mui/icons-material/Mail";
 
 import TestImage from "../../public/images/testImage.jpg";
+import defaultImage from "../../public/images/defaultImage.png";
 
 // api
 import { getUserInfo } from "function/axios";
@@ -110,12 +111,21 @@ const OrgMypage: FC = () => {
                       // height: "300px",
                     }}
                   >
-                    <Image
-                      src={TestImage}
-                      alt="orgImage"
-                      width="300px"
-                      height="300px"
-                    />
+                    {myInfo.profile === null ? (
+                      <Image
+                        src={defaultImage}
+                        alt="orgImage"
+                        width="300px"
+                        height="300px"
+                      />
+                    ) : (
+                      <Image
+                        src={myInfo.profile}
+                        alt="orgImage"
+                        width="300px"
+                        height="300px"
+                      />
+                    )}
                   </div>
                 </Grid>
                 <Grid item xs={8}>
