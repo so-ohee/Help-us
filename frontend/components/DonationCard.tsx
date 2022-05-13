@@ -16,7 +16,7 @@ const CustomButton = styled(Button)({
   },
 });
 
-const DonationCard: FC<DonationData> = ({donation}) => {
+const DonationCard: FC<DonationData> = ({ donation }) => {
   return (
     <div>
       <Box
@@ -27,7 +27,7 @@ const DonationCard: FC<DonationData> = ({donation}) => {
           position: "relative",
           height: 230,
           width: 500,
-          mt: 3
+          mt: 3,
         }}
       >
         <Stack direction="row">
@@ -62,7 +62,7 @@ const DonationCard: FC<DonationData> = ({donation}) => {
             <Box>
               {/* 제목은 17자까지만 보여주기??*/}
               <Typography sx={{ fontWeight: "bold", fontSize: 17, mt: 0.5 }}>
-                {donation.title}
+                {donation?.title}
               </Typography>
               <Grid
                 container
@@ -76,48 +76,46 @@ const DonationCard: FC<DonationData> = ({donation}) => {
                 }}
                 direction="row"
               >
-                  {donation.products.map((item, i) => (
-                    <Grid key={i} sx={{ mx: 1.1, mt: 1 }}>
-                      <Chip
-                        label={item.productName}
-                        size="small"
+                {donation?.products.map((item, i) => (
+                  <Grid key={i} sx={{ mx: 1.1, mt: 1 }}>
+                    <Chip
+                      label={item.productName}
+                      size="small"
+                      sx={{
+                        backgroundColor: "#FCE2A6",
+                        width: 65,
+                        fontSize: 11,
+                      }}
+                    />
+                    <Stack
+                      sx={{
+                        width: 65,
+                        height: 10,
+                      }}
+                      direction="row"
+                      alignItems="center"
+                    >
+                      <Box
                         sx={{
-                          backgroundColor: "#FCE2A6",
-                          width: 65,
-                          fontSize: 11,
+                          borderTopLeftRadius: 5,
+                          borderBottomLeftRadius: 5,
+                          width: `${item.percent}%`,
+                          height: 5,
+                          bgcolor: "#CDAD78",
                         }}
-                      />
-                      <Stack
+                      ></Box>
+                      <Box
                         sx={{
-                          width: 65,
-                          height: 10,
+                          borderTopRightRadius: 5,
+                          borderBottomRightRadius: 5,
+                          width: `${100 - item.percent}%`,
+                          height: 5,
+                          bgcolor: "#dbd5ca",
                         }}
-                        direction="row"
-                        alignItems="center"
-                      >
-                        <Box
-                          sx={{
-                            borderTopLeftRadius: 5,
-                            borderBottomLeftRadius: 5,
-                            width: `${item.percent}%`,
-                            height: 5,
-                            bgcolor: "#CDAD78",
-                          }}
-                        ></Box>
-                        <Box
-                          sx={{
-                            borderTopRightRadius: 5,
-                            borderBottomRightRadius: 5,
-                            width: `${100 - item.percent}%`,
-                            height: 5,
-                            bgcolor: "#dbd5ca",
-                          }}
-                        ></Box>
-                      </Stack>
-                    </Grid>
-
-                  ))}
-                
+                      ></Box>
+                    </Stack>
+                  </Grid>
+                ))}
               </Grid>
               {/* 진행률 표시 바 */}
               <Stack
@@ -133,7 +131,7 @@ const DonationCard: FC<DonationData> = ({donation}) => {
                   sx={{
                     borderTopLeftRadius: 5,
                     borderBottomLeftRadius: 5,
-                    width: `${donation.percent}%`,
+                    width: `${donation?.percent}%`,
                     height: 15,
                     bgcolor: "#CDAD78",
                   }}
@@ -142,13 +140,13 @@ const DonationCard: FC<DonationData> = ({donation}) => {
                   sx={{
                     borderTopRightRadius: 5,
                     borderBottomRightRadius: 5,
-                    width: `${100 - donation.percent}%`,
+                    width: `${100 - donation?.percent}%`,
                     height: 15,
                     bgcolor: "#dbd5ca",
                   }}
                 ></Box>
                 <Typography align="center" sx={{ ml: 1, fontSize: 14 }}>
-                  {donation.percent}%
+                  {donation?.percent}%
                 </Typography>
               </Stack>
             </Box>
@@ -159,7 +157,7 @@ const DonationCard: FC<DonationData> = ({donation}) => {
               alignItems="center"
               justifyContent="center"
             >
-              <Typography align="center">{donation.name}</Typography>
+              <Typography align="center">{donation?.name}</Typography>
             </Stack>
           </Box>
         </Stack>
