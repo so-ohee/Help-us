@@ -89,23 +89,20 @@ const Volunteer: FC = () => {
             </CustomButton>
           </Box>
           <Box sx={{ fontWeight: "bold", my: 5 }}>
-            <Typography variant="h4" textAlign="center">
-              봉사
+            <Typography variant="h4" textAlign="center" fontWeight="bold">
+              봉사 글 작성
             </Typography>
           </Box>
           <Box sx={{ my: 3 }}>
             <TextField fullWidth label="제목" />
           </Box>
           <CKEditor initData={<p>내용</p>} />
-          {/* <Box
-            sx={{ mt: 3, width: 800, height: 200, backgroundColor: "#FFBC39" }}
-          >
+          <Typography variant="h5" sx={{ mt: 3 }}>
             봉사 장소
-          </Box> */}
-          <Typography sx={{ mt: 3 }}>봉사 장소</Typography>
-          <Stack direction="row" sx={{ mt: 5 }}>
+          </Typography>
+          <Stack direction="row" sx={{ mt: 3 }} alignItems="center">
             <CustomDisableInput
-              sx={{ width: 200 }}
+              sx={{ width: 480 }}
               name="post"
               required
               fullWidth
@@ -115,16 +112,17 @@ const Volunteer: FC = () => {
               disabled={true}
             />
             <UpdateButton
-              sx={{ mt: 2, mb: 1, mx: 1 }}
+              sx={{ mx: 1, height: 55 }}
               variant="contained"
               onClick={handleClickOpen}
             >
               우편번호 찾기
             </UpdateButton>
           </Stack>
-          <Stack>
+          <Stack sx={{ mt: 1 }}>
             <Grid item xs={12}>
               <CustomDisableInput
+                sx={{ width: 600 }}
                 name="addr1"
                 required
                 fullWidth
@@ -135,9 +133,10 @@ const Volunteer: FC = () => {
               />
             </Grid>
           </Stack>
-          <Stack>
+          <Stack sx={{ mt: 1 }}>
             <Grid item xs={12} style={{ marginBottom: "15px" }}>
               <TextField
+                sx={{ width: 600 }}
                 name="addr2"
                 fullWidth
                 id="addr2"

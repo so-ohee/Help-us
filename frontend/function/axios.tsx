@@ -120,8 +120,25 @@ export const createDonation = async (id, token, donation, files) => {
 };
 
 // 봉사 글 작성
-export const createVolunteer = async () => {
-  return;
+export const createVolunteer = async (token, volunteer, files) => {
+  const newForm = new FormData();
+
+  newForm.append(
+    "VolunteerReqDto",
+    new Blob([JSON.stringify(volunteer)], { type: "application/json" })
+  );
+
+  files?.map((file) => newForm.append("files", file));
+
+  return await axios({
+    method: "POST",
+    url: "/8000/volunteer",
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Authorization: token,
+    },
+    data: newForm,
+  });
 };
 
 // ----------------------- 9081 ------------------------------
