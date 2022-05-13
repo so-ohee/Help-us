@@ -254,7 +254,7 @@ const UserMypage: FC = () => {
             >
               <Box sx={style}>
                 <Typography id="modal-modal-title" variant="h6" component="h2" style={{fontWeight:'bold'}}>
-                    회원정보 수정 -사진과 소개글 두개 다 입력(수정중)
+                    회원정보 수정
                 </Typography>
 
 

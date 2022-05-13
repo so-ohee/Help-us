@@ -137,6 +137,7 @@ const OrgMypage: FC = () => {
       userEdit(localStorage.getItem('jwt'), myInfo.memberId, intro, profile)
       .then(res => {
         handleClose()
+        console.log
         location.reload()
       })
       .catch(err => console.log(err))
@@ -259,7 +260,7 @@ const OrgMypage: FC = () => {
             >
               <Box sx={style}>
                 <Typography id="modal-modal-title" variant="h6" component="h2" style={{fontWeight:'bold'}}>
-                    회원정보 수정 -사진과 소개글 두개 다 입력(수정중)
+                    회원정보 수정
                 </Typography>
 
 

@@ -398,7 +398,10 @@ export const userEdit = async (token, id, intro, file) => {
     "member",
     new Blob([JSON.stringify(data)], { type: "application/json" })
   );
-  newForm.append("profile", file);
+  if (file){
+    newForm.append("profile", file);
+  }
+ 
 
   return await axios({
     method: "PUT",
