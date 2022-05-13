@@ -22,7 +22,7 @@ public class ListApplyResDto {
     private String title;
 
     @ApiModelProperty(value = "봉사 활동 시간")
-    private int time;
+    private double time;
 
     @ApiModelProperty(value = "봉사 시작 날짜")
     @Column(name = "vol_date")
