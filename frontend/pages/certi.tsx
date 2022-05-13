@@ -2,6 +2,7 @@ import { FC, useState, useEffect } from "react";
 import Image from "next/image";
 import logo3 from "../public/images/logo3.png";
 import logo4 from "../public/images/logo100x100.png";
+import background from "../public/images/background.png";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -52,7 +53,7 @@ const Certi: FC = () => {
     tokenCheck()
     .then(res => {
       if (res){
-        console.log(res)
+        // console.log(res)
         setName(res.data.name)
         setEmail(res.data.email)
         setPhone(res.data.tel)
@@ -184,6 +185,13 @@ const Certi: FC = () => {
           width={1}
           height={1}
         />
+        <Image 
+          src= {background}
+          alt=""
+          width={1}
+          height={1}
+        />
+
 
         <TableContainer component={Paper}>
           <Table sx={{ maxWidth: 800 }}>
@@ -250,6 +258,14 @@ const Certi: FC = () => {
                 <span style={{fontSize:'20px'}}>문서확인번호: {certiNum}</span>
 
                 <div style={{border:'1px solid black', padding:'50px', paddingBottom:'30px'}}>
+                <div style={{marginTop:'100px', position:'absolute', width:'750px', height:'750px'}}>
+                  <Image 
+                      src= {background}
+                      alt=""
+                      // width={1000}
+                      // height={1000}
+                    />
+                </div>
                 <span style={{display: 'flex', justifyContent: 'center', margin:'30px', fontSize:'40px', fontWeight:'bold'}}>기부내역 확인서</span>
                 <h2>성 &nbsp; 함 : {name}</h2>
                 <h2>연락처 : {phone}</h2>
@@ -258,6 +274,7 @@ const Certi: FC = () => {
                 <br />
                 <h1 style={{display: 'flex', justifyContent: 'center'}}>기부내역</h1>
                 <div style={{minHeight:'500px'}}>
+               
                   <TableContainer  style={{display: 'flex', justifyContent: 'center'}}>
                     <Table>
                       <TableHead >
