@@ -86,7 +86,7 @@ const Home: NextPage = () => {
                 </FormControl>
               </Box>
             </Stack>
-            <TabPanel value="1">
+            {/* <TabPanel value="1">
               <Box sx={{ mt: 3 }}>
                 <Stack direction="row" spacing={5} sx={{ mb: 5 }}>
                   <DonationCard />
@@ -127,7 +127,7 @@ const Home: NextPage = () => {
                   <VolunteerCard />
                 </Stack>
               </Box>
-            </TabPanel>
+            </TabPanel> */}
           </TabContext>
         </Box>
         <Box>

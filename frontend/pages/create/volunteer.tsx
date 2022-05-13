@@ -105,6 +105,7 @@ const Volunteer: FC = () => {
           <Typography sx={{ mt: 3 }}>봉사 장소</Typography>
           <Stack direction="row" sx={{ mt: 5 }}>
             <CustomDisableInput
+              sx={{ width: 200 }}
               name="post"
               required
               fullWidth
