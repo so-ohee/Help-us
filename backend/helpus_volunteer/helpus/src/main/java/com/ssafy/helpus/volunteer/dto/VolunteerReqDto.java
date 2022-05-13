@@ -31,7 +31,7 @@ public class VolunteerReqDto {
     private int people;
 
     @ApiModelProperty(value = "봉사 시간")
-    private int time;
+    private double time;
 
     @ApiModelProperty(value = "봉사일")
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm")

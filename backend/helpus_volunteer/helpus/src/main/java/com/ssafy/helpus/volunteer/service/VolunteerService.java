@@ -24,7 +24,7 @@ public interface VolunteerService {
     // 봉사 신청
     Map<String, Object> applyVolunteer(Long volunteerId, Long memberId, String role) throws Exception;
     // 봉사글 목록
-    Map<String, Object> listVolunteer (String category, int page) throws Exception;
+    Map<String, Object> listVolunteer (String category, String order, int page) throws Exception;
     // 목록 만들기
     Map<String, Object> makeListVolunteer (Page<Volunteer> volunteers) throws Exception;
     // 봉사 글 목록 - 메인
