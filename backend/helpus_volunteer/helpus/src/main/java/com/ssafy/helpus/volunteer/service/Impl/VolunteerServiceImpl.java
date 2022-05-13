@@ -236,11 +236,12 @@ public class VolunteerServiceImpl implements VolunteerService{
     }
 
     @Override
-    public Map<String, Object> listVolunteer(String category, int page) throws Exception {
+    public Map<String, Object> listVolunteer(String category, String order, int page) throws Exception {
         log.info("VolunteerService listVolunteer call");
 
+        Sort sort = gerOrder(order);
         Page<Volunteer> volunteers;
-        volunteers = volunteerRepository.findByCategory(category, PageRequest.of(page,10, Sort.by(Sort.Direction.DESC, "volunteerId")));
+        volunteers = volunteerRepository.findByCategory(category, PageRequest.of(page,10, sort));
 
         return makeListVolunteer(volunteers);
     }
@@ -272,6 +273,7 @@ public class VolunteerServiceImpl implements VolunteerService{
                     .volAddress(volunteer.getVolAddress())
                     .volZipcode(volunteer.getVolZipcode())
                     .time(volunteer.getTime())
+                    .status(volunteer.getStatus())
                     .memberId(Long.parseLong(member.get("memberId")))
                     .name(member.get("name"))
                     .profile(member.get("profile"))

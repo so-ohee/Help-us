@@ -65,13 +65,13 @@ public class Volunteer {
     private double percent;
 
     @Column
-    private int time;
+    private double time;
 
     @OneToMany(mappedBy = "volunteer")
     List<VolunteerImage> images = new ArrayList<>();
 
     @Builder
-    public Volunteer(Long memberId, String title, String content, int volZipcode, String volAddress, int people, int applicant, LocalDateTime volDate, String category, int time){
+    public Volunteer(Long memberId, String title, String content, int volZipcode, String volAddress, int people, int applicant, LocalDateTime volDate, String category, double time){
         this.memberId = memberId;
         this.title = title;
         this.content = content;

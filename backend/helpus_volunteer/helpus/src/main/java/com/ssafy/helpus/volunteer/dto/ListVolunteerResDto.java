@@ -54,7 +54,7 @@ public class ListVolunteerResDto {
     private double percent;
 
     @ApiModelProperty(value = "봉사 인원")
-    private int time;
+    private double time;
 
     @ApiModelProperty(value = "기관 프로필 사진")
     private String profile;

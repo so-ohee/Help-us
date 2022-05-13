@@ -143,7 +143,7 @@ public class VolunteerController {
     }
 
     @GetMapping("/")
-    public ResponseEntity listVolunteer(@RequestParam(defaultValue = "1") int page){
+    public ResponseEntity listVolunteer(@RequestParam(required = false,defaultValue = "최신순") String order,@RequestParam(defaultValue = "1") int page){
 
         log.info("VolunteerController listVolunteer call");
         String category = "ORG";
@@ -151,7 +151,7 @@ public class VolunteerController {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.ACCEPTED;
         try {
-            resultMap = volunteerService.listVolunteer(category, page-1);
+            resultMap = volunteerService.listVolunteer(category, order, page-1);
         }catch (Exception e){
             log.info(e.getMessage());
             resultMap.put("message", e.getMessage());
