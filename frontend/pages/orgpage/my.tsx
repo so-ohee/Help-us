@@ -137,7 +137,6 @@ const OrgMypage: FC = () => {
       userEdit(localStorage.getItem('jwt'), myInfo.memberId, intro, profile)
       .then(res => {
         handleClose()
-        console.log
         location.reload()
       })
       .catch(err => console.log(err))

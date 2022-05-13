@@ -1,4 +1,4 @@
-import UserMypageSidebar from "@/components/UserMypageSidebar";
+import OrgMypageSidebar from "@/components/OrgMypageSidebar";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 import {
   Box,
@@ -91,7 +91,7 @@ const UserMypageCs: FC = () => {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <UserMypageSidebar />
+      <OrgMypageSidebar />
       <Box
         component="main"
         sx={{
