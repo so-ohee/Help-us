@@ -151,9 +151,19 @@ const Certi: FC = () => {
   const randomString = (count) => {
     let str = '';
     for (let i = 0; i < count; i++) {
-        str += Math.floor(Math.random() * 36).toString(36);
+        let x = Math.floor(Math.random() * 36).toString(36)
+        // console.log(x)
+        if (x === '0'){
+          str += '7'
+        } else if (x === 'o'){
+          str += '5'  
+        }else{
+          str += x
+        }
+        // str += Math.floor(Math.random() * 36).toString(36);
     }
     str = str.toUpperCase()
+    // console.log(str)
     return str
   }
 

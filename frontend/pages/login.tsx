@@ -69,9 +69,6 @@ const Login: FC = () => {
     }
     // localStorage.setItem('key', '12')
     // console.log(localStorage.getItem('key'))
-    useEffect(() => {
-      console.log('----')
-    },[])
 
 
     return (
