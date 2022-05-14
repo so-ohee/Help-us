@@ -195,12 +195,15 @@ const CheckCerti: FC = () => {
       {
         imageUrl !== "" ?
         (
-          <Image 
-            src= {imageUrl}
-            alt=""
-            width={600}
-            height={800}
-          />
+          // <Image 
+          //   src= {imageUrl}
+          //   alt=""
+          //   width={600}
+          //   height={800}
+          // />
+          <div>
+          <img style={{width:'800px'}} src={imageUrl} alt="" />
+          </div>
         ) : null
       }
 
