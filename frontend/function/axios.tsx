@@ -351,7 +351,7 @@ export const approveSignup = async (token, id) => {
       Authorization: token,
     },
     data: {
-      member_id: id,
+      memberId: id,
       permission: true,
     },
   });
