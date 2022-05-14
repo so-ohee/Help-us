@@ -95,24 +95,52 @@ const DonationCard: FC<DonationData> = ({ donation }) => {
                       direction="row"
                       alignItems="center"
                     >
-                      <Box
-                        sx={{
-                          borderTopLeftRadius: 5,
-                          borderBottomLeftRadius: 5,
-                          width: `${item.percent}%`,
-                          height: 5,
-                          bgcolor: "#CDAD78",
-                        }}
-                      ></Box>
-                      <Box
-                        sx={{
-                          borderTopRightRadius: 5,
-                          borderBottomRightRadius: 5,
-                          width: `${100 - item.percent}%`,
-                          height: 5,
-                          bgcolor: "#dbd5ca",
-                        }}
-                      ></Box>
+                      {item.percent === 100 ? (
+                        <Box
+                          sx={{
+                            borderTopLeftRadius: 5,
+                            borderBottomLeftRadius: 5,
+                            borderTopRightRadius: 5,
+                            borderBottomRightRadius: 5,
+                            width: `${item.percent}%`,
+                            height: 5,
+                            bgcolor: "#CDAD78",
+                          }}
+                        ></Box>
+                      ) : (
+                        <Box
+                          sx={{
+                            borderTopLeftRadius: 5,
+                            borderBottomLeftRadius: 5,
+                            width: `${item.percent}%`,
+                            height: 5,
+                            bgcolor: "#CDAD78",
+                          }}
+                        ></Box>
+                      )}
+                      {item.percent === 0 ? (
+                        <Box
+                          sx={{
+                            borderTopRightRadius: 5,
+                            borderBottomRightRadius: 5,
+                            borderTopLeftRadius: 5,
+                            borderBottomLeftRadius: 5,
+                            width: `${100 - item.percent}%`,
+                            height: 5,
+                            bgcolor: "#dbd5ca",
+                          }}
+                        ></Box>
+                      ) : (
+                        <Box
+                          sx={{
+                            borderTopRightRadius: 5,
+                            borderBottomRightRadius: 5,
+                            width: `${100 - item.percent}%`,
+                            height: 5,
+                            bgcolor: "#dbd5ca",
+                          }}
+                        ></Box>
+                      )}
                     </Stack>
                   </Grid>
                 ))}
@@ -127,24 +155,52 @@ const DonationCard: FC<DonationData> = ({ donation }) => {
                 direction="row"
                 alignItems="center"
               >
-                <Box
-                  sx={{
-                    borderTopLeftRadius: 5,
-                    borderBottomLeftRadius: 5,
-                    width: `${donation?.percent}%`,
-                    height: 15,
-                    bgcolor: "#CDAD78",
-                  }}
-                ></Box>
-                <Box
-                  sx={{
-                    borderTopRightRadius: 5,
-                    borderBottomRightRadius: 5,
-                    width: `${100 - donation?.percent}%`,
-                    height: 15,
-                    bgcolor: "#dbd5ca",
-                  }}
-                ></Box>
+                {donation.percent === 100 ? (
+                  <Box
+                    sx={{
+                      borderTopLeftRadius: 5,
+                      borderBottomLeftRadius: 5,
+                      borderTopRightRadius: 5,
+                      borderBottomRightRadius: 5,
+                      width: `${donation?.percent}%`,
+                      height: 15,
+                      bgcolor: "#CDAD78",
+                    }}
+                  ></Box>
+                ) : (
+                  <Box
+                    sx={{
+                      borderTopLeftRadius: 5,
+                      borderBottomLeftRadius: 5,
+                      width: `${donation?.percent}%`,
+                      height: 15,
+                      bgcolor: "#CDAD78",
+                    }}
+                  ></Box>
+                )}
+                {donation.percent === 0 ? (
+                  <Box
+                    sx={{
+                      borderTopRightRadius: 5,
+                      borderBottomRightRadius: 5,
+                      borderTopLeftRadius: 5,
+                      borderBottomLeftRadius: 5,
+                      width: `${100 - donation?.percent}%`,
+                      height: 15,
+                      bgcolor: "#dbd5ca",
+                    }}
+                  ></Box>
+                ) : (
+                  <Box
+                    sx={{
+                      borderTopRightRadius: 5,
+                      borderBottomRightRadius: 5,
+                      width: `${100 - donation?.percent}%`,
+                      height: 15,
+                      bgcolor: "#dbd5ca",
+                    }}
+                  ></Box>
+                )}
                 <Typography align="center" sx={{ ml: 1, fontSize: 14 }}>
                   {donation?.percent}%
                 </Typography>

@@ -1,5 +1,5 @@
-import react, { useEffect, useState } from "react";
-import type { NextPage } from "next";
+import react, { useEffect, useState, FC } from "react";
+// import type { NextPage } from "next";
 import {
   Box,
   Grid,
@@ -127,7 +127,7 @@ const theme = createTheme({
   },
 });
 
-const Home: NextPage = () => {
+const Home: FC = () => {
   const router = useRouter();
   const [value, setValue] = useState<any>(0);
   const [option, setOption] = useState("");
@@ -156,6 +156,8 @@ const Home: NextPage = () => {
   };
 
   useEffect(() => {
+    const token = localStorage.getItem("jwt");
+    // console.log(token);
     getDonationMain().then((res) => {
       setDonationData(res.data.donation);
     });
@@ -163,6 +165,22 @@ const Home: NextPage = () => {
       setVolunteerData(res.data.listVolunteer);
     });
   }, []);
+
+  // test = {
+  //   "donationId": 18,
+  //   "title": "test",
+  //   "content": "테스트~~~"
+  // }
+
+  const tt = {
+    title: "dd",
+    content: "ddd",
+    volZipcode: 11,
+    volAddress: "dddd",
+    people: 11,
+    time: 1.0,
+    volDate: "2022-06-02 14:00",
+  };
 
   return (
     <Container maxWidth="lg">
@@ -201,7 +219,7 @@ const Home: NextPage = () => {
                     {...a11yProps(1)}
                   />
                 </StyledTabs>
-                <Box
+                {/* <Box
                   sx={{
                     minWidth: 200,
                     display: "flex",
@@ -221,7 +239,7 @@ const Home: NextPage = () => {
                       <MenuItem value="endDate">종료일 순</MenuItem>
                     </Select>
                   </FormControl>
-                </Box>
+                </Box> */}
               </Stack>
               <TabPanel value={value} index={0}>
                 <Box
@@ -230,13 +248,15 @@ const Home: NextPage = () => {
                     gridTemplateColumns: "repeat(auto-fill, 500px)",
                     justifyContent: "center",
                     alignItems: "center",
-                    marginTop: 5,
+                    // marginTop: 5,
                     rowGap: 1,
                     columnGap: 5,
                   }}
                 >
                   {donationData && donationData.length > 0 ? (
-                    donationData.map((item) => <DonationCard donation={item} />)
+                    donationData.map((item, i) => (
+                      <DonationCard donation={item} key={i} />
+                    ))
                   ) : (
                     <Typography sx={{ margin: "200px 0" }}>
                       진행 중인 기부글이 없습니다.
@@ -251,13 +271,15 @@ const Home: NextPage = () => {
                     gridTemplateColumns: "repeat(auto-fill, 500px)",
                     justifyContent: "center",
                     alignItems: "center",
-                    marginTop: 5,
+                    // marginTop: 5,
                     rowGap: 1,
                     columnGap: 5,
                   }}
                 >
-                  {donationData && donationData.length > 0 ? (
-                    donationData.map((item) => <DonationCard donation={item} />)
+                  {volunteerData && volunteerData.length > 0 ? (
+                    volunteerData.map((item, i) => (
+                      <VolunteerCard volunteer={item} key={i} />
+                    ))
                   ) : (
                     <Typography sx={{ margin: "200px 0" }}>
                       진행 중인 기부글이 없습니다.
