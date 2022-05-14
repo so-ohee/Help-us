@@ -56,25 +56,7 @@ const CustomButton = styled(Button)({
   },
 });
 
-const dummyData = {
-  memberId: 1,
-  title: "휴지",
-  content: 100,
-  createDate: "브랜드는 상관 없습니다.",
-  updateDate: 30,
-  volDate: 30,
-  volTime: 70,
-  people: 5,
-  volAddress: "경기도 수원시 팔달구 중부대로 223번길 92",
-  // volAddress: "가나달",
-  volZipcode: "33",
-  percent: 30,
-  images: [
-    "https://c106-helpus.s3.ap-northeast-2.amazonaws.com/58f9fea5-22ab-431d-abfb-77821a10648eec0c950cbafa65d3b60ec2656a0b3833.jpg",
-    "https://c106-helpus.s3.ap-northeast-2.amazonaws.com/6e29501b-fe05-4791-95a4-b690d8e90c9bKakaoTalk_20220211_131313475.jpg",
-    // "https://c106-helpus.s3.ap-northeast-2.amazonaws.com/ea4bd70d-b50c-4a57-b78e-4c06e22bf5b7erd.png",
-  ],
-};
+
 
 const VolunteerDetail: FC = () => {
   const router = useRouter();

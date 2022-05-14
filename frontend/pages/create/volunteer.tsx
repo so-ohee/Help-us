@@ -18,7 +18,8 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import DateTimePicker from "../../components/DateTimePicker"
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+// import DateTimePicker from "../../components/DateTimePicker"
 import Postcode from "@actbase/react-daum-postcode";
 
 // api
@@ -81,6 +82,7 @@ const MenuProps = {
 const Volunteer: FC = () => {
   const [value, setValue] = useState<Date | null>(null);
   const [id, setId] = useState<any>(0);
+  const [token, setToken] = useState<any>(0);
 
   const [ title, setTitle ] = useState<string>("");
   const [ content, setContent ] = useState<string>("");
@@ -124,7 +126,7 @@ const Volunteer: FC = () => {
 
     const id = localStorage.getItem("id");
     const token = localStorage.getItem("token");
-
+    
     const VolunteerReqDto  = {
       title : title,
       content : content,
@@ -173,14 +175,14 @@ const Volunteer: FC = () => {
 
   useEffect(() => {
     const Id = localStorage.getItem("id");
+    const Token = localStorage.getItem("jwt");
     setId(Id);
+    setToken(Token)
   }, [id]);
 
-  const getData = (startValue) => {
-    setStartValue(startValue)
-  }
-
-  console.log(startValue)
+  // console.log(id)
+  // console.log(token)
+  
 
   return (
     <ThemeProvider theme={theme}>
@@ -272,10 +274,16 @@ const Volunteer: FC = () => {
               <Typography variant="h5" sx={{ mx: 3 }}>
                 봉사 시작 날짜
               </Typography>
-                <DateTimePicker 
-                  startValue={startValue}
-                  getData={getData}
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DateTimePicker
+                  label="시작 시간&#38;날짜 선택"
+                  value={startValue}
+                  inputFormat={"yyyy-MM-dd hh:mm"}
+                  mask={"____-__-__ __:__"}
+                  onChange={(date) => {setStartValue(dayjs(date).format("YYYY-MM-DD HH:mm"))}}
+                  renderInput={(params) => <TextField {...params} />}
                 />
+              </LocalizationProvider>
               <Typography variant="h5" sx={{ mx: 3 }}>
                 봉사 소요 시간
               </Typography>
@@ -290,21 +298,21 @@ const Volunteer: FC = () => {
                   MenuProps={MenuProps}
                 >
                   <MenuItem value={0.5}>0.5</MenuItem>
-                  <MenuItem value={1}>1</MenuItem>
+                  <MenuItem value={1}>1.0</MenuItem>
                   <MenuItem value={1.5}>1.5</MenuItem>
-                  <MenuItem value={2}>2</MenuItem>
+                  <MenuItem value={2}>2.0</MenuItem>
                   <MenuItem value={2.5}>2.5</MenuItem>
-                  <MenuItem value={3}>3</MenuItem>
-                  <MenuItem value={3.5}>3.2</MenuItem>
-                  <MenuItem value={4}>4</MenuItem>
+                  <MenuItem value={3}>3.0</MenuItem>
+                  <MenuItem value={3.5}>3.5</MenuItem>
+                  <MenuItem value={4}>4.0</MenuItem>
                   <MenuItem value={4.5}>4.5</MenuItem>
-                  <MenuItem value={5}>5</MenuItem>
+                  <MenuItem value={5}>5.0</MenuItem>
                   <MenuItem value={5.5}>5.5</MenuItem>
-                  <MenuItem value={6}>6</MenuItem>
+                  <MenuItem value={6}>6.0</MenuItem>
                   <MenuItem value={6.5}>6.5</MenuItem>
-                  <MenuItem value={7}>7</MenuItem>
+                  <MenuItem value={7}>7.0</MenuItem>
                   <MenuItem value={7.5}>7.5</MenuItem>
-                  <MenuItem value={8}>8</MenuItem>
+                  <MenuItem value={8}>8.0</MenuItem>
                   
                 </Select>
               </FormControl>

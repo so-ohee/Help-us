@@ -11,7 +11,6 @@ import { id } from "date-fns/locale";
 // 8000: 로그인 'http://k6c106.p.ssafy.io:8000'
 
 // ----------------------- 9080 ------------------------------
-
 // 메인 페이지 - 물품 기부 목록 최근 6개
 export const getDonationMain = async () => {
   return await axios({
@@ -49,7 +48,7 @@ export const createReview = async (id, token,confirm, files) => {
   files?.map((file) => newForm.append("files", file));
   return await axios({
     method: "POST",
-    url : '/9080/d.confirm',
+    url : '/8000/d.confirm',
     headers: {
       "Content-Type": "multipart/form-data",
       Authorization: token,
@@ -166,11 +165,15 @@ export const createTalent = async (id, token, params) => {
     url : "/8000/talentDonation",
     headers: {
       memberId : id,
+      Authorization: token,
       role : "USER",
     },
     data : params,
   })
 }
+
+// 재능 기부 댓글 작성
+
 
 // ----------------------- 9081 ------------------------------
 
@@ -180,8 +183,8 @@ export const createVolunteer = async (id, token, params) => {
     method: "POST",
     url : "/8000/volunteer",
     headers: {
-      
       memberId : id,
+      Authorization: token,
       role: "ORG"
     },
     data: params

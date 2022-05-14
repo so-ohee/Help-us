@@ -116,62 +116,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   height: 62,
 }));
 
-const dummyData = [
-  {
-    donationApplyId: 1,
-    productName: "휴지",
-    totalCount: 100,
-    productInfo: "브랜드는 상관 없습니다.",
-    finishCount: 30,
-    deliveryCount: 30,
-    percent: 70,
-  },
-  {
-    donationApplyId: 1,
-    productName: "물티슈",
-    totalCount: 50,
-    productInfo: "브랜드는 상관 없습니다.",
-    finishCount: 30,
-    deliveryCount: 10,
-    percent: 70,
-  },
-  {
-    donationApplyId: 1,
-    productName: "감자",
-    totalCount: 26,
-    productInfo: "브랜드는 상관 없습니다.",
-    finishCount: 11,
-    deliveryCount: 5,
-    percent: 70,
-  },
-  {
-    donationApplyId: 1,
-    productName: "라면",
-    totalCount: 500,
-    productInfo: "맵지 않은 제품으로 부탁드립니다.",
-    finishCount: 30,
-    deliveryCount: 200,
-    percent: 70,
-  },
-  {
-    donationApplyId: 1,
-    productName: "치킨",
-    totalCount: 10,
-    productInfo: "브랜드는 상관 없습니다.",
-    finishCount: 2,
-    deliveryCount: 4,
-    percent: 70,
-  },
-  {
-    donationApplyId: 1,
-    productName: "치즈",
-    totalCount: 50,
-    productInfo: "브랜드는 상관 없습니다.",
-    finishCount: 30,
-    deliveryCount: 10,
-    percent: 70,
-  },
-];
 
 export interface CommentData {
   commentId: number;
@@ -187,68 +131,7 @@ export interface CommentData {
 const TalentDetail: FC = () => {
   const imageList = [testImage, testImage, testImage, testImage, testImage];
 
-  const comments = [
-    {
-      commentId: 3,
-      memberId: 1,
-      name: "a",
-      profile: "a",
-      content: "댓글3",
-      parentId: null,
-      parentName: null,
-      createDate: "2022-05-09T11:08:06",
-    },
-    {
-      commentId: 9,
-      memberId: 2,
-      name: "na",
-      profile: "a",
-      content: "3의 대댓글",
-      parentId: 1,
-      parentName: "a",
-      createDate: "2022-05-09T14:55:07",
-    },
-    {
-      commentId: 1,
-      memberId: 3,
-      name: "banana",
-      profile: "a",
-      content: "댓글",
-      parentId: null,
-      parentName: null,
-      createDate: "2022-05-09T11:07:12",
-    },
-    {
-      commentId: 5,
-      memberId: 2,
-      name: "na",
-      profile: "a",
-      content: "1의 대댓글",
-      parentId: 1,
-      parentName: "banana",
-      createDate: "2022-05-09T11:08:50",
-    },
-    {
-      commentId: 6,
-      memberId: 1,
-      name: "a",
-      profile: "a",
-      content: "삭제된 댓글입니다.",
-      parentId: 1,
-      parentName: "na",
-      createDate: "2022-05-09T11:09:08",
-    },
-    {
-      commentId: 7,
-      memberId: 1,
-      name: "a",
-      profile: "a",
-      content: "6의 대댓글",
-      parentId: 1,
-      parentName: "na",
-      createDate: "2022-05-09T11:09:40",
-    },
-  ];
+
 
   return (
     <Box sx={{ display: "flex" }}>
