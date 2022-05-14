@@ -5,6 +5,7 @@ import TestImage from "../public/images/testImage.jpg";
 import Chip from "@mui/material/Chip";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 import { DonationData } from "../interfaces";
+import Link from "next/link";
 
 const CustomButton = styled(Button)({
   backgroundColor: "#5B321E",
@@ -32,6 +33,7 @@ const DonationCard: FC<DonationData> = ({ donation }) => {
       >
         <Stack direction="row">
           {/* 기관 이미지 */}
+
           <Box
             sx={{
               borderRadius: "20px 20px 0 0",
@@ -61,9 +63,15 @@ const DonationCard: FC<DonationData> = ({ donation }) => {
           >
             <Box>
               {/* 제목은 17자까지만 보여주기??*/}
-              <Typography sx={{ fontWeight: "bold", fontSize: 17, mt: 0.5 }}>
-                {donation.title}
-              </Typography>
+              <Link href={`/detail/donationorg/${donation.donationId}`}>
+                <a>
+                  <Typography
+                    sx={{ fontWeight: "bold", fontSize: 17, mt: 0.5 }}
+                  >
+                    {donation.title}
+                  </Typography>
+                </a>
+              </Link>
               <Grid
                 container
                 sx={{

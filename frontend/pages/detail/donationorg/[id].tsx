@@ -349,9 +349,6 @@ const DonationOrgDetail: FC = () => {
               <Typography variant="h4" fontWeight="bold" sx={{ mt: 3, mr: 2 }}>
                 기부 물품
               </Typography>
-              {/* <Typography variant="h6" sx={{ mt: 3 }}>
-                    총 9명의 회원이 기부했습니다.
-                  </Typography> */}
             </Stack>
             <Stack direction="row" alignItems="center">
               <Stack
@@ -424,8 +421,8 @@ const DonationOrgDetail: FC = () => {
               </TableHead>
               <TableBody>
                 {donationDetails &&
-                  donationDetails.products.map((data) => (
-                    <StyledTableRow key={data.donationApplyId}>
+                  donationDetails.products.map((data, i) => (
+                    <StyledTableRow key={i}>
                       <StyledTableCell align="center">
                         {data.productName}
                       </StyledTableCell>
