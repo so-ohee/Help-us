@@ -416,6 +416,42 @@ export const userEdit = async (token, id, intro, file) => {
   });
 };
 
+
+// ------------------------- 증명서 -----------------------------
+
+// 증명서 발급
+export const makeCerti = async (num, img) => {
+
+  const data = {
+    "certificationNum" : num
+  }
+
+  const newForm = new FormData();
+  newForm.append(
+    "certification",
+    new Blob([JSON.stringify(data)], { type: "application/json" })
+  );
+  newForm.append("image", img);
+
+  return await axios({
+    url: "/8000/api/certi",
+    method: "POST",
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+    data: newForm,
+  });
+};
+
+// 증명서 조회
+export const searchCerti = async (num) => {
+  return await axios({
+    method: "GET",
+    url: `/8000/api/certi/search/${num}`,
+  });
+};
+
+
 // ------------------------- 기타 ------------------------------
 
 // ocr

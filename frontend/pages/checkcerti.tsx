@@ -2,8 +2,9 @@ import { FC } from "react";
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { useState, useEffect, useRef } from 'react';
-import { OCR_kakao } from "function/axios";
+import { OCR_kakao, searchCerti } from "function/axios";
 import { styled } from "@mui/material/styles";
+import Image from "next/image";
 
 
 const UpdateButton = styled(Button)({
@@ -20,7 +21,7 @@ const UpdateButton = styled(Button)({
 
 const CheckCerti: FC = () => {
 
-
+  const [imageUrl, setImageUrl] = useState('')
 
   const [num1, setNum1] = useState('')
   const [num2, setNum2] = useState('')
@@ -87,6 +88,7 @@ const CheckCerti: FC = () => {
         // else if (i+1 === res.data.images[0].fields.length ) { // 사업자등록번호 못 찾은 경우,
         //     setStep('failed')
         // }
+        // console.log(res)
       }
     })
   }
@@ -95,6 +97,14 @@ const CheckCerti: FC = () => {
   // 업로드 버튼 클릭시
   const clickImageUpload = () => {
       imageUpload.current.click()
+  }
+
+  // 확인 버튼 클릭시
+  const search = () => {
+    setImageUrl('')
+    searchCerti(num1+'-'+num2+'-'+num3+'-'+num4)
+    .then(res => setImageUrl(res.data.url))
+    .catch(err => alert('증명서가 존재하지 않습니다.'))
   }
 
   return (
@@ -175,11 +185,26 @@ const CheckCerti: FC = () => {
           variant="contained" 
           style={{marginLeft:'10px'}}
           disabled={num1.length!=4 || num2.length!=4 || num3.length!=4 || num4.length!=4} 
+          onClick={search}
         >
           확인
         </UpdateButton>
 
       </div>
+
+      {
+        imageUrl !== "" ?
+        (
+          <Image 
+            src= {imageUrl}
+            alt=""
+            width={600}
+            height={800}
+          />
+        ) : null
+      }
+
+      
 
     </div>
   </>

@@ -17,7 +17,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import CircularProgress from '@mui/material/CircularProgress';
 import html2canvas from 'html2canvas'
 import { styled } from "@mui/material/styles";
-import { tokenCheck } from "../function/axios";
+import { tokenCheck, makeCerti } from "../function/axios";
 
 
 const UpdateButton = styled(Button)({
@@ -161,19 +161,49 @@ const Certi: FC = () => {
   const onHtmlToPng = () => {
     html2canvas(document.getElementById('div')).then(canvas=>{
       onSave(canvas.toDataURL('image/png'), `기부내역확인서 ${dateFormat} ${name}.png`)
+      // console.log(canvas)
     })
   }
   const onSave = (uri, filename) => {
-    var link = document.createElement('a')
-    document.body.appendChild(link)
-    link.href = uri
-    link.download = filename
-    link.click()
-    document.body.removeChild(link)
-    setIng(false)
-    setCertiNum('')
-    setChecked([])
+    // console.log(dataURItoBlob(uri))
+    makeCerti(certiNum, dataURItoBlob(uri))
+    .then(res => {
+      var link = document.createElement('a')
+      document.body.appendChild(link)
+      link.href = uri
+      link.download = filename
+      link.click()
+      document.body.removeChild(link)
+      setIng(false)
+      setCertiNum('')
+      setChecked([])
+    })
+    .catch(err => {
+      console.log(err)
+      setIng(false)
+      alert('다시 시도해주세요.')
+    })
+
   }
+
+
+  // 이미지 파일 형식 변환
+  function dataURItoBlob(dataURI) {
+    // convert base64/URLEncoded data component to raw binary data held in a string
+    var byteString;
+    if (dataURI.split(',')[0].indexOf('base64') >= 0)
+        byteString = atob(dataURI.split(',')[1]);
+    else
+        byteString = unescape(dataURI.split(',')[1]);
+    // 마임타입 추출
+    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+    // write the bytes of the string to a typed array
+    var ia = new Uint8Array(byteString.length);
+    for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+    }
+    return new Blob([ia], {type:mimeString});
+}
 
   return (
     <>

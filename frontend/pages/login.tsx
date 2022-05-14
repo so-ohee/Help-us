@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import Button from '@mui/material/Button';
@@ -69,6 +69,9 @@ const Login: FC = () => {
     }
     // localStorage.setItem('key', '12')
     // console.log(localStorage.getItem('key'))
+    useEffect(() => {
+      console.log('----')
+    },[])
 
 
     return (
