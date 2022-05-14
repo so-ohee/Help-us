@@ -62,7 +62,7 @@ const DonationCard: FC<DonationData> = ({ donation }) => {
             <Box>
               {/* 제목은 17자까지만 보여주기??*/}
               <Typography sx={{ fontWeight: "bold", fontSize: 17, mt: 0.5 }}>
-                {donation?.title}
+                {donation.title}
               </Typography>
               <Grid
                 container
@@ -76,7 +76,7 @@ const DonationCard: FC<DonationData> = ({ donation }) => {
                 }}
                 direction="row"
               >
-                {donation?.products.map((item, i) => (
+                {donation.products?.map((item, i) => (
                   <Grid key={i} sx={{ mx: 1.1, mt: 1 }}>
                     <Chip
                       label={item.productName}

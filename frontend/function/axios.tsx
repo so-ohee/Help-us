@@ -12,8 +12,8 @@ import { id } from "date-fns/locale";
 
 // ----------------------- 9080 ------------------------------
 
-// 물품 기부 목록
-export const getDonation = async () => {
+// 메인 페이지 - 물품 기부 목록 최근 6개
+export const getDonationMain = async () => {
   return await axios({
     method: "GET",
     url: "/9080/donation/main",
@@ -156,6 +156,14 @@ export const volunteerCommentDelete = async (id) => {
   return await axios({
     method: "DELETE",
     url: `/9081/v.comment/${id}`,
+  });
+};
+
+// 메인 페이지 - 봉사글 최근 조회 4개
+export const getVolunteerMain = async () => {
+  return await axios({
+    method: "GET",
+    url: "/9081/volunteer/main",
   });
 };
 
