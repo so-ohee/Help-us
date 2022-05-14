@@ -37,6 +37,27 @@ export const getReviewList = async (params) => {
   });
 };
 
+// 후기 페이지 작성
+export const createReview = async (id, token,confirm, files) => {
+  const newForm = new FormData();
+
+  newForm.append(
+    "confirm",
+    new Blob([JSON.stringify(confirm)], { type: "application/json" })
+  );
+
+  files?.map((file) => newForm.append("files", file));
+  return await axios({
+    method: "POST",
+    url : '/9080/d.confirm',
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Authorization: token,
+    },
+    data: newForm
+  })
+}
+
 // 마이페이지(개인) - 송장 입력 목록 조회
 export const getApplyList = async (id, params) => {
   return await axios({
@@ -137,7 +158,35 @@ export const createDonation = async (id, token, donation, files) => {
     data: newForm,
   });
 };
+
+//재능 기부 글 작성
+export const createTalent = async (id, token, params) => {
+  return await axios ({
+    method: "POST",
+    url : "/8000/talentDonation",
+    headers: {
+      memberId : id,
+      role : "USER",
+    },
+    data : params,
+  })
+}
+
 // ----------------------- 9081 ------------------------------
+
+// 봉사 글 작성
+export const createVolunteer = async (id, token, params) => {
+  return await axios({
+    method: "POST",
+    url : "/8000/volunteer",
+    headers: {
+      
+      memberId : id,
+      role: "ORG"
+    },
+    data: params
+  })
+}
 
 // 봉사 글 상세 조회
 export const volunteerDetail = async (id) => {
