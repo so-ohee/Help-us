@@ -100,6 +100,7 @@ export const getNewsList = async (params) => {
 // 물품 기부글 작성
 export const createDonation = async (id, token, donation, files) => {
   const newForm = new FormData();
+  const test = id
 
   newForm.append(
     "donation",
@@ -408,7 +409,9 @@ export const userEdit = async (token, id, intro, file) => {
   );
   if (file){
     newForm.append("profile", file);
+    // console.log('파일 넣음')
   }
+  // console.log(file)
  
 
   return await axios({
