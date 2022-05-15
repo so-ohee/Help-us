@@ -37,11 +37,41 @@ export const getReviewList = async (params) => {
   });
 };
 
+// 후기 페이지 작성
+export const createReview = async (id, token, confirm, files) => {
+  const newForm = new FormData();
+
+  newForm.append(
+    "confirm",
+    new Blob([JSON.stringify(confirm)], { type: "application/json" })
+  );
+
+  files?.map((file) => newForm.append("files", file));
+  return await axios({
+    method: "POST",
+    url: "/9080/d.confirm",
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Authorization: token,
+    },
+    data: newForm,
+  });
+};
+
 // 마이페이지(개인) - 송장 입력 목록 조회
 export const getApplyList = async (id, params) => {
   return await axios({
     method: "GET",
     url: `/9080/d.apply/tracking/${id}`,
+    params: params,
+  });
+};
+
+// 마이페이지(개인) - 개인 배송완료 목록 조회
+export const getUserDonationList = async (id, params) => {
+  return await axios({
+    method: "GET",
+    url: `/8000/api/d.apply/donation/${id}`,
     params: params,
   });
 };
@@ -88,6 +118,14 @@ export const getDeliveryList = async (id, params) => {
   });
 };
 
+// 마이페이지(기관) - 기관 물품기부 현황 조회
+export const getOrgDonationList = async (id, params) => {
+  return await axios({
+    method: "GET",
+    url: `/8000/api/d.apply/donation/${id}`,
+    params: params,
+  });
+};
 // 기부 뉴스
 export const getNewsList = async (params) => {
   return await axios({
@@ -98,9 +136,8 @@ export const getNewsList = async (params) => {
 };
 
 // 물품 기부글 작성
-export const createDonation = async (id, token, donation, files) => {
+export const createDonation = async (token, donation, files) => {
   const newForm = new FormData();
-  const test = id
 
   newForm.append(
     "donation",
@@ -121,7 +158,34 @@ export const createDonation = async (id, token, donation, files) => {
     data: newForm,
   });
 };
+
+//재능 기부 글 작성
+export const createTalent = async (id, token, params) => {
+  return await axios({
+    method: "POST",
+    url: "/8000/talentDonation",
+    headers: {
+      memberId: id,
+      role: "USER",
+    },
+    data: params,
+  });
+};
+
 // ----------------------- 9081 ------------------------------
+
+// 봉사 글 작성
+export const createVolunteer = async (id, token, params) => {
+  return await axios({
+    method: "POST",
+    url: "/8000/volunteer",
+    headers: {
+      memberId: id,
+      role: "ORG",
+    },
+    data: params,
+  });
+};
 
 // 봉사 글 상세 조회
 export const volunteerDetail = async (id) => {
@@ -164,7 +228,7 @@ export const volunteerCommentDelete = async (id) => {
 export const getVolunteerMain = async () => {
   return await axios({
     method: "GET",
-    url: "/9081/volunteer/main",
+    url: "/8000/api/volunteer/main",
   });
 };
 
@@ -407,7 +471,7 @@ export const userEdit = async (token, id, intro, file) => {
     "member",
     new Blob([JSON.stringify(data)], { type: "application/json" })
   );
-  if (file){
+  if (file) {
     newForm.append("profile", file);
     // console.log('파일 넣음')
   }
@@ -427,15 +491,13 @@ export const userEdit = async (token, id, intro, file) => {
   });
 };
 
-
 // ------------------------- 증명서 -----------------------------
 
 // 증명서 발급
 export const makeCerti = async (num, img) => {
-
   const data = {
-    "certificationNum" : num
-  }
+    certificationNum: num,
+  };
 
   const newForm = new FormData();
   newForm.append(
@@ -461,7 +523,6 @@ export const searchCerti = async (num) => {
     url: `/8000/api/certi/search/${num}`,
   });
 };
-
 
 // ------------------------- 기타 ------------------------------
 

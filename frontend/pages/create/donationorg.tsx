@@ -321,7 +321,7 @@ const DonationOrg: FC = (props) => {
       return;
     }
 
-    createDonation(id, token, donation, imageList)
+    createDonation(token, donation, imageList)
       .then((res) => {
         console.log(res + "성공");
         Router.push("/donation");
