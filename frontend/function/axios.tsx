@@ -290,12 +290,12 @@ export const getMyvolunteerList = async (id, params) => {
   });
 };
 // 봉사 상세 페이지 댓글 작성
-export const volunteerComment = async (id, params) => {
+export const volunteerComment = async (id, token, params) => {
   return await axios({
     method: "POST",
-    url: "/9081/v.comment",
+    url: "/8000/v.comment",
     headers: {
-      memberId: id,
+      Authorization: token,
     },
     data: params,
   });
@@ -305,7 +305,7 @@ export const volunteerComment = async (id, params) => {
 export const volunteerCommentList = async (id, params) => {
   return await axios({
     method: "GET",
-    url: `/8000/v.comment/${id}`,
+    url: `/8000/api/v.comment/${id}`,
     params: params,
   });
 };
