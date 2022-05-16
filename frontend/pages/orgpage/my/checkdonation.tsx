@@ -16,7 +16,7 @@ import {
   Button,
 } from "@mui/material";
 import { tableCellClasses } from "@mui/material/TableCell";
-import { FC,useState,useEffect } from "react";
+import { FC, useState, useEffect } from "react";
 import Pagination from "@/components/Pagination";
 import { getOrgDonationList } from "../../../function/axios";
 const mdTheme = createTheme();
@@ -159,12 +159,12 @@ const dummyData = [
 const orgpageMyCheckDonation: FC = () => {
   const [donationList, setDonationList] = useState([]);
 
-  const [curPage, setCurPage] = useState(0);
+  const [curPage, setCurPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const paginate = (pageNumber) => setCurPage(pageNumber);
 
   const params = {
-    page: curPage + 1,
+    page: curPage,
   };
   useEffect(() => {
     const id = localStorage.getItem("id");
@@ -250,6 +250,13 @@ const orgpageMyCheckDonation: FC = () => {
               </TableBody>
             </Table>
           </TableContainer>
+          <Stack alignItems="center" sx={{ mb: 2, mt: 2 }}>
+            <Pagination
+              curPage={curPage}
+              paginate={paginate}
+              totalPage={totalPages}
+            />
+          </Stack>
         </Container>
       </Box>
     </Box>
