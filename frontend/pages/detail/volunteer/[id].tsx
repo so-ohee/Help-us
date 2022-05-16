@@ -70,6 +70,7 @@ const VolunteerDetail: FC = () => {
   useEffect(() => {
     if (router.isReady) {
       volunteerDetail(router.query.id).then((res) => {
+        console.log(res);
         setVolunteerDetails(res.data.volunteer);
         setLoading(true);
         console.log(volunteerDetails);
