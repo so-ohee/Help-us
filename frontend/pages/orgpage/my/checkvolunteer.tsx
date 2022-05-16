@@ -166,20 +166,20 @@ const dummyData = [
 const IsFact = ({ fact }) => {
   // const fact = props.fact;
 
-  if (fact === null) {
+  if (fact === 0) {
     return (
       <>
         <CustomButton sx={{ width: 40, height: 30, mr: 2 }}>참석</CustomButton>
         <CustomButton2 sx={{ width: 40, height: 30 }}>불참</CustomButton2>
       </>
     );
-  } else if (fact === true) {
+  } else if (fact === 1) {
     return (
       <>
         <Typography>참석</Typography>
       </>
     );
-  } else if (fact === false) {
+  } else if (fact === 2) {
     return (
       <>
         <Typography>불참</Typography>
@@ -189,6 +189,7 @@ const IsFact = ({ fact }) => {
 };
 
 const orgpageMyCheckVolunteer: FC = () => {
+
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -229,19 +230,19 @@ const orgpageMyCheckVolunteer: FC = () => {
                 {dummyData.map((data) => (
                   <StyledTableRow key={data.donationApplyId}>
                     <StyledTableCell align="center">
-                      {data.donationApplyId}
+                      {data.volunteerApplyId}
                     </StyledTableCell>
                     <StyledTableCell align="center" sx={{ width: 400 }}>
                       {data.title}
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      {data.donationDate}
+                      {data.volDate}
                     </StyledTableCell>
                     <StyledTableCell align="center">
                       {data.name}
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      <IsFact fact={data.fact} />
+                      <IsFact fact={data.status} />
                       {/* <CustomButton sx={{ width: 40, height: 30, mr: 2 }}>
                         참석
                       </CustomButton>
