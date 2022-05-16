@@ -90,6 +90,13 @@ const UserMypageDelivery: FC = () => {
 
   const [applyList, setApplyList] = useState<any>("");
 
+  // 배송 입력 여부 상태
+  const [postStatus, setPostStatus] = useState<boolean>(false);
+
+  const getStatus = (postStatus) => {
+    setPostStatus(postStatus);
+  };
+
   useEffect(() => {}, []);
   useEffect(() => {
     const token = localStorage.getItem("jwt");
@@ -99,8 +106,8 @@ const UserMypageDelivery: FC = () => {
       setApplyList(res.data.apply);
       setTotalPages(res.data.totalPage);
     });
-    console.log(process.env.NEXT_PUBLIC_POST_TRACKER_API_KEY);
-  }, [curPage, PostInfo]);
+    // console.log(process.env.NEXT_PUBLIC_POST_TRACKER_API_KEY);
+  }, [curPage, PostInfo, postStatus]);
 
   return (
     <>
@@ -111,7 +118,7 @@ const UserMypageDelivery: FC = () => {
           component="main"
           sx={{
             flexGrow: 1,
-            height: "100vh",
+            // height: "100vh",
             overflow: "auto",
             mt: 0,
           }}
@@ -236,6 +243,8 @@ const UserMypageDelivery: FC = () => {
                             <PostInfo
                               donationApplyId={data.donationApplyId}
                               memberId={data.memberId}
+                              getStatus={getStatus}
+                              postStatus={postStatus}
                             />
                           ) : (
                             <Typography>등록 완료</Typography>
