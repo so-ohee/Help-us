@@ -17,6 +17,8 @@ import {
 } from "@mui/material";
 import { tableCellClasses } from "@mui/material/TableCell";
 import { FC, useState, useEffect } from "react";
+import CheckVolunteer from "@/components/CheckVolunteer";
+import Pagination from "@/components/Pagination";
 
 // api
 import { getInquiryApplyList, endInquiry } from "function/axios";
@@ -63,64 +65,32 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   height: 50,
 }));
 
-const IsFact = ({ fact }) => {
-  // const fact = props.fact;
-
-  if (fact === 0) {
-    return (
-      <>
-        <CustomButton sx={{ width: 40, height: 30, mr: 2 }}>참석</CustomButton>
-        <CustomButton2 sx={{ width: 40, height: 30 }}>불참</CustomButton2>
-      </>
-    );
-  } else if (fact === 1) {
-    return (
-      <>
-        <Typography>참석</Typography>
-      </>
-    );
-  } else if (fact === 2) {
-    return (
-      <>
-        <Typography>불참</Typography>
-      </>
-    );
-  }
-};
-
 const orgpageMyCheckVolunteer: FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [inquiryApplyList, setInquiryApplyList] = useState<any>(null);
 
   // pagination
-  const [curPage, setCurPage] = useState(0);
+  const [curPage, setCurPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const paginate = (pageNumber) => setCurPage(pageNumber);
 
-  // 봉사 참여 여부
-  const inquirySubmit = (id, s) => {
-    console.log(id, s);
-    const volunteerApplyId = id;
-    const status = s;
-    const token = localStorage.getItem("jwt");
-
-    endInquiry(token, volunteerApplyId, status)
-      .then((res) => {
-        console.log(res + "성공");
-      })
-      .catch((err) => console.log(err + "실패"));
+  const [userToken, setUserToken] = useState<any>("");
+  const [userId, setUserId] = useState<any>("");
+  const [volStatus, setVolStatus] = useState<boolean>(false);
+  const getData = (volStatus) => {
+    setVolStatus(volStatus);
   };
 
   useEffect(() => {
-    
+    setUserToken(localStorage.getItem("jwt"));
+    setUserId(localStorage.getItem("id"));
     getInquiryApplyList(localStorage.getItem("id")).then((res) => {
       console.log(res.data.listApply.volunteerApplyId);
       setInquiryApplyList(res.data.listApply);
       setTotalPages(res.data.totalPage);
-      // console.log("data는", reviewList);
       setLoading(true);
     });
-  }, [curPage]);
+  }, [curPage, volStatus]);
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -130,7 +100,7 @@ const orgpageMyCheckVolunteer: FC = () => {
         component="main"
         sx={{
           flexGrow: 1,
-          height: "100vh",
+          // height: "100vh",
           overflow: "auto",
           mt: 0,
         }}
@@ -159,34 +129,44 @@ const orgpageMyCheckVolunteer: FC = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {inquiryApplyList && inquiryApplyList.map((data) => (
-                  <StyledTableRow key={data.volunteerApplyId}>
-                    <StyledTableCell align="center">
-                      {data.volunteerApplyId}
-                    </StyledTableCell>
-                    <StyledTableCell align="center" sx={{ width: 400 }}>
-                      {data.title}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {data.volDate}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {data.name}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      <IsFact fact={data.status}/>
-                      {/* <CustomButton sx={{ width: 40, height: 30, mr: 2 }}>
-                        참석
-                      </CustomButton>
-                      <CustomButton2 sx={{ width: 40, height: 30 }}>
-                        불참
-                      </CustomButton2> */}
-                    </StyledTableCell>
-                  </StyledTableRow>
-                ))}
+                {inquiryApplyList &&
+                  inquiryApplyList.map((data) => (
+                    <StyledTableRow key={data.volunteerApplyId}>
+                      <StyledTableCell align="center">
+                        {data.volunteerApplyId}
+                      </StyledTableCell>
+                      <StyledTableCell align="center" sx={{ width: 400 }}>
+                        {data.title}
+                      </StyledTableCell>
+                      <StyledTableCell align="center">
+                        {data.volDate}
+                      </StyledTableCell>
+                      <StyledTableCell align="center">
+                        {data.name}
+                      </StyledTableCell>
+                      <StyledTableCell align="center">
+                        <CheckVolunteer
+                          userId={userId}
+                          fact={data.status}
+                          id={data.volunteerApplyId}
+                          token={userToken}
+                          getData={getData}
+                          volStatus={volStatus}
+                        />
+                        {/* <IsFact fact={data.status} /> */}
+                      </StyledTableCell>
+                    </StyledTableRow>
+                  ))}
               </TableBody>
             </Table>
           </TableContainer>
+          <Stack alignItems="center" sx={{ mb: 2, mt: 2 }}>
+            <Pagination
+              curPage={curPage}
+              paginate={paginate}
+              totalPage={totalPages}
+            />
+          </Stack>
         </Container>
       </Box>
     </Box>
