@@ -71,7 +71,7 @@ const CustomButton2 = styled(Button)({
   fontSize: 12,
 });
 
-const Comment: FC<CommentData> = ({ comment }) => {
+const Comment: FC<CommentData> = ({ comment, id, token }) => {
   const [inputStatus, setInputStatus] = useState<boolean>(false);
 
   const onClickInputStatus = () => {
@@ -79,10 +79,11 @@ const Comment: FC<CommentData> = ({ comment }) => {
   };
 
   //댓글 삭제
-  // const removeComment = (id) => {
-  //   volunteerCommentDelete(comment.id)
-  //     .then()
-  // }
+  const removeComment = () => {
+    volunteerCommentDelete(id, token)
+      .then((res) => console.log("성공" + res ))
+      .catch((err) => console.log("실패" + err))
+  }
   // console.log(comment)
   
   return (
@@ -120,11 +121,14 @@ const Comment: FC<CommentData> = ({ comment }) => {
                       {comment.createDate}
                   </Typography>
                 ) : (null)}
+                {/* id랑  memberId랑 같으면 삭제 버튼 활성화*/}
                 <Button
+                  onClick={removeComment}
                   variant="contained"
                   color="error"
                   size="small"
                   sx={{ width: 10, mr: 5, ml: 2 }}
+                 
                 >
                   삭제
                 </Button>
@@ -175,7 +179,7 @@ const Comment: FC<CommentData> = ({ comment }) => {
                   color="error"
                   size="small"
                   sx={{ width: 10, mr: 5, ml: 2 }}
-                  // onClick={()=> removeComment(comment.id)}
+                  onClick={removeComment}
                 >
                   삭제
                 </Button>
