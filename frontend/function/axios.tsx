@@ -11,7 +11,6 @@ import { id } from "date-fns/locale";
 // 8000: 로그인 'http://k6c106.p.ssafy.io:8000'
 
 // ----------------------- 9080 ------------------------------
-
 // 메인 페이지 - 물품 기부 목록 최근 6개
 export const getDonationMain = async () => {
   return await axios({
@@ -49,7 +48,11 @@ export const createReview = async (id, token, confirm, files) => {
   files?.map((file) => newForm.append("files", file));
   return await axios({
     method: "POST",
+<<<<<<< HEAD
     url: "/9080/d.confirm",
+=======
+    url : '/8000/d.confirm',
+>>>>>>> feature/createAPI
     headers: {
       "Content-Type": "multipart/form-data",
       Authorization: token,
@@ -194,11 +197,25 @@ export const createDonation = async (token, donation, files) => {
 };
 
 //재능 기부 글 작성
+<<<<<<< HEAD
 export const createTalent = async (id, token, params) => {
   return await axios({
+=======
+export const createTalent = async (id, token, talentDonationReqDto, files) => {
+  const newForm = new FormData();
+
+  newForm.append(
+    "talentDonationReqDto",
+    new Blob([JSON.stringify(talentDonationReqDto)], { type: "application/json" })
+  );
+
+  files?.map((file) => newForm.append("files", file));
+  return await axios ({
+>>>>>>> feature/createAPI
     method: "POST",
     url: "/8000/talentDonation",
     headers: {
+<<<<<<< HEAD
       memberId: id,
       role: "USER",
     },
@@ -218,21 +235,50 @@ export const applyDonationUser = async (id, token, data) => {
     data: data,
   });
 };
+=======
+      "Content-Type": "multipart/form-data",
+      Authorization: token,
+    },
+    data : newForm,
+  })
+}
+>>>>>>> feature/createAPI
+
+// 재능 기부 댓글 작성
+
 
 // ----------------------- 9081 ------------------------------
 
 // 봉사 글 작성
-export const createVolunteer = async (id, token, params) => {
+export const createVolunteer = async (id, token, volunteerReqDto, files) => {
+  const newForm = new FormData();
+
+  newForm.append(
+    "volunteerReqDto",
+    new Blob([JSON.stringify(volunteerReqDto)], { type: "application/json" })
+  );
+
+  files?.map((file) => newForm.append("files", file));
+  
   return await axios({
     method: "POST",
     url: "/8000/volunteer",
     headers: {
+<<<<<<< HEAD
       memberId: id,
       role: "ORG",
     },
     data: params,
   });
 };
+=======
+      "Content-Type": "multipart/form-data",
+      Authorization: token,
+    },
+    data: newForm
+  })
+}
+>>>>>>> feature/createAPI
 
 // 봉사 글 상세 조회
 export const volunteerDetail = async (id) => {
@@ -382,6 +428,25 @@ export const userDetail = async (id) => {
 };
 
 // 고객센터 등록
+export const createCs = async (id, token, desk, files ) => {
+  const newForm = new FormData();
+
+  newForm.append(
+    "desk",
+    new Blob([JSON.stringify(desk)], { type: "application/json" })
+  );
+
+  files?.map((file) => newForm.append("files", file));
+  return await axios({
+    method: "POST",
+    url: "/8000/desk",
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Authorization: token,
+    },
+    data: newForm
+  })
+}
 // 고객센터 수정
 // 고객센터 댓글 등록
 // 고객센터 댓글 삭제

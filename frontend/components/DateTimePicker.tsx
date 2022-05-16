@@ -8,20 +8,20 @@ import dayjs from 'dayjs';
 const dateTimePicker = ({startValue, getData}) => {
   // const [value, setValue] = useState<Date | null>(null);
   const [value, setValue] = useState<Date | null>(
-    null
+    new Date()
   );
 
   
   return(
     <div>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <DateTimePicker
-          label="시작 시간&#38;날짜 선택"
-          value={value}
-          mask={"____-__-__ __:__"}
-          onChange={(newValue) => {setValue(newValue)}}
-          renderInput={(params) => <TextField {...params} />}
-        />
+        <DateTimePicker
+            label="시작 시간&#38;날짜 선택"
+            value={value}
+            mask={"____-__-__ __:__"}
+            onChange={(newValue) => {setValue(newValue)}}
+            renderInput={(params) => <TextField {...params} />}
+          />
       </LocalizationProvider>
     </div>
   )
