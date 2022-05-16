@@ -79,7 +79,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 const UserMypageDelivery: FC = () => {
   // pagination
-  const [curPage, setCurPage] = useState(0);
+  const [curPage, setCurPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const paginate = (pageNumber) => setCurPage(pageNumber);
 
@@ -90,13 +90,12 @@ const UserMypageDelivery: FC = () => {
 
   const [applyList, setApplyList] = useState<any>("");
 
+  useEffect(() => {}, []);
   useEffect(() => {
-  }, []);
-  useEffect(() => {
-    const token = localStorage.getItem("jwt")
+    const token = localStorage.getItem("jwt");
     const id = localStorage.getItem("id");
     console.log(token);
-    getApplyList(id, params,token).then((res) => {
+    getApplyList(id, params, token).then((res) => {
       setApplyList(res.data.apply);
       setTotalPages(res.data.totalPage);
     });
