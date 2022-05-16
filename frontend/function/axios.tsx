@@ -128,18 +128,6 @@ export const getDeliveryList = async (id, params) => {
   });
 };
 
-// 마이페이지(개인) - 배송중 -> 배송완료 처리
-export const endDelivery = async (token, donationApplyId, id) => {
-  return await axios({
-    method: "PUT",
-    url: `/8000/d.apply/${donationApplyId}/${id}`,
-    headers: {
-      Authorization: token,
-      memberId: id,
-    },
-  });
-};
-
 // 마이페이지(기관) - 기관 물품기부 현황 조회
 export const getOrgDonationList = async (id, params) => {
   return await axios({
@@ -194,19 +182,6 @@ export const createTalent = async (id, token, params) => {
   });
 };
 
-// 물건 기부 신청 (개인)
-export const applyDonationUser = async (id, token, data) => {
-  return await axios({
-    method: "POST",
-    url: "/8000/d.apply",
-    headers: {
-      Authorization: token,
-      memberId: id,
-    },
-    data: data,
-  });
-};
-
 // ----------------------- 9081 ------------------------------
 
 // 봉사 글 작성
@@ -229,7 +204,14 @@ export const volunteerDetail = async (id) => {
     url: `/9081/volunteer/${id}`,
   });
 };
-
+// 마이페이지 유저가 완료한 봉사 목록
+export const getMyvolunteerList = async (id,params) => {
+  return await axios({
+    method: "GET",
+    url: `/8000/api/volunteer/doVolunteer/${id}`,
+    params: params,
+  });
+};
 // 봉사 상세 페이지 댓글 작성
 export const volunteerComment = async (id, params) => {
   return await axios({
@@ -519,6 +501,7 @@ export const userEdit = async (token, id, intro, file) => {
     // console.log('파일 넣음')
   }
   // console.log(file)
+ 
 
   return await axios({
     method: "PUT",
@@ -563,14 +546,6 @@ export const searchCerti = async (num) => {
   return await axios({
     method: "GET",
     url: `/8000/api/certi/search/${num}`,
-  });
-};
-
-// 내가 기부한 전체 목록
-export const getDonatonAll = async (id) => {
-  return await axios({
-    method: "GET",
-    url: `/8000/api/d.apply/all/${id}`,
   });
 };
 
