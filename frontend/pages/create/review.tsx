@@ -9,6 +9,7 @@ import Logo from "../../public/images/logo4.png";
 import { createReview } from "../../function/axios";
 import { donationDetail } from "../../function/axios";
 import { useRouter } from "next/router";
+import Router from "next/router";
 
 
 const CustomButton = styled(Button)({
@@ -248,7 +249,7 @@ const Review: FC = () => {
     createReview(id, token, confirm, imageList)
       .then((res) => {
         console.log(res + "성공")
-        // Router.push("/review");
+        Router.push("/review");
       })
       .catch((err) => console.log(err + "실패"))
   };

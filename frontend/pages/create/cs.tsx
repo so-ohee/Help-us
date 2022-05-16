@@ -5,7 +5,7 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { ThemeProvider, createTheme, styled } from "@mui/material/styles";
 import Logo from "../../public/images/logo4.png";
 import {createCs} from "../../function/axios";
-
+import Router from "next/router";
 
 const CustomButton = styled(Button)({
   backgroundColor: "#5B321E",
@@ -244,7 +244,7 @@ const Cs: FC = () => {
     createCs(id, token, desk, imageList)
       .then((res) => {
         console.log(res + "성공");
-        // Router.push("/cs");
+        Router.push("/cs");
       })
       .catch((err) => console.log(err + "실패"))
 

@@ -25,6 +25,7 @@ import Postcode from "@actbase/react-daum-postcode";
 
 // api
 import {createVolunteer} from "../../function/axios"
+import Router from "next/router";
 
 const CustomButton = styled(Button)({
   backgroundColor: "#5B321E",
@@ -347,7 +348,7 @@ const Volunteer: FC = () => {
     createVolunteer(id, token, volunteerReqDto, imageList)
     .then((res) => {
       console.log(res + "성공")
-      // Router.push("/volunteer");
+      Router.push("/volunteer");
     })
     .catch((err) => console.log(err + "실패"))
   }
