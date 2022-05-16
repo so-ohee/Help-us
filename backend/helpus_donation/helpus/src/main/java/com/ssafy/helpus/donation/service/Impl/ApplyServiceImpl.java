@@ -1,5 +1,6 @@
 package com.ssafy.helpus.donation.service.Impl;
 
+import com.ssafy.helpus.donation.dto.Apply.ApplyAllListResDto;
 import com.ssafy.helpus.donation.dto.Apply.ApplyListResDto;
 import com.ssafy.helpus.donation.dto.Apply.ApplyReqDto;
 import com.ssafy.helpus.donation.dto.Apply.WaybillReqDto;
@@ -124,13 +125,45 @@ public class ApplyServiceImpl implements ApplyService {
     public Map<String, Object> userApplyList(Long memberId, String type, int page) {
         log.info("ApplyService userApplyList call");
 
-        Page<DonationApply> applies;
-        if(type.equals("tracking"))
-               applies = applyRepository.findByMemberIdAndStatusNot(memberId, ApplyStatus.배송완료, PageRequest.of(page,10, Sort.by("status").ascending()));
-        else
-            applies = applyRepository.findByMemberIdAndStatus(memberId, ApplyStatus.배송완료, PageRequest.of(page, 10, Sort.by("donationApplyId").descending()));
+        if(type.equals("all")) {
+            return applyAllList(memberId);
+        } else {
+            Page<DonationApply> applies;
+            if (type.equals("tracking"))
+                applies = applyRepository.findByMemberIdAndStatusNot(memberId, ApplyStatus.배송완료, PageRequest.of(page, 10, Sort.by("status").ascending()));
+            else
+                applies = applyRepository.findByMemberIdAndStatus(memberId, ApplyStatus.배송완료, PageRequest.of(page, 10, Sort.by("donationApplyId").descending()));
+            return makeList(applies, "user");
+        }
+    }
 
-        return makeList(applies, "user");
+    @Override
+    public Map<String, Object> applyAllList(Long memberId){
+        log.info("ApplyService applyAllList call");
+
+        List<DonationApply> applies = applyRepository.findByMemberIdAndStatusOrderByDonationApplyIdDesc(memberId, ApplyStatus.배송완료);
+
+        Map<String, Object> resultMap = new HashMap<>();
+
+        if(applies.isEmpty()) {
+            resultMap.put("message", Message.APPLY_NOT_FOUND);
+            return resultMap;
+        }
+
+        List<ApplyAllListResDto> list = new ArrayList<>();
+        for(DonationApply apply : applies) {
+            ApplyAllListResDto applyDto = ApplyAllListResDto.builder()
+                    .orgName(memberService.getMemberName(apply.getDonation().getMemberId()))
+                    .name(memberService.getMemberName(memberId))
+                    .productName(apply.getDonationProduct().getProductName())
+                    .count(apply.getCount())
+                    .donationDate(apply.getDonationDate()).build();
+            list.add(applyDto);
+        }
+
+        resultMap.put("apply", list);
+        resultMap.put("message", Message.APPLY_FIND_SUCCESS);
+        return resultMap;
     }
 
     @Override
