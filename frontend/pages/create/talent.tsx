@@ -248,7 +248,7 @@ const Talent: FC = () => {
       <Grid container justifyContent="center" alignItems="center">
         <Stack sx={{ minWidth: 1200 }}>
           <Box sx={{ display: 'flex', justifyContent: 'flex-end'}}>
-            <CustomButton variant="contained" href="/share">
+            <CustomButton variant="contained" onClick={() => history.back()}>
               목록으로
             </CustomButton>
           </Box>
