@@ -160,7 +160,7 @@ const UserList = () => {
 
     // 이름 클릭
     const onClickName = (e) => {
-        console.log(e)
+        // console.log(e)
         if (e.role === 'USER'){
             // console.log('user')
             window.open(`/userpage/${e.memberId}`, '_blank')
