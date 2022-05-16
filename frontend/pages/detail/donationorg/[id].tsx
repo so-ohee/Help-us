@@ -38,6 +38,7 @@ import InsertLinkIcon from "@mui/icons-material/InsertLink";
 import testImage from "../../../public/images/testImage.jpg";
 
 import CustomCarousel from "@/components/Carousel";
+import DonationApply from "@/components/DonationApply";
 
 import { useRouter } from "next/router";
 // api
@@ -121,7 +122,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 const DonationOrgDetail: FC = () => {
   const router = useRouter();
 
-  // console.log("라우터 쿼리는", router.query.id);
+  const routerId = useRouter().query.id;
 
   const [donationDetails, setDonationDetails] = useState<any>("");
 
@@ -131,9 +132,8 @@ const DonationOrgDetail: FC = () => {
 
   const [detailLoading, setDetailLoading] = useState<boolean>(false);
 
-  // const accessToken = localStorage.getItem("jwt");
-  // console.log(accessToken);
-
+  const [userId, setUserId] = useState<any>("");
+  const [token, setToken] = useState<any>("");
   const params = {
     donationId: 20,
     donationProductId: 19,
@@ -141,6 +141,8 @@ const DonationOrgDetail: FC = () => {
   };
 
   useEffect(() => {
+    setUserId(localStorage.getItem("id"));
+    setToken(localStorage.getItem("jwt"));
     if (router.isReady) {
       donationDetail(router.query.id).then((res) => {
         console.log(res);
@@ -637,24 +639,13 @@ const DonationOrgDetail: FC = () => {
                         </Tooltip>
                       </StyledTableCell>
                       <StyledTableCell align="center">
-                        <FormGroup row>
-                          <TextField
-                            // type="number"
-                            size="small"
-                            sx={{ width: 60 }}
-                            style={{ backgroundColor: "#ffffff" }}
-                          />
-                          <CustomButton3
-                            style={{
-                              borderTopRightRadius: 5,
-                              borderBottomRightRadius: 5,
-                              borderTopLeftRadius: 0,
-                              borderBottomLeftRadius: 0,
-                            }}
-                          >
-                            신청
-                          </CustomButton3>
-                        </FormGroup>
+                        <DonationApply
+                          donation={donationDetails}
+                          pId={data.productId}
+                          router={routerId}
+                          id={userId}
+                          token={token}
+                        />
                       </StyledTableCell>
                     </StyledTableRow>
                   ))}

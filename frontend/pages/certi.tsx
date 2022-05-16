@@ -17,7 +17,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import CircularProgress from '@mui/material/CircularProgress';
 import html2canvas from 'html2canvas'
 import { styled } from "@mui/material/styles";
-import { tokenCheck, makeCerti } from "../function/axios";
+import { tokenCheck, makeCerti, getDonatonAll } from "../function/axios";
 
 
 const UpdateButton = styled(Button)({
@@ -54,41 +54,58 @@ const Certi: FC = () => {
     .then(res => {
       if (res){
         // console.log(res)
+        if (String(res.data.memberId) !== localStorage.getItem('id')){
+          location.href = '/'
+        }
         setName(res.data.name)
         setEmail(res.data.email)
         setPhone(res.data.tel)
+        // console.log(res)
       }
     })
 
-    const givenList =[
-      {
-        org: '싸피재단',
-        item: '라면',
-        cnt: 100,
-        day: '2022-05-09'
-      },
-      {
-        org: '싸피',
-        item: '휴지',
-        cnt: 10,
-        day: '2022-05-08'
-      },
-      {
-        org: '싸피재단123',
-        item: '컵라면',
-        cnt: 5,
-        day: '2022-05-07'
-      },
-      {
-        org: '싸피재단1234',
-        item: '생수 2L',
-        cnt: 1000,
-        day: '2022-05-06'
-      },
-    ]
-    setList(givenList)
-    const arr = Array.from({length: givenList.length}, (v, i) => i)
-    setFull(arr)
+    getDonatonAll(localStorage.getItem('id'))
+    .then(res => {
+      // console.log(res.data.apply)
+      if (res.data.apply){
+        setList(res.data.apply)
+        const arr = Array.from({length: res.data.apply.length}, (v, i) => i)
+        setFull(arr)
+      }else{
+        const arr = []
+        setFull(arr)
+      }
+
+
+    // const givenList =[
+    //   {
+    //     org: '싸피재단',
+    //     item: '라면',
+    //     cnt: 100,
+    //     day: '2022-05-09'
+    //   },
+    //   {
+    //     org: '싸피',
+    //     item: '휴지',
+    //     cnt: 10,
+    //     day: '2022-05-08'
+    //   },
+    //   {
+    //     org: '싸피재단123',
+    //     item: '컵라면',
+    //     cnt: 5,
+    //     day: '2022-05-07'
+    //   },
+    //   {
+    //     org: '싸피재단1234',
+    //     item: '생수 2L',
+    //     cnt: 1000,
+    //     day: '2022-05-06'
+    //   },
+    // ]
+    // setList(givenList)
+
+  })
   },[])
 
   // 체크박스 선택시
@@ -248,7 +265,7 @@ const Certi: FC = () => {
                 <TableCell sx={{ width: 200 }}>기관명</TableCell>
                 <TableCell sx={{ width: 170 }}>물품</TableCell>
                 <TableCell sx={{ width: 80 }}>수량</TableCell>
-                <TableCell sx={{ width: 120 }}>발송일</TableCell>
+                <TableCell sx={{ width: 120 }}>날짜</TableCell>
               </TableRow>
             </TableHead>
           <TableBody>
@@ -266,10 +283,10 @@ const Certi: FC = () => {
                       />
                     </TableCell>
                     <TableCell align="center" >{idx+1}</TableCell>
-                    <TableCell>{e.org}</TableCell>
-                    <TableCell>{e.item}</TableCell>
-                    <TableCell>{e.cnt}</TableCell>
-                    <TableCell>{e.day}</TableCell>
+                    <TableCell>{e.orgName}</TableCell>
+                    <TableCell>{e.productName}</TableCell>
+                    <TableCell>{e.count}</TableCell>
+                    <TableCell>{e.donationDate}</TableCell>
                   </TableRow>
                 )
               }
@@ -333,10 +350,10 @@ const Certi: FC = () => {
                           return (
                             <TableRow key={idx} >
                               <TableCell align="center" style={{padding:'12px'}}>{idx+1}</TableCell>
-                              <TableCell style={{padding:'12px'}}>{list[e].org}</TableCell>
-                              <TableCell style={{padding:'12px'}}>{list[e].item}</TableCell>
-                              <TableCell style={{padding:'12px'}}>{list[e].cnt}</TableCell>
-                              <TableCell style={{padding:'12px'}}>{list[e].day}</TableCell>
+                              <TableCell style={{padding:'12px'}}>{list[e].orgName}</TableCell>
+                              <TableCell style={{padding:'12px'}}>{list[e].productName}</TableCell>
+                              <TableCell style={{padding:'12px'}}>{list[e].count}</TableCell>
+                              <TableCell style={{padding:'12px'}}>{list[e].donationDate}</TableCell>
                             </TableRow>
                           )
                         }

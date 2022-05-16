@@ -24,6 +24,8 @@ interface IVolunteer {
 }
 
 const VolunteerCard: FC<IVolunteer> = ({ volunteer }) => {
+  const volDate = "" + volunteer.volDate;
+
   return (
     <div>
       <Box
@@ -111,7 +113,7 @@ const VolunteerCard: FC<IVolunteer> = ({ volunteer }) => {
                 >
                   <CalendarMonthIcon sx={{ mr: 2 }} />
                   <Typography align="left" sx={{ fontSize: 14, width: 200 }}>
-                    {volunteer.volDate.substr(0, 10)}
+                    {volDate.substr(0, 10)}
                   </Typography>
                 </Grid>
                 <Grid
