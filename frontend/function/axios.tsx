@@ -48,7 +48,7 @@ export const createReview = async (id, token, confirm, files) => {
   files?.map((file) => newForm.append("files", file));
   return await axios({
     method: "POST",
-    url : '/8000/d.confirm',
+    url: "/8000/d.confirm",
     headers: {
       "Content-Type": "multipart/form-data",
       Authorization: token,
@@ -199,11 +199,13 @@ export const createTalent = async (id, token, talentDonationReqDto, files) => {
 
   newForm.append(
     "talentDonationReqDto",
-    new Blob([JSON.stringify(talentDonationReqDto)], { type: "application/json" })
+    new Blob([JSON.stringify(talentDonationReqDto)], {
+      type: "application/json",
+    })
   );
 
   files?.map((file) => newForm.append("files", file));
-  return await axios ({
+  return await axios({
     method: "POST",
     url: "/8000/talentDonation",
     headers: {
@@ -227,8 +229,18 @@ export const applyDonationUser = async (id, token, data) => {
   });
 };
 
-// 재능 기부 댓글 작성
+// 기부글 마감 (기관)
+export const finishDonation = async (dId, mId, token) => {
+  return await axios({
+    method: "DELETE",
+    url: `/8000/donation/${dId}/${mId}`,
+    headers: {
+      Authorization: token,
+    },
+  });
+};
 
+// 재능 기부 댓글 작성
 
 // ----------------------- 9081 ------------------------------
 
@@ -249,7 +261,7 @@ export const createVolunteer = async (id, token, volunteerReqDto, files) => {
   );
 
   files?.map((file) => newForm.append("files", file));
-  
+
   return await axios({
     method: "POST",
     url: "/8000/volunteer",
@@ -257,9 +269,9 @@ export const createVolunteer = async (id, token, volunteerReqDto, files) => {
       "Content-Type": "multipart/form-data",
       Authorization: token,
     },
-    data: newForm
-  })
-}
+    data: newForm,
+  });
+};
 
 // 봉사 글 상세 조회
 export const volunteerDetail = async (id) => {
@@ -269,7 +281,7 @@ export const volunteerDetail = async (id) => {
   });
 };
 // 마이페이지 유저가 완료한 봉사 목록
-export const getMyvolunteerList = async (id,params) => {
+export const getMyvolunteerList = async (id, params) => {
   return await axios({
     method: "GET",
     url: `/8000/api/volunteer/doVolunteer/${id}`,
@@ -335,7 +347,7 @@ export const getMyTalentDonationList = async (params) => {
   return await axios({
     method: "GET",
     url: `/8000/api/talentDonation/mylist/${params.memberId}`,
-    params: params.page
+    params: params.page,
   });
 };
 
@@ -434,7 +446,7 @@ export const userDetail = async (id) => {
 };
 
 // 고객센터 등록
-export const createCs = async (id, token, desk, files ) => {
+export const createCs = async (id, token, desk, files) => {
   const newForm = new FormData();
 
   newForm.append(
@@ -450,9 +462,9 @@ export const createCs = async (id, token, desk, files ) => {
       "Content-Type": "multipart/form-data",
       Authorization: token,
     },
-    data: newForm
-  })
-}
+    data: newForm,
+  });
+};
 // 고객센터 수정
 // 고객센터 댓글 등록
 // 고객센터 댓글 삭제
@@ -602,7 +614,6 @@ export const userEdit = async (token, id, intro, file) => {
     // console.log('파일 넣음')
   }
   // console.log(file)
- 
 
   return await axios({
     method: "PUT",

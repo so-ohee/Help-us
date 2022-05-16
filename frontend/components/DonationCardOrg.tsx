@@ -6,6 +6,9 @@ import defaultImage from "../public/images/defaultImage.png";
 import Chip from "@mui/material/Chip";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 
+// api
+import { finishDonation } from "../function/axios";
+
 const CustomButton = styled(Button)({
   backgroundColor: "#5B321E",
   color: "white",
@@ -18,9 +21,30 @@ const CustomButton = styled(Button)({
 
 interface IDonationCardOrg {
   item: any;
+  token: any;
+  id: any;
+  getStatus: any;
+  fStatus: boolean;
 }
 
-const DonationCardOrg: FC<IDonationCardOrg> = ({ item }) => {
+const DonationCardOrg: FC<IDonationCardOrg> = ({
+  item,
+  token,
+  id,
+  getStatus,
+  fStatus,
+}) => {
+  const onClickFinish = () => {
+    finishDonation(item.donationId, id, token)
+      .then((res) => {
+        console.log("기부 마감 성공");
+        getStatus(!fStatus);
+      })
+      .catch((err) => console.error(err));
+  };
+
+  console.log(item);
+
   return (
     <div>
       <Box
@@ -129,158 +153,6 @@ const DonationCardOrg: FC<IDonationCardOrg> = ({ item }) => {
                     </Stack>
                   </Grid>
                 ))}
-                {/* <Grid sx={{ mx: 1.1, mt: 1 }}>
-                  <Chip
-                    label="두부"
-                    size="small"
-                    sx={{
-                      backgroundColor: "#FCE2A6",
-                      width: 65,
-                      fontSize: 11,
-                    }}
-                  />
-                  <Stack
-                    sx={{
-                      width: 65,
-                      height: 10,
-                    }}
-                    direction="row"
-                    alignItems="center"
-                  >
-                    <Box
-                      sx={{
-                        borderTopLeftRadius: 5,
-                        borderBottomLeftRadius: 5,
-                        width: "40%",
-                        height: 5,
-                        bgcolor: "#CDAD78",
-                      }}
-                    ></Box>
-                    <Box
-                      sx={{
-                        borderTopRightRadius: 5,
-                        borderBottomRightRadius: 5,
-                        width: "60%",
-                        height: 5,
-                        bgcolor: "#dbd5ca",
-                      }}
-                    ></Box>
-                  </Stack>
-                </Grid>
-                <Grid sx={{ mx: 1.1, mt: 1 }}>
-                  <Chip
-                    label="두부"
-                    size="small"
-                    sx={{
-                      backgroundColor: "#FCE2A6",
-                      width: 65,
-                      fontSize: 11,
-                    }}
-                  />
-                  <Stack
-                    sx={{
-                      width: 65,
-                      height: 10,
-                    }}
-                    direction="row"
-                    alignItems="center"
-                  >
-                    <Box
-                      sx={{
-                        borderTopLeftRadius: 5,
-                        borderBottomLeftRadius: 5,
-                        width: "40%",
-                        height: 5,
-                        bgcolor: "#CDAD78",
-                      }}
-                    ></Box>
-                    <Box
-                      sx={{
-                        borderTopRightRadius: 5,
-                        borderBottomRightRadius: 5,
-                        width: "60%",
-                        height: 5,
-                        bgcolor: "#dbd5ca",
-                      }}
-                    ></Box>
-                  </Stack>
-                </Grid>
-                <Grid sx={{ mx: 1.1, mt: 1 }}>
-                  <Chip
-                    label="두부"
-                    size="small"
-                    sx={{
-                      backgroundColor: "#FCE2A6",
-                      width: 65,
-                      fontSize: 11,
-                    }}
-                  />
-                  <Stack
-                    sx={{
-                      width: 65,
-                      height: 10,
-                    }}
-                    direction="row"
-                    alignItems="center"
-                  >
-                    <Box
-                      sx={{
-                        borderTopLeftRadius: 5,
-                        borderBottomLeftRadius: 5,
-                        width: "40%",
-                        height: 5,
-                        bgcolor: "#CDAD78",
-                      }}
-                    ></Box>
-                    <Box
-                      sx={{
-                        borderTopRightRadius: 5,
-                        borderBottomRightRadius: 5,
-                        width: "60%",
-                        height: 5,
-                        bgcolor: "#dbd5ca",
-                      }}
-                    ></Box>
-                  </Stack>
-                </Grid>
-                <Grid sx={{ mx: 1.1, mt: 1 }}>
-                  <Chip
-                    label="두부"
-                    size="small"
-                    sx={{
-                      backgroundColor: "#FCE2A6",
-                      width: 65,
-                      fontSize: 11,
-                    }}
-                  />
-                  <Stack
-                    sx={{
-                      width: 65,
-                      height: 10,
-                    }}
-                    direction="row"
-                    alignItems="center"
-                  >
-                    <Box
-                      sx={{
-                        borderTopLeftRadius: 5,
-                        borderBottomLeftRadius: 5,
-                        width: "40%",
-                        height: 5,
-                        bgcolor: "#CDAD78",
-                      }}
-                    ></Box>
-                    <Box
-                      sx={{
-                        borderTopRightRadius: 5,
-                        borderBottomRightRadius: 5,
-                        width: "60%",
-                        height: 5,
-                        bgcolor: "#dbd5ca",
-                      }}
-                    ></Box>
-                  </Stack>
-                </Grid> */}
               </Grid>
               {/* 진행률 표시 바 */}
               <Stack
@@ -292,31 +164,54 @@ const DonationCardOrg: FC<IDonationCardOrg> = ({ item }) => {
                 direction="row"
                 alignItems="center"
               >
-                {/* <Box sx={{ width: 60 }}>
-                  <Typography align="center" sx={{ fontSize: 13 }}>
-                    달성률
-                  </Typography>
-                </Box> */}
-                <Box
-                  sx={{
-                    borderTopLeftRadius: 5,
-                    borderBottomLeftRadius: 5,
-                    width: "40%",
-                    height: 15,
-                    bgcolor: "#CDAD78",
-                  }}
-                ></Box>
-                <Box
-                  sx={{
-                    borderTopRightRadius: 5,
-                    borderBottomRightRadius: 5,
-                    width: "60%",
-                    height: 15,
-                    bgcolor: "#dbd5ca",
-                  }}
-                ></Box>
+                {item.percent === 100 ? (
+                  <Box
+                    sx={{
+                      borderTopLeftRadius: 5,
+                      borderBottomLeftRadius: 5,
+                      borderTopRightRadius: 5,
+                      borderBottomRightRadius: 5,
+                      width: `${item?.percent}%`,
+                      height: 15,
+                      bgcolor: "#CDAD78",
+                    }}
+                  ></Box>
+                ) : (
+                  <Box
+                    sx={{
+                      borderTopLeftRadius: 5,
+                      borderBottomLeftRadius: 5,
+                      width: `${item?.percent}%`,
+                      height: 15,
+                      bgcolor: "#CDAD78",
+                    }}
+                  ></Box>
+                )}
+                {item.percent === 0 ? (
+                  <Box
+                    sx={{
+                      borderTopRightRadius: 5,
+                      borderBottomRightRadius: 5,
+                      borderTopLeftRadius: 5,
+                      borderBottomLeftRadius: 5,
+                      width: `${100 - item?.percent}%`,
+                      height: 15,
+                      bgcolor: "#dbd5ca",
+                    }}
+                  ></Box>
+                ) : (
+                  <Box
+                    sx={{
+                      borderTopRightRadius: 5,
+                      borderBottomRightRadius: 5,
+                      width: `${100 - item?.percent}%`,
+                      height: 15,
+                      bgcolor: "#dbd5ca",
+                    }}
+                  ></Box>
+                )}
                 <Typography align="center" sx={{ ml: 1, fontSize: 14 }}>
-                  40%
+                  {item?.percent}%
                 </Typography>
               </Stack>
             </Box>
@@ -326,8 +221,13 @@ const DonationCardOrg: FC<IDonationCardOrg> = ({ item }) => {
               sx={{ mt: 1.5 }}
               alignItems="center"
             >
-              <Typography>자동 종료일: 2022-05-20</Typography>
-              <CustomButton variant="contained" size="small" sx={{ width: 30 }}>
+              <Typography>자동 종료일: {item.endDate}</Typography>
+              <CustomButton
+                onClick={onClickFinish}
+                variant="contained"
+                size="small"
+                sx={{ width: 30 }}
+              >
                 종료
               </CustomButton>
             </Stack>
