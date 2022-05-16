@@ -273,7 +273,7 @@ const VolunteerDetail: FC = () => {
                 모집 인원수 : {volunteerDetails?.people}명
               </Typography>
               <Typography variant="h6" fontWeight="bold" sx={{ ml: 5, mt: 1 }}>
-                장소 : 경기도 수원시 팔달구 중부대로 222번길 22 2-22
+                장소 : {volunteerDetails?.volAddress}
               </Typography>
               <Stack
                 sx={{
