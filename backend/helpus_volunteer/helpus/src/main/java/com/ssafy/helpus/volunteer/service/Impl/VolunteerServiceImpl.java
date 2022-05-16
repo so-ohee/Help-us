@@ -43,9 +43,6 @@ public class VolunteerServiceImpl implements VolunteerService{
             resultMap.put("message", "파일확장자 불량");
             return resultMap;
         }
-
-        System.out.println(volunteerReqDto.getTime());
-
         Volunteer volunteer = Volunteer.builder()
                 .memberId(memberId)
                 .title(volunteerReqDto.getTitle())

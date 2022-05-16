@@ -42,7 +42,7 @@ public class VolunteerController {
                 resultMap = volunteerService.registerVoluneer(volunteerReqDto, memberId, files, role);
         } catch (Exception e){
             log.error(e.getMessage());
-            resultMap.put("message", "실패");
+            resultMap.put("message", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return new ResponseEntity(resultMap, status);

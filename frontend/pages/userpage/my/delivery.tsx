@@ -79,25 +79,35 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 const UserMypageDelivery: FC = () => {
   // pagination
-  const [curPage, setCurPage] = useState(0);
+  const [curPage, setCurPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const paginate = (pageNumber) => setCurPage(pageNumber);
 
   const params = {
     page: curPage,
   };
-
   const [loading, setLoading] = useState<boolean>(true);
 
   const [applyList, setApplyList] = useState<any>("");
 
+  // 배송 입력 여부 상태
+  const [postStatus, setPostStatus] = useState<boolean>(false);
+
+  const getStatus = (postStatus) => {
+    setPostStatus(postStatus);
+  };
+
+  useEffect(() => {}, []);
   useEffect(() => {
+    const token = localStorage.getItem("jwt");
     const id = localStorage.getItem("id");
-    getApplyList(id, params).then((res) => {
+    console.log(token);
+    getApplyList(id, params, token).then((res) => {
       setApplyList(res.data.apply);
       setTotalPages(res.data.totalPage);
     });
-  }, [curPage]);
+    // console.log(process.env.NEXT_PUBLIC_POST_TRACKER_API_KEY);
+  }, [curPage, PostInfo, postStatus]);
 
   return (
     <>
@@ -108,7 +118,7 @@ const UserMypageDelivery: FC = () => {
           component="main"
           sx={{
             flexGrow: 1,
-            height: "100vh",
+            // height: "100vh",
             overflow: "auto",
             mt: 0,
           }}
@@ -153,7 +163,7 @@ const UserMypageDelivery: FC = () => {
                           {data.name}
                         </StyledTableCell>
                         <StyledTableCell align="center">
-                          <Link href={"/detail/donationorg/1"}>
+                          <Link href={`/detail/donationorg/${data.donationId}`}>
                             <Button>
                               <InsertLinkIcon
                                 sx={{
@@ -233,6 +243,8 @@ const UserMypageDelivery: FC = () => {
                             <PostInfo
                               donationApplyId={data.donationApplyId}
                               memberId={data.memberId}
+                              getStatus={getStatus}
+                              postStatus={postStatus}
                             />
                           ) : (
                             <Typography>등록 완료</Typography>
