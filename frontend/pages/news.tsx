@@ -99,16 +99,6 @@ const NewsMain: FC = () => {
     <ThemeProvider theme={theme}>
       <Grid container justifyContent="center" alignItems="center">
         <Stack>
-          {/* <Box textAlign="center">
-            <div style={{width:'100%'}}>
-            <Image
-              src={volunteer1}
-              alt="volunteer first"
-              // width={1200}
-              // height={200}
-            />
-            </div>
-          </Box> */}
           <Box sx={{ fontWeight: "bold", my: 5 }}>
             <Typography variant="h4" textAlign="center">
               기부 News
@@ -138,13 +128,13 @@ const NewsMain: FC = () => {
                         key={data.title}
                         onClick={() => window.open(`${data.link}`)}
                       >
-                        <StyledTableCell align="center" sx={{ width: '14%'}}>
+                        <StyledTableCell sx={{ width: '14%'}}>
                           {data.title}
                         </StyledTableCell>
-                        <StyledTableCell align="center">
+                        <StyledTableCell>
                           {data.description}
                         </StyledTableCell>
-                        <StyledTableCell align="center" sx={{width: '10%'}}>
+                        <StyledTableCell sx={{width: '10%'}}>
                           {data.date}
                         </StyledTableCell>
                       </StyledTableRow>
