@@ -32,7 +32,7 @@ import BusinessIcon from "@mui/icons-material/Business";
 import CallIcon from "@mui/icons-material/Call";
 import MailIcon from "@mui/icons-material/Mail";
 
-import testImage from "../../../public/images/testImage.jpg";
+import defaultImage from "../../../public/images/defaultImage.png";
 import CustomCarousel from "../../../components/Carousel";
 import VolunteerDetailMap from "../../../components/VolunteerDetailMap";
 import Comment from "../../../components/Comment";
@@ -62,12 +62,13 @@ const CustomButton = styled(Button)({
 const VolunteerDetail: FC = () => {
   const router = useRouter();
   const [input, setInput] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false);
   const [volunteerDetails, setVolunteerDetails] = useState<any>(null);
   const [comment, setComment] = useState<string>("");
   const [parentCommentId, setParentComeentId] = useState("");
   const [commentList, setCommentList] = useState<any>([]);
-  const [userDetails, setUserDetails] = useState<any>(null);
+  const [userDetails, setUserDetails] = useState<any>("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const [loading2, setLoading2] = useState<boolean>(false);
   let userId = 0;
 
   useEffect(() => {
@@ -82,6 +83,7 @@ const VolunteerDetail: FC = () => {
         userDetail(userId).then((res) => {
           console.log(res);
           setUserDetails(res.data);
+          setLoading2(true);
         })
       });
     }
@@ -129,7 +131,7 @@ const VolunteerDetail: FC = () => {
 
   return (
     <>
-      {loading ? (
+      {loading && loading2 ? (
         <Box sx={{ display: "flex" }}>
           <CssBaseline />
           <Box
@@ -160,12 +162,22 @@ const VolunteerDetail: FC = () => {
                       marginTop: "6px",
                     }}
                   >
-                    <Image
-                      src={testImage}
-                      alt="orgImage"
-                      width="150px"
-                      height="150px"
-                    />
+                    {userDetails.profile === null ? (
+                  <Image
+                    src={defaultImage}
+                    alt="orgImage"
+                    width="300px"
+                    height="300px"
+                  />
+                ) : (
+                  <Image
+                    src={userDetails.profile}
+                    // src={defaultImage}
+                    alt="orgImage"
+                    width="300px"
+                    height="300px"
+                  />
+                )}
                   </div>
                 </Grid>
                 <Grid>
