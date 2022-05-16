@@ -277,16 +277,20 @@ export const volunteerComment = async (id, params) => {
 export const volunteerCommentList = async (id, params) => {
   return await axios({
     method: "GET",
-    url: `/9081/v.comment/${id}`,
+    url: `/8000/v.comment/${id}`,
     params: params,
   });
 };
 
 // 봉사 상세 페이지 댓글 삭제
-export const volunteerCommentDelete = async (id) => {
+export const volunteerCommentDelete = async (id, token) => {
   return await axios({
     method: "DELETE",
-    url: `/9081/v.comment/${id}`,
+    url: `/8000/v.comment/${id}`,
+    headers : {
+      memberId : id,
+      Authorization : token,
+    }
   });
 };
 
