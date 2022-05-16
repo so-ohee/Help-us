@@ -1,6 +1,6 @@
 import { FC } from "react";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { styled } from "@mui/material/styles";
 import {
   Container,
@@ -21,6 +21,9 @@ import DonationCardOrgFinish from "@/components/DonationCardOrgFinish";
 import ReviewCard from "@/components/ReviewCard";
 
 import TestImage from "../../public/images/testImage.jpg";
+import { useRouter } from "next/router";
+import { getUserInfo } from "function/axios";
+import defaultImage from "../../public/images/defaultImage.png";
 
 const UpdateButton = styled(Button)({
   backgroundColor: "#5B321E",
@@ -111,11 +114,32 @@ function a11yProps(index: number) {
 }
 
 const OrgPage: FC = () => {
+  const router = useRouter();
+
+  const [myInfo, setMyInfo] = useState<any>(null);
   const [value, setValue] = useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
+
+  useEffect(() => {
+    if (router.isReady) {
+      // console.log(router.query.pk)
+      getUserInfo(router.query.pk)
+      .then(res => {
+        // console.log(res)
+        setMyInfo(res.data)
+        if (res.data.role === 'ORG_WAIT' || res.data.role === 'ORG'){
+          // console.log('--')
+        }else{
+          // console.log('no')
+          location.href="/"
+        }
+      })
+      .catch(() => location.href="/")
+      }
+  }, [router.isReady]);
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -149,17 +173,94 @@ const OrgPage: FC = () => {
                   // height: "300px",
                 }}
               >
-                <Image
+                {/* <Image
                   src={TestImage}
                   alt="orgImage"
                   width="300px"
                   height="300px"
-                />
+                /> */}
+                {myInfo !== null ? 
+                (
+                  myInfo.profile === null ? (
+                    <Image
+                      src={defaultImage}
+                      alt="orgImage"
+                      width="300px"
+                      height="300px"
+                    />
+                  ) : (
+                    <Image
+                      src={myInfo.profile}
+                      alt="orgImage"
+                      width="300px"
+                      height="300px"
+                    />
+                  )
+                ) : null
+              }
               </div>
             </Grid>
-            <Grid item xs={9}>
+
+            { myInfo ? 
+            (
+              <>
+                <Grid item xs={9}>
               <Typography sx={{ mt: 0 }} variant="h4" fontWeight="bold">
-                수원시광교노인복지관
+                {myInfo.name}
+              </Typography>
+              <Grid
+                sx={{ mt: 2 }}
+                container
+                direction="row"
+                alignItems="center"
+              >
+                <BusinessIcon sx={{ mr: 2 }} />
+                <Typography align="center">
+                  {myInfo.address}
+                </Typography>
+              </Grid>
+              <Grid
+                sx={{ mt: 2 }}
+                container
+                direction="row"
+                alignItems="center"
+              >
+                <CallIcon sx={{ mr: 2 }} />
+                <Typography align="center">{myInfo.tel}</Typography>
+              </Grid>
+              <Grid
+                sx={{ mt: 2 }}
+                container
+                direction="row"
+                alignItems="center"
+              >
+                <MailIcon sx={{ mr: 2 }} />
+                <Typography align="center">{myInfo.email}</Typography>
+              </Grid>
+              <Box
+                sx={{
+                  bgcolor: "#f5e1be",
+                  borderRadius: 1.25,
+                  // height: "120px",
+                }}
+                minHeight="120px"
+              >
+                <Typography sx={{ p: 2, mt: 1 }}>
+                  {myInfo.info}
+                </Typography>
+              </Box>
+            </Grid>
+              
+              
+
+              
+              </>
+
+            ) : null
+            }
+            {/* <Grid item xs={9}>
+              <Typography sx={{ mt: 0 }} variant="h4" fontWeight="bold">
+                {/* {myInfo.address}
               </Typography>
               <Grid
                 sx={{ mt: 2 }}
@@ -207,7 +308,7 @@ const OrgPage: FC = () => {
                   표정도 없이 이런 말하는 그런 내가 잔인한가요
                 </Typography>
               </Box>
-            </Grid>
+            </Grid> */}
           </Grid>
           <Box sx={{ width: "100%", mt: 2 }}>
             <Box sx={{ bgcolor: "#FCF8F0", borderRadius: 1.25 }}>
