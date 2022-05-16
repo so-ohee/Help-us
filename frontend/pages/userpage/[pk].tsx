@@ -1,6 +1,6 @@
 import { FC } from "react";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 import {
   Container,
@@ -34,6 +34,10 @@ import MailIcon from "@mui/icons-material/Mail";
 
 import TestImage from "../../public/images/testImage.jpg";
 import goodImage from "../../public/images/good.jpg";
+
+import { useRouter } from "next/router";
+import { getUserInfo } from "function/axios";
+import userDefaultImage from "../../public/images/userDefaultImage.png"
 
 const useStyles = makeStyles((theme) => ({
   customHoverFocus: {
@@ -193,147 +197,191 @@ const dummyData = [
 ];
 
 const UserMypageOther: FC = () => {
+  const router = useRouter();
+
+  const [myInfo, setMyInfo] = useState<any>(null);
+
+
+  useEffect(() => {
+    if (router.isReady) {
+      // console.log(router.query.pk)
+      getUserInfo(router.query.pk)
+      .then(res => {
+        // console.log(res)
+        setMyInfo(res.data)
+        if (res.data.role === 'USER'){
+          // console.log('--')
+        }else{
+          // console.log('no')
+          location.href="/"
+        }
+      })
+      .catch(() => location.href="/")
+      }
+  }, [router.isReady]);
+
+
   return (
-    <Box sx={{ display: "flex" }}>
-      <CssBaseline />
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          // height: "100vh",
-          overflow: "auto",
-          mt: 0,
-        }}
-      >
-        <Container
-          maxWidth="lg"
+    <>
+    {
+      myInfo ?
+      (
+        <>
+        <Box sx={{ display: "flex" }}>
+        <CssBaseline />
+        <Box
+          component="main"
           sx={{
-            mt: 4,
-            mb: 3,
-            bgcolor: "#FCF8F0",
-            borderRadius: 1.25,
-            // height: "350px",
+            flexGrow: 1,
+            // height: "100vh",
+            overflow: "auto",
+            mt: 0,
           }}
         >
-          <Grid container spacing={2} minHeight="350px">
-            <Grid item xs={3}>
-              <div
-                style={{
-                  borderRadius: "5px",
-                  overflow: "hidden",
-                  marginTop: "6px",
-                }}
-              >
-                <Image
-                  src={goodImage}
-                  alt="orgImage"
-                  width="300px"
-                  height="300px"
-                />
-              </div>
+          <Container
+            maxWidth="lg"
+            sx={{
+              mt: 4,
+              mb: 3,
+              bgcolor: "#FCF8F0",
+              borderRadius: 1.25,
+              // height: "350px",
+            }}
+          >
+            <Grid container spacing={2} minHeight="350px">
+              <Grid item xs={3}>
+                <div
+                  style={{
+                    borderRadius: "5px",
+                    overflow: "hidden",
+                    marginTop: "6px",
+                  }}
+                >
+                  {/* <Image
+                    src={goodImage}
+                    alt="orgImage"
+                    width="300px"
+                    height="300px"
+                  /> */}
+                    {myInfo.profile === null ? (
+                      <Image
+                        src={userDefaultImage}
+                        alt="orgImage"
+                        width="300px"
+                        height="300px"
+                      />
+                    ) : (
+                      <Image
+                        src={myInfo.profile}
+                        alt="orgImage"
+                        width="300px"
+                        height="300px"
+                      />
+                    )}
+                </div>
+              </Grid>
+              <Grid item xs={9}>
+                <Typography sx={{ mt: 0 }} variant="h4" fontWeight="bold">
+                  {myInfo.name}
+                </Typography>
+                <Grid
+                  sx={{ mt: 2 }}
+                  container
+                  direction="row"
+                  alignItems="center"
+                >
+                  <MailIcon sx={{ mr: 2 }} />
+                  <Typography align="center">{myInfo.email}</Typography>
+                </Grid>
+                <Grid
+                  sx={{ mt: 2 }}
+                  container
+                  direction="row"
+                  alignItems="center"
+                >
+                  <Typography fontWeight="bold" align="center">
+                    기부 횟수 : 4
+                  </Typography>
+                </Grid>
+                <Grid
+                  sx={{ mt: 2 }}
+                  container
+                  direction="row"
+                  alignItems="center"
+                >
+                  <Typography fontWeight="bold" align="center">
+                    봉사 시간 : 8
+                  </Typography>
+                </Grid>
+                <Box
+                  sx={{
+                    bgcolor: "#f5e1be",
+                    borderRadius: 1.25,
+                    // height: "120px",
+                  }}
+                  minHeight="120px"
+                >
+                  <Typography sx={{ p: 2, mt: 1 }}>
+                    {myInfo.info}
+                  </Typography>
+                </Box>
+              </Grid>
             </Grid>
-            <Grid item xs={9}>
-              <Typography sx={{ mt: 0 }} variant="h4" fontWeight="bold">
-                이다예
-              </Typography>
-              <Grid
-                sx={{ mt: 2 }}
-                container
-                direction="row"
-                alignItems="center"
-              >
-                <MailIcon sx={{ mr: 2 }} />
-                <Typography align="center">test@gmail.com</Typography>
-              </Grid>
-              <Grid
-                sx={{ mt: 2 }}
-                container
-                direction="row"
-                alignItems="center"
-              >
-                <Typography fontWeight="bold" align="center">
-                  기부 횟수 : 4
-                </Typography>
-              </Grid>
-              <Grid
-                sx={{ mt: 2 }}
-                container
-                direction="row"
-                alignItems="center"
-              >
-                <Typography fontWeight="bold" align="center">
-                  봉사 시간 : 8
-                </Typography>
-              </Grid>
-              <Box
-                sx={{
-                  bgcolor: "#f5e1be",
-                  borderRadius: 1.25,
-                  // height: "120px",
-                }}
-                minHeight="120px"
-              >
-                <Typography sx={{ p: 2, mt: 1 }}>
-                  아무래도 다시 돌아갈 순 없어 아무런 표정도 없이 이런 말하는
-                  그런 내가 잔인한가요 제발 내 마음 설레이게 자꾸만 바라보게
-                  하지 말아요 아무 일 없던 것처럼 그냥 스쳐지나갈 미련인 걸
-                  알아요 아무리 사랑한다 말했어도 다시 돌아올 수 없는 그 때 그
-                  맘이 부른다고 다시 오나요 아무래도 다시 돌아갈 순 없어 아무런
-                  표정도 없이 이런 말하는 그런 내가 잔인한가요
-                </Typography>
-              </Box>
-            </Grid>
-          </Grid>
-          <Typography variant="h4" fontWeight="bold">
-            재능 기부
-          </Typography>
-          <TableContainer component={Paper} sx={{ mt: 3 }}>
-            <Table sx={{ minWidth: 700 }} aria-label="customized table">
-              <TableHead>
-                <TableRow>
-                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                    번호
-                  </StyledTableCell>
-                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                    제목
-                  </StyledTableCell>
-                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                    등록일
-                  </StyledTableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {dummyData.map((data) => (
-                  <StyledTableRow key={data.donationApplyId}>
-                    <StyledTableCell align="center">
-                      {data.donationApplyId}
+            <Typography variant="h4" fontWeight="bold">
+              재능 기부
+            </Typography>
+            <TableContainer component={Paper} sx={{ mt: 3 }}>
+              <Table sx={{ minWidth: 700 }} aria-label="customized table">
+                <TableHead>
+                  <TableRow>
+                    <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                      번호
                     </StyledTableCell>
-                    <StyledTableCell align="center" sx={{ width: 400 }}>
-                      {data.title}
+                    <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                      제목
                     </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {data.donationDate}
+                    <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                      등록일
                     </StyledTableCell>
-                    {/* <StyledTableCell align="center">
-                      {data.name}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      <IsFact fact={data.fact} />
-                      <CustomButton sx={{ width: 40, height: 30, mr: 2 }}>
-                        참석
-                      </CustomButton>
-                      <CustomButton2 sx={{ width: 40, height: 30 }}>
-                        불참
-                      </CustomButton2>
-                    </StyledTableCell> */}
-                  </StyledTableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Container>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {dummyData.map((data) => (
+                    <StyledTableRow key={data.donationApplyId}>
+                      <StyledTableCell align="center">
+                        {data.donationApplyId}
+                      </StyledTableCell>
+                      <StyledTableCell align="center" sx={{ width: 400 }}>
+                        {data.title}
+                      </StyledTableCell>
+                      <StyledTableCell align="center">
+                        {data.donationDate}
+                      </StyledTableCell>
+                      {/* <StyledTableCell align="center">
+                        {data.name}
+                      </StyledTableCell>
+                      <StyledTableCell align="center">
+                        <IsFact fact={data.fact} />
+                        <CustomButton sx={{ width: 40, height: 30, mr: 2 }}>
+                          참석
+                        </CustomButton>
+                        <CustomButton2 sx={{ width: 40, height: 30 }}>
+                          불참
+                        </CustomButton2>
+                      </StyledTableCell> */}
+                    </StyledTableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Container>
+        </Box>
       </Box>
-    </Box>
+      </>
+      ) : null
+    }
+    </>
+
   );
 };
 
