@@ -31,6 +31,8 @@ interface IPostInfo {
   // postNum: any;
   donationApplyId: number;
   memberId: number;
+  getStatus: any;
+  postStatus: any;
 }
 
 const CustomButton = styled(Button)({
@@ -116,7 +118,12 @@ const style = {
   p: 2,
 };
 
-const PostInfo: FC<IPostInfo> = ({ donationApplyId, memberId }) => {
+const PostInfo: FC<IPostInfo> = ({
+  donationApplyId,
+  memberId,
+  getStatus,
+  postStatus,
+}) => {
   const [loading, setLoading] = useState<boolean>(false);
   // 모달
   const [open, setOpen] = useState(false);
@@ -164,7 +171,7 @@ const PostInfo: FC<IPostInfo> = ({ donationApplyId, memberId }) => {
     sendApply(userId, params)
       .then((res) => {
         console.log("송장 입력 성공");
-        
+        getStatus(!postStatus);
       })
       .catch((err) => {
         console.error(err);
