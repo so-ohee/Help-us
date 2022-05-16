@@ -1,162 +1,225 @@
-import react, { FC, ReactNode, useState, useEffect } from 'react';
-import { AppBar, Container, Toolbar, Typography, styled, Box, Stack, Link } from "@mui/material/";
-import Image from 'next/image';
+import react, { FC, ReactNode, useState, useEffect } from "react";
+import {
+  AppBar,
+  Container,
+  Toolbar,
+  Typography,
+  styled,
+  Box,
+  Stack,
+  Link,
+} from "@mui/material/";
+import Image from "next/image";
 import logo from "../public/images/logo3.png";
 import { useRouter } from "next/router";
-
 
 export interface LoginProps {
   value?: any;
 }
 
-const ColorAppbar = styled(AppBar) ({
+const ColorAppbar = styled(AppBar)({
   backgroundColor: "#FFFFFF",
   color: "#000000",
-  
 });
 
-
 const Navbar: FC<LoginProps> = ({ value }) => {
-  const [ isLogin, setIsLogin ] = useState<boolean>(value);
-  const [role, setRole] = useState('')
-  const router = useRouter()
+  const [isLogin, setIsLogin] = useState<boolean>(value);
+  const [role, setRole] = useState("");
+  const router = useRouter();
+
+  const pathName = useRouter().pathname;
 
   const onLogout = () => {
-    localStorage.removeItem('jwt')
-    localStorage.removeItem('id')
-    localStorage.removeItem('role')
+    localStorage.removeItem("jwt");
+    localStorage.removeItem("id");
+    localStorage.removeItem("role");
     // router.push('/')
-    location.href='/'
-  }
+    location.href = "/";
+  };
 
   const onMyPage = () => {
-    if (localStorage.getItem('role') === 'USER'){
-      router.push('/userpage/my')
-    }else{
-      router.push('/orgpage/my')
+    if (localStorage.getItem("role") === "USER") {
+      router.push("/userpage/my");
+    } else {
+      router.push("/orgpage/my");
     }
-  }
+  };
 
   useEffect(() => {
-    if (localStorage.getItem('jwt')){
-      setIsLogin(true)
-      setRole(localStorage.getItem('role'))
-    }else{
-      setIsLogin(false)
+    if (localStorage.getItem("jwt")) {
+      setIsLogin(true);
+      setRole(localStorage.getItem("role"));
+    } else {
+      setIsLogin(false);
     }
-  },[])
+  }, []);
 
   return (
     <ColorAppbar position="static" elevation={0}>
-      <Container maxWidth="xl">
-        <Toolbar sx={{ display: "flex", my : 2, justifyContent: 'space-between'}} >
-            <Link href="/" underline="none" color="inherit">
-              <Image 
-                src={logo}
-                alt='logo'
-                width={65}
-                height={70}
-              />
-            </Link>
-          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <Stack direction="row">
-              <Typography variant="h6" sx={{ mx: 2}}>
+      <Container maxWidth="lg">
+        <Stack
+          direction="row"
+          // sx={{ display: "flex", my: 2, justifyContent: "space-between" }}
+          sx={{ display: "flex", my: 2, justifyContent: "space-between" }}
+        >
+          <Stack direction="row" alignItems="center" sx={{ width: 500 }}>
+            <Typography variant="h6" sx={{ mr: 3 }}>
+              {pathName === "/donation" ? (
+                <Link
+                  href="/donation"
+                  underline="none"
+                  color="#CDAD78"
+                  fontWeight="bold"
+                  variant="h5"
+                >
+                  후원하기
+                </Link>
+              ) : (
                 <Link href="/donation" underline="none" color="inherit">
                   후원하기
                 </Link>
-              </Typography>
-              <Typography variant="h6" sx={{ mx: 2 }}>
+              )}
+            </Typography>
+            <Typography variant="h6" sx={{ mx: 3 }}>
+              {pathName === "/share" ? (
+                <Link
+                  href="/share"
+                  underline="none"
+                  color="#CDAD78"
+                  fontWeight="bold"
+                  variant="h5"
+                >
+                  나눔하기
+                </Link>
+              ) : (
                 <Link href="/share" underline="none" color="inherit">
                   나눔하기
                 </Link>
-              </Typography>
-              <Typography variant="h6" sx={{ mx: 2 }}>
+              )}
+            </Typography>
+            <Typography variant="h6" sx={{ mx: 3 }}>
+              {pathName === "/cs" ? (
+                <Link
+                  href="/cs"
+                  underline="none"
+                  color="#CDAD78"
+                  fontWeight="bold"
+                  variant="h5"
+                >
+                  고객센터
+                </Link>
+              ) : (
                 <Link href="/cs" underline="none" color="inherit">
                   고객센터
                 </Link>
-              </Typography>
-              <Typography variant="h6" sx={{ mx: 2 }}>
-                <Link href="/news" underline="none" color="inherit">
-                  기부 소식
+              )}
+            </Typography>
+            <Typography variant="h6" sx={{ ml: 3 }}>
+              {pathName === "/news" ? (
+                <Link
+                  href="/news"
+                  underline="none"
+                  color="#CDAD78"
+                  fontWeight="bold"
+                  variant="h5"
+                >
+                  기부뉴스
                 </Link>
-              </Typography>
-            </Stack>
-          </Box>
-          <Box>
-            <Stack direction="row">
+              ) : (
+                <Link href="/news" underline="none" color="inherit">
+                  기부뉴스
+                </Link>
+              )}
+            </Typography>
+          </Stack>
+          <Stack alignItems="center">
+            <Link href="/" underline="none" color="inherit">
+              <Image src={logo} alt="logo" width={75} height={80} />
+            </Link>
+          </Stack>
+          <Stack
+            direction="row"
+            alignItems="center"
+            sx={{ width: 500 }}
+            justifyContent="right"
+          >
+            {isLogin ? (
+              role === "ADMIN" ? (
+                <>
+                  <Typography variant="h6" sx={{}}>
+                    <Link
+                      onClick={() => router.push("/admin")}
+                      underline="none"
+                      color="inherit"
+                      style={{ cursor: "pointer" }}
+                    >
+                      관리자 페이지
+                    </Link>
+                  </Typography>
 
-              {
-                isLogin ? (
-                  (
-                    role === 'ADMIN' ? (
-                      <>
-                        <Typography variant="h6" sx={{ mx: 2 }}>
-                          <Link 
-                            onClick={() => router.push('/admin')} 
-                            underline="none" 
-                            color="inherit"
-                            style={{cursor:'pointer'}}
-                          >관리자 페이지</Link>  
-                        </Typography> 
-    
-                        <Typography variant="h6" sx={{ mx: 2 }}>
-                          <Link 
-                            onClick={onLogout} 
-                            underline="none" 
-                            color="inherit"
-                            style={{cursor:'pointer'}}
-                          >로그아웃</Link>  
-                        </Typography>  
-                      </>
-                    ) :
-                    (
-                      <>
-                        <Typography variant="h6" sx={{ mx: 2 }}>
-                          <Link 
-                            onClick={onMyPage}
-                            underline="none" 
-                            color="inherit"
-                            style={{cursor:'pointer'}}
-                          >마이페이지</Link>  
-                        </Typography> 
-    
-                        <Typography variant="h6" sx={{ mx: 2 }}>
-                          <Link 
-                            onClick={onLogout} 
-                            underline="none" 
-                            color="inherit"
-                            style={{cursor:'pointer'}}
-                          >로그아웃</Link>  
-                        </Typography>  
-                      </>
-                    )
-                  )
-                ) : (
-                  <>
-                    <Typography variant="h6" sx={{ mx: 2 }}>
-                      <Link 
-                        onClick={() => router.push('/login')} 
-                        underline="none" 
-                        color="inherit"
-                        style={{cursor:'pointer'}}
-                      >로그인</Link>  
-                    </Typography>  
+                  <Typography variant="h6" sx={{ ml: 2 }}>
+                    <Link
+                      onClick={onLogout}
+                      underline="none"
+                      color="inherit"
+                      style={{ cursor: "pointer" }}
+                    >
+                      로그아웃
+                    </Link>
+                  </Typography>
+                </>
+              ) : (
+                <>
+                  <Typography variant="h6" sx={{ mx: 2 }}>
+                    <Link
+                      onClick={onMyPage}
+                      underline="none"
+                      color="inherit"
+                      style={{ cursor: "pointer" }}
+                    >
+                      마이페이지
+                    </Link>
+                  </Typography>
 
-                    <Typography variant="h6" sx={{ mx: 2 }}>
-                      <Link 
-                        onClick={() => router.push('/signup')} 
-                        underline="none" 
-                        color="inherit"
-                        style={{cursor:'pointer'}}
-                      >회원가입</Link>  
-                    </Typography> 
-                  </>
-                )
-              } 
- 
-            </Stack>
-          </Box> 
-        </Toolbar>
+                  <Typography variant="h6" sx={{ ml: 2 }}>
+                    <Link
+                      onClick={onLogout}
+                      underline="none"
+                      color="inherit"
+                      style={{ cursor: "pointer" }}
+                    >
+                      로그아웃
+                    </Link>
+                  </Typography>
+                </>
+              )
+            ) : (
+              <>
+                <Typography variant="h6" sx={{ mx: 2 }}>
+                  <Link
+                    onClick={() => router.push("/login")}
+                    underline="none"
+                    color="inherit"
+                    style={{ cursor: "pointer" }}
+                  >
+                    로그인
+                  </Link>
+                </Typography>
+
+                <Typography variant="h6" sx={{ ml: 2 }}>
+                  <Link
+                    onClick={() => router.push("/signup")}
+                    underline="none"
+                    color="inherit"
+                    style={{ cursor: "pointer" }}
+                  >
+                    회원가입
+                  </Link>
+                </Typography>
+              </>
+            )}
+          </Stack>
+        </Stack>
       </Container>
     </ColorAppbar>
   );

@@ -11,7 +11,7 @@ import {
   InputBase,
   Paper,
   Tabs,
-  ThemeProvider
+  ThemeProvider,
 } from "@mui/material/";
 import {
   Table,
@@ -20,6 +20,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Container,
 } from "@mui/material/";
 import { tableCellClasses } from "@mui/material/TableCell";
 import { styled, createTheme } from "@mui/material/styles";
@@ -57,7 +58,9 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:last-child td, &:last-child th": {
     border: 0,
   },
-  height: 62,
+  // height: 70,
+  // rowStyle: { height: 50 },
+  // maxHeight: ,
 }));
 
 const NewsMain: FC = () => {
@@ -69,7 +72,7 @@ const NewsMain: FC = () => {
     },
     palette: {
       primary: {
-        main: '#5B321E',
+        main: "#5B321E",
       },
     },
   });
@@ -77,12 +80,12 @@ const NewsMain: FC = () => {
   const [newsList, setNewsList] = useState<any>(null);
 
   // pagination
-  const [curPage, setCurPage] = useState(0);
+  const [curPage, setCurPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const paginate = (pageNumber) => setCurPage(pageNumber);
 
   const params = {
-    page: curPage + 1,
+    page: curPage,
   };
 
   useEffect(() => {
@@ -96,55 +99,65 @@ const NewsMain: FC = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Grid container justifyContent="center" alignItems="center">
+      <Container maxWidth="lg">
         <Stack>
-          <Box sx={{ fontWeight: "bold", my: 5 }}>
+          <Box sx={{ fontWeight: "bold", mt: 5 }}>
             <Typography variant="h4" textAlign="center">
               기부 News
             </Typography>
           </Box>
-          <Box sx={{display: 'flex', justifyContent: 'center'}}>
-          <Stack sx={{width : '90%'}}>
-            <TableContainer component={Paper} sx={{ my: 5 }}>
-              <Table sx={{ minWidth: 700 }} aria-label="customized table">
-                <TableHead>
-                  <TableRow>
-                    <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                      제목
-                    </StyledTableCell>
-                    <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                      내용
-                    </StyledTableCell>
-                    <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                      작성일
-                    </StyledTableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {newsList &&
-                    newsList.map((data) => (
-                      <StyledTableRow
-                        key={data.title}
-                        onClick={() => window.open(`${data.link}`)}
-                      >
-                        <StyledTableCell sx={{ width: '14%'}}>
-                          {data.title}
-                        </StyledTableCell>
-                        <StyledTableCell>
-                          {data.description}
-                        </StyledTableCell>
-                        <StyledTableCell sx={{width: '10%'}}>
-                          {data.date}
-                        </StyledTableCell>
-                      </StyledTableRow>
-                    ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Stack>
+          <Box sx={{ display: "flex", justifyContent: "center" }}>
+            <Stack sx={{ width: "90%" }}>
+              <TableContainer
+                component={Paper}
+                sx={{ my: 5 }}
+                // style={{ maxHeight: 700 }}
+              >
+                <Table sx={{ minWidth: 700 }} aria-label="customized table">
+                  <TableHead>
+                    <TableRow>
+                      <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                        제목
+                      </StyledTableCell>
+                      <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                        내용
+                      </StyledTableCell>
+                      <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                        작성일
+                      </StyledTableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {newsList &&
+                      newsList.map((data) => (
+                        <StyledTableRow
+                          key={data.title}
+                          onClick={() => window.open(`${data.link}`)}
+                        >
+                          <StyledTableCell sx={{ width: "20%" }}>
+                            {/* {data.title.substr(0, 17)}... */}
+                            {data.title}
+                          </StyledTableCell>
+                          <StyledTableCell>{data.description}</StyledTableCell>
+                          <StyledTableCell sx={{ width: "14%" }}>
+                            {data.date}
+                          </StyledTableCell>
+                        </StyledTableRow>
+                      ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Stack>
           </Box>
+          <Stack alignItems="center" sx={{ mb: 5 }}>
+            <Pagination
+              curPage={curPage}
+              paginate={paginate}
+              totalPage={totalPages}
+            />
+          </Stack>
         </Stack>
-      </Grid>
+      </Container>
     </ThemeProvider>
   );
 };
