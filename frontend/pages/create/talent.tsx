@@ -231,7 +231,8 @@ const Talent: FC = () => {
 
     createTalent(id, token, talentDonationReqDto, imageList )
       .then((res) => {
-        console.log(res + "성공")
+        console.log(res + "성공");
+        history.back();
       })
       .catch((err) => console.log(err + "실패"))
   }
