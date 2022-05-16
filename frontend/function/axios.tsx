@@ -268,6 +268,7 @@ export const volunteerDetail = async (id) => {
     url: `/9081/volunteer/${id}`,
   });
 };
+
 // 마이페이지 유저가 완료한 봉사 목록
 export const getMyvolunteerList = async (id,params) => {
   return await axios({
@@ -327,6 +328,14 @@ export const getTalentDonationList = async (params) => {
     method: "GET",
     url: `/8000/api/talentDonation/main`,
     params: params,
+  });
+};
+
+// 재능기부 상세 조회
+export const getTalentDonationDetail = async (id) => {
+  return await axios({
+    method: "GET",
+    url: `/8000/api/talentDonation/${id}`,
   });
 };
 
