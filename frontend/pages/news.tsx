@@ -123,9 +123,9 @@ const NewsMain: FC = () => {
                 </TableHead>
                 <TableBody>
                   {newsList &&
-                    newsList.map((data) => (
+                    newsList.map((data, idx) => (
                       <StyledTableRow
-                        key={data.title}
+                        key={idx}
                         onClick={() => window.open(`${data.link}`)}
                       >
                         <StyledTableCell sx={{ width: '14%'}}>
