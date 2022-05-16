@@ -48,11 +48,7 @@ export const createReview = async (id, token, confirm, files) => {
   files?.map((file) => newForm.append("files", file));
   return await axios({
     method: "POST",
-<<<<<<< HEAD
-    url: "/9080/d.confirm",
-=======
     url : '/8000/d.confirm',
->>>>>>> feature/createAPI
     headers: {
       "Content-Type": "multipart/form-data",
       Authorization: token,
@@ -173,7 +169,7 @@ export const getNewsList = async (params) => {
 };
 
 // 물품 기부글 작성
-export const createDonation = async (token, donation, files) => {
+export const createDonation = async (id, token, donation, files) => {
   const newForm = new FormData();
 
   newForm.append(
@@ -197,10 +193,6 @@ export const createDonation = async (token, donation, files) => {
 };
 
 //재능 기부 글 작성
-<<<<<<< HEAD
-export const createTalent = async (id, token, params) => {
-  return await axios({
-=======
 export const createTalent = async (id, token, talentDonationReqDto, files) => {
   const newForm = new FormData();
 
@@ -211,15 +203,13 @@ export const createTalent = async (id, token, talentDonationReqDto, files) => {
 
   files?.map((file) => newForm.append("files", file));
   return await axios ({
->>>>>>> feature/createAPI
     method: "POST",
     url: "/8000/talentDonation",
     headers: {
-<<<<<<< HEAD
-      memberId: id,
-      role: "USER",
+      "Content-Type": "multipart/form-data",
+      Authorization: token,
     },
-    data: params,
+    data: newForm,
   });
 };
 
@@ -235,14 +225,6 @@ export const applyDonationUser = async (id, token, data) => {
     data: data,
   });
 };
-=======
-      "Content-Type": "multipart/form-data",
-      Authorization: token,
-    },
-    data : newForm,
-  })
-}
->>>>>>> feature/createAPI
 
 // 재능 기부 댓글 작성
 
@@ -264,21 +246,12 @@ export const createVolunteer = async (id, token, volunteerReqDto, files) => {
     method: "POST",
     url: "/8000/volunteer",
     headers: {
-<<<<<<< HEAD
-      memberId: id,
-      role: "ORG",
-    },
-    data: params,
-  });
-};
-=======
       "Content-Type": "multipart/form-data",
       Authorization: token,
     },
     data: newForm
   })
 }
->>>>>>> feature/createAPI
 
 // 봉사 글 상세 조회
 export const volunteerDetail = async (id) => {
