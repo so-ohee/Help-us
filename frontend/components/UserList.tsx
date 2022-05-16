@@ -104,7 +104,7 @@ const UserList = () => {
             setList(res.data[1].members)
             // console.log((res.data[0].total_page-1-(res.data[0].total_page-1)%10)/10)
             setTotalPage((res.data[0].total_page-1-(res.data[0].total_page-1)%10)/10 +1)
-            // console.log(res)
+            // console.log(res.data[1].members)
         })
     },[])
 
@@ -158,7 +158,19 @@ const UserList = () => {
 
     }
 
+    // 이름 클릭
+    const onClickName = (e) => {
+        console.log(e)
+        if (e.role === 'USER'){
+            // console.log('user')
+            window.open(`/userpage/${e.memberId}`, '_blank')
+        }else{
+            // console.log('else')
+            window.open(`/orgpage/${e.memberId}`, '_blank')
 
+        }
+    }
+ 
 
     return (
         <>
@@ -202,7 +214,7 @@ const UserList = () => {
                             return (
                             <TableRow key={idx}>
                                 <TableCell style={{paddingTop:'8px', paddingBottom:'8px'}} align="center">{e.memberId}</TableCell>
-                                <TableCell style={{paddingTop:'8px', paddingBottom:'8px'}}>{e.name}</TableCell>
+                                <TableCell style={{paddingTop:'8px', paddingBottom:'8px', cursor:'pointer'}} onClick={() => onClickName(e)}>{e.name}</TableCell>
                                 <TableCell style={{paddingTop:'8px', paddingBottom:'8px'}}>{e.email}</TableCell>
                                 <TableCell style={{paddingTop:'8px', paddingBottom:'8px'}}>
                                     {e.warnCount}

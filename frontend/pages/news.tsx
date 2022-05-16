@@ -1,5 +1,4 @@
 import { FC, useState, useEffect } from "react";
-
 import { getNewsList } from "function/axios";
 import Pagination from "@/components/Pagination";
 import {
