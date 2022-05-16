@@ -84,7 +84,7 @@ const UserMypageDelivery: FC = () => {
   const paginate = (pageNumber) => setCurPage(pageNumber);
 
   const params = {
-    page: curPage + 1,
+    page: curPage,
   };
 
   const [loading, setLoading] = useState<boolean>(true);
