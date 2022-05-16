@@ -1,16 +1,32 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { Box, Grid, Tab, Typography, Stack, Button, InputLabel, MenuItem, FormControl, Tabs } from "@mui/material/";
-import {TabContext, TabList, TabPanel} from '@mui/lab/';
-import Image from 'next/image';
+import {
+  Box,
+  Grid,
+  Tab,
+  Typography,
+  Stack,
+  Button,
+  InputLabel,
+  MenuItem,
+  FormControl,
+  Tabs,
+  CssBaseline,
+  Container,
+} from "@mui/material/";
+import { TabContext, TabList } from "@mui/lab/";
+import Image from "next/image";
 import { styled } from "@mui/material/styles";
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { ThemeProvider } from "@mui/material/styles";
 import { createTheme } from "@mui/material/styles";
 import DonationCard from "../components/DonationCard";
 import VolunteerCard from "../components/VolunteerCard";
 import volunteer1 from "../public/images/volunteer1.jpg";
+import Pagination from "@/components/Pagination";
 
+// api
+import { getDonationMain, getVolunteerMain } from "function/axios";
 
 const CustomButton = styled(Button)({
   backgroundColor: "#5B321E",
@@ -22,126 +38,264 @@ const CustomButton = styled(Button)({
   },
 });
 
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}
+
+function TabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: 3 }}>
+          <Typography component={"span"}>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+}
+
+interface StyledTabsProps {
+  children?: React.ReactNode;
+  value: number;
+  onChange: (event: React.SyntheticEvent, newValue: number) => void;
+}
+
+const StyledTabs = styled((props: StyledTabsProps) => (
+  <Tabs
+    {...props}
+    TabIndicatorProps={{ children: <span className="MuiTabs-indicatorSpan" /> }}
+  />
+))({
+  "& .MuiTabs-indicator": {
+    display: "flex",
+    justifyContent: "center",
+    backgroundColor: "transparent",
+  },
+  "& .MuiTabs-indicatorSpan": {
+    // maxWidth: 40,
+    width: 100,
+    backgroundColor: "#CDAD78",
+  },
+});
+
+interface StyledTabProps {
+  label: string;
+}
+
+const StyledTab = styled((props: StyledTabProps) => (
+  <Tab disableRipple {...props} />
+))(({ theme }) => ({
+  textTransform: "none",
+  fontWeight: theme.typography.fontWeightRegular,
+  fontSize: theme.typography.pxToRem(15),
+  marginRight: theme.spacing(1),
+  color: "#8a867e",
+  "&.Mui-selected": {
+    color: "#CDAD78",
+  },
+  "&.Mui-focusVisible": {
+    backgroundColor: "rgba(100, 95, 228, 0.32)",
+  },
+}));
+
+function a11yProps(index: number) {
+  return {
+    id: `simple-tab-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`,
+  };
+}
+
+const theme = createTheme({
+  typography: {
+    // fontFamily: "Gowun Dodum",
+    // fontFamily: "Noto Serif KR",
+    fontFamily: "Noto Sans KR",
+  },
+  palette: {
+    primary: {
+      main: "#5B321E",
+    },
+  },
+});
+
 const Donation: FC = () => {
-  const theme = createTheme({
-    typography: {
-      // fontFamily: "Gowun Dodum",
-      // fontFamily: "Noto Serif KR",
-      fontFamily: "Noto Sans KR",
-    },
-    palette: {
-      primary: {
-        main: '#5B321E',
-      },
-    },
-  });
-
   const router = useRouter();
-  const [ value, setValue ] = useState('1');
-  const [ option, setOption ] = useState('');
+  const [value, setValue] = useState<any>(0);
+  const [option, setOption] = useState("");
 
-  const tabHandleChange = (event: React.SyntheticEvent, newValue: string) => {
+  // pagination
+  const [curPage, setCurPage] = useState(1);
+  const [curPage2, setCurPage2] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalPages2, setTotalPages2] = useState(0);
+  const paginate = (pageNumber) => setCurPage(pageNumber);
+  const paginate2 = (pageNumber) => setCurPage2(pageNumber);
+
+  // 최신순
+  const [recentDonation, setRecentDonation] = useState<any>("");
+  const [recentVolunteer, setRecentVolunteer] = useState<any>("");
+
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
+
   const optionHandleChange = (event: SelectChangeEvent) => {
     setOption(event.target.value as string);
-  }
+  };
+
+  const params1 = {
+    page: curPage,
+  };
+
+  const params2 = {
+    page: curPage2,
+  };
+
+  useEffect(() => {
+    getDonationMain(params1).then((res) => {
+      setRecentDonation(res.data.donation);
+      setTotalPages(res.data.totalPage);
+    });
+    getVolunteerMain(params2).then((res) => {
+      setRecentVolunteer(res.data.listVolunteer);
+      setTotalPages2(res.data.totalPage);
+    });
+  }, [curPage, curPage2]);
+
   return (
-    <ThemeProvider theme={theme}>
-      <Grid container justifyContent="center" alignItems="center">
-        <Box textAlign="center" >
-          <Image 
-            src= {volunteer1}
-            alt="volunteer first"
-            width={1200}
-            height={200}
-          />
-        </Box>
-        <Box >
-          <TabContext value={value}>
-            <Stack direction="row" justifyContent="space-between" >
-              <Tabs
-                value={value} 
-                onChange={tabHandleChange}
-                textColor="primary"
-                indicatorColor="primary"
-                >
-                <Tab label="물품" value="1" />
-                <Tab label="봉사" value="2" />
-              </Tabs>
-                <Box sx={{ minWidth: 200, display: 'flex', justifyContent: 'flex-end'}}>
-                  <FormControl fullWidth >
-                    <InputLabel>정렬</InputLabel>
-                    <Select
-                      value={option}
-                      label="option"
-                      onChange={optionHandleChange}
-                    >
-                      <MenuItem value="latest">최신순</MenuItem>
-                      <MenuItem value="high">달성률 높은 순</MenuItem>
-                      <MenuItem value="low">달성률 낮은 순</MenuItem>
-                      <MenuItem value="endDate">종료일 순</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Box>
-            </Stack>
-            {/* 로그인시 등록 버튼 */}
-            <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end'}}>
-              <Button variant="contained" sx={{mr: 3}} href="create/donationorg">기부 등록</Button>
-              <Button variant="contained" href="create/volunteer">봉사 등록</Button>
-            </Box>
-            <TabPanel value="1">
-              <Box sx={{ mt: 2 }}>
-                {/* <Stack direction="row" spacing={5} sx={{mb : 5}}>
-                  <DonationCard/>
-                  <DonationCard/>
+    <>
+      <Container maxWidth="lg">
+        <CssBaseline />
+        <Box
+          component="main"
+          sx={{
+            flexGrow: 1,
+            overflow: "auto",
+            mt: 0,
+          }}
+        >
+          <Stack alignItems="center">
+            <Image
+              src={volunteer1}
+              alt="volunteer first"
+              width={1200}
+              height={200}
+            />
+          </Stack>
+          <Stack>
+            <Box sx={{ width: "100%", mt: 2 }}>
+              <Box>
+                <Stack direction="row" justifyContent="space-between">
+                  <StyledTabs value={value} onChange={handleChange}>
+                    <StyledTab
+                      sx={{ fontWeight: "bold" }}
+                      label="물품 기부"
+                      {...a11yProps(0)}
+                    />
+                    <StyledTab
+                      sx={{ fontWeight: "bold" }}
+                      label="봉사"
+                      {...a11yProps(1)}
+                    />
+                  </StyledTabs>
+                  <Box
+                    sx={{
+                      minWidth: 200,
+                      display: "flex",
+                      justifyContent: "flex-end",
+                    }}
+                  >
+                    <FormControl fullWidth>
+                      <InputLabel>정렬</InputLabel>
+                      <Select
+                        value={option}
+                        label="option"
+                        onChange={optionHandleChange}
+                      >
+                        <MenuItem value="latest">최신순</MenuItem>
+                        <MenuItem value="high">달성률 높은 순</MenuItem>
+                        <MenuItem value="low">달성률 낮은 순</MenuItem>
+                        <MenuItem value="endDate">종료일 순</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Box>
                 </Stack>
-                <Stack direction="row" spacing={5} sx={{mb : 5}}>
-                  <DonationCard/>
-                  <DonationCard/>
-                </Stack>
-                <Stack direction="row" spacing={5} sx={{mb : 5}}>
-                  <DonationCard/>
-                  <DonationCard/>
-                </Stack> */}
+                <TabPanel value={value} index={0}>
+                  <Box
+                    sx={{
+                      display: "grid",
+                      gridTemplateColumns: "repeat(auto-fill, 500px)",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      // marginTop: 5,
+                      rowGap: 1,
+                      columnGap: 5,
+                    }}
+                  >
+                    {recentDonation && recentDonation.length > 0 ? (
+                      recentDonation.map((item, i) => (
+                        <DonationCard donation={item} key={i} />
+                      ))
+                    ) : (
+                      <Typography sx={{ margin: "200px 0" }}>
+                        진행 중인 기부글이 없습니다.
+                      </Typography>
+                    )}
+                  </Box>
+                  <Stack alignItems="center" sx={{ mb: 2, mt: 5 }}>
+                    <Pagination
+                      curPage={curPage}
+                      paginate={paginate}
+                      totalPage={totalPages}
+                    />
+                  </Stack>
+                </TabPanel>
+                <TabPanel value={value} index={1}>
+                  <Box
+                    sx={{
+                      display: "grid",
+                      gridTemplateColumns: "repeat(auto-fill, 500px)",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      // marginTop: 5,
+                      rowGap: 1,
+                      columnGap: 5,
+                    }}
+                  >
+                    {recentVolunteer && recentVolunteer.length > 0 ? (
+                      recentVolunteer.map((item, i) => (
+                        <VolunteerCard volunteer={item} key={i} />
+                      ))
+                    ) : (
+                      <Typography sx={{ margin: "200px 0" }}>
+                        진행 중인 기부글이 없습니다.
+                      </Typography>
+                    )}
+                  </Box>
+                  <Stack alignItems="center" sx={{ mb: 2, mt: 5 }}>
+                    <Pagination
+                      curPage={curPage2}
+                      paginate={paginate2}
+                      totalPage={totalPages2}
+                    />
+                  </Stack>
+                </TabPanel>
               </Box>
-            </TabPanel>
-            <TabPanel value="2">
-              <Box sx={{ mt: 3 }}>
-              {/* <Stack direction="row" spacing={5} sx={{mb : 5}}>
-                  <VolunteerCard/>
-                  <VolunteerCard/>
-                </Stack>
-                <Stack direction="row" spacing={5} sx={{mb : 5}}>
-                  <VolunteerCard/>
-                  <VolunteerCard/>
-                </Stack>
-                <Stack direction="row" spacing={5} sx={{mb : 5}}>
-                  <VolunteerCard/>
-                  <VolunteerCard/>
-                </Stack> */}
-              </Box>
-            </TabPanel>
-          </TabContext>
-        </Box>
-        <Box>
-          <Box sx={{ width: 1200, height: 130, backgroundColor: "#FCE2A6", mx: 7, mt: 3, mb: 10}}>
-            <Box sx={{ display: 'flex', justifyContent: 'flex-end'}}>
-              <Stack>
-                <Typography variant="h6" sx={{fontWeight: 'bold', mt: 3, mb : 2}}>
-                  이달의 후원 참여 인원
-                </Typography>
-                {/* 인원 넣기 */}
-                <Typography variant="h6" sx={{fontWeight: 'bold', mb : 2}}>
-                  이달의 봉사 참여 인원
-                </Typography>
-                {/* 인원 넣기 */}
-              </Stack>
             </Box>
-          </Box>
+          </Stack>
         </Box>
-      </Grid>
-    </ThemeProvider>
+      </Container>
+    </>
   );
 };
 

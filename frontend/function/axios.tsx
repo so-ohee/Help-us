@@ -11,11 +11,21 @@ import { id } from "date-fns/locale";
 // 8000: 로그인 'http://k6c106.p.ssafy.io:8000'
 
 // ----------------------- 9080 ------------------------------
+
+// 기부해주세요 - 물품
+// export const getDonation = async () => {
+//   return await axios({
+//     method: "GET",
+//     url: "/8000/api/donation"
+//   })
+// }
+
 // 메인 페이지 - 물품 기부 목록 최근 6개
-export const getDonationMain = async () => {
+export const getDonationMain = async (params) => {
   return await axios({
     method: "GET",
-    url: "/9080/donation/main",
+    url: "/8000/api/donation/main",
+    params: params,
   });
 };
 
@@ -79,26 +89,26 @@ export const getUserDonationList = async (id, params) => {
 };
 
 // 마이페이지(개인) - 후원 송장 입력
-export const sendApply = async (id, params) => {
+export const sendApply = async (id, data) => {
   return await axios({
     method: "PUT",
     url: "/9080/d.apply",
     headers: {
       memberId: id,
     },
-    data: params,
+    data: data,
   });
 };
 
 // 마이페이지(개인) - 후원 송장 수정
-export const updateApply = async (id, params) => {
+export const updateApply = async (id, data) => {
   return await axios({
     method: "PUT",
     url: "/9080/d.apply",
     headers: {
       memberId: id,
     },
-    data: params,
+    data: data,
   });
 };
 // 마이페이지(기관) - 봉사 현황 조회
@@ -315,18 +325,19 @@ export const volunteerCommentDelete = async (id, token) => {
   return await axios({
     method: "DELETE",
     url: `/8000/v.comment/${id}`,
-    headers : {
-      memberId : id,
-      Authorization : token,
-    }
+    headers: {
+      memberId: id,
+      Authorization: token,
+    },
   });
 };
 
 // 메인 페이지 - 봉사글 최근 조회 4개
-export const getVolunteerMain = async () => {
+export const getVolunteerMain = async (params) => {
   return await axios({
     method: "GET",
     url: "/8000/api/volunteer/main",
+    params: params,
   });
 };
 

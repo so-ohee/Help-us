@@ -109,12 +109,18 @@ const DonationApply: FC<IDonationInfo> = ({
     if (applyCnt <= 0) {
       alert("기부 수량은 1개 이상입니다.");
       return;
+    } else if (applyCnt > donation.totalCount) {
+      alert("기부 수량은 총 수량을 초과할 수 없습니다.");
+      return;
     }
 
+    // console.log(donation);
     applyDonationUser(id, token, data)
       .then((res) => {
         console.log("기부신청 성공");
         setOpen(true);
+        setApplyCnt("");
+        console.log(donation);
       })
       .catch((err) => console.error(err));
     console.log(data, id, token);

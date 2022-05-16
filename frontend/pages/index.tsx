@@ -132,15 +132,6 @@ const Home: FC = () => {
   const [value, setValue] = useState<any>(0);
   const [option, setOption] = useState("");
 
-  // pagination
-  // const [curPage, setCurPage] = useState(1);
-  // const [totalPages, setTotalPages] = useState(0);
-  // const paginate = (pageNumber) => setCurPage(pageNumber);
-
-  // const params = {
-  //   page: curPage,
-  // };
-
   const [donationData, setDonationData] = useState<any>("");
   const [volunteerData, setVolunteerData] = useState<any>("");
 
@@ -148,39 +139,20 @@ const Home: FC = () => {
     setValue(newValue);
   };
 
-  // const tabHandleChange = (event: React.SyntheticEvent, newValue: string) => {
-  //   setValue(newValue);
-  // };
   const optionHandleChange = (event: SelectChangeEvent) => {
     setOption(event.target.value as string);
   };
 
+  const params = {};
+
   useEffect(() => {
-    const token = localStorage.getItem("jwt");
-    // console.log(token);
-    getDonationMain().then((res) => {
+    getDonationMain(params).then((res) => {
       setDonationData(res.data.donation);
     });
-    getVolunteerMain().then((res) => {
+    getVolunteerMain(params).then((res) => {
       setVolunteerData(res.data.listVolunteer);
     });
   }, []);
-
-  // test = {
-  //   "donationId": 18,
-  //   "title": "test",
-  //   "content": "테스트~~~"
-  // }
-
-  const tt = {
-    title: "dd",
-    content: "ddd",
-    volZipcode: 11,
-    volAddress: "dddd",
-    people: 11,
-    time: 1.0,
-    volDate: "2022-06-02 14:00",
-  };
 
   return (
     <Container maxWidth="lg">

@@ -155,9 +155,10 @@ const DonationOrgDetail: FC = () => {
   useEffect(() => {
     if (detailLoading) {
       console.log(donationDetails);
-        getUserInfo(donationDetails.memberId).then((res) => {
+      getUserInfo(donationDetails.memberId).then((res) => {
         setOrgInfo(res.data);
       });
+      // console.log(donationDetails);
     }
   }, [detailLoading]);
 
@@ -249,7 +250,12 @@ const DonationOrgDetail: FC = () => {
               {donationDetails ? donationDetails.title : null}
             </Typography>
             <Link href="/donation">
-              <CustomButton variant="contained" size="small" sx={{ width: 30 }} onClick={() => history.back()}>
+              <CustomButton
+                variant="contained"
+                size="small"
+                sx={{ width: 30 }}
+                onClick={() => history.back()}
+              >
                 목록
               </CustomButton>
             </Link>
@@ -470,7 +476,8 @@ const DonationOrgDetail: FC = () => {
                               </Typography>
                             </Stack>
                           )}
-                          {data.deliveryCount === 0 ? null : (
+                          {data.deliveryCount !== 0 &&
+                          data.finishCount === 0 ? null : (
                             <Stack
                               direction="column"
                               sx={{
@@ -609,6 +616,47 @@ const DonationOrgDetail: FC = () => {
                               </Typography>
                             </Stack>
                           ) : null}
+                          {data.totalCount -
+                            data.deliveryCount -
+                            data.finishCount !==
+                            0 &&
+                          data.finishCount === 0 &&
+                          data.deliveryCount !== 0 ? (
+                            <Stack
+                              direction="column"
+                              sx={{
+                                width: `${
+                                  ((data.totalCount -
+                                    data.deliveryCount -
+                                    data.finishCount) /
+                                    data.totalCount) *
+                                  100
+                                }%`,
+                              }}
+                            >
+                              <Box
+                                sx={{
+                                  borderTopRightRadius: 5,
+                                  borderBottomRightRadius: 5,
+                                  height: 25,
+                                  bgcolor: "#dbd5ca",
+                                }}
+                                justifyContent="center"
+                                flexDirection="column"
+                                display="flex"
+                              ></Box>
+                              <Typography sx={{ fontSize: 11 }}>
+                                {(
+                                  ((data.totalCount -
+                                    data.deliveryCount -
+                                    data.finishCount) /
+                                    data.totalCount) *
+                                  100
+                                ).toFixed()}
+                                %
+                              </Typography>
+                            </Stack>
+                          ) : null}
                           <Typography
                             align="center"
                             sx={{ ml: 1, fontSize: 14, width: 50 }}
@@ -640,7 +688,7 @@ const DonationOrgDetail: FC = () => {
                       </StyledTableCell>
                       <StyledTableCell align="center">
                         <DonationApply
-                          donation={donationDetails}
+                          donation={data}
                           pId={data.productId}
                           router={routerId}
                           id={userId}
@@ -654,7 +702,7 @@ const DonationOrgDetail: FC = () => {
           </TableContainer>
           <Divider color="#CDAD78" sx={{ my: 4, borderBottomWidth: 5 }} />
           <Typography variant="h5" fontWeight="bold" sx={{ mx: 5 }}>
-            댓글 10
+            댓글
           </Typography>
           <Stack
             justifyContent="space-between"
