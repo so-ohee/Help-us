@@ -120,6 +120,15 @@ const orgpageMyDonation: FC = () => {
     setValue(newValue);
   };
 
+  const [mId, setMID] = useState<any>("");
+  const [userToken, setUserToken] = useState<any>("");
+
+  const [fStatus, setFStatus] = useState<boolean>(false);
+
+  const getStatus = (fStatus) => {
+    setFStatus(fStatus);
+  };
+
   // 진행 중인
   const [ingDonation, setIngDonation] = useState<any>("");
   // 마감 된
@@ -127,6 +136,8 @@ const orgpageMyDonation: FC = () => {
 
   useEffect(() => {
     setRendering(true);
+    setMID(localStorage.getItem("id"));
+    setUserToken(localStorage.getItem("jwt"));
     const memberId = localStorage.getItem("id");
     const ingParams = {
       memberId: memberId,
@@ -142,7 +153,7 @@ const orgpageMyDonation: FC = () => {
     getDonationList(doneParams).then((res) => {
       setDoneDonation(res.data.donation);
     });
-  }, []);
+  }, [fStatus]);
 
   return (
     <>
@@ -186,57 +197,32 @@ const orgpageMyDonation: FC = () => {
                     </StyledTabs>
                     {/* <Box sx={{ p: 3 }} /> */}
                     <TabPanel value={value} index={0}>
-                      <div>
+                      <Box
+                        sx={{
+                          display: "grid",
+                          gridTemplateColumns: "repeat(auto-fill, 500px)",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          // marginTop: 5,
+                          rowGap: 1,
+                          columnGap: 5,
+                        }}
+                      >
                         {ingDonation && ingDonation.length > 0 ? (
                           ingDonation.map((item, i) => (
-                            <DonationCardOrg key={i} item={item} />
+                            <DonationCardOrg
+                              key={i}
+                              item={item}
+                              token={userToken}
+                              id={mId}
+                              getStatus={getStatus}
+                              fStatus={fStatus}
+                            />
                           ))
                         ) : (
                           <Typography>보유 중인 작품이 없습니다.</Typography>
                         )}
-                        {/* <Box
-                          sx={{
-                            display: "grid",
-                            gridTemplateColumns: "repeat(auto-fill, 500px)",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            marginTop: 5,
-                            rowGap: 5,
-                            columnGap: 10,
-                          }}
-                        >
-                          <DonationCardOrg />
-                          <DonationCardOrg />
-                        </Box>
-                        <Box
-                          sx={{
-                            display: "grid",
-                            gridTemplateColumns: "repeat(auto-fill, 500px)",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            marginTop: 5,
-                            rowGap: 5,
-                            columnGap: 10,
-                          }}
-                        >
-                          <DonationCardOrg />
-                          <DonationCardOrg />
-                        </Box>
-                        <Box
-                          sx={{
-                            display: "grid",
-                            gridTemplateColumns: "repeat(auto-fill, 500px)",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            marginTop: 5,
-                            rowGap: 5,
-                            columnGap: 10,
-                          }}
-                        >
-                          <DonationCardOrg />
-                          <DonationCardOrg />
-                        </Box> */}
-                      </div>
+                      </Box>
                     </TabPanel>
                     <TabPanel value={value} index={1}>
                       <div>
@@ -286,50 +272,6 @@ const orgpageMyDonation: FC = () => {
                     </TabPanel>
                   </Box>
                 </Box>
-                {/* <Grid>
-            <Box
-              sx={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fill, 500px)",
-                justifyContent: "center",
-                alignItems: "center",
-                marginTop: 5,
-                rowGap: 5,
-                columnGap: 10,
-              }}
-            >
-              <DonationCardOrg />
-              <DonationCardOrg />
-            </Box>
-            <Box
-              sx={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fill, 500px)",
-                justifyContent: "center",
-                alignItems: "center",
-                marginTop: 5,
-                rowGap: 5,
-                columnGap: 10,
-              }}
-            >
-              <DonationCardOrg />
-              <DonationCardOrg />
-            </Box>
-            <Box
-              sx={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fill, 500px)",
-                justifyContent: "center",
-                alignItems: "center",
-                marginTop: 5,
-                rowGap: 5,
-                columnGap: 10,
-              }}
-            >
-              <DonationCardOrg />
-              <DonationCardOrg />
-            </Box>
-          </Grid> */}
               </Container>
             </Box>
           </Box>

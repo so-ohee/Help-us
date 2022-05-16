@@ -87,11 +87,12 @@ const VolunteerDetail: FC = () => {
     page: curPage,
   };
 
+  
   useEffect(() => {
     volunteerCommentList(router.query.id, params).then((res) => {
       setCommentList(res.data.comment);
       setTotalPages(res.data.totalPage);
-      // console.log("data는", commentList);
+      console.log("data는", commentList);
       setLoading(true);
     });
   }, [curPage, router.isReady]);

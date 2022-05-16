@@ -293,7 +293,7 @@ const UserMypageOther: FC = () => {
                   <MailIcon sx={{ mr: 2 }} />
                   <Typography align="center">{myInfo.email}</Typography>
                 </Grid>
-                <Grid
+                {/* <Grid
                   sx={{ mt: 2 }}
                   container
                   direction="row"
@@ -312,7 +312,7 @@ const UserMypageOther: FC = () => {
                   <Typography fontWeight="bold" align="center">
                     봉사 시간 : 8
                   </Typography>
-                </Grid>
+                </Grid> */}
                 <Box
                   sx={{
                     bgcolor: "#f5e1be",
