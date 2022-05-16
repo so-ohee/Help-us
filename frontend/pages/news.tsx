@@ -12,6 +12,7 @@ import {
   InputBase,
   Paper,
   Tabs,
+  ThemeProvider
 } from "@mui/material/";
 import {
   Table,
@@ -22,7 +23,7 @@ import {
   TableRow,
 } from "@mui/material/";
 import { tableCellClasses } from "@mui/material/TableCell";
-import { styled } from "@mui/material/styles";
+import { styled, createTheme } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
 import IconButton from "@mui/material/IconButton";
 import Image from "next/image";
@@ -61,6 +62,18 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 const NewsMain: FC = () => {
+  const theme = createTheme({
+    typography: {
+      // fontFamily: "Gowun Dodum",
+      // fontFamily: "Noto Serif KR",
+      fontFamily: "Noto Sans KR",
+    },
+    palette: {
+      primary: {
+        main: '#5B321E',
+      },
+    },
+  });
   const [loading, setLoading] = useState<boolean>(false);
   const [newsList, setNewsList] = useState<any>(null);
 
@@ -83,23 +96,26 @@ const NewsMain: FC = () => {
   }, [curPage]);
 
   return (
-    <div>
+    <ThemeProvider theme={theme}>
       <Grid container justifyContent="center" alignItems="center">
         <Stack>
-          <Box textAlign="center">
+          {/* <Box textAlign="center">
+            <div style={{width:'100%'}}>
             <Image
               src={volunteer1}
               alt="volunteer first"
-              width={1200}
-              height={200}
+              // width={1200}
+              // height={200}
             />
-          </Box>
+            </div>
+          </Box> */}
           <Box sx={{ fontWeight: "bold", my: 5 }}>
             <Typography variant="h4" textAlign="center">
               기부 News
             </Typography>
           </Box>
-          <Stack>
+          <Box sx={{display: 'flex', justifyContent: 'center'}}>
+          <Stack sx={{width : '90%'}}>
             <TableContainer component={Paper} sx={{ my: 5 }}>
               <Table sx={{ minWidth: 700 }} aria-label="customized table">
                 <TableHead>
@@ -122,13 +138,13 @@ const NewsMain: FC = () => {
                         key={data.title}
                         onClick={() => window.open(`${data.link}`)}
                       >
-                        <StyledTableCell align="center" sx={{ width: 400 }}>
+                        <StyledTableCell align="center" sx={{ width: '14%'}}>
                           {data.title}
                         </StyledTableCell>
                         <StyledTableCell align="center">
                           {data.description}
                         </StyledTableCell>
-                        <StyledTableCell align="center">
+                        <StyledTableCell align="center" sx={{width: '10%'}}>
                           {data.date}
                         </StyledTableCell>
                       </StyledTableRow>
@@ -137,9 +153,10 @@ const NewsMain: FC = () => {
               </Table>
             </TableContainer>
           </Stack>
+          </Box>
         </Stack>
       </Grid>
-    </div>
+    </ThemeProvider>
   );
 };
 
