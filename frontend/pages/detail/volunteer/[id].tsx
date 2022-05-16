@@ -99,13 +99,16 @@ const VolunteerDetail: FC = () => {
   };
 
   useEffect(() => {
-    volunteerCommentList(router.query.id, params).then((res) => {
-      setCommentList(res.data.comment);
-      setTotalPages(res.data.totalPage);
-      // console.log("data는", commentList);
-      setLoading(true);
-    });
+    if (router.isReady) {
+      volunteerCommentList(router.query.id, params).then((res) => {
+        setCommentList(res.data.comment);
+        setTotalPages(res.data.totalPage);
+        setLoading(true);
+      });
+    }
   }, [curPage, router.isReady]);
+
+  
 
   // 댓글 버튼 누를 시 작성
   // const repoArray: any = [...commentList]
@@ -115,13 +118,14 @@ const VolunteerDetail: FC = () => {
       return;
     }
     const id = localStorage.getItem("id");
+    const token = localStorage.getItem("jwt");
     const params = {
       volunteerId: router.query.id,
       content: comment,
       parentCommentId: "",
     };
 
-    volunteerComment(id, params)
+    volunteerComment(id, token, params)
       .then((res) => {
         // setCommentList(commentList.concat(comment));
         console.log(res + "성공");
