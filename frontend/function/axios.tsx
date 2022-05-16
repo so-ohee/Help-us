@@ -539,6 +539,14 @@ export const searchCerti = async (num) => {
   });
 };
 
+// 내가 기부한 전체 목록
+export const getDonatonAll = async (id) => {
+  return await axios({
+    method: "GET",
+    url: `/8000/api/d.apply/all/${id}`,
+  });
+};
+
 // ------------------------- 기타 ------------------------------
 
 // ocr
