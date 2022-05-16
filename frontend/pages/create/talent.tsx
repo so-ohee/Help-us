@@ -1,7 +1,7 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { Box, Grid, Button, Typography, Stack, TextField, TextareaAutosize } from "@mui/material/";
 import { ThemeProvider, createTheme, styled } from "@mui/material/styles";
-import { CKEditor } from 'ckeditor4-react';
+import { createTalent } from "../../function/axios"
 
 const CustomButton = styled(Button)({
   backgroundColor: "#5B321E",
@@ -14,6 +14,9 @@ const CustomButton = styled(Button)({
 });
 
 const Talent: FC = () => {
+  const [ title, setTitle ] = useState<string>('');
+  const [ content, setContent ] =useState<string>('');
+
   const theme = createTheme({
     typography: {
       // fontFamily: "Gowun Dodum",
@@ -26,6 +29,31 @@ const Talent: FC = () => {
       },
     },
   });
+
+  const talentSubmit = () => {
+    const id = localStorage.getItem("id");
+    const token = localStorage.getItem("jwt");
+
+    const data = {
+      title : title,
+      content : content,
+    }
+
+    if (title == "") {
+      alert("제목을 입력해주세요.");
+      return;
+    }
+    if (content == "") {
+      alert("내용을 입력해주세요.");
+      return;
+    }
+
+    createTalent(id, token, data)
+      .then((res) => {
+        console.log(res + "성공")
+      })
+      .catch((err) => console.log(err + "실패"))
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -40,13 +68,21 @@ const Talent: FC = () => {
             <Typography variant="h4" textAlign="center">재능 기부</Typography>
           </Box>
           <Box sx={{ my : 3}}>
-            <TextField fullWidth label="제목"  />
-          </Box>
-          <CKEditor
-              initData={<p>봉사 가능 일 : <br />내용 :</p>}
+            <TextField 
+              fullWidth 
+              label="제목"
+              onChange={(e) => setTitle(e.target.value)}  
             />
+          </Box>
+          <TextField
+            fullWidth
+            multiline
+            minRows={15}
+            placeholder="내용"
+            onChange={(e) => setContent(e.target.value)}
+          />
           <Box sx={{my: 5, display: 'flex', justifyContent: 'center'}}>
-            <CustomButton size="large" variant="contained" type="submit">등록하기</CustomButton>
+            <CustomButton size="large" variant="contained" type="submit" onClick={talentSubmit}>등록하기</CustomButton>
           </Box>
         </Stack>
       </Grid>

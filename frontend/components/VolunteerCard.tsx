@@ -19,7 +19,11 @@ const CustomButton = styled(Button)({
   },
 });
 
-const VolunteerCard: FC = () => {
+interface IVolunteer {
+  volunteer: any;
+}
+
+const VolunteerCard: FC<IVolunteer> = ({ volunteer }) => {
   return (
     <div>
       <Box
@@ -41,13 +45,23 @@ const VolunteerCard: FC = () => {
               width: "35%",
             }}
           >
-            <Image
-              width="100%"
-              height="145"
-              src={TestImage}
-              alt="Donation Image"
-              layout="responsive"
-            />
+            {volunteer.profile === null ? (
+              <Image
+                width="100%"
+                height="145"
+                src={TestImage}
+                alt="Donation Image"
+                layout="responsive"
+              />
+            ) : (
+              <Image
+                width="100%"
+                height="145"
+                src={volunteer.profile}
+                alt="Donation Image"
+                layout="responsive"
+              />
+            )}
           </Box>
           <Box
             sx={{
@@ -63,7 +77,7 @@ const VolunteerCard: FC = () => {
             <Box>
               {/* 제목은 17자까지만 보여주기??*/}
               <Typography sx={{ fontWeight: "bold", fontSize: 17, mt: 0.5 }}>
-                대청소 봉사 인원을 모집합니다.
+                {volunteer.title}
               </Typography>
 
               <Grid
@@ -86,7 +100,7 @@ const VolunteerCard: FC = () => {
                 >
                   <PersonIcon sx={{ mr: 2 }} />
                   <Typography align="left" sx={{ fontSize: 14, width: 200 }}>
-                    4 / 10
+                    {volunteer.applicant} / {volunteer.people}
                   </Typography>
                 </Grid>
                 <Grid
@@ -97,7 +111,7 @@ const VolunteerCard: FC = () => {
                 >
                   <CalendarMonthIcon sx={{ mr: 2 }} />
                   <Typography align="left" sx={{ fontSize: 14, width: 200 }}>
-                    2022-05-20
+                    {volunteer.volDate.substr(0, 10)}
                   </Typography>
                 </Grid>
                 <Grid
@@ -108,7 +122,7 @@ const VolunteerCard: FC = () => {
                 >
                   <LocationOnIcon sx={{ mr: 2 }} />
                   <Typography align="left" sx={{ fontSize: 14, width: 200 }}>
-                    경기도 수원시 팔달구 중부대로 222번길 22 2-22
+                    {volunteer.volAddress}
                   </Typography>
                 </Grid>
                 {/* <Typography sx={{ fontSize: 14, m: 0.5 }}>
@@ -125,26 +139,54 @@ const VolunteerCard: FC = () => {
                 direction="row"
                 alignItems="center"
               >
-                <Box
-                  sx={{
-                    borderTopLeftRadius: 5,
-                    borderBottomLeftRadius: 5,
-                    width: "40%",
-                    height: 15,
-                    bgcolor: "#CDAD78",
-                  }}
-                ></Box>
-                <Box
-                  sx={{
-                    borderTopRightRadius: 5,
-                    borderBottomRightRadius: 5,
-                    width: "60%",
-                    height: 15,
-                    bgcolor: "#dbd5ca",
-                  }}
-                ></Box>
+                {volunteer.percent === 100 ? (
+                  <Box
+                    sx={{
+                      borderTopLeftRadius: 5,
+                      borderBottomLeftRadius: 5,
+                      borderTopRightRadius: 5,
+                      borderBottomRightRadius: 5,
+                      width: `${volunteer.percent}%`,
+                      height: 15,
+                      bgcolor: "#CDAD78",
+                    }}
+                  ></Box>
+                ) : (
+                  <Box
+                    sx={{
+                      borderTopLeftRadius: 5,
+                      borderBottomLeftRadius: 5,
+                      width: `${volunteer.percent}%`,
+                      height: 15,
+                      bgcolor: "#CDAD78",
+                    }}
+                  ></Box>
+                )}
+                {volunteer.percent === 0 ? (
+                  <Box
+                    sx={{
+                      borderTopRightRadius: 5,
+                      borderBottomRightRadius: 5,
+                      borderTopLeftRadius: 5,
+                      borderBottomLeftRadius: 5,
+                      width: `${100 - volunteer.percent}%`,
+                      height: 15,
+                      bgcolor: "#dbd5ca",
+                    }}
+                  ></Box>
+                ) : (
+                  <Box
+                    sx={{
+                      borderTopRightRadius: 5,
+                      borderBottomRightRadius: 5,
+                      width: `${100 - volunteer.percent}%`,
+                      height: 15,
+                      bgcolor: "#dbd5ca",
+                    }}
+                  ></Box>
+                )}
                 <Typography align="center" sx={{ ml: 1, fontSize: 14 }}>
-                  40%
+                  {volunteer.percent}%
                 </Typography>
               </Stack>
             </Box>
@@ -155,7 +197,7 @@ const VolunteerCard: FC = () => {
               alignItems="center"
               justifyContent="center"
             >
-              <Typography align="center">수원시광교노인복지관</Typography>
+              <Typography align="center">{volunteer.name}</Typography>
             </Stack>
           </Box>
         </Stack>

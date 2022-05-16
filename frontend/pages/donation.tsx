@@ -108,7 +108,7 @@ const Donation: FC = () => {
             </TabPanel>
             <TabPanel value="2">
               <Box sx={{ mt: 3 }}>
-              <Stack direction="row" spacing={5} sx={{mb : 5}}>
+              {/* <Stack direction="row" spacing={5} sx={{mb : 5}}>
                   <VolunteerCard/>
                   <VolunteerCard/>
                 </Stack>
@@ -119,7 +119,7 @@ const Donation: FC = () => {
                 <Stack direction="row" spacing={5} sx={{mb : 5}}>
                   <VolunteerCard/>
                   <VolunteerCard/>
-                </Stack>
+                </Stack> */}
               </Box>
             </TabPanel>
           </TabContext>

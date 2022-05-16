@@ -16,7 +16,10 @@ import {
   Button,
 } from "@mui/material";
 import { tableCellClasses } from "@mui/material/TableCell";
-import { FC } from "react";
+import { FC, useState, useEffect } from "react";
+
+// api
+import { getInquiryApplyList } from "function/axios";
 
 const CustomButton = styled(Button)({
   backgroundColor: "#5B321E",
@@ -189,6 +192,26 @@ const IsFact = ({ fact }) => {
 };
 
 const orgpageMyCheckVolunteer: FC = () => {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [inquiryApplyList, setInquiryApplyList] = useState<any>(null);
+
+  // pagination
+  const [curPage, setCurPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const paginate = (pageNumber) => setCurPage(pageNumber);
+
+  
+
+  useEffect(() => {
+    
+    getInquiryApplyList(localStorage.getItem("id")).then((res) => {
+      console.log(res.data.listApply.volunteerApplyId);
+      setInquiryApplyList(res.data.listApply);
+      setTotalPages(res.data.totalPage);
+      // console.log("data는", reviewList);
+      setLoading(true);
+    });
+  }, [curPage]);
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -227,8 +250,8 @@ const orgpageMyCheckVolunteer: FC = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {dummyData.map((data) => (
-                  <StyledTableRow key={data.donationApplyId}>
+                {inquiryApplyList && inquiryApplyList.map((data) => (
+                  <StyledTableRow key={data.volunteerApplyId}>
                     <StyledTableCell align="center">
                       {data.volunteerApplyId}
                     </StyledTableCell>
