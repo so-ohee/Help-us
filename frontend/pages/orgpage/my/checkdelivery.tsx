@@ -17,6 +17,7 @@ import {
 } from "@mui/material";
 import { tableCellClasses } from "@mui/material/TableCell";
 import { FC, useEffect, useState } from "react";
+import Pagination from "@/components/Pagination";
 
 // api
 import { getDeliveryList, endDelivery } from "function/axios";
@@ -67,6 +68,11 @@ const orgpageMyCheckDelivery: FC = () => {
   // 배송 현황 리스트
   const [deliveryList, setDeliveryList] = useState<any>("");
 
+  // pagination
+  const [curPage, setCurPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const paginate = (pageNumber) => setCurPage(pageNumber);
+
   // 도착 완료
   const deliverySubmit = (e) => {
     const id = localStorage.getItem("id");
@@ -80,14 +86,14 @@ const orgpageMyCheckDelivery: FC = () => {
       .catch((err) => console.log(err + "실패"));
   };
 
-
   useEffect(() => {
     const memberId = localStorage.getItem("id");
     const params = {
-      page: 1,
+      page: curPage,
     };
     getDeliveryList(memberId, params).then((res) => {
       setDeliveryList(res.data.apply);
+      setTotalPages(res.data.totalPage);
     });
   }, [deliverySubmit]);
 
@@ -213,7 +219,10 @@ const orgpageMyCheckDelivery: FC = () => {
                           </>
                         </StyledTableCell>
                         <StyledTableCell align="center">
-                          <CustomButton sx={{ width: 80, height: 30 }} onClick={() => deliverySubmit(data.donationApplyId)}>
+                          <CustomButton
+                            sx={{ width: 80, height: 30 }}
+                            onClick={() => deliverySubmit(data.donationApplyId)}
+                          >
                             도착 완료
                           </CustomButton>
                         </StyledTableCell>
@@ -222,6 +231,13 @@ const orgpageMyCheckDelivery: FC = () => {
                 </TableBody>
               </Table>
             </TableContainer>
+            <Stack alignItems="center" sx={{ mb: 2, mt: 2 }}>
+              <Pagination
+                curPage={curPage}
+                paginate={paginate}
+                totalPage={totalPages}
+              />
+            </Stack>
           </Container>
         </Box>
       </Box>

@@ -14,7 +14,7 @@ import {
   Paper,
   Table,
   Button,
-  Link
+  Link,
 } from "@mui/material";
 import { tableCellClasses } from "@mui/material/TableCell";
 import { FC, useState, useEffect } from "react";
@@ -69,13 +69,13 @@ const UserMypageCs: FC = () => {
   const [csList, setCSList] = useState<any>(null);
 
   // pagination
-  const [curPage, setCurPage] = useState(0);
+  const [curPage, setCurPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const paginate = (pageNumber) => setCurPage(pageNumber);
 
   const params = {
     memberId: "",
-    page: curPage + 1,
+    page: curPage,
   };
 
   useEffect(() => {
@@ -138,7 +138,11 @@ const UserMypageCs: FC = () => {
                         {data.category}
                       </StyledTableCell>
                       <StyledTableCell align="center" sx={{ width: 400 }}>
-                        <Link href={`/detail/cs/${data.helpDeskId}`} underline="none" color="inherit">
+                        <Link
+                          href={`/detail/cs/${data.helpDeskId}`}
+                          underline="none"
+                          color="inherit"
+                        >
                           {data.title}
                         </Link>
                       </StyledTableCell>
@@ -156,6 +160,13 @@ const UserMypageCs: FC = () => {
               </TableBody>
             </Table>
           </TableContainer>
+          <Stack alignItems="center" sx={{ mb: 2, mt: 2 }}>
+            <Pagination
+              curPage={curPage}
+              paginate={paginate}
+              totalPage={totalPages}
+            />
+          </Stack>
         </Container>
       </Box>
     </Box>

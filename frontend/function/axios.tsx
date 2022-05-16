@@ -58,7 +58,7 @@ export const createReview = async (id, token, confirm, files) => {
 };
 
 // 마이페이지(개인) - 송장 입력 목록 조회
-export const getApplyList = async (id, params,token) => {
+export const getApplyList = async (id, params, token) => {
   return await axios({
     headers: {
       Authorization: token,
@@ -111,12 +111,13 @@ export const getInquiryList = async (id, params) => {
 };
 
 // 마이페이지(기관) - 봉사 참석 여부
-export const endInquiry = async (token, volunteerApplyId, status) => {
+export const endInquiry = async (id, token, volunteerApplyId, status) => {
   return await axios({
     method: "PUT",
     url: `/8000/inquiry/apply/${volunteerApplyId}/${status}`,
     headers: {
       Authorization: token,
+      memberId: id,
     },
   });
 };
@@ -456,7 +457,7 @@ export const createCs = async (id, token, desk, files ) => {
 // 고객센터 댓글 등록
 // 고객센터 댓글 삭제
 // 고객센터 상세 조회
-export const getCsDetail = async (id,) => {
+export const getCsDetail = async (id) => {
   return await axios({
     method: "GET",
     url: `/9082/desk/${id}`,
