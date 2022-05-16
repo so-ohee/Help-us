@@ -210,7 +210,7 @@ const DonationCard: FC<DonationData> = ({ donation }) => {
                   ></Box>
                 )}
                 <Typography align="center" sx={{ ml: 1, fontSize: 14 }}>
-                  {donation?.percent}%
+                  {parseInt(donation?.percent)}%
                 </Typography>
               </Stack>
             </Box>

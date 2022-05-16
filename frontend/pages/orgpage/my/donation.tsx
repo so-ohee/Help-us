@@ -21,7 +21,7 @@ import {
 
 import DonationCardOrg from "@/components/DonationCardOrg";
 import DonationCardOrgFinish from "@/components/DonationCardOrgFinish";
-
+import Pagination from "@/components/Pagination";
 // api
 import { getDonationList } from "../../../function/axios";
 
@@ -120,6 +120,16 @@ const orgpageMyDonation: FC = () => {
     setValue(newValue);
   };
 
+  // pagination1
+  const [curPage, setCurPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const paginate = (pageNumber) => setCurPage(pageNumber);
+
+  // pagination2
+  const [curPage2, setCurPage2] = useState(1);
+  const [totalPages2, setTotalPages2] = useState(0);
+  const paginate2 = (pageNumber) => setCurPage(pageNumber);
+
   const [mId, setMID] = useState<any>("");
   const [userToken, setUserToken] = useState<any>("");
 
@@ -142,16 +152,22 @@ const orgpageMyDonation: FC = () => {
     const ingParams = {
       memberId: memberId,
       donationStatus: "진행",
+      page: curPage,
     };
     const doneParams = {
       memberId: memberId,
       donationStatus: "마감",
+      page: curPage2,
     };
     getDonationList(ingParams).then((res) => {
       setIngDonation(res.data.donation);
+      // console.log(res.)
+      setTotalPages(res.data.totalPage);
     });
     getDonationList(doneParams).then((res) => {
       setDoneDonation(res.data.donation);
+      console.log(res.data.totalPage);
+      setTotalPages2(res.data.totalPage);
     });
   }, [fStatus]);
 
@@ -220,55 +236,43 @@ const orgpageMyDonation: FC = () => {
                             />
                           ))
                         ) : (
-                          <Typography>보유 중인 작품이 없습니다.</Typography>
+                          <Typography>진행 중인 기부가 없습니다.</Typography>
                         )}
                       </Box>
+                      <Stack alignItems="center" sx={{ mb: 2, mt: 2 }}>
+                        <Pagination
+                          curPage={curPage}
+                          paginate={paginate}
+                          totalPage={totalPages}
+                        />
+                      </Stack>
                     </TabPanel>
                     <TabPanel value={value} index={1}>
-                      <div>
-                        <Box
-                          sx={{
-                            display: "grid",
-                            gridTemplateColumns: "repeat(auto-fill, 500px)",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            marginTop: 5,
-                            rowGap: 5,
-                            columnGap: 10,
-                          }}
-                        >
-                          <DonationCardOrgFinish />
-                          <DonationCardOrgFinish />
-                        </Box>
-                        <Box
-                          sx={{
-                            display: "grid",
-                            gridTemplateColumns: "repeat(auto-fill, 500px)",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            marginTop: 5,
-                            rowGap: 5,
-                            columnGap: 10,
-                          }}
-                        >
-                          <DonationCardOrgFinish />
-                          <DonationCardOrgFinish />
-                        </Box>
-                        <Box
-                          sx={{
-                            display: "grid",
-                            gridTemplateColumns: "repeat(auto-fill, 500px)",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            marginTop: 5,
-                            rowGap: 5,
-                            columnGap: 10,
-                          }}
-                        >
-                          <DonationCardOrgFinish />
-                          <DonationCardOrgFinish />
-                        </Box>
-                      </div>
+                      <Box
+                        sx={{
+                          display: "grid",
+                          gridTemplateColumns: "repeat(auto-fill, 500px)",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          rowGap: 1,
+                          columnGap: 5,
+                        }}
+                      >
+                        {doneDonation && doneDonation.length > 0 ? (
+                          doneDonation.map((item, i) => (
+                            <DonationCardOrgFinish key={i} item={item} />
+                          ))
+                        ) : (
+                          <Typography>마감된 기부가 없습니다.</Typography>
+                        )}
+                      </Box>
+                      <Stack alignItems="center" sx={{ mb: 2, mt: 2 }}>
+                        <Pagination
+                          curPage={curPage2}
+                          paginate={paginate2}
+                          totalPage={totalPages2}
+                        />
+                      </Stack>
                     </TabPanel>
                   </Box>
                 </Box>
