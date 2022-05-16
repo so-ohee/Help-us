@@ -1,5 +1,4 @@
 import { FC, useState, useEffect } from "react";
-
 import { getNewsList } from "function/axios";
 import Pagination from "@/components/Pagination";
 import {
@@ -123,9 +122,9 @@ const NewsMain: FC = () => {
                 </TableHead>
                 <TableBody>
                   {newsList &&
-                    newsList.map((data, idx) => (
+                    newsList.map((data) => (
                       <StyledTableRow
-                        key={idx}
+                        key={data.title}
                         onClick={() => window.open(`${data.link}`)}
                       >
                         <StyledTableCell sx={{ width: '14%'}}>
