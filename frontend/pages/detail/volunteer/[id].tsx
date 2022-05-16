@@ -43,6 +43,7 @@ import {
   volunteerDetail,
   volunteerCommentList,
   volunteerComment,
+  userDetail
 } from "function/axios";
 import { useRouter } from "next/router";
 
@@ -66,14 +67,22 @@ const VolunteerDetail: FC = () => {
   const [comment, setComment] = useState<string>("");
   const [parentCommentId, setParentComeentId] = useState("");
   const [commentList, setCommentList] = useState<any>([]);
+  const [userDetails, setUserDetails] = useState<any>(null);
+  let userId = 0;
 
   useEffect(() => {
     if (router.isReady) {
       volunteerDetail(router.query.id).then((res) => {
         console.log(res);
         setVolunteerDetails(res.data.volunteer);
+        userId = res.data.volunteer.memberId;
         setLoading(true);
         console.log(volunteerDetails);
+      }).then(() => {
+        userDetail(userId).then((res) => {
+          console.log(res);
+          setUserDetails(res.data);
+        })
       });
     }
   }, [router.isReady]);
@@ -87,12 +96,11 @@ const VolunteerDetail: FC = () => {
     page: curPage,
   };
 
-  
   useEffect(() => {
     volunteerCommentList(router.query.id, params).then((res) => {
       setCommentList(res.data.comment);
       setTotalPages(res.data.totalPage);
-      console.log("data는", commentList);
+      // console.log("data는", commentList);
       setLoading(true);
     });
   }, [curPage, router.isReady]);
@@ -162,7 +170,7 @@ const VolunteerDetail: FC = () => {
                 </Grid>
                 <Grid>
                   <Typography sx={{ mt: 0.5 }} variant="h6" fontWeight="bold">
-                    수원시광교노인복지관
+                    {userDetails?.name}
                   </Typography>
                   <Grid
                     sx={{ mt: 2 }}
@@ -172,7 +180,7 @@ const VolunteerDetail: FC = () => {
                   >
                     <BusinessIcon sx={{ mr: 2 }} />
                     <Typography align="center">
-                      경기도 수원시 팔달구 중부대로 222번길 22 2-22
+                      {userDetails?.address}
                     </Typography>
                   </Grid>
                   <Grid
@@ -182,7 +190,7 @@ const VolunteerDetail: FC = () => {
                     alignItems="center"
                   >
                     <CallIcon sx={{ mr: 2 }} />
-                    <Typography align="center">010-7777-7777</Typography>
+                    <Typography align="center">{userDetails?.tel}</Typography>
                   </Grid>
                   <Grid
                     sx={{ mt: 2 }}
@@ -191,7 +199,7 @@ const VolunteerDetail: FC = () => {
                     alignItems="center"
                   >
                     <MailIcon sx={{ mr: 2 }} />
-                    <Typography align="center">test@gmail.com</Typography>
+                    <Typography align="center">{userDetails?.email}</Typography>
                   </Grid>
                 </Grid>
               </Grid>
