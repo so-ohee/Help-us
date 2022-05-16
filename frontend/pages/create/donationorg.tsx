@@ -321,6 +321,7 @@ const DonationOrg: FC = (props) => {
       return;
     }
 
+
     createDonation(id, token, donation, imageList)
       .then((res) => {
         console.log(res + "성공");

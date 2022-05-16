@@ -203,7 +203,6 @@ const Review: FC = () => {
       }
     }, [router.isReady])
 
-    console.log(donationId)
 
   // 후기 등록
   const handleSubmit = (e) => {
@@ -249,6 +248,7 @@ const Review: FC = () => {
     createReview(id, token, confirm, imageList)
       .then((res) => {
         console.log(res + "성공")
+        // Router.push("/review");
       })
       .catch((err) => console.log(err + "실패"))
   };

@@ -159,16 +159,23 @@ export const createDonation = async (id, token, donation, files) => {
 };
 
 //재능 기부 글 작성
-export const createTalent = async (id, token, params) => {
+export const createTalent = async (id, token, talentDonationReqDto, files) => {
+  const newForm = new FormData();
+
+  newForm.append(
+    "talentDonationReqDto",
+    new Blob([JSON.stringify(talentDonationReqDto)], { type: "application/json" })
+  );
+
+  files?.map((file) => newForm.append("files", file));
   return await axios ({
     method: "POST",
     url : "/8000/talentDonation",
     headers: {
-      memberId : id,
+      "Content-Type": "multipart/form-data",
       Authorization: token,
-      role : "USER",
     },
-    data : params,
+    data : newForm,
   })
 }
 
@@ -178,16 +185,24 @@ export const createTalent = async (id, token, params) => {
 // ----------------------- 9081 ------------------------------
 
 // 봉사 글 작성
-export const createVolunteer = async (id, token, params) => {
+export const createVolunteer = async (id, token, volunteerReqDto, files) => {
+  const newForm = new FormData();
+
+  newForm.append(
+    "volunteerReqDto",
+    new Blob([JSON.stringify(volunteerReqDto)], { type: "application/json" })
+  );
+
+  files?.map((file) => newForm.append("files", file));
+  
   return await axios({
     method: "POST",
     url : "/8000/volunteer",
     headers: {
-      memberId : id,
+      "Content-Type": "multipart/form-data",
       Authorization: token,
-      role: "ORG"
     },
-    data: params
+    data: newForm
   })
 }
 
@@ -331,6 +346,25 @@ export const userDetail = async (id) => {
 };
 
 // 고객센터 등록
+export const createCs = async (id, token, desk, files ) => {
+  const newForm = new FormData();
+
+  newForm.append(
+    "desk",
+    new Blob([JSON.stringify(desk)], { type: "application/json" })
+  );
+
+  files?.map((file) => newForm.append("files", file));
+  return await axios({
+    method: "POST",
+    url: "/8000/desk",
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Authorization: token,
+    },
+    data: newForm
+  })
+}
 // 고객센터 수정
 // 고객센터 댓글 등록
 // 고객센터 댓글 삭제

@@ -270,11 +270,11 @@ const TalentDetail: FC = () => {
               등록
             </CustomButton>
           </Stack>
-          <Stack>
+          {/* <Stack>
             {comments.map((item) => (
               <Comment comment={item} />
             ))}
-          </Stack>
+          </Stack> */}
         </Container>
       </Box>
     </Box>
