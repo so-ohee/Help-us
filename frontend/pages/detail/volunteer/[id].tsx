@@ -74,17 +74,18 @@ const VolunteerDetail: FC = () => {
 
   let userId = 0;
 
+  // 상세 페이지 내용 불러오기
   useEffect(() => {
     if (router.isReady) {
       volunteerDetail(router.query.id).then((res) => {
-        console.log(res);
+        // console.log(res);
         setVolunteerDetails(res.data.volunteer);
         userId = res.data.volunteer.memberId;
         setLoading(true);
         console.log(volunteerDetails);
       }).then(() => {
         userDetail(userId).then((res) => {
-          console.log(res);
+          // console.log(res);
           setUserDetails(res.data);
           setLoading2(true);
         })

@@ -86,18 +86,25 @@ const Comment: FC<CommentData> = ({ comment, id, token }) => {
   //댓글 삭제
   const removeComment = () => {
     const commentId = comment.commentId
-      
+      console.log(commentId)
+      console.log(userId)
       volunteerCommentDelete(commentId, id, token)
         .then((res) => console.log("성공" + res ))
         .catch((err) => console.log("실패" + err))
+
+      if (userId != comment.memberId) {
+        alert("댓글 작성자가 아닙니다.");
+        return;
+      }
   }
+
 
   useEffect(() => {
     const Id = localStorage.getItem("id");
     setUserId(Id)
   }, [id])
 
-  // console.log(comment.memberId)
+
   
   
   return (
@@ -136,6 +143,7 @@ const Comment: FC<CommentData> = ({ comment, id, token }) => {
                   </Typography>
                 ) : (null)}
                 {/* id랑  memberId랑 같으면 삭제 버튼 활성화*/}
+                {userId == comment.memberId ? (
                   <Button
                     onClick={removeComment}
                     variant="contained"
@@ -146,6 +154,7 @@ const Comment: FC<CommentData> = ({ comment, id, token }) => {
                   >
                     삭제
                   </Button>
+                ) : null}
               </Stack>
             </Stack>
             <Stack direction="row" sx={{ ml: 11, mb: 2 }} alignItems="center">
@@ -188,7 +197,7 @@ const Comment: FC<CommentData> = ({ comment, id, token }) => {
                 {comment ? (
                   <Typography>{comment.createDate}</Typography>
                 ) : (null)}
-                {id === comment.memberId ? (
+                
                   <Button
                     variant="contained"
                     color="error"
@@ -198,7 +207,6 @@ const Comment: FC<CommentData> = ({ comment, id, token }) => {
                   >
                     삭제
                   </Button>
-                ) : null }
               </Stack>
             </Stack>
             <Stack direction="row" sx={{ ml: 16, mb: 2 }} alignItems="center">
