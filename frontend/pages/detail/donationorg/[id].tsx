@@ -133,7 +133,6 @@ const DonationOrgDetail: FC = () => {
 
   const [userId, setUserId] = useState<any>("");
   const [token, setToken] = useState<any>("");
-
   const [applyStatus, setApplyStatus] = useState<boolean>(false);
 
   // 댓글
@@ -162,6 +161,7 @@ const DonationOrgDetail: FC = () => {
       donationDetail(router.query.id).then((res) => {
         // console.log(res);
         setDonationDetails(res.data.donation);
+        console.log(res.data.donation);
         setDetailLoading(true);
       });
     }
@@ -604,15 +604,20 @@ const DonationOrgDetail: FC = () => {
                         </Tooltip>
                       </StyledTableCell>
                       <StyledTableCell align="center">
-                        <DonationApply
-                          donation={data}
-                          pId={data.productId}
-                          router={routerId}
-                          id={userId}
-                          token={token}
-                          applyStatus={applyStatus}
-                          getStatus={getStatus}
-                        />
+                        {donationDetails.status !== "마감" ? (
+                          <DonationApply
+                            donation={data}
+                            pId={data.productId}
+                            router={routerId}
+                            id={userId}
+                            token={token}
+                            applyStatus={applyStatus}
+                            getStatus={getStatus}
+                          />
+                        ) : (
+                            <>마감</>
+                        )}
+                        
                       </StyledTableCell>
                     </StyledTableRow>
                   ))}

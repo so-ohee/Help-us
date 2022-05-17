@@ -43,7 +43,6 @@ const DonationCard: FC<DonationData> = ({ donation }) => {
             }}
           >
             <Box>
-              {/* 제목은 17자까지만 보여주기??*/}
               <Link href={`/detail/donationorg/${donation.donationId}`}>
                 <a>
                   <Typography
