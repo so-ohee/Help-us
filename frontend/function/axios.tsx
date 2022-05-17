@@ -332,10 +332,11 @@ export const volunteerCommentList = async (id, params) => {
 };
 
 // 봉사 상세 페이지 댓글 삭제
-export const volunteerCommentDelete = async (id, token) => {
+export const volunteerCommentDelete = async (commentId, id, token) => {
+  // console.log(token)
   return await axios({
     method: "DELETE",
-    url: `/8000/v.comment/${id}`,
+    url: `/8000/v.comment/${commentId}`,
     headers: {
       memberId: id,
       Authorization: token,

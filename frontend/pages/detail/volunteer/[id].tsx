@@ -69,6 +69,8 @@ const VolunteerDetail: FC = () => {
   const [userDetails, setUserDetails] = useState<any>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [loading2, setLoading2] = useState<boolean>(false);
+  const [id, setId] = useState<any>();
+  const [token, setToken] = useState<any>();
 
   let userId = 0;
 
@@ -107,9 +109,13 @@ const VolunteerDetail: FC = () => {
         setLoading(true);
       });
     }
-  }, [curPage, router.isReady]);
-
-  
+  }, [curPage, router.isReady, commentList]);
+  useEffect(()=> {
+    const id = localStorage.getItem("id");
+    const token = localStorage.getItem("jwt");
+    setId(id);
+    setToken(token);
+  })
 
   // 댓글 버튼 누를 시 작성
   // const repoArray: any = [...commentList]
@@ -405,8 +411,8 @@ const VolunteerDetail: FC = () => {
                     등록
                   </CustomButton>
                 </Stack>
-                {/* {commentList &&
-                  commentList.map((item) => <Comment comment={item} />)} */}
+                {commentList &&
+                  commentList.map((item) => <Comment comment={item} id={id} token={token} />)}
               </Box>
               <Box sx={{ display: "flex", justifyContent: "center", my: 5 }}>
                 <Pagination
