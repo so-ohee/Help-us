@@ -25,7 +25,7 @@ import VolunteerCard from "../components/VolunteerCard";
 import volunteer1 from "../public/images/volunteer1.jpg";
 import Pagination from "@/components/Pagination";
 import Link from "next/link";
-
+import CarouselMain from "../components/CarouselMain";
 // api
 import { getDonationMain, getVolunteerMain } from "function/axios";
 import { NineKOutlined } from "@mui/icons-material";
@@ -157,12 +157,12 @@ const Donation: FC = () => {
 
   const params1 = {
     page: curPage,
-    order: option
+    order: option,
   };
 
   const params2 = {
     page: curPage2,
-    order: option
+    order: option,
   };
 
   useEffect(() => {
@@ -178,12 +178,12 @@ const Donation: FC = () => {
   useEffect(() => {
     params1.order = option;
     params2.order = option;
-    
+
     getDonationMain(params1).then((res) => {
       setRecentDonation(res.data.donation);
       setTotalPages(res.data.totalPage);
     });
-    
+
     getVolunteerMain(params2).then((res) => {
       setRecentVolunteer(res.data.listVolunteer);
       setTotalPages2(res.data.totalPage);
@@ -201,14 +201,18 @@ const Donation: FC = () => {
             mt: 0,
           }}
         >
-          <Stack alignItems="center">
-            <Image
-              src={volunteer1}
-              alt="volunteer first"
-              width={1200}
-              height={200}
-            />
-          </Stack>
+          <Box textAlign="center">
+            {/* 이미지 출력 부분 */}
+            <Stack alignItems="center" sx={{ mb: 5 }}>
+              <CarouselMain />
+              {/* <Image
+            src={volunteer1}
+            alt="volunteer first"
+            width={1200}
+            height={200}
+          /> */}
+            </Stack>
+          </Box>
           <Stack>
             <Box sx={{ width: "100%", mt: 2 }}>
               <Box>
