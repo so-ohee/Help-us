@@ -143,6 +143,8 @@ const Donation: FC = () => {
   const paginate = (pageNumber) => setCurPage(pageNumber);
   const paginate2 = (pageNumber) => setCurPage2(pageNumber);
 
+  const [userRole, setUserRole] = useState<any>("");
+
   // 최신순
   const [recentDonation, setRecentDonation] = useState<any>("");
   const [recentVolunteer, setRecentVolunteer] = useState<any>("");
@@ -166,6 +168,8 @@ const Donation: FC = () => {
   };
 
   useEffect(() => {
+    const userRole = localStorage.getItem("role");
+    setUserRole(userRole);
     getDonationMain(params1).then((res) => {
       setRecentDonation(res.data.donation);
       setTotalPages(res.data.totalPage);
@@ -205,12 +209,6 @@ const Donation: FC = () => {
             {/* 이미지 출력 부분 */}
             <Stack alignItems="center" sx={{ mb: 5 }}>
               <CarouselMain />
-              {/* <Image
-            src={volunteer1}
-            alt="volunteer first"
-            width={1200}
-            height={200}
-          /> */}
             </Stack>
           </Box>
           <Stack>
@@ -233,14 +231,20 @@ const Donation: FC = () => {
                       {...a11yProps(1)}
                     />
                   </StyledTabs>
-                  <Stack direction="row" alignItems="center" spacing={5}>
-                    <Link href={"/create/donationorg"}>
-                      <CustomButton sx={{ height: 40 }}>기부 등록</CustomButton>
-                    </Link>
-                    <Link href={"/create/volunteer"}>
-                      <CustomButton sx={{ height: 40 }}>봉사 등록</CustomButton>
-                    </Link>
-                  </Stack>
+                  {userRole === "ORG" || userRole === "org" ? (
+                    <Stack direction="row" alignItems="center" spacing={5}>
+                      <Link href={"/create/donationorg"}>
+                        <CustomButton sx={{ height: 40 }}>
+                          기부 등록
+                        </CustomButton>
+                      </Link>
+                      <Link href={"/create/volunteer"}>
+                        <CustomButton sx={{ height: 40 }}>
+                          봉사 등록
+                        </CustomButton>
+                      </Link>
+                    </Stack>
+                  ) : null}
                   <Box
                     sx={{
                       minWidth: 200,
