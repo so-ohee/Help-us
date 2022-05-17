@@ -129,6 +129,7 @@ const orgpageMyVolunteer: FC = () => {
 
     getVolunteerOrg(memberId).then((res) => {
       setIngVolunteer(res.data.not_end_list);
+      setDoneVolunteer(res.data.end_list);
     });
   }, []);
 
@@ -152,7 +153,7 @@ const orgpageMyVolunteer: FC = () => {
           </Stack>
           <Grid>
             <Box sx={{ width: "100%", mt: 2 }}>
-              <Box sx={{ bgcolor: "#FCF8F0", borderRadius: 1.25 }}>
+              <Box sx={{ borderRadius: 1.25 }}>
                 <StyledTabs
                   value={value}
                   onChange={handleChange}
@@ -183,16 +184,16 @@ const orgpageMyVolunteer: FC = () => {
                     {ingVolunteer && ingVolunteer.length > 0 ? (
                       ingVolunteer.map((item, i) => (
                         <VolunteerCardOrg
-                        // key={i}
-                        // item={item}
-                        // token={userToken}
-                        // id={mId}
-                        // getStatus={getStatus}
-                        // fStatus={fStatus}
+                          key={i}
+                          item={item}
+                          // token={userToken}
+                          // id={mId}
+                          // getStatus={getStatus}
+                          // fStatus={fStatus}
                         />
                       ))
                     ) : (
-                      <Typography>진행 중인 기부가 없습니다.</Typography>
+                      <Typography>모집 중인 봉사가 없습니다.</Typography>
                     )}
                   </Box>
                   {/* {ingVolunteer && ingVolunteer.length > 0 ? (
@@ -208,50 +209,31 @@ const orgpageMyVolunteer: FC = () => {
                   )} */}
                 </TabPanel>
                 <TabPanel value={value} index={1}>
-                  <div>
-                    <Box
-                      sx={{
-                        display: "grid",
-                        gridTemplateColumns: "repeat(auto-fill, 500px)",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        marginTop: 5,
-                        rowGap: 5,
-                        columnGap: 10,
-                      }}
-                    >
-                      <VolunteerCardOrgFinish />
-                      <VolunteerCardOrgFinish />
-                    </Box>
-                    <Box
-                      sx={{
-                        display: "grid",
-                        gridTemplateColumns: "repeat(auto-fill, 500px)",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        marginTop: 5,
-                        rowGap: 5,
-                        columnGap: 10,
-                      }}
-                    >
-                      <VolunteerCardOrgFinish />
-                      <VolunteerCardOrgFinish />
-                    </Box>
-                    <Box
-                      sx={{
-                        display: "grid",
-                        gridTemplateColumns: "repeat(auto-fill, 500px)",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        marginTop: 5,
-                        rowGap: 5,
-                        columnGap: 10,
-                      }}
-                    >
-                      <VolunteerCardOrgFinish />
-                      <VolunteerCardOrgFinish />
-                    </Box>
-                  </div>
+                  <Box
+                    sx={{
+                      display: "grid",
+                      gridTemplateColumns: "repeat(auto-fill, 300px)",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      rowGap: 5,
+                      columnGap: 7,
+                    }}
+                  >
+                    {doneVolunteer && doneVolunteer.length > 0 ? (
+                      doneVolunteer.map((item, i) => (
+                        <VolunteerCard
+                          key={i}
+                          volunteer={item}
+                          // token={userToken}
+                          // id={mId}
+                          // getStatus={getStatus}
+                          // fStatus={fStatus}
+                        />
+                      ))
+                    ) : (
+                      <Typography>모집 중인 봉사가 없습니다.</Typography>
+                    )}
+                  </Box>
                 </TabPanel>
               </Box>
             </Box>

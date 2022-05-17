@@ -22,10 +22,11 @@ import {
   TextField,
   Tooltip,
   FormGroup,
+  Link,
 } from "@mui/material";
 import { tableCellClasses } from "@mui/material/TableCell";
 
-import Link from "next/link";
+// import Link from "next/link";
 import helpImage from "../../public/images/help.png";
 import EditIcon from "@mui/icons-material/Edit";
 import { makeStyles } from "@material-ui/core/styles";
@@ -42,7 +43,14 @@ import CustomCarousel from "@/components/Carousel";
 
 import { useRouter } from "next/router";
 // api
-import { reviewDetail, getSponsorList, getUserInfo, reviewCommentList, reviewComment } from "function/axios";
+import {
+  reviewDetail,
+  getSponsorList,
+  getUserInfo,
+  reviewCommentList,
+  reviewComment,
+  donationDetail,
+} from "function/axios";
 
 const CustomButton = styled(Button)({
   backgroundColor: "#5B321E",
@@ -129,9 +137,10 @@ const ReviewDetail: FC = () => {
   const [orgInfo, setOrgInfo] = useState<any>("");
   const [orgId, setOrgId] = useState<any>("");
 
+  const [donationInfo, setDonationInfo] = useState<any>("");
   const [detailLoading, setDetailLoading] = useState<boolean>(false);
-  const [loading1, setLoading1] = useState<boolean>(false)
-  const [loading2, setLoading2] = useState<boolean>(false)
+  const [loading1, setLoading1] = useState<boolean>(false);
+  const [loading2, setLoading2] = useState<boolean>(false);
   const [userId, setUserId] = useState<any>("");
   const [token, setToken] = useState<any>("");
   // 댓글
@@ -154,8 +163,8 @@ const ReviewDetail: FC = () => {
     setToken(localStorage.getItem("jwt"));
     if (router.isReady) {
       reviewDetail(router.query.id).then((res) => {
-        // console.log(res);
         setReviewDetails(res.data.confirm);
+        console.log(res.data);
         setDetailLoading(true);
       });
     }
@@ -167,7 +176,10 @@ const ReviewDetail: FC = () => {
       getSponsorList(reviewDetails.memberId, params).then((res) => {
         setSponsorList(res.data.apply);
         setTotalPages(res.data.totalPage);
-        setLoading1(true)
+        setLoading1(true);
+      });
+      donationDetail(reviewDetails.donationId).then((res) => {
+        setDonationInfo(res.data.donation);
       });
     }
   }, [detailLoading]);
@@ -176,25 +188,24 @@ const ReviewDetail: FC = () => {
     if (detailLoading) {
       getUserInfo(reviewDetails.memberId).then((res) => {
         setOrgInfo(res.data);
-        setLoading2(true)
+        setLoading2(true);
       });
     }
   }, [detailLoading]);
 
   const params2 = {
     page: curPage,
-  }
+  };
 
   // 댓글
   useEffect(() => {
     if (router.isReady) {
-      reviewCommentList(router.query.id, params2)
-        .then((res) => {
-          setCommentList(res.data.comment);
-          setTotalPages(res.data.totalPage);
-          setLoading1(true);
-        });
-    };
+      reviewCommentList(router.query.id, params2).then((res) => {
+        setCommentList(res.data.comment);
+        setTotalPages(res.data.totalPage);
+        setLoading1(true);
+      });
+    }
   }, [curPage, router.isReady, commentList]);
 
   const handleComment = (e) => {
@@ -204,24 +215,22 @@ const ReviewDetail: FC = () => {
     }
     const id = localStorage.getItem("id");
     const token = localStorage.getItem("jwt");
-    console.log(router.query.id)
+    console.log(router.query.id);
 
     const params = {
       boardId: router.query.id,
       content: comment,
-      category: "confirm"
+      category: "confirm",
     };
 
     reviewComment(id, token, params)
       .then((res) => console.log(res + "성공"))
-      .catch((err) => console.log(err + "실패"))
-  }
-
+      .catch((err) => console.log(err + "실패"));
+  };
 
   return (
     <>
       {loading1 && loading2 ? (
-
         <Box sx={{ display: "flex" }}>
           <CssBaseline />
           <Box
@@ -256,15 +265,15 @@ const ReviewDetail: FC = () => {
                       <Image
                         src={defaultImage}
                         alt="orgImage"
-                        width="300px"
-                        height="300px"
+                        width="150px"
+                        height="150px"
                       />
                     ) : (
                       <Image
                         src={orgInfo.profile}
                         alt="orgImage"
-                        width="300px"
-                        height="300px"
+                        width="150px"
+                        height="150px"
                       />
                     )}
                   </div>
@@ -311,13 +320,13 @@ const ReviewDetail: FC = () => {
               <Stack
                 justifyContent="space-between"
                 direction="row"
-                sx={{ mt: 1.5, mb: 3 }}
+                sx={{ mt: 1.5, mb: 3, ml: 8 }}
                 alignItems="center"
               >
                 <Typography variant="h4" fontWeight="bold" sx={{ mt: 3 }}>
                   {reviewDetails ? reviewDetails.title : null}
                 </Typography>
-                <Link href="/donation">
+                <Link href="/review">
                   <CustomButton
                     variant="contained"
                     size="small"
@@ -326,6 +335,20 @@ const ReviewDetail: FC = () => {
                   >
                     목록
                   </CustomButton>
+                </Link>
+              </Stack>
+              <Stack sx={{ ml: 8 }} direction="row">
+                <Typography variant="h6" sx={{ mb: 3 }} fontWeight="bold">
+                  기부 글 제목:
+                </Typography>
+                <Link
+                  href={`/detail/donationorg/${reviewDetails.donationId}`}
+                  underline="none"
+                  color="inherit"
+                >
+                  <Typography variant="h6" sx={{ mb: 3, ml: 1 }}>
+                    {donationInfo.title}
+                  </Typography>
                 </Link>
               </Stack>
               {/* 게시글 이미지 */}
@@ -368,7 +391,11 @@ const ReviewDetail: FC = () => {
                 alignItems="center"
               >
                 <Stack direction="row">
-                  <Typography variant="h6" fontWeight="bold" sx={{ mt: 3, mr: 2 }}>
+                  <Typography
+                    variant="h6"
+                    fontWeight="bold"
+                    sx={{ mt: 3, mr: 2 }}
+                  >
                     작성일
                   </Typography>
                   <Typography variant="h6" sx={{ mt: 3 }}>
@@ -383,7 +410,11 @@ const ReviewDetail: FC = () => {
                 alignItems="center"
               >
                 <Stack direction="row" alignItems="center">
-                  <Typography variant="h4" fontWeight="bold" sx={{ mt: 3, mr: 2 }}>
+                  <Typography
+                    variant="h4"
+                    fontWeight="bold"
+                    sx={{ mt: 3, mr: 2 }}
+                  >
                     후원자
                   </Typography>
                 </Stack>
@@ -449,17 +480,19 @@ const ReviewDetail: FC = () => {
                   size="small"
                   onChange={(e) => setComment(e.target.value)}
                 />
-                <CustomButton 
-                  variant="contained" 
-                  size="small" 
+                <CustomButton
+                  variant="contained"
+                  size="small"
                   sx={{ width: 30 }}
                   onClick={handleComment}
-                  >
+                >
                   등록
                 </CustomButton>
               </Stack>
-                {commentList &&
-                  commentList.map((item) => <Comment comment={item} id={userId} token={token} />)}
+              {commentList &&
+                commentList.map((item) => (
+                  <Comment comment={item} id={userId} token={token} />
+                ))}
             </Container>
           </Box>
         </Box>
