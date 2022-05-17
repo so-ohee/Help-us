@@ -160,8 +160,7 @@ const orgpageMyDonation: FC = () => {
       page: curPage2,
     };
     getDonationList(ingParams).then((res) => {
-      // setIngDonation(res.data.donation);
-      // console.log(res.)
+      setIngDonation(res.data.donation);
       setTotalPages(res.data.totalPage);
     });
     getDonationList(doneParams).then((res) => {
@@ -169,7 +168,7 @@ const orgpageMyDonation: FC = () => {
       console.log(res.data.totalPage);
       setTotalPages2(res.data.totalPage);
     });
-  }, [fStatus]);
+  }, [fStatus, curPage, curPage2]);
 
   return (
     <>
@@ -194,7 +193,12 @@ const orgpageMyDonation: FC = () => {
                 </Stack>
                 {/* Tab 시작 */}
                 <Box sx={{ width: "100%", mt: 2 }}>
-                  <Box sx={{ bgcolor: "#FCF8F0", borderRadius: 1.25 }}>
+                  <Box
+                    sx={{
+                      // bgcolor: "#FCF8F0",
+                      borderRadius: 1.25,
+                    }}
+                  >
                     <StyledTabs
                       value={value}
                       onChange={handleChange}
@@ -216,12 +220,11 @@ const orgpageMyDonation: FC = () => {
                       <Box
                         sx={{
                           display: "grid",
-                          gridTemplateColumns: "repeat(auto-fill, 500px)",
+                          gridTemplateColumns: "repeat(auto-fill, 300px)",
                           justifyContent: "center",
                           alignItems: "center",
-                          // marginTop: 5,
-                          rowGap: 1,
-                          columnGap: 5,
+                          rowGap: 5,
+                          columnGap: 7,
                         }}
                       >
                         {ingDonation && ingDonation.length > 0 ? (
@@ -240,26 +243,26 @@ const orgpageMyDonation: FC = () => {
                         )}
                       </Box>
                       {ingDonation && ingDonation.length > 0 ? (
-                      <Stack alignItems="center" sx={{ mb: 2, mt: 2 }}>
-                        <Pagination
-                          curPage={curPage}
-                          paginate={paginate}
-                          totalPage={totalPages}
-                        />
+                        <Stack alignItems="center" sx={{ mb: 0, mt: 3 }}>
+                          <Pagination
+                            curPage={curPage}
+                            paginate={paginate}
+                            totalPage={totalPages}
+                          />
                         </Stack>
-                        ) : (
-                          <></>
-                        )}
+                      ) : (
+                        <></>
+                      )}
                     </TabPanel>
                     <TabPanel value={value} index={1}>
                       <Box
                         sx={{
                           display: "grid",
-                          gridTemplateColumns: "repeat(auto-fill, 500px)",
+                          gridTemplateColumns: "repeat(auto-fill, 300px)",
                           justifyContent: "center",
                           alignItems: "center",
-                          rowGap: 1,
-                          columnGap: 5,
+                          rowGap: 5,
+                          columnGap: 7,
                         }}
                       >
                         {doneDonation && doneDonation.length > 0 ? (
@@ -271,16 +274,16 @@ const orgpageMyDonation: FC = () => {
                         )}
                       </Box>
                       {doneDonation && doneDonation.length > 0 ? (
-                      <Stack alignItems="center" sx={{ mb: 2, mt: 2 }}>
-                        <Pagination
-                          curPage={curPage2}
-                          paginate={paginate2}
-                          totalPage={totalPages2}
-                        />
+                        <Stack alignItems="center" sx={{ mb: 2, mt: 2 }}>
+                          <Pagination
+                            curPage={curPage2}
+                            paginate={paginate2}
+                            totalPage={totalPages2}
+                          />
                         </Stack>
                       ) : (
-                          <></>
-                        )}
+                        <></>
+                      )}
                     </TabPanel>
                   </Box>
                 </Box>
