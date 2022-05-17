@@ -1,10 +1,26 @@
 import { FC, useState, useEffect } from "react";
-import { Box, Grid, Typography, Stack, Button, InputBase, Paper, Link } from "@mui/material/";
-import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material/";
+import {
+  Box,
+  Grid,
+  Typography,
+  Stack,
+  Button,
+  InputBase,
+  Paper,
+  Link,
+} from "@mui/material/";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material/";
 import { tableCellClasses } from "@mui/material/TableCell";
-import SearchIcon from '@mui/icons-material/Search';
-import IconButton from '@mui/material/IconButton';
-import Image from 'next/image';
+import SearchIcon from "@mui/icons-material/Search";
+import IconButton from "@mui/material/IconButton";
+import Image from "next/image";
 import { styled } from "@mui/material/styles";
 import volunteer1 from "../public/images/volunteer1.jpg";
 import Pagination from "@/components/Pagination";
@@ -43,111 +59,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   height: 62,
 }));
 
-
-const dummyData = [
-  {
-    donationApplyId: 1,
-    title: "엉키는 마음은 꿈에선 다 잊게 영원처럼 안아줘",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-    fact: true,
-  },
-  {
-    donationApplyId: 2,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-    fact: true,
-  },
-  {
-    donationApplyId: 3,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-    fact: true,
-  },
-  {
-    donationApplyId: 4,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-    fact: true,
-  },
-  {
-    donationApplyId: 5,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-    fact: true,
-  },
-  {
-    donationApplyId: 6,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-    fact: true,
-  },
-  {
-    donationApplyId: 7,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-    fact: true,
-  },
-  {
-    donationApplyId: 8,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-    fact: false,
-  },
-  {
-    donationApplyId: 9,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-    fact: false,
-  },
-  {
-    donationApplyId: 10,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-    fact: false,
-  },
-];
-
-
 const Share: FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [talentDonationList, setTalentDonationList] = useState<any>(null);
@@ -170,77 +81,98 @@ const Share: FC = () => {
 
   const Unix_timestamp = (t) => {
     var date = new Date(t);
-    date.setHours(date.getHours()+9)
+    date.setHours(date.getHours() + 9);
     var year = date.getFullYear();
-    var month = "0" + (date.getMonth()+1);
+    var month = "0" + (date.getMonth() + 1);
     var day = "0" + date.getDate();
     var hour = "0" + date.getHours();
     var minute = "0" + date.getMinutes();
-    return year + "-" + month.substr(-2) + "-" + day.substr(-2) + " " + hour.substr(-2) + ":" + minute.substr(-2)
-}
+    return (
+      year +
+      "-" +
+      month.substr(-2) +
+      "-" +
+      day.substr(-2) +
+      " " +
+      hour.substr(-2) +
+      ":" +
+      minute.substr(-2)
+    );
+  };
 
   return (
     <div>
       <Grid container justifyContent="center" alignItems="center">
-      <Stack>
-        <Box textAlign="center" >
-          {/* 이미지 출력 부분 */}
-        <Stack alignItems="center" sx={{ mb: 5 }}>
-          <CarouselMain />
-          {/* <Image
+        <Stack>
+          <Box textAlign="center">
+            {/* 이미지 출력 부분 */}
+            <Stack alignItems="center" sx={{ mb: 5 }}>
+              <CarouselMain />
+              {/* <Image
             src={volunteer1}
             alt="volunteer first"
             width={1200}
             height={200}
           /> */}
-        </Stack>
-        </Box>
-        <Box sx={{ fontWeight: 'bold', my: 5}}>
-          <Typography variant="h4" textAlign="center">재능 기부 목록</Typography>
-        </Box>
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end'}}>
-          <CustomButton variant="contained" href="create/talent">재능 기부 등록</CustomButton>
-        </Box>
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt : 2}}>
-          <Paper
-            component="form"
-            sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 250 }}
-          >
-            <InputBase
-              sx={{ ml: 1, flex: 1 }}
-              placeholder="검색"
-            />
-            <IconButton type="submit" sx={{ p: '10px' }} >
-              <SearchIcon />
-            </IconButton>
-          </Paper>
-        </Box>
-        <TableContainer component={Paper} sx={{ my: 5 }}>
-              <Table sx={{ minWidth: 700 }} aria-label="customized table">
-                <TableHead>
-                  <TableRow>
-                    <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                      번호
-                    </StyledTableCell>
-                    <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                      제목
-                    </StyledTableCell>
-                    <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                      작성자
-                    </StyledTableCell>
-                    <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                      작성일
-                    </StyledTableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {talentDonationList && talentDonationList.map((data) => (
+            </Stack>
+          </Box>
+          <Box sx={{ fontWeight: "bold", my: 5 }}>
+            <Typography variant="h4" textAlign="center">
+              재능 기부 목록
+            </Typography>
+          </Box>
+          <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+            <CustomButton variant="contained" href="create/talent">
+              재능 기부 등록
+            </CustomButton>
+          </Box>
+          <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2 }}>
+            <Paper
+              component="form"
+              sx={{
+                p: "2px 4px",
+                display: "flex",
+                alignItems: "center",
+                width: 250,
+              }}
+            >
+              <InputBase sx={{ ml: 1, flex: 1 }} placeholder="검색" />
+              <IconButton type="submit" sx={{ p: "10px" }}>
+                <SearchIcon />
+              </IconButton>
+            </Paper>
+          </Box>
+          <TableContainer component={Paper} sx={{ my: 5 }}>
+            <Table sx={{ minWidth: 700 }} aria-label="customized table">
+              <TableHead>
+                <TableRow>
+                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                    번호
+                  </StyledTableCell>
+                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                    제목
+                  </StyledTableCell>
+                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                    작성자
+                  </StyledTableCell>
+                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                    작성일
+                  </StyledTableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {talentDonationList &&
+                  talentDonationList.map((data) => (
                     <StyledTableRow key={data.volunteerId}>
                       <StyledTableCell align="center">
                         {data.volunteerId}
                       </StyledTableCell>
                       <StyledTableCell align="center" sx={{ width: 400 }}>
-                        <Link href={`/detail/talent/${data.volunteerId}`} underline="none" color="inherit">
+                        <Link
+                          href={`/detail/talent/${data.volunteerId}`}
+                          underline="none"
+                          color="inherit"
+                        >
                           {data.title}
                         </Link>
                       </StyledTableCell>
@@ -253,8 +185,8 @@ const Share: FC = () => {
                       </StyledTableCell>
                     </StyledTableRow>
                   ))}
-                </TableBody>
-              </Table>
+              </TableBody>
+            </Table>
           </TableContainer>
           <Stack alignItems="center" sx={{ mb: 5 }}>
             <Pagination
@@ -263,7 +195,7 @@ const Share: FC = () => {
               totalPage={totalPages}
             />
           </Stack>
-      </Stack>
+        </Stack>
       </Grid>
     </div>
   );
