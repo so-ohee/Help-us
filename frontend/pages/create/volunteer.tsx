@@ -348,7 +348,7 @@ const Volunteer: FC = () => {
     createVolunteer(id, token, volunteerReqDto, imageList)
     .then((res) => {
       console.log(res + "성공")
-      Router.push("/volunteer");
+      Router.push("/donation");
     })
     .catch((err) => console.log(err + "실패"))
   }

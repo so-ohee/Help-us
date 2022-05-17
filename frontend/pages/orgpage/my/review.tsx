@@ -135,7 +135,7 @@ const orgpageMyReview: FC = () => {
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
           <Stack direction="row" justifyContent="space-between">
             <Typography variant="h4">기부 후기</Typography>
-            <CustomButton>글 작성</CustomButton>
+            <CustomButton href="create/review">글 작성</CustomButton>
           </Stack>
           <Grid>
             <Box sx={{ width: "100%", mt: 2 }}>
