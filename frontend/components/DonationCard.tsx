@@ -27,38 +27,19 @@ const DonationCard: FC<DonationData> = ({ donation }) => {
           overflow: "hidden",
           position: "relative",
           height: 230,
-          width: 500,
-          mt: 3,
+          width: 325,
+          // mt: 3,
         }}
       >
-        <Stack direction="row">
-          {/* 기관 이미지 */}
-
-          <Box
-            sx={{
-              borderRadius: "20px 20px 0 0",
-              // display: "flex",
-              height: 230,
-              width: "35%",
-            }}
-          >
-            <Image
-              width="100%"
-              height="145"
-              src={TestImage}
-              alt="Donation Image"
-              layout="responsive"
-            />
-          </Box>
-
+        <Stack direction="row" justifyContent="center">
           <Box
             sx={{
               // display: "flex",
               justifyContent: "space-between",
               padding: "10px 15px",
               borderTop: "1px solide #CDAD78",
-              height: "100%",
-              width: "65%",
+              // height: "100%",
+              // width: "65%",
             }}
           >
             <Box>
@@ -66,7 +47,7 @@ const DonationCard: FC<DonationData> = ({ donation }) => {
               <Link href={`/detail/donationorg/${donation.donationId}`}>
                 <a>
                   <Typography
-                    sx={{ fontWeight: "bold", fontSize: 17, mt: 0.5 }}
+                    sx={{ fontWeight: "bold", fontSize: 17, mt: 0.5, ml: 3 }}
                   >
                     {donation.title}
                   </Typography>
@@ -75,7 +56,8 @@ const DonationCard: FC<DonationData> = ({ donation }) => {
               <Grid
                 container
                 sx={{
-                  ml: 1,
+                  // ml: 1,
+                  mx: "auto",
                   mt: 1,
                   bgcolor: "#f7f2ea",
                   width: 250,
@@ -156,12 +138,15 @@ const DonationCard: FC<DonationData> = ({ donation }) => {
               {/* 진행률 표시 바 */}
               <Stack
                 sx={{
-                  width: 300,
+                  width: 280,
                   height: 10,
                   mt: 1.5,
+                  // mx: "auto",
+                  ml: 3.5,
                 }}
                 direction="row"
                 alignItems="center"
+                // justifyContent=
               >
                 {donation.percent === 100 ? (
                   <Box
@@ -221,7 +206,7 @@ const DonationCard: FC<DonationData> = ({ donation }) => {
               alignItems="center"
               justifyContent="center"
             >
-              <Typography align="center">{donation?.name}</Typography>
+              <Typography textAlign="center">{donation?.name}</Typography>
             </Stack>
           </Box>
         </Stack>

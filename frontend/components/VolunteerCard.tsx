@@ -8,6 +8,7 @@ import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import PersonIcon from "@mui/icons-material/Person";
+import Link from "next/link";
 
 const CustomButton = styled(Button)({
   backgroundColor: "#5B321E",
@@ -35,57 +36,38 @@ const VolunteerCard: FC<IVolunteer> = ({ volunteer }) => {
           overflow: "hidden",
           position: "relative",
           height: 230,
-          width: 500,
+          width: 325,
         }}
       >
-        <Stack direction="row">
-          <Box
-            sx={{
-              borderRadius: "20px 20px 0 0",
-              // display: "flex",
-              height: 230,
-              width: "35%",
-            }}
-          >
-            {volunteer.profile === null ? (
-              <Image
-                width="100%"
-                height="145"
-                src={TestImage}
-                alt="Donation Image"
-                layout="responsive"
-              />
-            ) : (
-              <Image
-                width="100%"
-                height="145"
-                src={volunteer.profile}
-                alt="Donation Image"
-                layout="responsive"
-              />
-            )}
-          </Box>
+        <Stack direction="row" justifyContent="center">
           <Box
             sx={{
               // display: "flex",
               justifyContent: "space-between",
               padding: "10px 15px",
               borderTop: "1px solide #CDAD78",
-              height: "100%",
-              width: "65%",
+              // height: "100%",
+              // width: "65%",
               bgcolor: "#ffffff",
             }}
           >
             <Box>
               {/* 제목은 17자까지만 보여주기??*/}
-              <Typography sx={{ fontWeight: "bold", fontSize: 17, mt: 0.5 }}>
-                {volunteer.title}
-              </Typography>
+              <Link href={`/detail/volunteer/${volunteer.volunteerId}`}>
+                <a>
+                  <Typography
+                    sx={{ fontWeight: "bold", fontSize: 17, mt: 0.5, ml: 3 }}
+                  >
+                    {volunteer.title}
+                  </Typography>
+                </a>
+              </Link>
 
               <Grid
                 container
                 sx={{
-                  ml: 1,
+                  // ml: 1,
+                  mx: "auto",
                   mt: 1,
                   bgcolor: "#f7f2ea",
                   width: 250,
@@ -100,7 +82,7 @@ const VolunteerCard: FC<IVolunteer> = ({ volunteer }) => {
                   direction="row"
                   alignItems="center"
                 >
-                  <PersonIcon sx={{ mr: 2 }} />
+                  <PersonIcon sx={{ mr: 1 }} />
                   <Typography align="left" sx={{ fontSize: 14, width: 200 }}>
                     {volunteer.applicant} / {volunteer.people}
                   </Typography>
@@ -111,7 +93,7 @@ const VolunteerCard: FC<IVolunteer> = ({ volunteer }) => {
                   direction="row"
                   alignItems="center"
                 >
-                  <CalendarMonthIcon sx={{ mr: 2 }} />
+                  <CalendarMonthIcon sx={{ mr: 1 }} />
                   <Typography align="left" sx={{ fontSize: 14, width: 200 }}>
                     {volDate.substr(0, 10)}
                   </Typography>
@@ -122,7 +104,7 @@ const VolunteerCard: FC<IVolunteer> = ({ volunteer }) => {
                   direction="row"
                   // alignItems="center"
                 >
-                  <LocationOnIcon sx={{ mr: 2 }} />
+                  <LocationOnIcon sx={{ mr: 1 }} />
                   <Typography align="left" sx={{ fontSize: 14, width: 200 }}>
                     {volunteer.volAddress}
                   </Typography>
@@ -134,12 +116,14 @@ const VolunteerCard: FC<IVolunteer> = ({ volunteer }) => {
               {/* 진행률 표시 바 */}
               <Stack
                 sx={{
-                  width: 300,
+                  width: 270,
                   height: 10,
                   mt: 1.5,
+                  ml: 3.5,
                 }}
                 direction="row"
                 alignItems="center"
+                justifyContent="space-between"
               >
                 {volunteer.percent === 100 ? (
                   <Box
@@ -188,7 +172,7 @@ const VolunteerCard: FC<IVolunteer> = ({ volunteer }) => {
                   ></Box>
                 )}
                 <Typography align="center" sx={{ ml: 1, fontSize: 14 }}>
-                  {volunteer.percent}%
+                  {parseInt(volunteer.percent)}%
                 </Typography>
               </Stack>
             </Box>
