@@ -1,9 +1,11 @@
 package com.ssafy.helpus.volunteer.service.Impl;
 
 import com.ssafy.helpus.volunteer.dto.*;
+import com.ssafy.helpus.volunteer.entity.Member;
 import com.ssafy.helpus.volunteer.entity.Volunteer;
 import com.ssafy.helpus.volunteer.entity.VolunteerApply;
 import com.ssafy.helpus.volunteer.enumClass.VolunteerOrder;
+import com.ssafy.helpus.volunteer.repository.MemberRepository;
 import com.ssafy.helpus.volunteer.repository.VolunteerApplyRepository;
 import com.ssafy.helpus.volunteer.repository.VolunteerRepository;
 import com.ssafy.helpus.volunteer.service.FileService;
@@ -27,9 +29,9 @@ import java.util.*;
 public class TalentDonationServiceImpl implements TalentDonationService {
 
     private final VolunteerRepository volunteerRepository;
-    private final VolunteerApplyRepository volunteerApplyRepository;
     private final FileService fileService;
     private final MemberService memberService;
+    private final MemberRepository memberRepository;
 
     @Override
     public Map<String, Object> registerTalentDonation(TalentDonationReqDto talentDonationReqDto, Long memberId, MultipartFile[] files, String role) throws Exception {
@@ -104,12 +106,18 @@ public class TalentDonationServiceImpl implements TalentDonationService {
             return resultMap;
         }
 
+        Optional<Member> member = memberRepository.findById(volunteer.get().getMemberId());
+
+
         TalentDonationResDto talentDonationResDto = TalentDonationResDto.builder()
                 .memberId(volunteer.get().getMemberId())
                 .title(volunteer.get().getTitle())
                 .content(volunteer.get().getContent())
                 .createDate(volunteer.get().getCreateDate())
                 .updateDate(volunteer.get().getUpdateDate())
+                .name(member.get().getName())
+                .profile(member.get().getProfile())
+                .userEmail(member.get().getEmail())
                 .images(fileService.getVolunteerFileList(volunteer.get().getImages())).build();
 
         resultMap.put("message", "조회 성공");

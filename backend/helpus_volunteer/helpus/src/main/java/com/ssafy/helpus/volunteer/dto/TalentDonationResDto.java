@@ -30,6 +30,15 @@ public class TalentDonationResDto {
     @ApiModelProperty(value = "수정일")
     private LocalDateTime updateDate;
 
+    @ApiModelProperty(value = "수정일")
+    private String name;
+
+    @ApiModelProperty(value = "수정일")
+    private String profile;
+
+    @ApiModelProperty(value = "수정일")
+    private String userEmail;
+
     @ApiModelProperty(value = "파일")
     private List<String> images;
 }
