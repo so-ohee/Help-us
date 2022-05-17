@@ -137,7 +137,7 @@ const DonationOrgDetail: FC = () => {
 
   // 댓글
   const [comment, setComment] = useState<string>("");
-  const [parentCommentId, setParentComeentId] = useState("");
+  const [recomment, setRecomment] = useState<string>("");
   const [commentList, setCommentList] = useState<any>([]);
 
   // pagination
@@ -161,7 +161,7 @@ const DonationOrgDetail: FC = () => {
       donationDetail(router.query.id).then((res) => {
         // console.log(res);
         setDonationDetails(res.data.donation);
-        console.log(res.data.donation);
+        // console.log(res.data.donation);
         setDetailLoading(true);
       });
     }
@@ -183,11 +183,12 @@ const DonationOrgDetail: FC = () => {
       donationOrgCommentList(router.query.id, params2)
         .then((res) => {
           setCommentList(res.data.comment);
+          // console.log(commentList)
           setTotalPages(res.data.totalPage);
           setLoading(true);
         });
     };
-  }, [curPage, router.isReady, commentList, ]);
+  }, [curPage, router.isReady, commentList ]);
 
   const handleComment = () => {
     if (comment === "") {
@@ -201,9 +202,13 @@ const DonationOrgDetail: FC = () => {
     }
 
     donationOrgComment(userId, token, params)
-      .then((res) => console.log(res + "성공"))
+      .then((res) => {
+        console.log(res + "성공")
+        setComment("");
+      })
       .catch((err) => console.log(err + "실패"))
   } 
+
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -637,6 +642,7 @@ const DonationOrgDetail: FC = () => {
             <CssTextField
               sx={{ backgroundColor: "#ffffff", width: 1000 }}
               size="small"
+              value={comment}
               onChange={(e) => setComment(e.target.value)}
             />
             <CustomButton 

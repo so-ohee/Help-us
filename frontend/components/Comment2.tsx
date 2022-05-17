@@ -25,7 +25,7 @@ import defaultImage from "../public/images/userDefaultImage.png";
 import ReplyIcon from "@mui/icons-material/Reply";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useRouter } from "next/router";
-import CommentInput from "./CommentInput";
+import CommentInput from "./CommentInput2";
 
 // api
 import {reviewCommentDelete, volunteerCommentList} from "function/axios";
@@ -75,6 +75,7 @@ const CustomButton2 = styled(Button)({
 const Comment2: FC<CommentData> = ({ comment, id, token }) => {
   const [inputStatus, setInputStatus] = useState<boolean>(false);
   const [userId, setUserId] = useState<any>();
+  const [parentId, setParentId] = useState<any>();
   const router = useRouter();
 
   const onClickInputStatus = () => {
@@ -159,7 +160,7 @@ const Comment2: FC<CommentData> = ({ comment, id, token }) => {
               </Stack>
             </Stack>
             <Stack direction="row" sx={{ ml: 11, mb: 2 }} alignItems="center">
-              <CommentInput inputStatus={inputStatus} />
+              <CommentInput inputStatus={inputStatus} comment={comment} />
             </Stack>
           </>
         ) : (
@@ -211,7 +212,7 @@ const Comment2: FC<CommentData> = ({ comment, id, token }) => {
               </Stack>
             </Stack>
             <Stack direction="row" sx={{ ml: 16, mb: 2 }} alignItems="center">
-              <CommentInput inputStatus={inputStatus} />
+              <CommentInput inputStatus={inputStatus} comment={comment}/>
             </Stack>
           </>
         )}

@@ -213,7 +213,10 @@ const ReviewDetail: FC = () => {
     };
 
     reviewComment(id, token, params)
-      .then((res) => console.log(res + "성공"))
+      .then((res) => {
+        console.log(res + "성공")
+        setComment("");
+      })
       .catch((err) => console.log(err + "실패"))
   }
 
@@ -447,6 +450,7 @@ const ReviewDetail: FC = () => {
                 <CssTextField
                   sx={{ backgroundColor: "#ffffff", width: 1000 }}
                   size="small"
+                  value={comment}
                   onChange={(e) => setComment(e.target.value)}
                 />
                 <CustomButton 

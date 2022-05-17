@@ -138,6 +138,7 @@ const VolunteerDetail: FC = () => {
       .then((res) => {
         // setCommentList(commentList.concat(comment));
         console.log(res + "성공");
+        setComment("");
       })
       .catch((err) => console.log(err + "실패"));
   };
@@ -402,6 +403,7 @@ const VolunteerDetail: FC = () => {
                 >
                   <TextField
                     sx={{ backgroundColor: "#ffffff", width: 980 }}
+                    value={comment}
                     onChange={(e) => setComment(e.target.value)}
                   />
                   <CustomButton

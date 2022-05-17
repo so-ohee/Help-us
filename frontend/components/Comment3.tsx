@@ -25,10 +25,10 @@ import defaultImage from "../public/images/userDefaultImage.png";
 import ReplyIcon from "@mui/icons-material/Reply";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useRouter } from "next/router";
-import CommentInput from "./CommentInput3";
+import CommentInput from "./CommentInput";
 
 // api
-import {volunteerCommentDelete, donationOrgRecomment} from "function/axios";
+import {csCommentDelete, volunteerCommentList} from "function/axios";
 
 const CssTextField = styled(TextField)({
   "& label.Mui-focused": {
@@ -72,10 +72,9 @@ const CustomButton2 = styled(Button)({
   fontSize: 12,
 });
 
-const Comment: FC<CommentData> = ({ comment, id, token }) => {
+const Comment3: FC<CommentData> = ({ comment, id, token }) => {
   const [inputStatus, setInputStatus] = useState<boolean>(false);
   const [userId, setUserId] = useState<any>();
-  const [parentId, setParentId] = useState<any>();
   const router = useRouter();
 
   const onClickInputStatus = () => {
@@ -83,12 +82,14 @@ const Comment: FC<CommentData> = ({ comment, id, token }) => {
   };
 
 
+
   //댓글 삭제
   const removeComment = () => {
     const commentId = comment.commentId
-      console.log(commentId)
-      console.log(userId)
-      volunteerCommentDelete(commentId, id, token)
+    const memberId = comment.memberId
+      // console.log(commentId)
+      // console.log(userId)
+      csCommentDelete(commentId, memberId, id, token)
         .then((res) => console.log("성공" + res ))
         .catch((err) => console.log("실패" + err))
 
@@ -97,6 +98,7 @@ const Comment: FC<CommentData> = ({ comment, id, token }) => {
         return;
       }
   }
+
 
   useEffect(() => {
     const Id = localStorage.getItem("id");
@@ -251,4 +253,4 @@ const Comment: FC<CommentData> = ({ comment, id, token }) => {
   );
 };
 
-export default Comment;
+export default Comment3;

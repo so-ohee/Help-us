@@ -28,7 +28,7 @@ import ReplyIcon from "@mui/icons-material/Reply";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 // api
-import {donationOrgRecomment} from "../function/axios";
+import {talentRecomment} from "../function/axios";
 import { BookmarkAddOutlined } from "@mui/icons-material";
 
 const CssTextField = styled(TextField)({
@@ -80,14 +80,12 @@ interface ICommentInput {
 
 
 
-const CommentInput: FC<ICommentInput> = ({ inputStatus, comment }) => {
+const CommentInput3: FC<ICommentInput> = ({ inputStatus, comment }) => {
   const router = useRouter();
   const [recomment, setRecomment] = useState<string>('');
   const [userId, setUserId] = useState<any>();
   const [userToken, setUserToken] = useState<any>();
   const [boardId, setBoardId] = useState<any>();
-  const [parentId, setParentId] = useState<any>();
-  const [status, setStatus] = useState<boolean>();
 
 
   useEffect(() => {
@@ -108,21 +106,16 @@ const CommentInput: FC<ICommentInput> = ({ inputStatus, comment }) => {
 
     const params = {
       parentCommentId: parentId,
-      boardId: boardId,
+      volunteerId: boardId,
       content: recomment,
-      category: "donation",
     }
 
-    donationOrgRecomment(userId, userToken, params)
+    talentRecomment(userId, userToken, params)
       .then((res) => {
         console.log("성공" + res)
         setRecomment("")
       })
       .catch((err) => console.log("실패" + err))
-  }
-
-  const cancle = () => {
-    setStatus(!inputStatus)
   }
   return (
     <>
@@ -134,7 +127,7 @@ const CommentInput: FC<ICommentInput> = ({ inputStatus, comment }) => {
             value={recomment}
             onChange={(e) => setRecomment(e.target.value)}
           />
-          <CustomButton2 sx={{ ml: 2, height: 28 }} size="small" onChange={cancle}>
+          <CustomButton2 sx={{ ml: 2, height: 28 }} size="small">
             취소
           </CustomButton2>
           <CustomButton 
@@ -150,4 +143,4 @@ const CommentInput: FC<ICommentInput> = ({ inputStatus, comment }) => {
   );
 };
 
-export default CommentInput;
+export default CommentInput3;
