@@ -147,6 +147,33 @@ public class VolunteerServiceImpl implements VolunteerService{
     }
 
     @Override
+    public Map<String, Object> getApplyStatus(Long volunteerId, Long memberId) throws Exception {
+        log.info("VolunteerService getApplyStatus call");
+
+        Map<String, Object> resultMap = new HashMap<>();
+
+        Optional<Volunteer> volunteer = volunteerRepository.findById(volunteerId);
+        if(!volunteer.isPresent()){
+            resultMap.put("message", "게시물 없음");
+            return resultMap;
+        }
+
+        Optional<VolunteerApply> volunteerApply = volunteerApplyRepository.findByVolunteerAndMemberId(volunteer.get(), memberId);
+
+        int status = -1;
+        if(volunteerApply.isPresent()){
+            status = volunteerApply.get().getStatus();
+        }
+
+       ApplyStatusRes applyStatusRes = ApplyStatusRes.builder()
+                        .status(status).build();
+
+        resultMap.put("message", "조회 성공");
+        resultMap.put("applyStatus", applyStatusRes);
+        return resultMap;
+    }
+
+    @Override
     @Transactional
     public Map<String, Object> deleteVolunteer(Long volunteerId) throws Exception {
         log.info("VolunteerService deleteVolunteer call");

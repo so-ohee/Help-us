@@ -85,6 +85,24 @@ public class VolunteerController {
         return new ResponseEntity(resultMap, status);
     }
 
+    @ApiOperation(value = "봉사 참석여부 파악")
+    @GetMapping("/apply/{volunteerId}")
+    public ResponseEntity getApplyStatus(@PathVariable Long volunteerId, @RequestHeader HttpHeaders headers){
+        log.info("VolunteerController getApplyStatus call");
+
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.OK;
+        try {
+            Long memberId = Long.valueOf(headers.get("memberIdByToken").get(0));
+            resultMap = volunteerService.getApplyStatus(volunteerId, memberId);
+        } catch (Exception e){
+            log.error(e.getMessage());
+            resultMap.put("message", "error");
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity(resultMap, status);
+    }
+
     @ApiOperation(value = "봉사 글 삭제")
     @DeleteMapping("{volunteerId}")
     public ResponseEntity deleteVolunteer(@PathVariable Long  volunteerId){
