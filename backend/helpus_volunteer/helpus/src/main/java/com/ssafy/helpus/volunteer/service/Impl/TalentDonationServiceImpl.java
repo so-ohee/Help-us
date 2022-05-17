@@ -181,7 +181,7 @@ public class TalentDonationServiceImpl implements TalentDonationService {
         log.info("VolunteerService mainListVolunteer call");
 
         Sort sort = gerOrder(order);
-        Page<Volunteer> volunteers = volunteerRepository.findByCategoryAndStatus("USER", 0, PageRequest.of(page,6,sort));
+        Page<Volunteer> volunteers = volunteerRepository.findByCategoryAndStatus("USER", 0, PageRequest.of(page,10,sort));
         return makeListTalentDonation(volunteers);
     }
 

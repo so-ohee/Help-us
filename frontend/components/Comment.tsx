@@ -24,10 +24,11 @@ import { CommentData } from "../interfaces";
 import defaultImage from "../public/images/userDefaultImage.png";
 import ReplyIcon from "@mui/icons-material/Reply";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-
+import { useRouter } from "next/router";
 import CommentInput from "./CommentInput";
+
 // api
-import {volunteerCommentDelete} from "function/axios";
+import {volunteerCommentDelete, volunteerCommentList} from "function/axios";
 
 const CssTextField = styled(TextField)({
   "& label.Mui-focused": {
@@ -73,18 +74,32 @@ const CustomButton2 = styled(Button)({
 
 const Comment: FC<CommentData> = ({ comment, id, token }) => {
   const [inputStatus, setInputStatus] = useState<boolean>(false);
+  const [userId, setUserId] = useState<any>();
+  const router = useRouter();
 
   const onClickInputStatus = () => {
     setInputStatus(!inputStatus);
   };
 
+
+
   //댓글 삭제
   const removeComment = () => {
-    volunteerCommentDelete(id, token)
-      .then((res) => console.log("성공" + res ))
-      .catch((err) => console.log("실패" + err))
+    const commentId = comment.commentId
+      console.log(id)
+      console.log(token)
+      volunteerCommentDelete(commentId, id, token)
+        .then((res) => console.log("성공" + res ))
+        .catch((err) => console.log("실패" + err))
   }
-  // console.log(comment)
+
+  useEffect(() => {
+    const Id = localStorage.getItem("id");
+    setUserId(Id)
+  }, [id])
+
+  // console.log(comment.memberId)
+  
   
   return (
     <>
@@ -122,16 +137,19 @@ const Comment: FC<CommentData> = ({ comment, id, token }) => {
                   </Typography>
                 ) : (null)}
                 {/* id랑  memberId랑 같으면 삭제 버튼 활성화*/}
-                <Button
-                  onClick={removeComment}
-                  variant="contained"
-                  color="error"
-                  size="small"
-                  sx={{ width: 10, mr: 5, ml: 2 }}
-                 
-                >
-                  삭제
-                </Button>
+                {userId === comment.memberId ? (
+                  <Button
+                    onClick={removeComment}
+                    variant="contained"
+                    color="error"
+                    size="small"
+                    sx={{ width: 10, mr: 5, ml: 2 }}
+                  
+                  >
+                    삭제
+                  </Button>
+
+                   ) : null}
               </Stack>
             </Stack>
             <Stack direction="row" sx={{ ml: 11, mb: 2 }} alignItems="center">
@@ -174,15 +192,17 @@ const Comment: FC<CommentData> = ({ comment, id, token }) => {
                 {comment ? (
                   <Typography>{comment.createDate}</Typography>
                 ) : (null)}
-                <Button
-                  variant="contained"
-                  color="error"
-                  size="small"
-                  sx={{ width: 10, mr: 5, ml: 2 }}
-                  onClick={removeComment}
-                >
-                  삭제
-                </Button>
+                {id === comment.memberId ? (
+                  <Button
+                    variant="contained"
+                    color="error"
+                    size="small"
+                    sx={{ width: 10, mr: 5, ml: 2 }}
+                    onClick={removeComment}
+                  >
+                    삭제
+                  </Button>
+                ) : null }
               </Stack>
             </Stack>
             <Stack direction="row" sx={{ ml: 16, mb: 2 }} alignItems="center">

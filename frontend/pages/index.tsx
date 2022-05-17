@@ -25,6 +25,7 @@ import volunteer1 from "../public/images/volunteer1.jpg";
 import Pagination from "@/components/Pagination";
 import Link from "next/link";
 import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
+import CarouselMain from "../components/CarouselMain";
 
 import { getDonationMain, getVolunteerMain } from "../function/axios";
 
@@ -168,13 +169,14 @@ const Home: FC = () => {
         }}
       >
         {/* 이미지 출력 부분 */}
-        <Stack alignItems="center">
-          <Image
+        <Stack alignItems="center" sx={{ mb: 5 }}>
+          <CarouselMain />
+          {/* <Image
             src={volunteer1}
             alt="volunteer first"
             width={1200}
             height={200}
-          />
+          /> */}
         </Stack>
         <Stack alignItems="center">
           <Box
