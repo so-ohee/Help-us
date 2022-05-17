@@ -725,12 +725,9 @@ export const getCsDetail = async (id, token) => {
   return await axios({
     method: "GET",
     url: `/8000/api/desk/${id}`,
-<<<<<<< HEAD
     headers: {
       Authorization: token,
     },
-=======
->>>>>>> 1e41c1606929e6ca5e3f5fc10c86b206b3157448
   });
 };
 
