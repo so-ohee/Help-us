@@ -207,7 +207,12 @@ const Navbar: FC<LoginProps> = ({ value }) => {
                         마이페이지
                       </Link>
                     ) : (
-                      <Link onClick={onMyPage} underline="none" color="inherit">
+                      <Link
+                        onClick={onMyPage}
+                        underline="none"
+                        color="inherit"
+                        style={{ cursor: "pointer" }}
+                      >
                         마이페이지
                       </Link>
                     )}
