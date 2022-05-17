@@ -2,7 +2,9 @@ package com.ssafy.helpus.volunteer.service.Impl;
 
 import com.ssafy.helpus.volunteer.dto.*;
 import com.ssafy.helpus.volunteer.entity.Volunteer;
+import com.ssafy.helpus.volunteer.entity.VolunteerApply;
 import com.ssafy.helpus.volunteer.enumClass.VolunteerOrder;
+import com.ssafy.helpus.volunteer.repository.VolunteerApplyRepository;
 import com.ssafy.helpus.volunteer.repository.VolunteerRepository;
 import com.ssafy.helpus.volunteer.service.FileService;
 import com.ssafy.helpus.volunteer.service.MemberService;
@@ -25,6 +27,7 @@ import java.util.*;
 public class TalentDonationServiceImpl implements TalentDonationService {
 
     private final VolunteerRepository volunteerRepository;
+    private final VolunteerApplyRepository volunteerApplyRepository;
     private final FileService fileService;
     private final MemberService memberService;
 
@@ -95,6 +98,7 @@ public class TalentDonationServiceImpl implements TalentDonationService {
         Map<String, Object> resultMap = new HashMap<>();
 
         Optional<Volunteer> volunteer = volunteerRepository.findById(volunteerId);
+
         if(!volunteer.isPresent()){
             resultMap.put("message", "게시물 없음");
             return resultMap;
@@ -177,7 +181,7 @@ public class TalentDonationServiceImpl implements TalentDonationService {
         log.info("VolunteerService mainListVolunteer call");
 
         Sort sort = gerOrder(order);
-        Page<Volunteer> volunteers = volunteerRepository.findByCategoryAndStatus("USER", 0, PageRequest.of(page,6,sort));
+        Page<Volunteer> volunteers = volunteerRepository.findByCategoryAndStatus("USER", 0, PageRequest.of(page,10,sort));
         return makeListTalentDonation(volunteers);
     }
 

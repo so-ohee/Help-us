@@ -24,6 +24,8 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import volunteer1 from "../public/images/volunteer1.jpg";
 import Pagination from "@/components/Pagination";
 import Link from "next/link";
+import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
+import CarouselMain from "../components/CarouselMain";
 
 import { getDonationMain, getVolunteerMain } from "../function/axios";
 
@@ -167,15 +169,107 @@ const Home: FC = () => {
         }}
       >
         {/* 이미지 출력 부분 */}
-        <Stack alignItems="center">
-          <Image
+        <Stack alignItems="center" sx={{ mb: 5 }}>
+          <CarouselMain />
+          {/* <Image
             src={volunteer1}
             alt="volunteer first"
             width={1200}
             height={200}
-          />
+          /> */}
         </Stack>
-        <Stack>
+        <Stack alignItems="center">
+          <Box
+            sx={{
+              // height: 100,
+              width: 600,
+              // bgcolor: "#f7f2ea",
+            }}
+          >
+            <Typography
+              textAlign="center"
+              align="center"
+              sx={{ fontSize: 30, mt: 2 }}
+              fontWeight="bold"
+            >
+              최근에 올라온 후원과 봉사를 확인해 보세요!
+            </Typography>
+          </Box>
+        </Stack>
+        {/* test */}
+        <Stack justifyContent="center" sx={{ mt: 3, mb: 2 }}>
+          <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
+            <Typography variant="h5" fontWeight="bold" sx={{ ml: 8 }}>
+              후원
+            </Typography>
+            <Link href={"/donation"}>
+              <Button>
+                <ArrowCircleRightOutlinedIcon fontSize="large" />
+              </Button>
+            </Link>
+          </Stack>
+          <Stack>
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill, 300px)",
+                justifyContent: "center",
+                alignItems: "center",
+                rowGap: 5,
+                columnGap: 7,
+              }}
+            >
+              {donationData && donationData.length > 0 ? (
+                donationData
+                  .slice(0, 3)
+                  .map((item, i) => <DonationCard donation={item} key={i} />)
+              ) : (
+                <Typography sx={{ margin: "200px 0" }}>
+                  진행 중인 기부글이 없습니다.
+                </Typography>
+              )}
+            </Box>
+          </Stack>
+          <Stack
+            direction="row"
+            alignItems="center"
+            spacing={1}
+            sx={{ mb: 2, mt: 3 }}
+          >
+            <Typography variant="h5" fontWeight="bold" sx={{ ml: 8 }}>
+              봉사
+            </Typography>
+
+            <Link href={"/donation"}>
+              <Button>
+                <ArrowCircleRightOutlinedIcon fontSize="large" />
+              </Button>
+            </Link>
+          </Stack>
+          <Stack>
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill, 300px)",
+                justifyContent: "center",
+                alignItems: "center",
+                rowGap: 5,
+                columnGap: 7,
+              }}
+            >
+              {volunteerData && volunteerData.length > 0 ? (
+                volunteerData
+                  .slice(0, 3)
+                  .map((item, i) => <VolunteerCard volunteer={item} key={i} />)
+              ) : (
+                <Typography sx={{ margin: "200px 0" }}>
+                  진행 중인 기부글이 없습니다.
+                </Typography>
+              )}
+            </Box>
+          </Stack>
+        </Stack>
+        {/* <Stack>
           <Box sx={{ width: "100%", mt: 2 }}>
             <Box>
               <Stack direction="row" justifyContent="space-between">
@@ -191,38 +285,16 @@ const Home: FC = () => {
                     {...a11yProps(1)}
                   />
                 </StyledTabs>
-                {/* <Box
-                  sx={{
-                    minWidth: 200,
-                    display: "flex",
-                    justifyContent: "flex-end",
-                  }}
-                >
-                  <FormControl fullWidth>
-                    <InputLabel>정렬</InputLabel>
-                    <Select
-                      value={option}
-                      label="option"
-                      onChange={optionHandleChange}
-                    >
-                      <MenuItem value="latest">최신순</MenuItem>
-                      <MenuItem value="high">달성률 높은 순</MenuItem>
-                      <MenuItem value="low">달성률 낮은 순</MenuItem>
-                      <MenuItem value="endDate">종료일 순</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Box> */}
               </Stack>
               <TabPanel value={value} index={0}>
                 <Box
                   sx={{
                     display: "grid",
-                    gridTemplateColumns: "repeat(auto-fill, 500px)",
+                    gridTemplateColumns: "repeat(auto-fill, 300px)",
                     justifyContent: "center",
                     alignItems: "center",
-                    // marginTop: 5,
-                    rowGap: 1,
-                    columnGap: 5,
+                    rowGap: 5,
+                    columnGap: 10,
                   }}
                 >
                   {donationData && donationData.length > 0 ? (
@@ -240,12 +312,11 @@ const Home: FC = () => {
                 <Box
                   sx={{
                     display: "grid",
-                    gridTemplateColumns: "repeat(auto-fill, 500px)",
+                    gridTemplateColumns: "repeat(auto-fill, 300px)",
                     justifyContent: "center",
                     alignItems: "center",
-                    // marginTop: 5,
-                    rowGap: 1,
-                    columnGap: 5,
+                    rowGap: 5,
+                    columnGap: 10,
                   }}
                 >
                   {volunteerData && volunteerData.length > 0 ? (
@@ -261,86 +332,7 @@ const Home: FC = () => {
               </TabPanel>
             </Box>
           </Box>
-          {/* <Stack alignItems="center" sx={{ mb: 2 }}>
-            <Pagination
-              curPage={curPage}
-              paginate={paginate}
-              totalPage={totalPages}
-            />
-          </Stack> */}
-
-          {/* <TabContext value={value}>
-            <Stack direction="row" justifyContent="space-between">
-              <Tabs onChange={handleChange}>
-                <Tab label="물품" {...a11yProps(0)} />
-                <Tab label="봉사" {...a11yProps(1)} />
-              </Tabs>
-              <Box
-                sx={{
-                  minWidth: 200,
-                  display: "flex",
-                  justifyContent: "flex-end",
-                }}
-              >
-                <FormControl fullWidth>
-                  <InputLabel>정렬</InputLabel>
-                  <Select
-                    value={option}
-                    label="option"
-                    onChange={optionHandleChange}
-                  >
-                    <MenuItem value="latest">최신순</MenuItem>
-                    <MenuItem value="high">달성률 높은 순</MenuItem>
-                    <MenuItem value="low">달성률 낮은 순</MenuItem>
-                    <MenuItem value="endDate">종료일 순</MenuItem>
-                  </Select>
-                </FormControl>
-              </Box>
-            </Stack>
-            <TabPanel value={value} index={0}>
-              <Box sx={{ mt: 3 }}>
-                <Stack direction="row" spacing={5} sx={{ mb: 5 }}>
-                  <DonationCard />
-                  <DonationCard />
-                </Stack>
-                <Stack direction="row" spacing={5} sx={{ mb: 5 }}>
-                  <DonationCard />
-                  <DonationCard />
-                </Stack>
-                <Stack direction="row" spacing={5} sx={{ mb: 5 }}>
-                  <DonationCard />
-                  <DonationCard />
-                </Stack>
-              </Box>
-            </TabPanel>
-            <TabPanel value={value} index={0}>
-              <Box
-                sx={{
-                  width: 1000,
-                  height: 300,
-                  backgroundColor: "#616161",
-                  mx: "auto",
-                  mt: 3,
-                }}
-              >
-                <Typography variant="h3" sx={{ fontWeight: "bold" }}>
-                  {" "}
-                  지도
-                </Typography>
-              </Box>
-              <Box sx={{ mt: 3 }}>
-                <Stack direction="row" spacing={5} sx={{ mb: 5 }}>
-                  <VolunteerCard />
-                  <VolunteerCard />
-                </Stack>
-                <Stack direction="row" spacing={5} sx={{ mb: 5 }}>
-                  <VolunteerCard />
-                  <VolunteerCard />
-                </Stack>
-              </Box>
-            </TabPanel>
-          </TabContext> */}
-        </Stack>
+        </Stack> */}
       </Box>
     </Container>
 

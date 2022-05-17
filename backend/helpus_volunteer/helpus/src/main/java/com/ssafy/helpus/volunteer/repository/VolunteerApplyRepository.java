@@ -8,10 +8,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface VolunteerApplyRepository extends JpaRepository <VolunteerApply, Long>{
      List<VolunteerApply> findByVolunteer(Volunteer volunteer);
      Page<VolunteerApply> findByWriteId(Long writeId, Pageable pageable);
      Page<VolunteerApply> findByMemberId(Long memberId, Pageable pageable);
+     Optional<VolunteerApply> findByVolunteerAndMemberId(Volunteer volunteer, Long memberId);
 }
