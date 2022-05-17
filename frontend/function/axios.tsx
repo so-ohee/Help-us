@@ -88,7 +88,7 @@ export const getReviewList = async (params) => {
 export const getMyReviewOrg = async (params) => {
   return await axios({
     method: "GET",
-    url: "/8000/d.confirm",
+    url: "/8000/api/d.confirm",
     params: params,
   });
 };

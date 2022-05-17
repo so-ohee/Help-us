@@ -220,8 +220,9 @@ const orgpageMyReview: FC = () => {
           >
             <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
               <Stack direction="row" justifyContent="space-between">
-                <Typography variant="h4">기부 후기</Typography>
-                <CustomButton href="create/review">글 작성</CustomButton>
+                <Typography variant="h4" fontWeight="bold">
+                  기부 후기
+                </Typography>
               </Stack>
               <Grid>
                 <Box sx={{ width: "100%", mt: 2 }}>
@@ -269,7 +270,7 @@ const orgpageMyReview: FC = () => {
                         )}
                       </Box>
                       {donations && donations.length > 0 ? (
-                        <Stack alignItems="center" sx={{ mb: 2, mt: 2 }}>
+                        <Stack alignItems="center" sx={{ mb: 3, mt: 3 }}>
                           <Pagination
                             curPage={curPage}
                             paginate={paginate}
@@ -281,56 +282,69 @@ const orgpageMyReview: FC = () => {
                       )}
                     </TabPanel>
                     <TabPanel value={value} index={1}>
-                      <TableContainer sx={{ my: 5 }}>
-                        <Table
-                          sx={{ minWidth: 700 }}
-                          aria-label="customized table"
+                      {reviews && reviews.length > 0 ? (
+                        <TableContainer sx={{ my: 5 }}>
+                          <Table
+                            sx={{ minWidth: 700 }}
+                            aria-label="customized table"
+                          >
+                            <TableHead>
+                              <TableRow>
+                                <StyledTableCell
+                                  align="center"
+                                  sx={{ fontSize: 17 }}
+                                >
+                                  기부글 번호
+                                </StyledTableCell>
+                                <StyledTableCell
+                                  align="center"
+                                  sx={{ fontSize: 17 }}
+                                >
+                                  제목
+                                </StyledTableCell>
+                                <StyledTableCell
+                                  align="center"
+                                  sx={{ fontSize: 17 }}
+                                >
+                                  작성일
+                                </StyledTableCell>
+                              </TableRow>
+                            </TableHead>
+                            <TableBody>
+                              {reviews &&
+                                reviews.map((data) => (
+                                  <StyledTableRow key={data.donationConfirmId}>
+                                    <StyledTableCell
+                                      align="center"
+                                      sx={{ width: 400 }}
+                                    >
+                                      {data.donationConfirmId}
+                                    </StyledTableCell>
+                                    <StyledTableCell align="center">
+                                      {data.title}
+                                    </StyledTableCell>
+                                    <StyledTableCell align="center">
+                                      {data.createDate.substr(0, 10)}
+                                    </StyledTableCell>
+                                  </StyledTableRow>
+                                ))}
+                            </TableBody>
+                          </Table>
+                        </TableContainer>
+                      ) : (
+                        <Typography
+                          variant="h5"
+                          sx={{
+                            mt: 10,
+                            display: "flex",
+                            justifyContent: "center",
+                          }}
                         >
-                          <TableHead>
-                            <TableRow>
-                              <StyledTableCell
-                                align="center"
-                                sx={{ fontSize: 17 }}
-                              >
-                                기부글 번호
-                              </StyledTableCell>
-                              <StyledTableCell
-                                align="center"
-                                sx={{ fontSize: 17 }}
-                              >
-                                제목
-                              </StyledTableCell>
-                              <StyledTableCell
-                                align="center"
-                                sx={{ fontSize: 17 }}
-                              >
-                                작성일
-                              </StyledTableCell>
-                            </TableRow>
-                          </TableHead>
-                          <TableBody>
-                            {reviews &&
-                              reviews.map((data) => (
-                                <StyledTableRow key={data.donationConfirmId}>
-                                  <StyledTableCell
-                                    align="center"
-                                    sx={{ width: 400 }}
-                                  >
-                                    {data.donationConfirmId}
-                                  </StyledTableCell>
-                                  <StyledTableCell align="center">
-                                    {data.title}
-                                  </StyledTableCell>
-                                  <StyledTableCell align="center">
-                                    {data.createDate.substr(0, 10)}
-                                  </StyledTableCell>
-                                </StyledTableRow>
-                              ))}
-                          </TableBody>
-                        </Table>
-                      </TableContainer>
+                          작성된 리뷰가 없습니다.
+                        </Typography>
+                      )}
                     </TabPanel>
-                    {reviews && reviews.length > 0 ? (
+                    {/* {reviews && reviews.length > 0 ? (
                       <Stack alignItems="center" sx={{ mb: 2, mt: 2 }}>
                         <Pagination
                           curPage={curPage2}
@@ -338,18 +352,7 @@ const orgpageMyReview: FC = () => {
                           totalPage={totalPages2}
                         />
                       </Stack>
-                    ) : (
-                      <Typography
-                        variant="h5"
-                        sx={{
-                          mt: 10,
-                          display: "flex",
-                          justifyContent: "center",
-                        }}
-                      >
-                        작성된 리뷰가 없습니다.
-                      </Typography>
-                    )}
+                    ) : null} */}
                   </Box>
                 </Box>
               </Grid>

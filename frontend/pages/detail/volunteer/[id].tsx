@@ -46,7 +46,7 @@ import {
   volunteerComment,
   userDetail,
   volunteerApply,
-  volunteerApplyCheck
+  volunteerApplyCheck,
 } from "function/axios";
 import { useRouter } from "next/router";
 import { setDefaultResultOrder } from "dns";
@@ -83,7 +83,7 @@ const VolunteerDetail: FC = () => {
   const [userDetails, setUserDetails] = useState<any>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [loading2, setLoading2] = useState<boolean>(false);
-  
+
   const [loading3, setLoading3] = useState<boolean>(false);
   const [id, setId] = useState<any>();
   const [token, setToken] = useState<any>();
@@ -92,31 +92,33 @@ const VolunteerDetail: FC = () => {
   let userId = 0;
   let applyPart;
 
-  
   // 상세 페이지 내용 불러오기
   useEffect(() => {
     if (router.isReady) {
-      volunteerDetail(router.query.id).then((res) => {
-        // console.log(res);
-        setVolunteerDetails(res.data.volunteer);
-        userId = res.data.volunteer.memberId;
-        setLoading(true);
-        console.log(volunteerDetails);
-      }).then(() => {
-        userDetail(userId).then((res) => {
+      volunteerDetail(router.query.id)
+        .then((res) => {
           // console.log(res);
-          setUserDetails(res.data);
-          setLoading2(true);
+          setVolunteerDetails(res.data.volunteer);
+          userId = res.data.volunteer.memberId;
+          setLoading(true);
+          console.log(volunteerDetails);
         })
-      }).then(() => {
-        volunteerApplyCheck(router.query.id, token).then((res) => {
-          console.log(res.data.applyStatus.status);
-          setCheckApply(res.data.applyStatus.status);
-          
-          console.log(applyPart);
-          setLoading3(true);
+        .then(() => {
+          userDetail(userId).then((res) => {
+            // console.log(res);
+            setUserDetails(res.data);
+            setLoading2(true);
+          });
         })
-      });
+        .then(() => {
+          volunteerApplyCheck(router.query.id, token).then((res) => {
+            console.log(res.data.applyStatus.status);
+            setCheckApply(res.data.applyStatus.status);
+
+            console.log(applyPart);
+            setLoading3(true);
+          });
+        });
     }
   }, [router.isReady]);
 
@@ -139,15 +141,15 @@ const VolunteerDetail: FC = () => {
       });
     }
   }, [curPage, router.isReady, commentList]);
-  
-  useEffect(()=> {
+
+  useEffect(() => {
     const id = localStorage.getItem("id");
     const token = localStorage.getItem("jwt");
     const role = localStorage.getItem("role");
     setRole(role);
     setId(id);
     setToken(token);
-  })
+  });
 
   // 댓글 버튼 누를 시 작성
   // const repoArray: any = [...commentList]
@@ -177,9 +179,11 @@ const VolunteerDetail: FC = () => {
     const token = localStorage.getItem("jwt");
     const id = router.query.id;
 
-    volunteerApply(id, token).then((res) => {
+    volunteerApply(id, token)
+      .then((res) => {
         console.log(res + "성공");
-    }).catch((err) => console.log(err + "실패"));
+      })
+      .catch((err) => console.log(err + "실패"));
   };
 
   return (
@@ -216,21 +220,21 @@ const VolunteerDetail: FC = () => {
                     }}
                   >
                     {userDetails.profile === null ? (
-                  <Image
-                    src={defaultImage}
-                    alt="orgImage"
-                    width="300px"
-                    height="300px"
-                  />
-                ) : (
-                  <Image
-                    src={userDetails.profile}
-                    // src={defaultImage}
-                    alt="orgImage"
-                    width="300px"
-                    height="300px"
-                  />
-                )}
+                      <Image
+                        src={defaultImage}
+                        alt="orgImage"
+                        width="150px"
+                        height="150px"
+                      />
+                    ) : (
+                      <Image
+                        src={userDetails.profile}
+                        // src={defaultImage}
+                        alt="orgImage"
+                        width="150px"
+                        height="150px"
+                      />
+                    )}
                   </div>
                 </Grid>
                 <Grid>
@@ -313,7 +317,6 @@ const VolunteerDetail: FC = () => {
                   >
                     <Typography sx={{ p: 2, mt: 0 }}>
                       {volunteerDetails?.content}
-                      
                     </Typography>
                   </Box>
                 </Stack>
@@ -445,7 +448,9 @@ const VolunteerDetail: FC = () => {
                   </CustomButton>
                 </Stack>
                 {commentList &&
-                  commentList.map((item) => <Comment comment={item} id={id} token={token} />)}
+                  commentList.map((item) => (
+                    <Comment comment={item} id={id} token={token} />
+                  ))}
               </Box>
               <Box sx={{ display: "flex", justifyContent: "center", my: 5 }}>
                 <Pagination
