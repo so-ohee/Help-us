@@ -5,6 +5,7 @@ import TestImage from "../public/images/testImage.jpg";
 import defaultImage from "../public/images/defaultImage.png";
 import Chip from "@mui/material/Chip";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
+import Link from "next/link";
 
 // api
 import { finishDonation } from "../function/axios";
@@ -43,8 +44,6 @@ const DonationCardOrg: FC<IDonationCardOrg> = ({
       .catch((err) => console.error(err));
   };
 
-  console.log(item);
-
   return (
     <div>
       <Box
@@ -54,56 +53,33 @@ const DonationCardOrg: FC<IDonationCardOrg> = ({
           overflow: "hidden",
           position: "relative",
           height: 230,
-          width: 500,
+          width: 325,
           backgroundColor: "#ffffff",
         }}
       >
-        <Stack direction="row">
-          <Box
-            sx={{
-              borderRadius: "20px 20px 0 0",
-              // display: "flex",
-              height: 230,
-              width: "35%",
-            }}
-          >
-            {item.profile === null ? (
-              <Image
-                width="100%"
-                height="145"
-                src={defaultImage}
-                alt="Donation Image"
-                layout="responsive"
-              />
-            ) : (
-              <Image
-                width="100%"
-                height="145"
-                src={item.profile}
-                alt="Donation Image"
-                layout="responsive"
-              />
-            )}
-          </Box>
+        <Stack direction="row" justifyContent="center">
           <Box
             sx={{
               // display: "flex",
               justifyContent: "space-between",
               padding: "10px 15px",
               borderTop: "1px solide #CDAD78",
-              height: "100%",
-              width: "65%",
             }}
           >
             <Box>
-              {/* 제목은 17자까지만 보여주기??*/}
-              <Typography sx={{ fontWeight: "bold", fontSize: 17, mt: 0.5 }}>
-                {item.title}
-              </Typography>
+              <Link href={`/detail/donationorg/${item.donationId}`}>
+                <a>
+                  <Typography
+                    sx={{ fontWeight: "bold", fontSize: 17, mt: 0.5, ml: 3.2 }}
+                  >
+                    {item.title}
+                  </Typography>
+                </a>
+              </Link>
               <Grid
                 container
                 sx={{
-                  ml: 1,
+                  mx: "auto",
                   mt: 1,
                   bgcolor: "#f7f2ea",
                   width: 250,
@@ -127,29 +103,56 @@ const DonationCardOrg: FC<IDonationCardOrg> = ({
                       sx={{
                         width: 65,
                         height: 10,
-                        borderRadius: 5,
                       }}
                       direction="row"
                       alignItems="center"
                     >
-                      <Box
-                        sx={{
-                          borderTopLeftRadius: 5,
-                          borderBottomLeftRadius: 5,
-                          width: `${product.percent}%`,
-                          height: 5,
-                          bgcolor: "#CDAD78",
-                        }}
-                      ></Box>
-                      <Box
-                        sx={{
-                          borderTopRightRadius: 5,
-                          borderBottomRightRadius: 5,
-                          width: `${100 - product.percent}%`,
-                          height: 5,
-                          bgcolor: "#dbd5ca",
-                        }}
-                      ></Box>
+                      {product.percent === 100 ? (
+                        <Box
+                          sx={{
+                            borderTopLeftRadius: 5,
+                            borderBottomLeftRadius: 5,
+                            borderTopRightRadius: 5,
+                            borderBottomRightRadius: 5,
+                            width: `${product.percent}%`,
+                            height: 5,
+                            bgcolor: "#CDAD78",
+                          }}
+                        ></Box>
+                      ) : (
+                        <Box
+                          sx={{
+                            borderTopLeftRadius: 5,
+                            borderBottomLeftRadius: 5,
+                            width: `${product.percent}%`,
+                            height: 5,
+                            bgcolor: "#CDAD78",
+                          }}
+                        ></Box>
+                      )}
+                      {product.percent === 0 ? (
+                        <Box
+                          sx={{
+                            borderTopRightRadius: 5,
+                            borderBottomRightRadius: 5,
+                            borderTopLeftRadius: 5,
+                            borderBottomLeftRadius: 5,
+                            width: `${100 - product.percent}%`,
+                            height: 5,
+                            bgcolor: "#dbd5ca",
+                          }}
+                        ></Box>
+                      ) : (
+                        <Box
+                          sx={{
+                            borderTopRightRadius: 5,
+                            borderBottomRightRadius: 5,
+                            width: `${100 - product.percent}%`,
+                            height: 5,
+                            bgcolor: "#dbd5ca",
+                          }}
+                        ></Box>
+                      )}
                     </Stack>
                   </Grid>
                 ))}
@@ -157,9 +160,10 @@ const DonationCardOrg: FC<IDonationCardOrg> = ({
               {/* 진행률 표시 바 */}
               <Stack
                 sx={{
-                  width: 300,
+                  width: 280,
                   height: 10,
                   mt: 1.5,
+                  ml: 3.5,
                 }}
                 direction="row"
                 alignItems="center"
@@ -211,22 +215,24 @@ const DonationCardOrg: FC<IDonationCardOrg> = ({
                   ></Box>
                 )}
                 <Typography align="center" sx={{ ml: 1, fontSize: 14 }}>
-                  {item?.percent}%
+                  {parseInt(item?.percent)}%
                 </Typography>
               </Stack>
             </Box>
             <Stack
-              justifyContent="space-between"
+              // justifyContent="space-between"
               direction="row"
               sx={{ mt: 1.5 }}
               alignItems="center"
             >
-              <Typography>자동 종료일: {item.endDate}</Typography>
+              <Typography sx={{ ml: 3.5 }}>
+                자동 종료일: {item.endDate}
+              </Typography>
               <CustomButton
                 onClick={onClickFinish}
                 variant="contained"
                 size="small"
-                sx={{ width: 30 }}
+                sx={{ width: 30, ml: 2.5 }}
               >
                 종료
               </CustomButton>
