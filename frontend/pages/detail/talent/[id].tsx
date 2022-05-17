@@ -41,9 +41,10 @@ import testImage from "../../../public/images/testImage.jpg";
 import goodImage from "../../../public/images/good.jpg";
 
 import Comment from "../../../components/Comment";
+import Pagination from "../../../components/Pagination";
 
 import { useRouter } from "next/router";
-import { getTalentDonationDetail, getUserInfo } from "function/axios";
+import { getTalentDonationDetail, getUserInfo, talentCommentList, talentComment } from "function/axios";
 // import { CommentData } from "../../../interfaces";
 
 const CustomButton = styled(Button)({
@@ -135,16 +136,22 @@ export interface CommentData {
 
 const TalentDetail: FC = () => {
   //const imageList = [testImage, testImage, testImage, testImage, testImage];
-  
   const router = useRouter();
 
   const [loading, setLoadging] = useState<boolean>(false);
   const [loading2, setLoading2] = useState<boolean>(false);
 
   // console.log("라우터 쿼리는", router.query.id);
-
   const [talentDonationDetail, setTalentDonationDetail] = useState<any>("");
   const [userInfo, setUserInfo] = useState<any>("");
+  const [comment, setComment] = useState<string>("");
+  const [parentCommentId, setParentComeentId] = useState("");
+  const [commentList, setCommentList] = useState<any>([]);
+
+  const [id, setId] = useState<any>();
+  const [token, setToken] = useState<any>();
+
+  // 상세 페이지 내용 불러오기
   useEffect(() => {
     if (router.isReady) {
       getTalentDonationDetail(router.query.id).then((res) => {
@@ -158,6 +165,52 @@ const TalentDetail: FC = () => {
       });
     }
   }, [router.isReady]);
+
+  // pagination
+  const [curPage, setCurPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const paginate = (pageNumber) => setCurPage(pageNumber);
+
+  const params = {
+    page: curPage,
+  };
+
+  useEffect(() => {
+    if (router.isReady) {
+      talentCommentList(router.query.id, params)
+        .then((res) => {
+          setCommentList(res.data.comment);
+          setTotalPages(res.data.totalPage);
+          setLoadging(true);
+        })
+    }
+  }, [curPage, router.isReady, commentList])
+
+  useEffect(()=> {
+    const id = localStorage.getItem("id");
+    const token = localStorage.getItem("jwt");
+    setId(id);
+    setToken(token);
+  })
+
+  //  댓글 등록 버튼
+  const handleComment = (e) => {
+    if (comment === "") {
+      alert("댓글을 입력해주세요!");
+      return;
+    }
+    const id = localStorage.getItem("id");
+    const token = localStorage.getItem("jwt");
+    const params = {
+      volunteerId: router.query.id,
+      content: comment,
+      parentCommentId: "",
+    };
+
+    talentComment(id, token, params)
+      .then((res) => console.log(res + "성공"))
+      .catch((err) => console.log(err + "실패"))
+  }
 
   return (
     <>
@@ -301,16 +354,30 @@ const TalentDetail: FC = () => {
             <CssTextField
               sx={{ backgroundColor: "#ffffff", width: 1000 }}
               size="small"
+              onChange={(e) => setComment(e.target.value)}
             />
-            <CustomButton variant="contained" size="small" sx={{ width: 30 }}>
+            <CustomButton 
+              variant="contained" 
+              size="small" 
+              sx={{ width: 30 }}
+              onClick={handleComment}
+              >
               등록
             </CustomButton>
           </Stack>
-          {/* <Stack>
-            {comments.map((item) => (
-              <Comment comment={item} />
+          <Stack>
+            {commentList &&
+              commentList.map((item) => (
+              <Comment comment={item} id={id} token={token}/>
             ))}
-          </Stack> */}
+          </Stack>
+          <Box sx={{ display: "flex", justifyContent: "center", my: 5 }}>
+            <Pagination
+              paginate={paginate}
+              curPage={curPage}
+              totalPage={totalPages}
+            />
+          </Box>
         </Container>
       </Box>
     </Box>

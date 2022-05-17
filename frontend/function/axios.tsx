@@ -3,6 +3,7 @@ import axios from "axios";
 import { content } from "html2canvas/dist/types/css/property-descriptors/content";
 import endOfDecadeWithOptions from "date-fns/esm/fp/endOfDecadeWithOptions/index.js";
 import { id } from "date-fns/locale";
+import { PartyModeSharp } from "@mui/icons-material";
 
 // proxy
 // 9080: 기부, 후기 'http://k6c106.p.ssafy.io:9080'
@@ -250,7 +251,38 @@ export const finishDonation = async (dId, mId, token) => {
   });
 };
 
-// 재능 기부 댓글 작성
+// 재능 기부 상세 페이지 댓글 조회
+export const talentCommentList = async (id, params) => {
+  return await axios({
+    method : "GET",
+    url : `8000/api/v.comment/${id}`,
+    params: params,
+  })
+}
+
+// 재능 기부 상세 페이지 댓글 작성
+export const talentComment = async (id, token, params) => {
+  return await axios({
+    method: "POST",
+    url: '8000/v.comment',
+    headers: {
+      Authorization: token,
+    },
+    data: params,
+  })
+}
+
+// 재능 기부 상세 페이지 댓글 삭제
+export const talentCommentDelete = async (commentId, id, token) => {
+  return await axios({
+    method: "DELETE",
+    url: `8000/v.comment/$commentId`,
+    headers: {
+      memberId: id,
+      Authorization: token,
+    },
+  });
+};
 
 // ----------------------- 9081 ------------------------------
 
