@@ -134,10 +134,11 @@ const DonationOrgDetail: FC = () => {
 
   const [userId, setUserId] = useState<any>("");
   const [token, setToken] = useState<any>("");
-  const params = {
-    donationId: 20,
-    donationProductId: 19,
-    count: 3,
+
+  const [applyStatus, setApplyStatus] = useState<boolean>(false);
+
+  const getStatus = (applyStatus) => {
+    setApplyStatus(applyStatus);
   };
 
   useEffect(() => {
@@ -145,16 +146,16 @@ const DonationOrgDetail: FC = () => {
     setToken(localStorage.getItem("jwt"));
     if (router.isReady) {
       donationDetail(router.query.id).then((res) => {
-        console.log(res);
+        // console.log(res);
         setDonationDetails(res.data.donation);
         setDetailLoading(true);
       });
     }
-  }, [router.isReady]);
+  }, [router.isReady, applyStatus]);
 
   useEffect(() => {
     if (detailLoading) {
-      console.log(donationDetails);
+      // console.log(donationDetails);
       getUserInfo(donationDetails.memberId).then((res) => {
         setOrgInfo(res.data);
       });
@@ -293,39 +294,6 @@ const DonationOrgDetail: FC = () => {
               </Box>
             </Stack>
           </Stack>
-          {/* <Stack direction="row" justifyContent="center" spacing={5}>
-                {donationDetails.images.map((item) => (
-                  <div
-                    style={{
-                      // borderRadius: "5px",
-                      overflow: "hidden",
-                      height: "200px",
-                    }}
-                  >
-                    <Image
-                      src={item}
-                      alt="orgImage"
-                      width="200px"
-                      height="200px"
-                    />
-                  </div>
-                ))}
-              </Stack>
-              <Stack>
-                <Box
-                  sx={{
-                    mt: 2,
-                    bgcolor: "#f5e1be",
-                    borderRadius: 1.25,
-                    // height: "120px",
-                  }}
-                  minHeight="120px"
-                >
-                  <Typography sx={{ p: 2, mt: 0 }}>
-                    {donationDetails.content}
-                  </Typography>
-                </Box>
-              </Stack> */}
           <Stack
             justifyContent="space-between"
             direction="row"
@@ -363,7 +331,7 @@ const DonationOrgDetail: FC = () => {
             <Stack direction="row" alignItems="center">
               <Stack
                 sx={{
-                  width: 300,
+                  width: 350,
                   height: 10,
                 }}
                 direction="row"
@@ -399,7 +367,7 @@ const DonationOrgDetail: FC = () => {
                     bgcolor: "#dbd5ca",
                   }}
                 ></Box>
-                <Typography sx={{ fontSize: 13, width: 40, ml: 1 }}>
+                <Typography sx={{ fontSize: 13, width: 80, ml: 1 }}>
                   남은 수량
                 </Typography>
               </Stack>
@@ -422,6 +390,12 @@ const DonationOrgDetail: FC = () => {
                     진행률
                   </StyledTableCell>
                   <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                    기부 가능 수량
+                  </StyledTableCell>
+                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                    총 수량
+                  </StyledTableCell>
+                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
                     구매 링크
                   </StyledTableCell>
                   <StyledTableCell align="center" sx={{ fontSize: 17 }}>
@@ -436,7 +410,7 @@ const DonationOrgDetail: FC = () => {
                       <StyledTableCell align="center">
                         {data.productName}
                       </StyledTableCell>
-                      <StyledTableCell align="center" sx={{ width: 400 }}>
+                      <StyledTableCell align="center" sx={{}}>
                         {data.productInfo}
                       </StyledTableCell>
                       <StyledTableCell align="center">
@@ -446,6 +420,7 @@ const DonationOrgDetail: FC = () => {
                           }}
                           direction="row"
                           alignItems="center"
+                          justifyContent="center"
                         >
                           {data.finishCount === 0 ? null : (
                             <Stack
@@ -458,8 +433,8 @@ const DonationOrgDetail: FC = () => {
                             >
                               <Box
                                 sx={{
-                                  borderTopLeftRadius: 5,
-                                  borderBottomLeftRadius: 5,
+                                  // borderTopLeftRadius: 5,
+                                  // borderBottomLeftRadius: 5,
                                   height: 25,
                                   bgcolor: "#CDAD78",
                                 }}
@@ -476,13 +451,15 @@ const DonationOrgDetail: FC = () => {
                               </Typography>
                             </Stack>
                           )}
-                          {data.deliveryCount !== 0 &&
-                          data.finishCount === 0 ? null : (
+                          {data.deliveryCount + data.waitingCount ===
+                          0 ? null : (
                             <Stack
                               direction="column"
                               sx={{
                                 width: `${
-                                  (data.deliveryCount / data.totalCount) * 100
+                                  (data.deliveryCount +
+                                    data.waitingCount / data.totalCount) *
+                                  100
                                 }%`,
                               }}
                             >
@@ -497,54 +474,27 @@ const DonationOrgDetail: FC = () => {
                               ></Box>
                               <Typography sx={{ fontSize: 11 }}>
                                 {(
-                                  (data.deliveryCount / data.totalCount) *
+                                  (data.deliveryCount +
+                                    data.waitingCount / data.totalCount) *
                                   100
                                 ).toFixed()}
                                 %
                               </Typography>
                             </Stack>
                           )}
-                          {data.finishCount === 0 &&
-                          data.deliveryCount !== 0 ? (
-                            <Stack
-                              direction="column"
-                              sx={{
-                                width: `${
-                                  (data.deliveryCount / data.totalCount) * 100
-                                }%`,
-                              }}
-                            >
-                              <Box
-                                sx={{
-                                  borderTopLeftRadius: 5,
-                                  borderBottomLeftRadius: 5,
-                                  height: 25,
-                                  bgcolor: "#FCE2A6",
-                                }}
-                                justifyContent="center"
-                                flexDirection="column"
-                                display="flex"
-                              ></Box>
-                              <Typography sx={{ fontSize: 11 }}>
-                                {(
-                                  (data.deliveryCount / data.totalCount) *
-                                  100
-                                ).toFixed()}
-                                %
-                              </Typography>
-                            </Stack>
-                          ) : null}
                           {data.totalCount -
                             data.deliveryCount -
-                            data.finishCount !==
-                            0 && data.finishCount !== 0 ? (
+                            data.finishCount -
+                            data.waitingCount ===
+                          0 ? null : (
                             <Stack
                               direction="column"
                               sx={{
                                 width: `${
                                   ((data.totalCount -
                                     data.deliveryCount -
-                                    data.finishCount) /
+                                    data.finishCount -
+                                    data.waitingCount) /
                                     data.totalCount) *
                                   100
                                 }%`,
@@ -552,8 +502,8 @@ const DonationOrgDetail: FC = () => {
                             >
                               <Box
                                 sx={{
-                                  borderTopRightRadius: 5,
-                                  borderBottomRightRadius: 5,
+                                  // borderTopRightRadius: 5,
+                                  // borderBottomRightRadius: 5,
                                   height: 25,
                                   bgcolor: "#dbd5ca",
                                 }}
@@ -565,105 +515,31 @@ const DonationOrgDetail: FC = () => {
                                 {(
                                   ((data.totalCount -
                                     data.deliveryCount -
-                                    data.finishCount) /
+                                    data.finishCount -
+                                    data.waitingCount) /
                                     data.totalCount) *
                                   100
                                 ).toFixed()}
                                 %
                               </Typography>
                             </Stack>
-                          ) : null}
-                          {data.totalCount -
-                            data.deliveryCount -
-                            data.finishCount !==
-                            0 &&
-                          data.finishCount === 0 &&
-                          data.deliveryCount === 0 ? (
-                            <Stack
-                              direction="column"
-                              sx={{
-                                width: `${
-                                  ((data.totalCount -
-                                    data.deliveryCount -
-                                    data.finishCount) /
-                                    data.totalCount) *
-                                  100
-                                }%`,
-                              }}
-                            >
-                              <Box
-                                sx={{
-                                  borderTopLeftRadius: 5,
-                                  borderBottomLeftRadius: 5,
-                                  borderTopRightRadius: 5,
-                                  borderBottomRightRadius: 5,
-                                  height: 25,
-                                  bgcolor: "#dbd5ca",
-                                }}
-                                justifyContent="center"
-                                flexDirection="column"
-                                display="flex"
-                              ></Box>
-                              <Typography sx={{ fontSize: 11 }}>
-                                {(
-                                  ((data.totalCount -
-                                    data.deliveryCount -
-                                    data.finishCount) /
-                                    data.totalCount) *
-                                  100
-                                ).toFixed()}
-                                %
-                              </Typography>
-                            </Stack>
-                          ) : null}
-                          {data.totalCount -
-                            data.deliveryCount -
-                            data.finishCount !==
-                            0 &&
-                          data.finishCount === 0 &&
-                          data.deliveryCount !== 0 ? (
-                            <Stack
-                              direction="column"
-                              sx={{
-                                width: `${
-                                  ((data.totalCount -
-                                    data.deliveryCount -
-                                    data.finishCount) /
-                                    data.totalCount) *
-                                  100
-                                }%`,
-                              }}
-                            >
-                              <Box
-                                sx={{
-                                  borderTopRightRadius: 5,
-                                  borderBottomRightRadius: 5,
-                                  height: 25,
-                                  bgcolor: "#dbd5ca",
-                                }}
-                                justifyContent="center"
-                                flexDirection="column"
-                                display="flex"
-                              ></Box>
-                              <Typography sx={{ fontSize: 11 }}>
-                                {(
-                                  ((data.totalCount -
-                                    data.deliveryCount -
-                                    data.finishCount) /
-                                    data.totalCount) *
-                                  100
-                                ).toFixed()}
-                                %
-                              </Typography>
-                            </Stack>
-                          ) : null}
-                          <Typography
+                          )}
+                          {/* <Typography
                             align="center"
                             sx={{ ml: 1, fontSize: 14, width: 50 }}
                           >
                             {data.finishCount}/{data.totalCount}
-                          </Typography>
+                          </Typography> */}
                         </Stack>
+                      </StyledTableCell>
+                      <StyledTableCell align="center">
+                        {data.totalCount -
+                          data.deliveryCount -
+                          data.finishCount -
+                          data.waitingCount}
+                      </StyledTableCell>
+                      <StyledTableCell align="center">
+                        {data.totalCount}
                       </StyledTableCell>
                       <StyledTableCell align="center">
                         <Tooltip
@@ -693,6 +569,8 @@ const DonationOrgDetail: FC = () => {
                           router={routerId}
                           id={userId}
                           token={token}
+                          applyStatus={applyStatus}
+                          getStatus={getStatus}
                         />
                       </StyledTableCell>
                     </StyledTableRow>
