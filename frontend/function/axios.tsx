@@ -42,7 +42,7 @@ export const donationDetail = async (id) => {
 export const donationOrgCommentList = async (id, params) => {
   return await axios({
     method: "GET",
-    url : `/8000/api/d.comment/donation/${id}`,
+    url: `/8000/api/d.comment/donation/${id}`,
     params: params,
   });
 };
@@ -51,7 +51,7 @@ export const donationOrgCommentList = async (id, params) => {
 export const donationOrgComment = async (id, token, params) => {
   return await axios({
     method: "POST",
-    url : "/8000/d.comment",
+    url: "/8000/d.comment",
     headers: {
       Authorization: token,
     },
@@ -60,7 +60,12 @@ export const donationOrgComment = async (id, token, params) => {
 };
 
 // 물품 기부 상세 페이지 댓글 삭제
-export const donationOrgCommentDelete = async (commentId, memberId, id, token) => {
+export const donationOrgCommentDelete = async (
+  commentId,
+  memberId,
+  id,
+  token
+) => {
   return await axios({
     method: "DELETE",
     url: `/8000/d.comment/${commentId}/${memberId}`,
@@ -79,6 +84,15 @@ export const getReviewList = async (params) => {
   });
 };
 
+// 기관 마이페이지 - 작성 후기 목록 조회
+export const getMyReviewOrg = async (params) => {
+  return await axios({
+    method: "GET",
+    url: "/8000/d.confirm",
+    params: params,
+  });
+};
+
 // 후기 상세 페이지
 export const reviewDetail = async (id) => {
   return await axios({
@@ -87,11 +101,10 @@ export const reviewDetail = async (id) => {
   });
 };
 
-
 // 후기 페이지 작성
 export const createReview = async (id, token, confirm, files) => {
   const newForm = new FormData();
-  
+
   newForm.append(
     "confirm",
     new Blob([JSON.stringify(confirm)], { type: "application/json" })
@@ -113,7 +126,7 @@ export const createReview = async (id, token, confirm, files) => {
 export const reviewCommentList = async (id, params) => {
   return await axios({
     method: "GET",
-    url : `/8000/api/d.comment/confirm/${id}`,
+    url: `/8000/api/d.comment/confirm/${id}`,
     params: params,
   });
 };
@@ -139,7 +152,7 @@ export const reviewCommentDelete = async (commentId, memberId, id, token) => {
       Authorization: token,
     },
   });
-}; 
+};
 
 //후원자 명단
 export const getSponsorList = async (id, params) => {
@@ -230,6 +243,19 @@ export const getDeliveryList = async (id, params) => {
     method: "GET",
     url: `/9080/d.apply/tracking/${id}`,
     params: params,
+  });
+};
+
+// 마이페이지(기관) - 후기 미작성 기부글 조회
+export const getNoReviewDonation = async (token, id, params) => {
+  return await axios({
+    method: "GET",
+    url: `/8000/donation`,
+    params: params,
+    headers: {
+      Authorization: token,
+      memberId: id,
+    },
   });
 };
 
@@ -336,11 +362,11 @@ export const finishDonation = async (dId, mId, token) => {
 // 재능 기부 상세 페이지 댓글 조회
 export const talentCommentList = async (id, params) => {
   return await axios({
-    method : "GET",
-    url : `/8000/api/v.comment/${id}`,
+    method: "GET",
+    url: `/8000/api/v.comment/${id}`,
     params: params,
-  })
-}
+  });
+};
 
 // 재능 기부 상세 페이지 댓글 작성
 export const talentComment = async (id, token, params) => {
@@ -351,8 +377,8 @@ export const talentComment = async (id, token, params) => {
       Authorization: token,
     },
     data: params,
-  })
-}
+  });
+};
 
 // 재능 기부 상세 페이지 댓글 삭제
 export const talentCommentDelete = async (commentId, id, token) => {
@@ -616,13 +642,13 @@ export const createCs = async (id, token, desk, files) => {
   });
 };
 // 고객센터 수정
-export const csCommentUpdate = async () => {}
+export const csCommentUpdate = async () => {};
 
 // 고객센터 댓글 작성
 export const csComment = async (id, token, params) => {
   return await axios({
     method: "POST",
-    url : "/8000/comment",
+    url: "/8000/comment",
     headers: {
       Authorization: token,
     },
