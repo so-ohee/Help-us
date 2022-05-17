@@ -45,9 +45,11 @@ import {
   volunteerCommentList,
   volunteerComment,
   userDetail,
-  volunteerApply
+  volunteerApply,
+  volunteerApplyCheck,
 } from "function/axios";
 import { useRouter } from "next/router";
+import { setDefaultResultOrder } from "dns";
 
 const CustomButton = styled(Button)({
   backgroundColor: "#5B321E",
@@ -69,27 +71,43 @@ const VolunteerDetail: FC = () => {
   const [userDetails, setUserDetails] = useState<any>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [loading2, setLoading2] = useState<boolean>(false);
+
+  const [loading3, setLoading3] = useState<boolean>(false);
   const [id, setId] = useState<any>();
   const [token, setToken] = useState<any>();
-
+  const [role, setRole] = useState<any>();
+  const [checkApply, setCheckApply] = useState<any>(-1);
   let userId = 0;
+  let applyPart;
 
   // 상세 페이지 내용 불러오기
   useEffect(() => {
     if (router.isReady) {
-      volunteerDetail(router.query.id).then((res) => {
-        // console.log(res);
-        setVolunteerDetails(res.data.volunteer);
-        userId = res.data.volunteer.memberId;
-        setLoading(true);
-        console.log(volunteerDetails);
-      }).then(() => {
-        userDetail(userId).then((res) => {
-          // console.log(res);
-          setUserDetails(res.data);
-          setLoading2(true);
+      console.log("id" + router.query.id);
+      volunteerDetail(router.query.id)
+        .then((res) => {
+          console.log(res);
+          setVolunteerDetails(res.data.volunteer);
+          userId = res.data.volunteer.memberId;
+          setLoading(true);
+          console.log(volunteerDetails);
         })
-      });
+        .then(() => {
+          userDetail(userId).then((res) => {
+            // console.log(res);
+            setUserDetails(res.data);
+            setLoading2(true);
+          });
+        })
+        .then(() => {
+          let tmpToken = localStorage.getItem("jwt");
+          if (role !== null) {
+            volunteerApplyCheck(router.query.id, tmpToken).then((res) => {
+              setCheckApply(res.data.applyStatus.status);
+            });
+          }
+          setLoading3(true);
+        });
     }
   }, [router.isReady]);
 
@@ -106,18 +124,21 @@ const VolunteerDetail: FC = () => {
     if (router.isReady) {
       volunteerCommentList(router.query.id, params).then((res) => {
         setCommentList(res.data.comment);
+        console.log(res);
         setTotalPages(res.data.totalPage);
         setLoading(true);
       });
     }
   }, [curPage, router.isReady, commentList]);
-  
-  useEffect(()=> {
+
+  useEffect(() => {
     const id = localStorage.getItem("id");
     const token = localStorage.getItem("jwt");
+    const role = localStorage.getItem("role");
+    setRole(role);
     setId(id);
     setToken(token);
-  })
+  });
 
   // 댓글 버튼 누를 시 작성
   // const repoArray: any = [...commentList]
@@ -142,20 +163,45 @@ const VolunteerDetail: FC = () => {
       })
       .catch((err) => console.log(err + "실패"));
   };
-
+  const SetApplyPart = ({ role, status }) => {
+    if (role === "USER" && status === -1) {
+      return (
+        <>
+          <CustomButton sx={{ width: 100, mx: "auto" }} onClick={Apply}>
+            신청하기
+          </CustomButton>
+        </>
+      );
+    } else if (role === "USER") {
+      return (
+        <>
+          <Typography
+            variant="h5"
+            sx={{ mt: 0, display: "flex", justifyContent: "center" }}
+          >
+            신청 완료
+          </Typography>
+        </>
+      );
+    } else {
+      return <></>;
+    }
+  };
   // 봉사 신청
   const Apply = (e) => {
     const token = localStorage.getItem("jwt");
     const id = router.query.id;
 
-    volunteerApply(id, token).then((res) => {
+    volunteerApply(id, token)
+      .then((res) => {
         console.log(res + "성공");
-    }).catch((err) => console.log(err + "실패"));
+      })
+      .catch((err) => console.log(err + "실패"));
   };
 
   return (
     <>
-      {loading && loading2 ? (
+      {loading && loading2 && loading3 ? (
         <Box sx={{ display: "flex" }}>
           <CssBaseline />
           <Box
@@ -187,21 +233,21 @@ const VolunteerDetail: FC = () => {
                     }}
                   >
                     {userDetails.profile === null ? (
-                  <Image
-                    src={defaultImage}
-                    alt="orgImage"
-                    width="300px"
-                    height="300px"
-                  />
-                ) : (
-                  <Image
-                    src={userDetails.profile}
-                    // src={defaultImage}
-                    alt="orgImage"
-                    width="300px"
-                    height="300px"
-                  />
-                )}
+                      <Image
+                        src={defaultImage}
+                        alt="orgImage"
+                        width="150px"
+                        height="150px"
+                      />
+                    ) : (
+                      <Image
+                        src={userDetails.profile}
+                        // src={defaultImage}
+                        alt="orgImage"
+                        width="150px"
+                        height="150px"
+                      />
+                    )}
                   </div>
                 </Grid>
                 <Grid>
@@ -284,7 +330,6 @@ const VolunteerDetail: FC = () => {
                   >
                     <Typography sx={{ p: 2, mt: 0 }}>
                       {volunteerDetails?.content}
-                      
                     </Typography>
                   </Box>
                 </Stack>
@@ -352,9 +397,10 @@ const VolunteerDetail: FC = () => {
             </Stack> */}
               </Stack>
               <Stack sx={{ mt: 3 }}>
-                <CustomButton sx={{ width: 100, mx: "auto" }} onClick={Apply}>
+                {/* <CustomButton sx={{ width: 100, mx: "auto" }} onClick={Apply}>
                   신청하기
-                </CustomButton>
+                </CustomButton> */}
+                <SetApplyPart role={role} status={checkApply} />
               </Stack>
               {/* 카카오 맵 */}
               <Stack sx={{ width: 800, height: 300, mt: 3, ml: 20 }}>
@@ -416,7 +462,9 @@ const VolunteerDetail: FC = () => {
                   </CustomButton>
                 </Stack>
                 {commentList &&
-                  commentList.map((item) => <Comment comment={item} id={id} token={token} />)}
+                  commentList.map((item) => (
+                    <Comment comment={item} id={id} token={token} />
+                  ))}
               </Box>
               <Box sx={{ display: "flex", justifyContent: "center", my: 5 }}>
                 <Pagination

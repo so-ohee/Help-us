@@ -24,7 +24,8 @@ import DonationCard from "../components/DonationCard";
 import VolunteerCard from "../components/VolunteerCard";
 import volunteer1 from "../public/images/volunteer1.jpg";
 import Pagination from "@/components/Pagination";
-
+import Link from "next/link";
+import CarouselMain from "../components/CarouselMain";
 // api
 import { getDonationMain, getVolunteerMain } from "function/axios";
 import { NineKOutlined } from "@mui/icons-material";
@@ -142,6 +143,8 @@ const Donation: FC = () => {
   const paginate = (pageNumber) => setCurPage(pageNumber);
   const paginate2 = (pageNumber) => setCurPage2(pageNumber);
 
+  const [userRole, setUserRole] = useState<any>("");
+
   // 최신순
   const [recentDonation, setRecentDonation] = useState<any>("");
   const [recentVolunteer, setRecentVolunteer] = useState<any>("");
@@ -156,15 +159,17 @@ const Donation: FC = () => {
 
   const params1 = {
     page: curPage,
-    order: option
+    order: option,
   };
 
   const params2 = {
     page: curPage2,
-    order: option
+    order: option,
   };
 
   useEffect(() => {
+    const userRole = localStorage.getItem("role");
+    setUserRole(userRole);
     getDonationMain(params1).then((res) => {
       setRecentDonation(res.data.donation);
       setTotalPages(res.data.totalPage);
@@ -177,12 +182,12 @@ const Donation: FC = () => {
   useEffect(() => {
     params1.order = option;
     params2.order = option;
-    
+
     getDonationMain(params1).then((res) => {
       setRecentDonation(res.data.donation);
       setTotalPages(res.data.totalPage);
     });
-    
+
     getVolunteerMain(params2).then((res) => {
       setRecentVolunteer(res.data.listVolunteer);
       setTotalPages2(res.data.totalPage);
@@ -200,19 +205,21 @@ const Donation: FC = () => {
             mt: 0,
           }}
         >
-          <Stack alignItems="center">
-            <Image
-              src={volunteer1}
-              alt="volunteer first"
-              width={1200}
-              height={200}
-            />
-          </Stack>
+          <Box textAlign="center">
+            {/* 이미지 출력 부분 */}
+            <Stack alignItems="center" sx={{ mb: 5 }}>
+              <CarouselMain />
+            </Stack>
+          </Box>
           <Stack>
             <Box sx={{ width: "100%", mt: 2 }}>
               <Box>
                 <Stack direction="row" justifyContent="space-between">
-                  <StyledTabs value={value} onChange={handleChange}>
+                  <StyledTabs
+                    sx={{ ml: 7 }}
+                    value={value}
+                    onChange={handleChange}
+                  >
                     <StyledTab
                       sx={{ fontWeight: "bold" }}
                       label="물품 기부"
@@ -224,11 +231,26 @@ const Donation: FC = () => {
                       {...a11yProps(1)}
                     />
                   </StyledTabs>
+                  {userRole === "ORG" || userRole === "org" ? (
+                    <Stack direction="row" alignItems="center" spacing={5}>
+                      <Link href={"/create/donationorg"}>
+                        <CustomButton sx={{ height: 40 }}>
+                          기부 등록
+                        </CustomButton>
+                      </Link>
+                      <Link href={"/create/volunteer"}>
+                        <CustomButton sx={{ height: 40 }}>
+                          봉사 등록
+                        </CustomButton>
+                      </Link>
+                    </Stack>
+                  ) : null}
                   <Box
                     sx={{
                       minWidth: 200,
                       display: "flex",
                       justifyContent: "flex-end",
+                      mr: 6,
                     }}
                   >
                     <FormControl fullWidth>
@@ -250,12 +272,11 @@ const Donation: FC = () => {
                   <Box
                     sx={{
                       display: "grid",
-                      gridTemplateColumns: "repeat(auto-fill, 500px)",
+                      gridTemplateColumns: "repeat(auto-fill, 300px)",
                       justifyContent: "center",
                       alignItems: "center",
-                      // marginTop: 5,
-                      rowGap: 1,
-                      columnGap: 5,
+                      rowGap: 5,
+                      columnGap: 7,
                     }}
                   >
                     {recentDonation && recentDonation.length > 0 ? (
@@ -280,12 +301,11 @@ const Donation: FC = () => {
                   <Box
                     sx={{
                       display: "grid",
-                      gridTemplateColumns: "repeat(auto-fill, 500px)",
+                      gridTemplateColumns: "repeat(auto-fill, 300px)",
                       justifyContent: "center",
                       alignItems: "center",
-                      // marginTop: 5,
-                      rowGap: 1,
-                      columnGap: 5,
+                      rowGap: 5,
+                      columnGap: 7,
                     }}
                   >
                     {recentVolunteer && recentVolunteer.length > 0 ? (

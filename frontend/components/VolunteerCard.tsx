@@ -109,9 +109,6 @@ const VolunteerCard: FC<IVolunteer> = ({ volunteer }) => {
                     {volunteer.volAddress}
                   </Typography>
                 </Grid>
-                {/* <Typography sx={{ fontSize: 14, m: 0.5 }}>
-                  경기도 수원시 영통구 센트럴타운로 22 (이의동)
-                </Typography> */}
               </Grid>
               {/* 진행률 표시 바 */}
               <Stack

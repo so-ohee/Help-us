@@ -311,6 +311,55 @@ public class VolunteerServiceImpl implements VolunteerService{
     }
 
     @Override
+    public Map<String, Object> makeListVolunteer2(Page<Volunteer> volunteers) throws Exception {
+        log.info("VolunteerService makerVolunteerList call");
+
+        Map<String, Object> resultMap = new HashMap<>();
+
+        if(volunteers.isEmpty()){
+            resultMap.put("message", "게시글 없음");
+            return resultMap;
+        }
+        List<ListVolunteerResDto> list_not_end = new ArrayList<>();
+        List<ListVolunteerResDto> list_end = new ArrayList<>();
+
+        for(Volunteer volunteer : volunteers){
+
+            Map<String, String> member = memberService.getMember(volunteer.getMemberId());
+
+            ListVolunteerResDto listVolunteerResDto = ListVolunteerResDto.builder()
+                    .volunteerId(volunteer.getVolunteerId())
+                    .title(volunteer.getTitle())
+                    .content(volunteer.getContent())
+                    .applicant(volunteer.getApplicant())
+                    .people(volunteer.getPeople())
+                    .percent(volunteer.getPercent())
+                    .volDate(volunteer.getVolDate())
+                    .volAddress(volunteer.getVolAddress())
+                    .volZipcode(volunteer.getVolZipcode())
+                    .time(volunteer.getTime())
+                    .status(volunteer.getStatus())
+                    .memberId(Long.parseLong(member.get("memberId")))
+                    .name(member.get("name"))
+                    .profile(member.get("profile"))
+                    .createDate(volunteer.getCreateDate()).build();
+
+            System.out.println(volunteer.getStatus());
+            if(volunteer.getStatus()==1){
+                list_end.add(listVolunteerResDto);
+            }else{
+                list_not_end.add(listVolunteerResDto);
+            }
+        }
+
+        resultMap.put("not_end_list", list_not_end);
+        resultMap.put("end_list", list_end);
+        resultMap.put("totalPage", volunteers.getTotalPages());
+        resultMap.put("message", "성공");
+        return resultMap;
+    }
+
+    @Override
     public Map<String, Object> mainListVolunteer(String order, int page) throws Exception{
         log.info("VolunteerService mainListVolunteer call");
 
@@ -324,9 +373,9 @@ public class VolunteerServiceImpl implements VolunteerService{
         log.info("VolunteerService myVolunteerList call");
 
         Map<String, Object> resultMap = new HashMap<>();
-        Page<Volunteer> volunteers = volunteerRepository.findByMemberId(memberId, PageRequest.of(page, 10, Sort.by("status").ascending()));
+        Page<Volunteer> volunteers = volunteerRepository.findByMemberId(memberId, PageRequest.of(page, 10, Sort.by("volunteerId").descending()));
 
-        return makeListVolunteer(volunteers);
+        return makeListVolunteer2(volunteers);
     }
 
     @Override

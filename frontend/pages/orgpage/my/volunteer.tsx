@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import OrgMypageSidebar from "../../../components/OrgMypageSidebar";
 import Image from "next/image";
 import { useState } from "react";
@@ -23,6 +23,9 @@ import helpImage from "../../../public/images/help.png";
 import VolunteerCard from "@/components/VolunteerCard";
 import VolunteerCardOrg from "../../../components/VolunteerCardOrg";
 import VolunteerCardOrgFinish from "@/components/VolunteerCardOrgFinish";
+
+// api
+import { getVolunteerOrg } from "../../../function/axios";
 
 const CustomButton = styled(Button)({
   backgroundColor: "#5B321E",
@@ -114,68 +117,21 @@ function a11yProps(index: number) {
 const orgpageMyVolunteer: FC = () => {
   const [value, setValue] = useState(0);
 
+  const [ingVolunteer, setIngVolunteer] = useState<any>("");
+  const [doneVolunteer, setDoneVolunteer] = useState<any>("");
+
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
-  const donations = [
-    {
-      title: "운동회를 위한 기부가 필요합니다.",
-      content: "ddd",
-      product: [
-        {
-          productName: "휴지",
-          totalCount: 100,
-          finishCount: 40,
-        },
-        {
-          productName: "감자",
-          totalCount: 100,
-          finishCount: 70,
-        },
-        {
-          productName: "라면",
-          totalCount: 100,
-          finishCount: 80,
-        },
-        {
-          productName: "칫솔",
-          totalCount: 100,
-          finishCount: 50,
-        },
-      ],
-      status: true,
-      percent: 0.7,
-    },
-    {
-      title: "일상용품이 필요합니다.",
-      content: "ddd",
-      product: [
-        {
-          productName: "물티슈",
-          totalCount: 100,
-          finishCount: 40,
-        },
-        {
-          productName: "쌀",
-          totalCount: 100,
-          finishCount: 70,
-        },
-        {
-          productName: "라면",
-          totalCount: 100,
-          finishCount: 80,
-        },
-        {
-          productName: "칫솔",
-          totalCount: 100,
-          finishCount: 50,
-        },
-      ],
-      status: true,
-      percent: 0.9,
-    },
-  ];
+  useEffect(() => {
+    const memberId = localStorage.getItem("id");
+
+    getVolunteerOrg(memberId).then((res) => {
+      setIngVolunteer(res.data.not_end_list);
+      setDoneVolunteer(res.data.end_list);
+    });
+  }, []);
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -197,7 +153,7 @@ const orgpageMyVolunteer: FC = () => {
           </Stack>
           <Grid>
             <Box sx={{ width: "100%", mt: 2 }}>
-              <Box sx={{ bgcolor: "#FCF8F0", borderRadius: 1.25 }}>
+              <Box sx={{ borderRadius: 1.25 }}>
                 <StyledTabs
                   value={value}
                   onChange={handleChange}
@@ -214,98 +170,70 @@ const orgpageMyVolunteer: FC = () => {
                     {...a11yProps(1)}
                   />
                 </StyledTabs>
-                {/* <Box sx={{ p: 3 }} /> */}
                 <TabPanel value={value} index={0}>
-                  <div>
-                    <Box
-                      sx={{
-                        display: "grid",
-                        gridTemplateColumns: "repeat(auto-fill, 500px)",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        marginTop: 5,
-                        rowGap: 5,
-                        columnGap: 10,
-                      }}
-                    >
-                      <VolunteerCardOrg />
-                      <VolunteerCardOrg />
-                    </Box>
-                    <Box
-                      sx={{
-                        display: "grid",
-                        gridTemplateColumns: "repeat(auto-fill, 500px)",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        marginTop: 5,
-                        rowGap: 5,
-                        columnGap: 10,
-                      }}
-                    >
-                      <VolunteerCardOrg />
-                      <VolunteerCardOrg />
-                    </Box>
-                    <Box
-                      sx={{
-                        display: "grid",
-                        gridTemplateColumns: "repeat(auto-fill, 500px)",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        marginTop: 5,
-                        rowGap: 5,
-                        columnGap: 10,
-                      }}
-                    >
-                      <VolunteerCardOrg />
-                      <VolunteerCardOrg />
-                    </Box>
-                  </div>
+                  <Box
+                    sx={{
+                      display: "grid",
+                      gridTemplateColumns: "repeat(auto-fill, 300px)",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      rowGap: 5,
+                      columnGap: 7,
+                    }}
+                  >
+                    {ingVolunteer && ingVolunteer.length > 0 ? (
+                      ingVolunteer.map((item, i) => (
+                        <VolunteerCardOrg
+                          key={i}
+                          item={item}
+                          // token={userToken}
+                          // id={mId}
+                          // getStatus={getStatus}
+                          // fStatus={fStatus}
+                        />
+                      ))
+                    ) : (
+                      <Typography>모집 중인 봉사가 없습니다.</Typography>
+                    )}
+                  </Box>
+                  {/* {ingVolunteer && ingVolunteer.length > 0 ? (
+                    <Stack alignItems="center" sx={{ mb: 0, mt: 3 }}>
+                      <Pagination
+                        curPage={curPage}
+                        paginate={paginate}
+                        totalPage={totalPages}
+                      />
+                    </Stack>
+                  ) : (
+                    <></>
+                  )} */}
                 </TabPanel>
                 <TabPanel value={value} index={1}>
-                  <div>
-                    <Box
-                      sx={{
-                        display: "grid",
-                        gridTemplateColumns: "repeat(auto-fill, 500px)",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        marginTop: 5,
-                        rowGap: 5,
-                        columnGap: 10,
-                      }}
-                    >
-                      <VolunteerCardOrgFinish />
-                      <VolunteerCardOrgFinish />
-                    </Box>
-                    <Box
-                      sx={{
-                        display: "grid",
-                        gridTemplateColumns: "repeat(auto-fill, 500px)",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        marginTop: 5,
-                        rowGap: 5,
-                        columnGap: 10,
-                      }}
-                    >
-                      <VolunteerCardOrgFinish />
-                      <VolunteerCardOrgFinish />
-                    </Box>
-                    <Box
-                      sx={{
-                        display: "grid",
-                        gridTemplateColumns: "repeat(auto-fill, 500px)",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        marginTop: 5,
-                        rowGap: 5,
-                        columnGap: 10,
-                      }}
-                    >
-                      <VolunteerCardOrgFinish />
-                      <VolunteerCardOrgFinish />
-                    </Box>
-                  </div>
+                  <Box
+                    sx={{
+                      display: "grid",
+                      gridTemplateColumns: "repeat(auto-fill, 300px)",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      rowGap: 5,
+                      columnGap: 7,
+                    }}
+                  >
+                    {doneVolunteer && doneVolunteer.length > 0 ? (
+                      doneVolunteer.map((item, i) => (
+                        <VolunteerCard
+                          key={i}
+                          volunteer={item}
+                          // token={userToken}
+                          // id={mId}
+                          // getStatus={getStatus}
+                          // fStatus={fStatus}
+                        />
+                      ))
+                    ) : (
+                      <Typography>모집 중인 봉사가 없습니다.</Typography>
+                    )}
+                  </Box>
                 </TabPanel>
               </Box>
             </Box>

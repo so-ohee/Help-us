@@ -18,9 +18,11 @@ import PermMedia from "@mui/icons-material/PermMedia";
 import Dns from "@mui/icons-material/Dns";
 import Public from "@mui/icons-material/Public";
 import Link from "next/link";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { menuItemClasses, Typography } from "@mui/material";
 import { bgcolor } from "@mui/system";
+import Badge from "@mui/material/Badge";
 
 import Home from "@mui/icons-material/Home";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
@@ -41,6 +43,9 @@ import LiveHelpOutlinedIcon from "@mui/icons-material/LiveHelpOutlined";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import LocalShippingOutlinedIcon from "@mui/icons-material/LocalShippingOutlined";
 
+// api
+import { getNoReviewDonation } from "function/axios";
+
 const FireNav = styled(List)<{ component?: React.ElementType }>({
   "& .MuiListItemButton-root": {
     paddingLeft: 24,
@@ -57,6 +62,21 @@ const FireNav = styled(List)<{ component?: React.ElementType }>({
 
 export default function OrgMypageSidebar() {
   const pathName = useRouter().pathname;
+  const [donations, setDonations] = useState<any>("");
+
+  useEffect(() => {
+    const mId = localStorage.getItem("id");
+    const mToken = localStorage.getItem("jwt");
+
+    const params = {
+      memberId: mId,
+      donationStatus: "미작성",
+    };
+
+    getNoReviewDonation(mToken, mId, params).then((res) => {
+      setDonations(res.data.donation);
+    });
+  }, []);
 
   const data1 = [
     {
@@ -82,9 +102,13 @@ export default function OrgMypageSidebar() {
     {
       icon:
         pathName === "/orgpage/my/review" ? (
-          <RateReviewIcon />
+          <Badge badgeContent={donations.length} color="success">
+            <RateReviewIcon />
+          </Badge>
         ) : (
-          <RateReviewOutlinedIcon />
+          <Badge badgeContent={donations.length} color="success">
+            <RateReviewOutlinedIcon />
+          </Badge>
         ),
       label: "기부 후기",
       path: "/orgpage/my/review",
