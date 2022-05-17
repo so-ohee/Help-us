@@ -357,7 +357,7 @@ const DonationOrgDetail: FC = () => {
           >
             <Stack direction="row" alignItems="center">
               <Typography variant="h4" fontWeight="bold" sx={{ mt: 3, mr: 2 }}>
-                기부 물품
+                기부품
               </Typography>
             </Stack>
             <Stack direction="row" alignItems="center">
@@ -389,7 +389,7 @@ const DonationOrgDetail: FC = () => {
                   }}
                 ></Box>
                 <Typography sx={{ fontSize: 13, width: 60, ml: 1 }}>
-                  배송 중
+                  진행 중
                 </Typography>
                 <Box
                   sx={{
@@ -400,7 +400,7 @@ const DonationOrgDetail: FC = () => {
                   }}
                 ></Box>
                 <Typography sx={{ fontSize: 13, width: 40, ml: 1 }}>
-                  대기
+                  남은 수량
                 </Typography>
               </Stack>
               <CustomButton2 sx={{ height: "30px", ml: 5 }}>

@@ -85,7 +85,7 @@ const orgpageMyCheckVolunteer: FC = () => {
     setUserToken(localStorage.getItem("jwt"));
     setUserId(localStorage.getItem("id"));
     getInquiryApplyList(localStorage.getItem("id")).then((res) => {
-      console.log(res.data.listApply.volunteerApplyId);
+      // console.log(res.data.listApply.volunteerApplyId);
       setInquiryApplyList(res.data.listApply);
       setTotalPages(res.data.totalPage);
       setLoading(true);

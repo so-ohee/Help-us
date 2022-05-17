@@ -132,9 +132,6 @@ const orgpageMyCheckDelivery: FC = () => {
                     <StyledTableCell align="center" sx={{ fontSize: 17 }}>
                       빌송인
                     </StyledTableCell>
-                    {/* <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                    송장 번호
-                  </StyledTableCell> */}
                     <StyledTableCell align="center" sx={{ fontSize: 17 }}>
                       기부 신청일
                     </StyledTableCell>
@@ -165,9 +162,6 @@ const orgpageMyCheckDelivery: FC = () => {
                         <StyledTableCell align="center">
                           {data.name}
                         </StyledTableCell>
-                        {/* <StyledTableCell align="center">
-                        {data.expressNum}
-                      </StyledTableCell> */}
                         <StyledTableCell align="center">
                           {data.donationDate}
                         </StyledTableCell>
@@ -187,6 +181,7 @@ const orgpageMyCheckDelivery: FC = () => {
                                   value={
                                     process.env.NEXT_PUBLIC_POST_TRACKER_API_KEY
                                   }
+                                  readOnly
                                 />
                               </div>
                               <div className="no">
@@ -197,6 +192,7 @@ const orgpageMyCheckDelivery: FC = () => {
                                   id="t_code"
                                   placeholder="택배사 코드"
                                   value={data.parcel}
+                                  readOnly
                                 />
                               </div>
                               <div className="no">
@@ -207,6 +203,7 @@ const orgpageMyCheckDelivery: FC = () => {
                                   id="t_invoice"
                                   placeholder="운송장 번호"
                                   value={data.invoice}
+                                  readOnly
                                 />
                               </div>
                               <CustomButton2
@@ -223,7 +220,7 @@ const orgpageMyCheckDelivery: FC = () => {
                             sx={{ width: 80, height: 30 }}
                             onClick={() => deliverySubmit(data.donationApplyId)}
                           >
-                            도착 완료
+                            도착완료
                           </CustomButton>
                         </StyledTableCell>
                       </StyledTableRow>
