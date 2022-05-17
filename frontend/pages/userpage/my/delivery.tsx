@@ -86,6 +86,7 @@ const UserMypageDelivery: FC = () => {
   const params = {
     page: curPage,
   };
+
   const [loading, setLoading] = useState<boolean>(true);
 
   const [applyList, setApplyList] = useState<any>("");
@@ -97,16 +98,13 @@ const UserMypageDelivery: FC = () => {
     setPostStatus(postStatus);
   };
 
-  useEffect(() => {}, []);
   useEffect(() => {
     const token = localStorage.getItem("jwt");
     const id = localStorage.getItem("id");
-    console.log(token);
     getApplyList(id, params, token).then((res) => {
       setApplyList(res.data.apply);
       setTotalPages(res.data.totalPage);
     });
-    // console.log(process.env.NEXT_PUBLIC_POST_TRACKER_API_KEY);
   }, [curPage, PostInfo, postStatus]);
 
   return (
@@ -201,6 +199,7 @@ const UserMypageDelivery: FC = () => {
                                   value={
                                     process.env.NEXT_PUBLIC_POST_TRACKER_API_KEY
                                   }
+                                  readOnly
                                 />
                               </div>
                               <div className="no">
@@ -211,6 +210,7 @@ const UserMypageDelivery: FC = () => {
                                   id="t_code"
                                   placeholder="택배사 코드"
                                   value={data.parcel}
+                                  readOnly
                                 />
                               </div>
                               <div className="no">
@@ -221,6 +221,7 @@ const UserMypageDelivery: FC = () => {
                                   id="t_invoice"
                                   placeholder="운송장 번호"
                                   value={data.invoice}
+                                  readOnly
                                 />
                               </div>
                               <CustomButton2
