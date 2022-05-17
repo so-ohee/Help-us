@@ -35,13 +35,15 @@ import CallIcon from "@mui/icons-material/Call";
 import MailIcon from "@mui/icons-material/Mail";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
 
+import Comment from "../../../components/Comment2";
+import Pagination from "../../../components/Pagination";
 import testImage from "../../../public/images/testImage.jpg";
 
 import CustomCarousel from "@/components/Carousel";
 
 import { useRouter } from "next/router";
 // api
-import { getCsDetail } from "function/axios";
+import { getCsDetail, csComment } from "function/axios";
 
 const CustomButton = styled(Button)({
   backgroundColor: "#5B321E",
@@ -131,10 +133,24 @@ const CsDetail: FC = () => {
 
   const [detailLoading, setDetailLoading] = useState<boolean>(false);
 
+  // 댓글
+  const [comment, setComment] = useState<string>("");
+  const [parentCommentId, setParentComeentId] = useState("");
+  const [commentList, setCommentList] = useState<any>([]);
+
+  // pagination
+  const [curPage, setCurPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const paginate = (pageNumber) => setCurPage(pageNumber);
+
+  const params2 = {
+    page: curPage,
+  }
+
   const params = {
     helpDeskId: 20
   };
-
+  // 상세 페이지 정보 불러오기
   useEffect(() => {
     if (router.isReady) {
       getCsDetail(router.query.id).then((res) => {
@@ -144,6 +160,18 @@ const CsDetail: FC = () => {
       });
     }
   }, [router.isReady]);
+
+  // 댓글
+  // useEffect(() => {
+  //   if (router.isReady) {
+  //     getCsDetail(router.query.id, params2)
+  //       .then((res) => {
+  //         setCommentList(res.data.comment);
+  //         setTotalPages(res.data.totalPage);
+  //         setLoading(true);
+  //       });
+  //   };
+  // }, [curPage, router.isReady, commentList, ]);
 
 
   return (

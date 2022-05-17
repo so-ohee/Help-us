@@ -36,13 +36,15 @@ import MailIcon from "@mui/icons-material/Mail";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
 
 import testImage from "../../../public/images/testImage.jpg";
+import Comment from "../../../components/Comment2";
+import Pagination from "../../../components/Pagination";
 
 import CustomCarousel from "@/components/Carousel";
 import DonationApply from "@/components/DonationApply";
 
 import { useRouter } from "next/router";
 // api
-import { donationDetail, getUserInfo } from "function/axios";
+import { donationDetail, getUserInfo, donationOrgCommentList, donationOrgComment } from "function/axios";
 
 const CustomButton = styled(Button)({
   backgroundColor: "#5B321E",
@@ -121,25 +123,37 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 const DonationOrgDetail: FC = () => {
   const router = useRouter();
-
   const routerId = useRouter().query.id;
 
   const [donationDetails, setDonationDetails] = useState<any>("");
-
   const [orgInfo, setOrgInfo] = useState<any>("");
-
   const [orgId, setOrgId] = useState<any>("");
-
   const [detailLoading, setDetailLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const [userId, setUserId] = useState<any>("");
   const [token, setToken] = useState<any>("");
   const [applyStatus, setApplyStatus] = useState<boolean>(false);
 
+  // 댓글
+  const [comment, setComment] = useState<string>("");
+  const [parentCommentId, setParentComeentId] = useState("");
+  const [commentList, setCommentList] = useState<any>([]);
+
+  // pagination
+  const [curPage, setCurPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const paginate = (pageNumber) => setCurPage(pageNumber);
+
+  const params2 = {
+    page: curPage,
+  }
+
   const getStatus = (applyStatus) => {
     setApplyStatus(applyStatus);
   };
 
+  // 기관 정보 불러오기
   useEffect(() => {
     setUserId(localStorage.getItem("id"));
     setToken(localStorage.getItem("jwt"));
@@ -163,6 +177,33 @@ const DonationOrgDetail: FC = () => {
     }
   }, [detailLoading]);
 
+  // 댓글
+  useEffect(() => {
+    if (router.isReady) {
+      donationOrgCommentList(router.query.id, params2)
+        .then((res) => {
+          setCommentList(res.data.comment);
+          setTotalPages(res.data.totalPage);
+          setLoading(true);
+        });
+    };
+  }, [curPage, router.isReady, commentList, ]);
+
+  const handleComment = () => {
+    if (comment === "") {
+      alert("댓글을 입력해주세요!");
+      return;
+    }
+    const params = {
+      boardId: router.query.id,
+      content: comment,
+      category: "donation"
+    }
+
+    donationOrgComment(userId, token, params)
+      .then((res) => console.log(res + "성공"))
+      .catch((err) => console.log(err + "실패"))
+  } 
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -596,11 +637,19 @@ const DonationOrgDetail: FC = () => {
             <CssTextField
               sx={{ backgroundColor: "#ffffff", width: 1000 }}
               size="small"
+              onChange={(e) => setComment(e.target.value)}
             />
-            <CustomButton variant="contained" size="small" sx={{ width: 30 }}>
+            <CustomButton 
+              variant="contained" 
+              size="small" 
+              sx={{ width: 30 }}
+              onClick={handleComment}
+              >
               등록
             </CustomButton>
           </Stack>
+          {commentList &&
+            commentList.map((item) => <Comment comment={item} id={userId} token={token} />)}
         </Container>
       </Box>
     </Box>
