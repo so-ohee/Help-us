@@ -311,19 +311,19 @@ public class VolunteerServiceImpl implements VolunteerService{
     }
 
     @Override
-    public Map<String, Object> makeListVolunteers(Page<Volunteer> volunteers_not_end, Page<Volunteer> volunteers_end) throws Exception {
+    public Map<String, Object> makeListVolunteer2(Page<Volunteer> volunteers) throws Exception {
         log.info("VolunteerService makerVolunteerList call");
 
         Map<String, Object> resultMap = new HashMap<>();
 
-        if(volunteers_not_end.isEmpty() && volunteers_end.isEmpty()){
+        if(volunteers.isEmpty()){
             resultMap.put("message", "게시글 없음");
             return resultMap;
         }
         List<ListVolunteerResDto> list_not_end = new ArrayList<>();
         List<ListVolunteerResDto> list_end = new ArrayList<>();
 
-        for(Volunteer volunteer : volunteers_not_end){
+        for(Volunteer volunteer : volunteers){
 
             Map<String, String> member = memberService.getMember(volunteer.getMemberId());
 
@@ -343,36 +343,18 @@ public class VolunteerServiceImpl implements VolunteerService{
                     .name(member.get("name"))
                     .profile(member.get("profile"))
                     .createDate(volunteer.getCreateDate()).build();
-            list_not_end.add(listVolunteerResDto);
-        }
 
-        for(Volunteer volunteer : volunteers_end){
-
-            Map<String, String> member = memberService.getMember(volunteer.getMemberId());
-
-            ListVolunteerResDto listVolunteerResDto = ListVolunteerResDto.builder()
-                    .volunteerId(volunteer.getVolunteerId())
-                    .title(volunteer.getTitle())
-                    .content(volunteer.getContent())
-                    .applicant(volunteer.getApplicant())
-                    .people(volunteer.getPeople())
-                    .percent(volunteer.getPercent())
-                    .volDate(volunteer.getVolDate())
-                    .volAddress(volunteer.getVolAddress())
-                    .volZipcode(volunteer.getVolZipcode())
-                    .time(volunteer.getTime())
-                    .status(volunteer.getStatus())
-                    .memberId(Long.parseLong(member.get("memberId")))
-                    .name(member.get("name"))
-                    .profile(member.get("profile"))
-                    .createDate(volunteer.getCreateDate()).build();
-            list_end.add(listVolunteerResDto);
+            System.out.println(volunteer.getStatus());
+            if(volunteer.getStatus()==1){
+                list_end.add(listVolunteerResDto);
+            }else{
+                list_not_end.add(listVolunteerResDto);
+            }
         }
 
         resultMap.put("not_end_list", list_not_end);
         resultMap.put("end_list", list_end);
-        resultMap.put("not_end_Page", volunteers_not_end.getTotalPages());
-        resultMap.put("end_page", volunteers_end.getTotalPages());
+        resultMap.put("totalPage", volunteers.getTotalPages());
         resultMap.put("message", "성공");
         return resultMap;
     }
@@ -391,11 +373,9 @@ public class VolunteerServiceImpl implements VolunteerService{
         log.info("VolunteerService myVolunteerList call");
 
         Map<String, Object> resultMap = new HashMap<>();
-        Page<Volunteer> volunteers_not_end = volunteerRepository.findByMemberIdAndStatus(memberId, 0, PageRequest.of(page, 10, Sort.by("volunteerId").descending()));
-        Page<Volunteer> volunteers_end = volunteerRepository.findByMemberIdAndStatus(memberId, 1, PageRequest.of(page, 10, Sort.by("volunteerId").descending()));
-//        Page<Volunteer> volunteers = volunteerRepository.findByMemberId(memberId, PageRequest.of(page, 10, Sort.by("status").ascending()));
+        Page<Volunteer> volunteers = volunteerRepository.findByMemberId(memberId, PageRequest.of(page, 10, Sort.by("volunteerId").descending()));
 
-        return makeListVolunteers(volunteers_not_end, volunteers_end);
+        return makeListVolunteer2(volunteers);
     }
 
     @Override
