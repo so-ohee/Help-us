@@ -235,16 +235,16 @@ const VolunteerDetail: FC = () => {
                       <Image
                         src={defaultImage}
                         alt="orgImage"
-                        width="300px"
-                        height="300px"
+                        width="150px"
+                        height="150px"
                       />
                     ) : (
                       <Image
                         src={userDetails.profile}
                         // src={defaultImage}
                         alt="orgImage"
-                        width="300px"
-                        height="300px"
+                        width="150px"
+                        height="150px"
                       />
                     )}
                   </div>
