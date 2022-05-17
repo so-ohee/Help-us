@@ -86,8 +86,7 @@ const Comment: FC<CommentData> = ({ comment, id, token }) => {
   //댓글 삭제
   const removeComment = () => {
     const commentId = comment.commentId
-      console.log(id)
-      console.log(token)
+      
       volunteerCommentDelete(commentId, id, token)
         .then((res) => console.log("성공" + res ))
         .catch((err) => console.log("실패" + err))
@@ -137,7 +136,6 @@ const Comment: FC<CommentData> = ({ comment, id, token }) => {
                   </Typography>
                 ) : (null)}
                 {/* id랑  memberId랑 같으면 삭제 버튼 활성화*/}
-                {userId === comment.memberId ? (
                   <Button
                     onClick={removeComment}
                     variant="contained"
@@ -148,8 +146,6 @@ const Comment: FC<CommentData> = ({ comment, id, token }) => {
                   >
                     삭제
                   </Button>
-
-                   ) : null}
               </Stack>
             </Stack>
             <Stack direction="row" sx={{ ml: 11, mb: 2 }} alignItems="center">
