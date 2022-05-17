@@ -111,6 +111,7 @@ const VolunteerDetail: FC = () => {
       });
     }
   }, [curPage, router.isReady, commentList]);
+  
   useEffect(()=> {
     const id = localStorage.getItem("id");
     const token = localStorage.getItem("jwt");

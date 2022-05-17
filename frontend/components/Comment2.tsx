@@ -28,7 +28,7 @@ import { useRouter } from "next/router";
 import CommentInput from "./CommentInput";
 
 // api
-import {volunteerCommentDelete} from "function/axios";
+import {reviewCommentDelete, volunteerCommentList} from "function/axios";
 
 const CssTextField = styled(TextField)({
   "& label.Mui-focused": {
@@ -72,7 +72,7 @@ const CustomButton2 = styled(Button)({
   fontSize: 12,
 });
 
-const Comment: FC<CommentData> = ({ comment, id, token }) => {
+const Comment2: FC<CommentData> = ({ comment, id, token }) => {
   const [inputStatus, setInputStatus] = useState<boolean>(false);
   const [userId, setUserId] = useState<any>();
   const router = useRouter();
@@ -86,9 +86,10 @@ const Comment: FC<CommentData> = ({ comment, id, token }) => {
   //댓글 삭제
   const removeComment = () => {
     const commentId = comment.commentId
+    const memberId = comment.memberId
       console.log(commentId)
       console.log(userId)
-      volunteerCommentDelete(commentId, id, token)
+      reviewCommentDelete(commentId, memberId, id, token)
         .then((res) => console.log("성공" + res ))
         .catch((err) => console.log("실패" + err))
 
@@ -252,4 +253,4 @@ const Comment: FC<CommentData> = ({ comment, id, token }) => {
   );
 };
 
-export default Comment;
+export default Comment2;

@@ -38,6 +38,38 @@ export const donationDetail = async (id) => {
   });
 };
 
+// 물품 기부 상세 페이지 댓글 조회
+export const donationOrgCommentList = async (id, params) => {
+  return await axios({
+    method: "GET",
+    url : `/8000/api/d.comment/donation/${id}`,
+    params: params,
+  });
+};
+
+// 물품 기부 상세 페이지 댓글 작성
+export const donationOrgComment = async (id, token, params) => {
+  return await axios({
+    method: "POST",
+    url : "/8000/d.comment",
+    headers: {
+      Authorization: token,
+    },
+    data: params,
+  });
+};
+
+// 물품 기부 상세 페이지 댓글 삭제
+export const donationOrgCommentDelete = async (commentId, memberId, id, token) => {
+  return await axios({
+    method: "DELETE",
+    url: `/8000/d.comment/${commentId}/${memberId}`,
+    headers: {
+      Authorization: token,
+    },
+  });
+};
+
 // 후기 페이지 - 후기 목록 조회
 export const getReviewList = async (params) => {
   return await axios({
@@ -55,19 +87,11 @@ export const reviewDetail = async (id) => {
   });
 };
 
-//후원자 명단
-export const getSponsorList = async (id, params) => {
-  return await axios({
-    method: "GET",
-    url: `/8000/api/d.apply/donation/${id}`,
-    params: params,
-  });
-};
 
 // 후기 페이지 작성
 export const createReview = async (id, token, confirm, files) => {
   const newForm = new FormData();
-
+  
   newForm.append(
     "confirm",
     new Blob([JSON.stringify(confirm)], { type: "application/json" })
@@ -82,6 +106,47 @@ export const createReview = async (id, token, confirm, files) => {
       Authorization: token,
     },
     data: newForm,
+  });
+};
+
+// 후기 상세 페이지 댓글 조회
+export const reviewCommentList = async (id, params) => {
+  return await axios({
+    method: "GET",
+    url : `/8000/api/d.comment/confirm/${id}`,
+    params: params,
+  });
+};
+
+// 후기 상세 페이지 댓글 작성
+export const reviewComment = async (id, token, params) => {
+  return await axios({
+    method: "POST",
+    url: "/8000/d.comment",
+    headers: {
+      Authorization: token,
+    },
+    data: params,
+  });
+};
+
+// 후기 상세 페이지 댓글 삭제
+export const reviewCommentDelete = async (commentId, memberId, id, token) => {
+  return await axios({
+    method: "DELETE",
+    url: `/8000/d.comment/${commentId}/${memberId}`,
+    headers: {
+      Authorization: token,
+    },
+  });
+}; 
+
+//후원자 명단
+export const getSponsorList = async (id, params) => {
+  return await axios({
+    method: "GET",
+    url: `/8000/api/d.apply/donation/${id}`,
+    params: params,
   });
 };
 
@@ -272,7 +337,7 @@ export const finishDonation = async (dId, mId, token) => {
 export const talentCommentList = async (id, params) => {
   return await axios({
     method : "GET",
-    url : `8000/api/v.comment/${id}`,
+    url : `/8000/api/v.comment/${id}`,
     params: params,
   })
 }
@@ -281,7 +346,7 @@ export const talentCommentList = async (id, params) => {
 export const talentComment = async (id, token, params) => {
   return await axios({
     method: "POST",
-    url: '8000/v.comment',
+    url: "/8000/v.comment",
     headers: {
       Authorization: token,
     },
@@ -293,7 +358,7 @@ export const talentComment = async (id, token, params) => {
 export const talentCommentDelete = async (commentId, id, token) => {
   return await axios({
     method: "DELETE",
-    url: `8000/v.comment/$commentId`,
+    url: `/8000/v.comment/$commentId`,
     headers: {
       memberId: id,
       Authorization: token,
@@ -551,8 +616,31 @@ export const createCs = async (id, token, desk, files) => {
   });
 };
 // 고객센터 수정
-// 고객센터 댓글 등록
+export const csCommentUpdate = async () => {}
+
+// 고객센터 댓글 작성
+export const csComment = async (id, token, params) => {
+  return await axios({
+    method: "POST",
+    url : "/8000/comment",
+    headers: {
+      Authorization: token,
+    },
+    data: params,
+  });
+};
+
 // 고객센터 댓글 삭제
+export const csCommentDelete = async (commentId, memberId, id, token) => {
+  return await axios({
+    method: "DELETE",
+    url: `/8000/comment/${commentId}/${memberId}`,
+    headers: {
+      Authorization: token,
+    },
+  });
+};
+
 // 고객센터 상세 조회
 export const getCsDetail = async (id) => {
   return await axios({

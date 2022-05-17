@@ -34,6 +34,7 @@ import BusinessIcon from "@mui/icons-material/Business";
 import CallIcon from "@mui/icons-material/Call";
 import MailIcon from "@mui/icons-material/Mail";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
+import Comment from "../../../components/Comment2";
 import Pagination from "../../../components/Pagination";
 
 import defaultImage from "../../../public/images/defaultImage.png";
@@ -41,7 +42,7 @@ import CustomCarousel from "@/components/Carousel";
 
 import { useRouter } from "next/router";
 // api
-import { reviewDetail, getSponsorList, getUserInfo } from "function/axios";
+import { reviewDetail, getSponsorList, getUserInfo, reviewCommentList, reviewComment } from "function/axios";
 
 const CustomButton = styled(Button)({
   backgroundColor: "#5B321E",
@@ -124,11 +125,8 @@ const ReviewDetail: FC = () => {
   const routerId = useRouter().query.id;
 
   const [reviewDetails, setReviewDetails] = useState<any>("");
-
   const [sponsorList, setSponsorList] = useState<any>("");
-
   const [orgInfo, setOrgInfo] = useState<any>("");
-
   const [orgId, setOrgId] = useState<any>("");
 
   const [detailLoading, setDetailLoading] = useState<boolean>(false);
@@ -136,6 +134,10 @@ const ReviewDetail: FC = () => {
   const [loading2, setLoading2] = useState<boolean>(false)
   const [userId, setUserId] = useState<any>("");
   const [token, setToken] = useState<any>("");
+  // 댓글
+  const [comment, setComment] = useState<string>("");
+  const [parentCommentId, setParentComeentId] = useState("");
+  const [commentList, setCommentList] = useState<any>([]);
 
   // pagination
   const [curPage, setCurPage] = useState(1);
@@ -146,7 +148,7 @@ const ReviewDetail: FC = () => {
     page: curPage,
     donationId: 0,
   };
-
+  // 상세 페이지 내용 불러오기
   useEffect(() => {
     setUserId(localStorage.getItem("id"));
     setToken(localStorage.getItem("jwt"));
@@ -178,6 +180,43 @@ const ReviewDetail: FC = () => {
       });
     }
   }, [detailLoading]);
+
+  const params2 = {
+    page: curPage,
+  }
+
+  // 댓글
+  useEffect(() => {
+    if (router.isReady) {
+      reviewCommentList(router.query.id, params2)
+        .then((res) => {
+          setCommentList(res.data.comment);
+          setTotalPages(res.data.totalPage);
+          setLoading1(true);
+        });
+    };
+  }, [curPage, router.isReady, commentList]);
+
+  const handleComment = (e) => {
+    if (comment === "") {
+      alert("댓글을 입력해주세요!");
+      return;
+    }
+    const id = localStorage.getItem("id");
+    const token = localStorage.getItem("jwt");
+    console.log(router.query.id)
+
+    const params = {
+      boardId: router.query.id,
+      content: comment,
+      category: "confirm"
+    };
+
+    reviewComment(id, token, params)
+      .then((res) => console.log(res + "성공"))
+      .catch((err) => console.log(err + "실패"))
+  }
+
 
   return (
     <>
@@ -408,11 +447,19 @@ const ReviewDetail: FC = () => {
                 <CssTextField
                   sx={{ backgroundColor: "#ffffff", width: 1000 }}
                   size="small"
+                  onChange={(e) => setComment(e.target.value)}
                 />
-                <CustomButton variant="contained" size="small" sx={{ width: 30 }}>
+                <CustomButton 
+                  variant="contained" 
+                  size="small" 
+                  sx={{ width: 30 }}
+                  onClick={handleComment}
+                  >
                   등록
                 </CustomButton>
               </Stack>
+                {commentList &&
+                  commentList.map((item) => <Comment comment={item} id={userId} token={token} />)}
             </Container>
           </Box>
         </Box>

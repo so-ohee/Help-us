@@ -184,7 +184,7 @@ const TalentDetail: FC = () => {
           setLoadging(true);
         })
     }
-  }, [curPage, router.isReady, commentList])
+  }, [curPage, router.isReady, commentList, curPage])
 
   useEffect(()=> {
     const id = localStorage.getItem("id");
@@ -201,12 +201,13 @@ const TalentDetail: FC = () => {
     }
     const id = localStorage.getItem("id");
     const token = localStorage.getItem("jwt");
+    
     const params = {
       volunteerId: router.query.id,
       content: comment,
       parentCommentId: "",
     };
-
+      console.log(params)
     talentComment(id, token, params)
       .then((res) => console.log(res + "성공"))
       .catch((err) => console.log(err + "실패"))
