@@ -21,6 +21,7 @@ import {
   FormGroup,
   Modal,
 } from "@mui/material";
+import Link from "next/link";
 
 // api
 import { applyDonationUser } from "function/axios";
@@ -66,6 +67,8 @@ interface IDonationInfo {
   id: any;
   token: any;
   pId: any;
+  applyStatus: boolean;
+  getStatus: any;
 }
 
 const style = {
@@ -87,6 +90,8 @@ const DonationApply: FC<IDonationInfo> = ({
   id,
   token,
   pId,
+  applyStatus,
+  getStatus,
 }) => {
   // 모달
   const [open, setOpen] = useState(false);
@@ -94,6 +99,12 @@ const DonationApply: FC<IDonationInfo> = ({
   const handleClose = () => setOpen(false);
 
   const [applyCnt, setApplyCnt] = useState<any>("");
+
+  const canApply =
+    donation.totalCount -
+    donation.deliveryCount -
+    donation.finishCount -
+    donation.waitingCount;
 
   const onChangeApplyCnt = (e) => {
     setApplyCnt(e.target.value);
@@ -108,22 +119,25 @@ const DonationApply: FC<IDonationInfo> = ({
 
     if (applyCnt <= 0) {
       alert("기부 수량은 1개 이상입니다.");
+      setApplyCnt("");
       return;
     } else if (applyCnt > donation.totalCount) {
       alert("기부 수량은 총 수량을 초과할 수 없습니다.");
+      setApplyCnt("");
+      return;
+    } else if (applyCnt > canApply) {
+      alert("기부 수량은 잔여 수량을 초과할 수 없습니다.");
+      setApplyCnt("");
       return;
     }
 
-    // console.log(donation);
     applyDonationUser(id, token, data)
       .then((res) => {
-        console.log("기부신청 성공");
         setOpen(true);
         setApplyCnt("");
-        console.log(donation);
+        getStatus(!applyStatus);
       })
       .catch((err) => console.error(err));
-    console.log(data, id, token);
   };
 
   return (
@@ -153,11 +167,16 @@ const DonationApply: FC<IDonationInfo> = ({
           <Box sx={style}>
             <Stack justifyContent="center" alignItems="center">
               <Typography textAlign="center" sx={{ mb: 1 }}>
-                진행률은 송장 번호 입력 후 반영됩니다.
+                마이페이지에서 송장번호를 입력해주세요.
               </Typography>
-              <CustomButton onClick={handleClose} sx={{ width: 80 }}>
-                확인
-              </CustomButton>
+              <Stack direction="row" spacing={3}>
+                <Link href={`/userpage/my/delivery`}>
+                  <CustomButton>마이페이지로 이동</CustomButton>
+                </Link>
+                <CustomButton2 onClick={handleClose} sx={{ width: 80 }}>
+                  확인
+                </CustomButton2>
+              </Stack>
             </Stack>
           </Box>
         </Modal>
