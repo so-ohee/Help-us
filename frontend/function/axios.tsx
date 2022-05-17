@@ -501,6 +501,14 @@ export const getVolunteerMain = async (params) => {
   });
 };
 
+// 기관 마이페이지 - 봉사 글 조회
+export const getVolunteerOrg = async (memberId) => {
+  return await axios({
+    method: "GET",
+    url: `/8000/api/volunteer/mylist/${memberId}`,
+  });
+};
+
 //봉사 현황 조회
 export const getInquiryApplyList = async (id) => {
   return await axios({
