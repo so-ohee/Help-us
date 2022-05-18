@@ -219,6 +219,27 @@ const TalentDetail: FC = () => {
       .catch((err) => console.log(err + "실패"))
   }
 
+  const Unix_timestamp = (t) => {
+    var date = new Date(t);
+    date.setHours(date.getHours() + 9);
+    var year = date.getFullYear();
+    var month = "0" + (date.getMonth() + 1);
+    var day = "0" + date.getDate();
+    var hour = "0" + date.getHours();
+    var minute = "0" + date.getMinutes();
+    return (
+      year +
+      "-" +
+      month.substr(-2) +
+      "-" +
+      day.substr(-2) +
+      " " +
+      hour.substr(-2) +
+      ":" +
+      minute.substr(-2)
+    );
+  };
+
   return (
     <>
       {loading && loading2 ? (
@@ -340,7 +361,7 @@ const TalentDetail: FC = () => {
                 fontWeight="bold"
                 textAlign="right"
               >
-                작성일 {talentDonationDetail.createDate}
+                작성일 {Unix_timestamp(talentDonationDetail.createDate)}
               </Typography>
               <Divider color="#CDAD78" sx={{ my: 2, borderBottomWidth: 5 }} />
               <Typography variant="h5" fontWeight="bold" sx={{ mx: 5 }}>
