@@ -152,7 +152,6 @@ const VolunteerDetail: FC = () => {
   };
 
   useEffect(() => {
-
     if (router.isReady) {
       volunteerCommentList(router.query.id, params).then((res) => {
         setCommentList(res.data.comment);
@@ -161,13 +160,7 @@ const VolunteerDetail: FC = () => {
         setLoading(true);
       });
     }
-<<<<<<< HEAD
   }, [curPage, router.isReady, comment, open]);
-
-
-=======
-  }, [curPage, router.isReady,commentList, open]);
->>>>>>> bdb04803760af68b87afa4a291f0b8d57666fdb2
 
   useEffect(() => {
     const id = localStorage.getItem("id");
@@ -177,7 +170,6 @@ const VolunteerDetail: FC = () => {
     setId(id);
     setToken(token);
   }, []);
-
 
   // 댓글 버튼 누를 시 작성
   // const repoArray: any = [...commentList]
@@ -202,7 +194,7 @@ const VolunteerDetail: FC = () => {
       })
       .catch((err) => console.log(err + "실패"));
   };
-  
+
   const SetApplyPart = ({ role, status }) => {
     // console.log(status)
     if (role === "USER" && status === -1) {
@@ -557,13 +549,8 @@ const VolunteerDetail: FC = () => {
               )}
               <Stack>
                 {commentList &&
-<<<<<<< HEAD
-                  commentList.map((item, index) => (
-                    <Comment key={index} comment={item} id={id} token={token} commentList={commentList} />
-=======
-                  commentList.map((item,i) => (
-                    <Comment comment={item} id={id} token={token} key={i}/>
->>>>>>> bdb04803760af68b87afa4a291f0b8d57666fdb2
+                  commentList.map((item, i) => (
+                    <Comment comment={item} id={id} token={token} key={i} />
                   ))}
               </Stack>
               {commentList && commentList.length > 0 ? (
