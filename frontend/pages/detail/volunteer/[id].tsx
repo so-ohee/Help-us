@@ -86,11 +86,11 @@ const VolunteerDetail: FC = () => {
       console.log("id" + router.query.id);
       volunteerDetail(router.query.id)
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           setVolunteerDetails(res.data.volunteer);
           userId = res.data.volunteer.memberId;
           setLoading(true);
-          console.log(volunteerDetails);
+          // console.log(volunteerDetails);
         })
         .then(() => {
           userDetail(userId).then((res) => {
@@ -124,7 +124,7 @@ const VolunteerDetail: FC = () => {
     if (router.isReady) {
       volunteerCommentList(router.query.id, params).then((res) => {
         setCommentList(res.data.comment);
-        console.log(res);
+        // console.log(res);
         setTotalPages(res.data.totalPage);
         setLoading(true);
       });
@@ -463,7 +463,7 @@ const VolunteerDetail: FC = () => {
                 </Stack>
                 {commentList &&
                   commentList.map((item) => (
-                    <Comment comment={item} id={id} token={token} />
+                    <Comment  comment={item} id={id} token={token} />
                   ))}
               </Box>
               <Box sx={{ display: "flex", justifyContent: "center", my: 5 }}>

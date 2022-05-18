@@ -35,7 +35,7 @@ import BusinessIcon from "@mui/icons-material/Business";
 import CallIcon from "@mui/icons-material/Call";
 import MailIcon from "@mui/icons-material/Mail";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
-import Comment from "../../../components/Comment2";
+import Comment from "../../../components/Comment3";
 import Pagination from "../../../components/Pagination";
 
 import defaultImage from "../../../public/images/defaultImage.png";
@@ -224,7 +224,6 @@ const ReviewDetail: FC = () => {
     };
 
     reviewComment(id, token, params)
-<<<<<<< HEAD
       .then((res) => {
         console.log(res + "성공")
         setComment("");
@@ -232,11 +231,6 @@ const ReviewDetail: FC = () => {
       .catch((err) => console.log(err + "실패"))
   }
 
-=======
-      .then((res) => console.log(res + "성공"))
-      .catch((err) => console.log(err + "실패"));
-  };
->>>>>>> 1e41c1606929e6ca5e3f5fc10c86b206b3157448
 
   return (
     <>

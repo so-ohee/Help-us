@@ -108,7 +108,7 @@ const CommentInput2: FC<ICommentInput> = ({ inputStatus, comment }) => {
       parentCommentId: parentId,
       boardId: boardId,
       content: recomment,
-      category: "confirm",
+      category: "donation",
     }
 
     reviewRecomment(userId, userToken, params)

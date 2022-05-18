@@ -212,18 +212,12 @@ const TalentDetail: FC = () => {
     };
     console.log(params);
     talentComment(id, token, params)
-<<<<<<< HEAD
       .then((res) => {
         console.log(res + "성공")
         setComment("");
       })
       .catch((err) => console.log(err + "실패"))
   }
-=======
-      .then((res) => console.log(res + "성공"))
-      .catch((err) => console.log(err + "실패"));
-  };
->>>>>>> 1e41c1606929e6ca5e3f5fc10c86b206b3157448
 
   return (
     <>
@@ -348,54 +342,20 @@ const TalentDetail: FC = () => {
               >
                 작성일 {talentDonationDetail.createDate}
               </Typography>
-<<<<<<< HEAD
-            )}
-          <Divider color="#CDAD78" sx={{ my: 2, borderBottomWidth: 5 }} />
-          <Typography variant="h5" fontWeight="bold" sx={{ mx: 5 }}>
-            댓글 
-          </Typography>
-          <Stack
-            justifyContent="space-between"
-            direction="row"
-            sx={{ mt: 1.5, mb: 3, mx: 5 }}
-            alignItems="center"
-          >
-            <CssTextField
-              sx={{ backgroundColor: "#ffffff", width: 1000 }}
-              size="small"
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
-            />
-            <CustomButton 
-              variant="contained" 
-              size="small" 
-              sx={{ width: 30 }}
-              onClick={handleComment}
-=======
-              {talentDonationDetail.updateDate === null ? null : (
-                <Typography
-                  sx={{ mt: 2 }}
-                  variant="h6"
-                  fontWeight="bold"
-                  textAlign="right"
-                >
-                  수정일 {talentDonationDetail.updateDate}
-                </Typography>
-              )}
               <Divider color="#CDAD78" sx={{ my: 2, borderBottomWidth: 5 }} />
               <Typography variant="h5" fontWeight="bold" sx={{ mx: 5 }}>
-                댓글
+                댓글 
               </Typography>
               <Stack
                 justifyContent="space-between"
                 direction="row"
                 sx={{ mt: 1.5, mb: 3, mx: 5 }}
                 alignItems="center"
->>>>>>> 1e41c1606929e6ca5e3f5fc10c86b206b3157448
               >
                 <CssTextField
                   sx={{ backgroundColor: "#ffffff", width: 1000 }}
                   size="small"
+                  value={comment}
                   onChange={(e) => setComment(e.target.value)}
                 />
                 <CustomButton

@@ -232,6 +232,7 @@ export const updateApply = async (id, data) => {
     data: data,
   });
 };
+
 // 마이페이지(기관) - 봉사 현황 조회
 export const getInquiryList = async (id, params) => {
   return await axios({
@@ -720,11 +721,22 @@ export const csCommentDelete = async (commentId, memberId, id, token) => {
   });
 };
 
-// 고객센터 상세 조회
+// 고객센터 상세 조회(공개)
 export const getCsDetail = async (id, token) => {
   return await axios({
     method: "GET",
     url: `/8000/api/desk/${id}`,
+    headers: {
+      Authorization: token,
+    },
+  });
+};
+
+// 고객센터 상세 조회(비공개)
+export const getSecretCsDetail = async (id, token, memberId) => {
+  return await axios({
+    method: "GET",
+    url: `/8000/desk/secret/${id}/${memberId}`,
     headers: {
       Authorization: token,
     },

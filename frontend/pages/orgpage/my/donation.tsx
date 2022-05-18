@@ -149,16 +149,19 @@ const orgpageMyDonation: FC = () => {
     setMID(localStorage.getItem("id"));
     setUserToken(localStorage.getItem("jwt"));
     const memberId = localStorage.getItem("id");
+
     const ingParams = {
       memberId: memberId,
       donationStatus: "진행",
       page: curPage,
     };
+
     const doneParams = {
       memberId: memberId,
       donationStatus: "마감",
       page: curPage2,
     };
+    
     getDonationList(ingParams).then((res) => {
       setIngDonation(res.data.donation);
       setTotalPages(res.data.totalPage);

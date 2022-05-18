@@ -75,7 +75,6 @@ const CustomButton2 = styled(Button)({
 const Comment2: FC<CommentData> = ({ comment, id, token }) => {
   const [inputStatus, setInputStatus] = useState<boolean>(false);
   const [userId, setUserId] = useState<any>();
-  const [parentId, setParentId] = useState<any>();
   const router = useRouter();
 
   const onClickInputStatus = () => {
