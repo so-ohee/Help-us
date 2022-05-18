@@ -274,7 +274,11 @@ const DonationCardOrg: FC<IDonationCardOrg> = ({
               <Modal open={open} onClose={handleClose}>
                 <Box sx={style}>
                   <Stack justifyContent="center" alignItems="center">
-                    <Typography textAlign="center" sx={{ mb: 1 }}>
+                    <Typography
+                      textAlign="center"
+                      sx={{ mb: 1 }}
+                      fontWeight="bold"
+                    >
                       해당 기부를 종료하시겠습니까?
                     </Typography>
                     <Stack direction="row" spacing={3} sx={{ mt: 1 }}>

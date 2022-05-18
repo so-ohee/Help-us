@@ -1,4 +1,4 @@
-import { Box, Button, Stack, Typography, Grid } from "@mui/material";
+import { Box, Button, Stack, Typography, Grid, Modal } from "@mui/material";
 import Image from "next/image";
 import react, { FC, useState } from "react";
 import TestImage from "../public/images/testImage.jpg";
@@ -10,6 +10,9 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import PersonIcon from "@mui/icons-material/Person";
 import Link from "next/link";
 import { useRouter } from "next/router";
+
+//api
+import { finishVolunteer } from "../function/axios";
 
 const CustomButton = styled(Button)({
   backgroundColor: "#5B321E",
@@ -23,12 +26,54 @@ const CustomButton = styled(Button)({
 
 interface IVC {
   item: any;
+  token: any;
+  id: any;
+  getStatus: any;
+  fStatus: boolean;
 }
 
-const VolunteerCardOrg: FC<IVC> = ({ item }) => {
+const style = {
+  position: "absolute" as "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "#e9e1d3",
+  // border: "2px solid #000",
+  borderRadius: 2,
+  // boxShadow: 24,
+  p: 2,
+};
+
+const CustomButton2 = styled(Button)({
+  color: "#5B321E",
+  border: "2px solid #5B321E",
+  fontWeight: "bold",
+  "&:hover": {
+    backgroundColor: "#FCE2A6",
+    color: "#5B321E",
+  },
+  fontSize: 12,
+});
+
+const VolunteerCardOrg: FC<IVC> = ({ item, token, id, getStatus, fStatus }) => {
   const volDate = "" + item.volDate;
-  const router = useRouter();
-  const [hover, setHover] = useState<any>({ cursor: "pointer" });
+
+  // 모달
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  // 기부 마감 버튼
+  const onClickFinishVolunteer = () => {
+    finishVolunteer(item.volunteerId, token, id)
+      .then((res) => {
+        // console.log("기부 마감 성공");
+        getStatus(!fStatus);
+        setOpen(false);
+      })
+      .catch((err) => console.error(err));
+  };
 
   return (
     <div>
@@ -41,16 +86,6 @@ const VolunteerCardOrg: FC<IVC> = ({ item }) => {
           height: 230,
           width: 325,
         }}
-        style={hover}
-        onMouseOver={() =>
-          setHover({
-            transform: "translateY(-5px)",
-            boxShadow: "0 0 15px #CDAD78",
-            cursor: "pointer",
-          })
-        }
-        onMouseOut={() => setHover({ cursor: "pointer" })}
-        onClick={() => router.push(`/detail/donationorg/${item.volunteerId}`)}
       >
         <Stack direction="row" justifyContent="center">
           <Box
@@ -187,9 +222,36 @@ const VolunteerCardOrg: FC<IVC> = ({ item }) => {
               alignItems="center"
             >
               {/* <Typography>자동 종료일: 2022-05-20</Typography> */}
-              <CustomButton variant="contained" size="small" sx={{ width: 80 }}>
+              <CustomButton
+                onClick={handleOpen}
+                variant="contained"
+                size="small"
+                sx={{ width: 80 }}
+              >
                 마감
               </CustomButton>
+            </Stack>
+            {/* 모달창 */}
+            <Stack justifyContent="center">
+              <Modal open={open} onClose={handleClose}>
+                <Box sx={style}>
+                  <Stack justifyContent="center" alignItems="center">
+                    <Typography
+                      textAlign="center"
+                      sx={{ mb: 1 }}
+                      fontWeight="bold"
+                    >
+                      해당 기부를 종료하시겠습니까?
+                    </Typography>
+                    <Stack direction="row" spacing={3} sx={{ mt: 1 }}>
+                      <CustomButton2 onClick={handleClose}>취소</CustomButton2>
+                      <CustomButton onClick={onClickFinishVolunteer}>
+                        확인
+                      </CustomButton>
+                    </Stack>
+                  </Stack>
+                </Box>
+              </Modal>
             </Stack>
           </Box>
         </Stack>
