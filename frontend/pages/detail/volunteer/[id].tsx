@@ -169,7 +169,7 @@ const VolunteerDetail: FC = () => {
     setRole(role);
     setId(id);
     setToken(token);
-  });
+  }, []);
 
   // 댓글 버튼 누를 시 작성
   // const repoArray: any = [...commentList]
@@ -484,7 +484,8 @@ const VolunteerDetail: FC = () => {
                   {volunteerDetails?.applicant} / {volunteerDetails?.people}
                 </Typography>
               </Stack>
-              <Stack sx={{ mt: 3 }}>
+              {/* 신청하기 부분 */}
+              <Stack sx={{ mt: 6 }}>
                 <SetApplyPart role={role} status={checkApply} />
               </Stack>
               {/* 카카오 맵 */}
