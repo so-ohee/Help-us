@@ -84,6 +84,7 @@ const DonationCard: FC<DonationData> = ({ donation }) => {
                         width: 65,
                         fontSize: 11,
                       }}
+                      style={{cursor:'pointer'}}
                     />
                     <Stack
                       sx={{
