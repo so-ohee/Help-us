@@ -202,10 +202,10 @@ const OrgPage: FC = () => {
       getUserInfo(router.query.pk)
         .then((res) => {
           setMyInfo(res.data);
-          if (res.data.role === "ORG_WAIT" || res.data.role === "ORG") {
-          } else {
-            location.href = "/";
-          }
+          // if (res.data.role === "ORG_WAIT" || res.data.role === "ORG") {
+          // } else {
+          //   location.href = "/";
+          // }
         })
         .catch(() => (location.href = "/"));
     }

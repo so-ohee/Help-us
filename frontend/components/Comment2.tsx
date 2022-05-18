@@ -139,11 +139,11 @@ const Comment2: FC<CommentData> = ({ comment, id, token }) => {
                   width="40px"
                   height="40px"
                 />
-                  {/* <Link href={`/userpage/${comment.memberId}`} > */}
+                  <Link href={`/userpage/${comment.memberId}`} >
                     <Typography sx={{ fontSize: 18, ml: 1, cursor: 'pointer' }} fontWeight="bold" >
                       {comment.name}
                     </Typography>
-                  {/* </Link> */}
+                  </Link>
                 <Typography sx={{ ml: 1 }}>{comment.content}</Typography>
               </Stack>
               <Stack direction="row" alignItems="center">
@@ -192,19 +192,19 @@ const Comment2: FC<CommentData> = ({ comment, id, token }) => {
                   width="40px"
                   height="40px"
                 />
-                {/* <Link href={`/userpage/${comment.memberId}`}> */}
+                <Link href={`/userpage/${comment.memberId}`}>
                   <Typography sx={{ fontSize: 18, ml: 1 }} fontWeight="bold">
                     {comment.name}
                   </Typography>
-                {/* </Link> */}
-                {/* <Link href={`/userpage/${comment.memberId}`}> */}
+                </Link>
+                <Link href={`/userpage/${comment.memberId}`}>
                   <Typography
                     sx={{ ml: 1, color: "#3470ca", fontSize: 14 }}
                     fontWeight="bold"
                   >
                     {comment.parentName}
                   </Typography>
-                {/* </Link> */}
+                </Link>
                 <Typography sx={{ ml: 1 }}>{comment.content}</Typography>
               </Stack>
               <Stack direction="row" alignItems="center">
