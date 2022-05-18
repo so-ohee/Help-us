@@ -197,7 +197,7 @@ const VolunteerDetail: FC = () => {
     if (role === "USER" && status === -1) {
       return (
         <>
-          <CustomButton sx={{ width: 100, mx: "auto" }} onClick={Apply}>
+          <CustomButton sx={{ width: 100, mx: "auto" }} onClick={handleOpen}>
             신청하기
           </CustomButton>
         </>
@@ -208,6 +208,8 @@ const VolunteerDetail: FC = () => {
           <Typography
             variant="h5"
             sx={{ mt: 0, display: "flex", justifyContent: "center" }}
+            color="#5B321E"
+            fontWeight="bold"
           >
             신청 완료
           </Typography>
@@ -225,11 +227,13 @@ const VolunteerDetail: FC = () => {
     volunteerApply(id, token)
       .then((res) => {
         // console.log(res + "성공");
-        setOpen(true);
+        setOpen(false);
         // window.location.reload();
       })
       .catch((err) => console.log(err + "실패"));
   };
+
+  const volDate = "" + volunteerDetails?.volDate;
 
   return (
     <>
@@ -284,7 +288,12 @@ const VolunteerDetail: FC = () => {
                 </Grid>
                 <Grid>
                   <Typography sx={{ mt: 0.5 }} variant="h6" fontWeight="bold">
-                    {userDetails?.name}
+                    <Link
+                      href={`/orgpage/${userDetails?.memberId}`}
+                      style={{ cursor: "pointer" }}
+                    >
+                      {userDetails?.name}
+                    </Link>
                   </Typography>
                   <Grid
                     sx={{ mt: 2 }}
@@ -468,14 +477,13 @@ const VolunteerDetail: FC = () => {
                     )}
                   </Stack>
                 )}
-                {/* <Stack>
-              <Typography sx={{ width: 100, ml: 2 }}>3 / 9</Typography>
-            </Stack> */}
+              </Stack>
+              <Stack sx={{ mt: 1 }}>
+                <Typography textAlign="center" fontWeight="bold">
+                  {volunteerDetails?.applicant} / {volunteerDetails?.people}
+                </Typography>
               </Stack>
               <Stack sx={{ mt: 3 }}>
-                {/* <CustomButton sx={{ width: 100, mx: "auto" }} onClick={Apply}>
-                  신청하기
-                </CustomButton> */}
                 <SetApplyPart role={role} status={checkApply} />
               </Stack>
               {/* 카카오 맵 */}
@@ -528,7 +536,7 @@ const VolunteerDetail: FC = () => {
                 </Stack>
                 {commentList &&
                   commentList.map((item) => (
-                    <Comment  comment={item} id={id} token={token} />
+                    <Comment comment={item} id={id} token={token} />
                   ))}
               </Box>
               <Box sx={{ display: "flex", justifyContent: "center", my: 5 }}>
@@ -543,16 +551,20 @@ const VolunteerDetail: FC = () => {
                   <Box sx={style}>
                     <Stack justifyContent="center" alignItems="center">
                       <Typography textAlign="center" sx={{ mb: 1 }}>
-                        봉사 신청이 완료됐습니다.
+                        봉사 일자 : {volDate.substring(0, 10)}
                       </Typography>
-                      <CustomButton onClick={handleClose}>확인</CustomButton>
-                      {/* <Stack direction="row" spacing={3}>
-                        <Link href={`/userpage/my/delivery`}>
-                        </Link>
-                        <CustomButton2 onClick={handleClose} sx={{ width: 80 }}>
-                          확인
+                      <Typography textAlign="center" sx={{ mb: 1 }}>
+                        봉사 장소 : {volunteerDetails?.volAddress}
+                      </Typography>
+                      <Typography textAlign="center" sx={{ mb: 1 }}>
+                        봉사를 신청하시겠습니까?
+                      </Typography>
+                      <Stack direction="row" spacing={3} sx={{ mt: 1 }}>
+                        <CustomButton2 onClick={handleClose}>
+                          취소
                         </CustomButton2>
-                      </Stack> */}
+                        <CustomButton onClick={Apply}>확인</CustomButton>
+                      </Stack>
                     </Stack>
                   </Box>
                 </Modal>
