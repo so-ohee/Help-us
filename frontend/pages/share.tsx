@@ -1,4 +1,4 @@
-import { FC, useState, useEffect,FormEvent } from "react";
+import { FC, useState, useEffect, FormEvent } from "react";
 import {
   Box,
   Grid,
@@ -24,7 +24,10 @@ import Image from "next/image";
 import { styled } from "@mui/material/styles";
 import volunteer1 from "../public/images/volunteer1.jpg";
 import Pagination from "@/components/Pagination";
-import { getTalentDonationList,searchTalentDonationList } from "function/axios";
+import {
+  getTalentDonationList,
+  searchTalentDonationList,
+} from "function/axios";
 import CarouselMain from "../components/CarouselMain";
 
 const CustomButton = styled(Button)({
@@ -68,9 +71,9 @@ const Share: FC = () => {
   const paginate = (pageNumber) => setCurPage(pageNumber);
   const params = {
     page: curPage,
-    keyword: null
+    keyword: null,
   };
-  
+
   const [myId, setMyId] = useState(0);
   const [myRole, setMyRole] = useState("");
   const [keyword, setKeyword] = useState("");
@@ -78,18 +81,18 @@ const Share: FC = () => {
   const Search = (e: FormEvent) => {
     e.preventDefault();
     console.log(keyword);
-    if (keyword === '') {
-      alert("검색어를 입력해주세요")
+    if (keyword === "") {
+      alert("검색어를 입력해주세요");
       return;
     }
     setLoading(false);
-    searchTalentDonationList(keyword,params).then((res) => {
+    searchTalentDonationList(keyword, params).then((res) => {
       console.log(res);
       setTalentDonationList(res.data.listTalentDonation);
       setTotalPages(res.data.totalPage);
       setLoading(true);
     });
-  }
+  };
 
   useEffect(() => {
     setMyId(Number(localStorage.getItem("id")));
@@ -140,12 +143,11 @@ const Share: FC = () => {
           <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
             {myRole === "USER" ? (
               <CustomButton variant="contained" href="create/talent">
-              재능 기부 등록
-            </CustomButton>
-            ): (
+                재능 기부 등록
+              </CustomButton>
+            ) : (
               <></>
             )}
-            
           </Box>
           <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2 }}>
             <Paper
@@ -161,8 +163,9 @@ const Share: FC = () => {
               <InputBase
                 sx={{ ml: 1, flex: 1 }}
                 placeholder="검색"
-                onChange={event=>{                                 //adding the onChange event
-                  setKeyword(event.target.value)
+                onChange={(event) => {
+                  //adding the onChange event
+                  setKeyword(event.target.value);
                 }}
               />
               <IconButton type="submit" sx={{ p: "10px" }} onClick={Search}>
@@ -193,7 +196,7 @@ const Share: FC = () => {
                   talentDonationList.map((data) => (
                     <StyledTableRow key={data.volunteerId}>
                       <StyledTableCell align="center">
-                        {data.volunteerId}
+                        {data.no}
                       </StyledTableCell>
                       <StyledTableCell align="center" sx={{ width: 400 }}>
                         <Link
@@ -218,15 +221,19 @@ const Share: FC = () => {
           </TableContainer>
           {talentDonationList && talentDonationList.length > 0 ? (
             <Stack alignItems="center" sx={{ mb: 2, mt: 2 }}>
-            <Pagination
-              curPage={curPage}
-              paginate={paginate}
-              totalPage={totalPages}
-            />
-          </Stack>
-            ) : (
-              <Typography variant="h5" sx={{ mt: 10, display: 'flex', justifyContent: 'center'}}>등록된 글이 없습니다.</Typography>   
-
+              <Pagination
+                curPage={curPage}
+                paginate={paginate}
+                totalPage={totalPages}
+              />
+            </Stack>
+          ) : (
+            <Typography
+              variant="h5"
+              sx={{ mt: 10, display: "flex", justifyContent: "center" }}
+            >
+              등록된 글이 없습니다.
+            </Typography>
           )}
         </Stack>
       </Grid>
