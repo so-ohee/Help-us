@@ -100,8 +100,6 @@ const CommentInput: FC<ICommentInput> = ({ inputStatus, comment }) => {
     }
   }, [router.isReady])
 
-  // console.log(inputStatus)
-
   // 대댓글 작성
   const handleRecomment = () => {
     const parentId = comment.commentId
@@ -121,9 +119,7 @@ const CommentInput: FC<ICommentInput> = ({ inputStatus, comment }) => {
       .catch((err) => console.log("실패" + err))
   }
 
-  const cancle = () => {
-    setStatus(!inputStatus)
-  }
+ 
   return (
     <>
       {inputStatus === true ? (
@@ -134,7 +130,7 @@ const CommentInput: FC<ICommentInput> = ({ inputStatus, comment }) => {
             value={recomment}
             onChange={(e) => setRecomment(e.target.value)}
           />
-          <CustomButton2 sx={{ ml: 2, height: 28 }} size="small" onChange={cancle}>
+          <CustomButton2 sx={{ ml: 2, height: 28 }} size="small" >
             취소
           </CustomButton2>
           <CustomButton 

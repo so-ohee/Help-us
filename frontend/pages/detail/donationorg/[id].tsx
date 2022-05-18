@@ -199,7 +199,7 @@ const DonationOrgDetail: FC = () => {
         setLoading(true);
       });
     }
-  }, [curPage, router.isReady, commentList]);
+  }, [curPage, router.isReady, comment]);
 
   const handleComment = () => {
     if (comment === "") {
@@ -689,7 +689,7 @@ const DonationOrgDetail: FC = () => {
           </Stack>
           {commentList &&
             commentList.map((item, index) => (
-              <Comment key={index} comment={item} id={userId} token={token} />
+              <Comment key={index} comment={item} id={userId} token={token} commentList={commentList} />
             ))}
         </Container>
       </Box>

@@ -86,6 +86,7 @@ const CommentInput3: FC<ICommentInput> = ({ inputStatus, comment }) => {
   const [userId, setUserId] = useState<any>();
   const [userToken, setUserToken] = useState<any>();
   const [boardId, setBoardId] = useState<any>();
+  const [status, setInputStatus] = useState<boolean>(false);
 
 
   useEffect(() => {
@@ -93,12 +94,12 @@ const CommentInput3: FC<ICommentInput> = ({ inputStatus, comment }) => {
     const token = localStorage.getItem("jwt");
     setUserId(id);
     setUserToken(token);
+    setInputStatus(inputStatus)
     if (router.isReady) {
       setBoardId(router.query.id)
     }
   }, [router.isReady])
 
-  // console.log(inputStatus)
 
   // 대댓글 작성
   const handleRecomment = () => {
@@ -113,6 +114,7 @@ const CommentInput3: FC<ICommentInput> = ({ inputStatus, comment }) => {
     talentRecomment(userId, userToken, params)
       .then((res) => {
         console.log("성공" + res)
+        setInputStatus(false)
         setRecomment("")
       })
       .catch((err) => console.log("실패" + err))
@@ -127,7 +129,7 @@ const CommentInput3: FC<ICommentInput> = ({ inputStatus, comment }) => {
             value={recomment}
             onChange={(e) => setRecomment(e.target.value)}
           />
-          <CustomButton2 sx={{ ml: 2, height: 28 }} size="small">
+          <CustomButton2 sx={{ ml: 2, height: 28 }} size="small" >
             취소
           </CustomButton2>
           <CustomButton 

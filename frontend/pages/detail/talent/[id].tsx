@@ -182,7 +182,7 @@ const TalentDetail: FC = () => {
         setLoading(true);
       });
     }
-  }, [router.isReady, commentList, curPage]);
+  }, [router.isReady, comment, curPage]);
 
   useEffect(() => {
     const id = localStorage.getItem("id");
@@ -398,7 +398,7 @@ const TalentDetail: FC = () => {
               <Stack>
                 {commentList &&
                   commentList.map((item, i) => (
-                    <Comment comment={item} id={id} token={token} key={i} />
+                    <Comment comment={item} id={id} token={token} key={i} commentList={commentList} />
                   ))}
               </Stack>
               <Box sx={{ display: "flex", justifyContent: "center", my: 5 }}>

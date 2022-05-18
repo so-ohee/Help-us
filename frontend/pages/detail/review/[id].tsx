@@ -206,7 +206,7 @@ const ReviewDetail: FC = () => {
         setLoading1(true);
       });
     }
-  }, [curPage, router.isReady, commentList]);
+  }, [curPage, router.isReady, comment]);
 
   const handleComment = (e) => {
     if (comment === "") {
@@ -496,7 +496,7 @@ const ReviewDetail: FC = () => {
               </Stack>
               {commentList &&
                 commentList.map((item, index) => (
-                  <Comment key={index} comment={item} id={userId} token={token} />
+                  <Comment key={index} comment={item} id={userId} token={token} commentList={commentList} />
                 ))}
             </Container>
           </Box>
