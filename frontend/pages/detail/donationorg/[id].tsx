@@ -45,16 +45,13 @@ import ExpiryDate from "@/components/ExpiryDate";
 
 import { useRouter } from "next/router";
 // api
-<<<<<<< HEAD
-import { donationDetail, getUserInfo, donationOrgCommentList, donationOrgComment, finishDonation } from "function/axios";
-=======
 import {
   donationDetail,
   getUserInfo,
   donationOrgCommentList,
   donationOrgComment,
+  finishDonation,
 } from "function/axios";
->>>>>>> c5730b2edf10efbd60af0be3a6a1a625ce7d9bb7
 
 const CustomButton = styled(Button)({
   backgroundColor: "#5B321E",
@@ -171,9 +168,9 @@ const DonationOrgDetail: FC = () => {
     setUserId(localStorage.getItem("id"));
     setToken(localStorage.getItem("jwt"));
     setRole(localStorage.getItem("role"));
-    
+
     if (router.isReady) {
-      setDonationId(router.query.id)
+      setDonationId(router.query.id);
       donationDetail(router.query.id).then((res) => {
         // console.log(res);
         setDonationDetails(res.data.donation);
@@ -248,11 +245,11 @@ const DonationOrgDetail: FC = () => {
   // 마감하기
   const handleFinish = (e) => {
     e.preventDefault();
-    const memberId = donationDetails.memberId
+    const memberId = donationDetails.memberId;
     finishDonation(donationId, memberId, token)
       .then((res) => console.log("성공" + res))
-      .catch((err) => console.log("실패" + err))
-  }
+      .catch((err) => console.log("실패" + err));
+  };
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -346,17 +343,17 @@ const DonationOrgDetail: FC = () => {
             <Typography variant="h4" fontWeight="bold" sx={{ mt: 3 }}>
               {donationDetails ? donationDetails.title : null}
             </Typography>
-            <Box >
-            {userId == donationDetails.memberId ? (
-              <CustomButton3
-                variant="contained"
-                size="small"
-                sx={{ width: 30 }}
-                onClick={handleFinish}
-              >
-                마감
-              </CustomButton3> 
-            ) : null}
+            <Box>
+              {userId == donationDetails.memberId ? (
+                <CustomButton3
+                  variant="contained"
+                  size="small"
+                  sx={{ width: 30 }}
+                  onClick={handleFinish}
+                >
+                  마감
+                </CustomButton3>
+              ) : null}
               <Link href="/donation">
                 <CustomButton
                   variant="contained"
@@ -481,8 +478,7 @@ const DonationOrgDetail: FC = () => {
                   남은 수량
                 </Typography>
               </Stack>
-                <ExpiryDate></ExpiryDate>
-
+              <ExpiryDate></ExpiryDate>
             </Stack>
           </Stack>
           <TableContainer component={Paper} sx={{ mt: 5 }}>
@@ -672,7 +668,6 @@ const DonationOrgDetail: FC = () => {
                         </Tooltip>
                       </StyledTableCell>
                       <StyledTableCell align="center">
-                        
                         {donationDetails.status !== "마감" ? (
                           <DonationApply
                             donation={data}
@@ -718,15 +713,10 @@ const DonationOrgDetail: FC = () => {
               등록
             </CustomButton>
           </Stack>
-<<<<<<< HEAD
-            {commentList &&
-              commentList.map((item, j) => <Comment key={j} comment={item} id={userId} token={token} />)}
-=======
           {commentList &&
-            commentList.map((item) => (
-              <Comment comment={item} id={userId} token={token} />
+            commentList.map((item, j) => (
+              <Comment key={j} comment={item} id={userId} token={token} />
             ))}
->>>>>>> c5730b2edf10efbd60af0be3a6a1a625ce7d9bb7
         </Container>
       </Box>
     </Box>
