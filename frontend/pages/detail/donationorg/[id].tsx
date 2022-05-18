@@ -133,6 +133,7 @@ const DonationOrgDetail: FC = () => {
 
   const [userId, setUserId] = useState<any>("");
   const [token, setToken] = useState<any>("");
+  const [role, setRole] = useState<any>('');
   const [applyStatus, setApplyStatus] = useState<boolean>(false);
 
   // 댓글
@@ -157,6 +158,8 @@ const DonationOrgDetail: FC = () => {
   useEffect(() => {
     setUserId(localStorage.getItem("id"));
     setToken(localStorage.getItem("jwt"));
+    setRole(localStorage.getItem("role"));
+    
     if (router.isReady) {
       donationDetail(router.query.id).then((res) => {
         // console.log(res);
@@ -609,6 +612,7 @@ const DonationOrgDetail: FC = () => {
                         </Tooltip>
                       </StyledTableCell>
                       <StyledTableCell align="center">
+                        
                         {donationDetails.status !== "마감" ? (
                           <DonationApply
                             donation={data}
@@ -618,6 +622,7 @@ const DonationOrgDetail: FC = () => {
                             token={token}
                             applyStatus={applyStatus}
                             getStatus={getStatus}
+                            role={role}
                           />
                         ) : (
                             <>마감</>
@@ -655,7 +660,7 @@ const DonationOrgDetail: FC = () => {
             </CustomButton>
           </Stack>
           {commentList &&
-            commentList.map((item) => <Comment comment={item} id={userId} token={token} />)}
+            commentList.map((item, j) => <Comment key={j} comment={item} id={userId} token={token} />)}
         </Container>
       </Box>
     </Box>

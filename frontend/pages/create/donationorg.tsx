@@ -82,10 +82,8 @@ const DonationOrg: FC = (props) => {
 
   // 물품 수량 설명 form 설정
   const handleChange = (i, e) => {
-    console.log(e.target.value);
     const newFormValues = [...formValues];
     newFormValues[i][e.target.name] = e.target.value;
-    // console.log(newFormValues)
     setFormValues(newFormValues);
   };
 
@@ -124,8 +122,8 @@ const DonationOrg: FC = (props) => {
     };
 
     try {
-      console.log(image1);
-      console.log(image1.image_file);
+      // console.log(image1);
+      // console.log(image1.image_file);
     } catch (err) {
       console.log("Error uploading file: ", err);
     }
@@ -243,15 +241,7 @@ const DonationOrg: FC = (props) => {
     setIsSSR(true);
   }, []);
 
-  // const testValue = [
-  //   {
-  //     one: 1,
-  //     two: "",
-  //   },
-  // ];
 
-  // console.log(testValue[0]);
-  // console.log(testValue[0].one);
 
   // 물품 기부 등록
   const handleSubmit = (e) => {
