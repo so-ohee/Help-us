@@ -202,12 +202,15 @@ public class TalentDonationServiceImpl implements TalentDonationService {
 
         Map<String, Object> resultMap = new HashMap<>();
 
-        Page<Volunteer> volunteers = volunteerRepository.findByMemberId(memberId, PageRequest.of(page, 10, Sort.by("volunteerId").ascending()));
+        Page<Volunteer> volunteers = volunteerRepository.findByMemberId(memberId, PageRequest.of(page, 10, Sort.by("volunteerId").descending()));
 
         if(volunteers.isEmpty()){
             resultMap.put("message", "게시물 없음");
             return resultMap;
         }
+
+        int idx = volunteerRepository.countAllByMemberId(memberId);
+        idx -= page*10;
 
         List<ListTalentDonationResDto> list = new ArrayList<>();
 
@@ -221,8 +224,11 @@ public class TalentDonationServiceImpl implements TalentDonationService {
                     .memberId(Long.parseLong(member.get("memberId")))
                     .name(member.get("name"))
                     .profile(member.get("profile"))
+                    .no(idx)
                     .createDate(volunteer.getCreateDate()).build();
             list.add(listTalentDonationResDto);
+
+            idx--;
         }
         resultMap.put("listTalentDonation", list);
         resultMap.put("totalPage", volunteers.getTotalPages());

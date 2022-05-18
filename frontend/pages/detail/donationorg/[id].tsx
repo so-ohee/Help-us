@@ -174,7 +174,7 @@ const DonationOrgDetail: FC = () => {
       donationDetail(router.query.id).then((res) => {
         // console.log(res);
         setDonationDetails(res.data.donation);
-        console.log(res.data.donation);
+        // console.log(res.data.donation);
         setDetailLoading(true);
       });
     }

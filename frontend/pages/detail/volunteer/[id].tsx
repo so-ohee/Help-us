@@ -485,7 +485,8 @@ const VolunteerDetail: FC = () => {
                   {volunteerDetails?.applicant} / {volunteerDetails?.people}
                 </Typography>
               </Stack>
-              <Stack sx={{ mt: 3 }}>
+              {/* 신청하기 부분 */}
+              <Stack sx={{ mt: 6 }}>
                 <SetApplyPart role={role} status={checkApply} />
               </Stack>
               {/* 카카오 맵 */}
@@ -537,6 +538,10 @@ const VolunteerDetail: FC = () => {
                       등록
                     </CustomButton>
                   </Stack>
+                  {commentList &&
+                    commentList.map((item) => (
+                      <Comment comment={item} id={id} token={token} />
+                    ))}
                 </Box>
               ) : (
                 <></>

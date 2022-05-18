@@ -93,13 +93,16 @@ const UserMypageVolunteer: FC = () => {
   useEffect(() => {
     const id = localStorage.getItem("id");
     getMyvolunteerList(id, params).then((res) => {
-      let tmpList = res.data.listVolunteer.filter((data) => data.status !== 2);
-      let converted = new Date(tmpList[0].volDate);
-      console.log(converted);
-      console.log(converted.getHours);
-      console.log(typeof (tmpList[0].volDate))
-      setVolunteerList(tmpList);
-      setTotalPages(res.data.totalPage);
+      if (res.data.listVolunteer){
+        let tmpList = res.data.listVolunteer.filter((data) => data.status !== 2);
+        let converted = new Date(tmpList[0].volDate);
+        // console.log(converted);
+        // console.log(converted.getHours);
+        // console.log(typeof (tmpList[0].volDate))
+        setVolunteerList(tmpList);
+        setTotalPages(res.data.totalPage);
+      }
+
     });
   }, [curPage]);
   return (

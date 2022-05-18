@@ -169,8 +169,10 @@ const orgpageMyCheckDonation: FC = () => {
   useEffect(() => {
     const id = localStorage.getItem("id");
     getOrgDonationList(id, params).then((res) => {
-      setDonationList(res.data.apply);
-      setTotalPages(res.data.totalPage);
+      if (res.data.apply){
+        setDonationList(res.data.apply);
+        setTotalPages(res.data.totalPage);
+      }
     });
   }, [curPage]);
   return (
