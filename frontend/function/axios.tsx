@@ -693,6 +693,7 @@ export const getCsDetail = async (id) => {
 
 // 고객센터 목록 조회
 export const getCSList = async (params) => {
+  console.log(params);
   return await axios({
     method: "GET",
     url: `/8000/api/desk`,
