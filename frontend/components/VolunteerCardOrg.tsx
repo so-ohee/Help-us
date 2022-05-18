@@ -9,6 +9,7 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import PersonIcon from "@mui/icons-material/Person";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const CustomButton = styled(Button)({
   backgroundColor: "#5B321E",
@@ -26,6 +27,9 @@ interface IVC {
 
 const VolunteerCardOrg: FC<IVC> = ({ item }) => {
   const volDate = "" + item.volDate;
+  const router = useRouter();
+  const [hover, setHover] = useState<any>({ cursor: "pointer" });
+
   return (
     <div>
       <Box
@@ -37,6 +41,16 @@ const VolunteerCardOrg: FC<IVC> = ({ item }) => {
           height: 230,
           width: 325,
         }}
+        style={hover}
+        onMouseOver={() =>
+          setHover({
+            transform: "translateY(-5px)",
+            boxShadow: "0 0 15px #CDAD78",
+            cursor: "pointer",
+          })
+        }
+        onMouseOut={() => setHover({ cursor: "pointer" })}
+        onClick={() => router.push(`/detail/donationorg/${item.volunteerId}`)}
       >
         <Stack direction="row" justifyContent="center">
           <Box

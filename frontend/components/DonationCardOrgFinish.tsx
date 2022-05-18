@@ -6,6 +6,7 @@ import Chip from "@mui/material/Chip";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 import { AnyStyledComponent } from "styled-components";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const CustomButton = styled(Button)({
   backgroundColor: "#5B321E",
@@ -22,7 +23,8 @@ interface IDonationCardOrgFinish {
 }
 
 const DonationCardOrgFinish: FC<IDonationCardOrgFinish> = ({ item }) => {
-  // console.log(item);
+  const router = useRouter();
+  const [hover, setHover] = useState<any>({ cursor: "pointer" });
 
   return (
     <div>
@@ -36,6 +38,16 @@ const DonationCardOrgFinish: FC<IDonationCardOrgFinish> = ({ item }) => {
           width: 325,
           backgroundColor: "#ffffff",
         }}
+        style={hover}
+        onMouseOver={() =>
+          setHover({
+            transform: "translateY(-5px)",
+            boxShadow: "0 0 15px #CDAD78",
+            cursor: "pointer",
+          })
+        }
+        onMouseOut={() => setHover({ cursor: "pointer" })}
+        onClick={() => router.push(`/detail/donationorg/${item.donationId}`)}
       >
         <Stack direction="row" justifyContent="center">
           <Box

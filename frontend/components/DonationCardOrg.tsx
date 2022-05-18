@@ -6,6 +6,7 @@ import defaultImage from "../public/images/defaultImage.png";
 import Chip from "@mui/material/Chip";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 // api
 import { finishDonation } from "../function/axios";
@@ -35,6 +36,9 @@ const DonationCardOrg: FC<IDonationCardOrg> = ({
   getStatus,
   fStatus,
 }) => {
+  const router = useRouter();
+  const [hover, setHover] = useState<any>({ cursor: "pointer" });
+
   const onClickFinish = () => {
     finishDonation(item.donationId, id, token)
       .then((res) => {
@@ -56,6 +60,16 @@ const DonationCardOrg: FC<IDonationCardOrg> = ({
           width: 325,
           backgroundColor: "#ffffff",
         }}
+        style={hover}
+        onMouseOver={() =>
+          setHover({
+            transform: "translateY(-5px)",
+            boxShadow: "0 0 15px #CDAD78",
+            cursor: "pointer",
+          })
+        }
+        onMouseOut={() => setHover({ cursor: "pointer" })}
+        onClick={() => router.push(`/detail/donationorg/${item.donationId}`)}
       >
         <Stack direction="row" justifyContent="center">
           <Box
