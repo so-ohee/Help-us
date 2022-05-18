@@ -109,7 +109,7 @@ const VolunteerDetail: FC = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
+  console.log(open);
   // 상세 페이지 내용 불러오기
   useEffect(() => {
     if (router.isReady) {
@@ -131,7 +131,8 @@ const VolunteerDetail: FC = () => {
         })
         .then(() => {
           let tmpToken = localStorage.getItem("jwt");
-          if (role !== null) {
+          let tmpRole = localStorage.getItem("role");
+          if (tmpRole === "USER") {
             volunteerApplyCheck(router.query.id, tmpToken).then((res) => {
               setCheckApply(res.data.applyStatus.status);
             });
@@ -151,6 +152,7 @@ const VolunteerDetail: FC = () => {
   };
 
   useEffect(() => {
+
     if (router.isReady) {
       volunteerCommentList(router.query.id, params).then((res) => {
         setCommentList(res.data.comment);
@@ -159,9 +161,13 @@ const VolunteerDetail: FC = () => {
         setLoading(true);
       });
     }
+<<<<<<< HEAD
   }, [curPage, router.isReady, comment, open]);
 
 
+=======
+  }, [curPage, router.isReady,commentList, open]);
+>>>>>>> bdb04803760af68b87afa4a291f0b8d57666fdb2
 
   useEffect(() => {
     const id = localStorage.getItem("id");
@@ -170,7 +176,7 @@ const VolunteerDetail: FC = () => {
     setRole(role);
     setId(id);
     setToken(token);
-  });
+  }, []);
 
 
   // 댓글 버튼 누를 시 작성
@@ -488,7 +494,8 @@ const VolunteerDetail: FC = () => {
                   {volunteerDetails?.applicant} / {volunteerDetails?.people}
                 </Typography>
               </Stack>
-              <Stack sx={{ mt: 3 }}>
+              {/* 신청하기 부분 */}
+              <Stack sx={{ mt: 6 }}>
                 <SetApplyPart role={role} status={checkApply} />
               </Stack>
               {/* 카카오 맵 */}
@@ -518,39 +525,59 @@ const VolunteerDetail: FC = () => {
               <Typography variant="h5" fontWeight="bold" sx={{ mx: 5 }}>
                 댓글
               </Typography>
-              <Box>
-                <Stack
-                  justifyContent="space-between"
-                  direction="row"
-                  sx={{ mt: 1.5, mb: 3, mx: 5 }}
-                  alignItems="center"
-                >
-                  <TextField
-                    sx={{ backgroundColor: "#ffffff", width: 980 }}
-                    value={comment}
-                    onChange={(e) => setComment(e.target.value)}
-                  />
-                  <CustomButton
-                    variant="contained"
-                    size="large"
-                    sx={{ width: 80 }}
-                    onClick={handleComment}
+              {role === "USER" || role === "ORG" || role === "ADMIN" ? (
+                <Box>
+                  <Stack
+                    justifyContent="space-between"
+                    direction="row"
+                    sx={{ mt: 1.5, mb: 3, mx: 5 }}
+                    alignItems="center"
                   >
-                    등록
-                  </CustomButton>
-                </Stack>
+                    <TextField
+                      sx={{ backgroundColor: "#ffffff", width: 980 }}
+                      value={comment}
+                      onChange={(e) => setComment(e.target.value)}
+                    />
+                    <CustomButton
+                      variant="contained"
+                      size="large"
+                      sx={{ width: 80 }}
+                      onClick={handleComment}
+                    >
+                      등록
+                    </CustomButton>
+                  </Stack>
+                  {commentList &&
+                    commentList.map((item) => (
+                      <Comment comment={item} id={id} token={token} />
+                    ))}
+                </Box>
+              ) : (
+                <></>
+              )}
+              <Stack>
                 {commentList &&
+<<<<<<< HEAD
                   commentList.map((item, index) => (
                     <Comment key={index} comment={item} id={id} token={token} commentList={commentList} />
+=======
+                  commentList.map((item,i) => (
+                    <Comment comment={item} id={id} token={token} key={i}/>
+>>>>>>> bdb04803760af68b87afa4a291f0b8d57666fdb2
                   ))}
-              </Box>
-              <Box sx={{ display: "flex", justifyContent: "center", my: 5 }}>
-                <Pagination
-                  paginate={paginate}
-                  curPage={curPage}
-                  totalPage={totalPages}
-                />
-              </Box>
+              </Stack>
+              {commentList && commentList.length > 0 ? (
+                <Box sx={{ display: "flex", justifyContent: "center", my: 5 }}>
+                  <Pagination
+                    paginate={paginate}
+                    curPage={curPage}
+                    totalPage={totalPages}
+                  />
+                </Box>
+              ) : (
+                <></>
+              )}
+
               <Stack justifyContent="center">
                 <Modal open={open} onClose={handleClose}>
                   <Box sx={style}>

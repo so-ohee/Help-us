@@ -136,7 +136,18 @@ const orgpageMyVolunteer: FC = () => {
   const [totalPages2, setTotalPages2] = useState(0);
   const paginate2 = (pageNumber) => setCurPage2(pageNumber);
 
+  const [mId, setMID] = useState<any>("");
+  const [userToken, setUserToken] = useState<any>("");
+
+  const [fStatus, setFStatus] = useState<boolean>(false);
+
+  const getStatus = (fStatus) => {
+    setFStatus(fStatus);
+  };
+
   useEffect(() => {
+    setMID(localStorage.getItem("id"));
+    setUserToken(localStorage.getItem("jwt"));
     const memberId = localStorage.getItem("id");
     const params = {
       page: curPage,
@@ -157,7 +168,7 @@ const orgpageMyVolunteer: FC = () => {
       setDoneVolunteer(res.data.listVolunteer);
       setTotalPages2(res.data.totalPage);
     });
-  }, [curPage, curPage2]);
+  }, [fStatus, curPage, curPage2]);
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -212,10 +223,10 @@ const orgpageMyVolunteer: FC = () => {
                         <VolunteerCardOrg
                           key={i}
                           item={item}
-                          // token={userToken}
-                          // id={mId}
-                          // getStatus={getStatus}
-                          // fStatus={fStatus}
+                          token={userToken}
+                          id={mId}
+                          getStatus={getStatus}
+                          fStatus={fStatus}
                         />
                       ))
                     ) : (

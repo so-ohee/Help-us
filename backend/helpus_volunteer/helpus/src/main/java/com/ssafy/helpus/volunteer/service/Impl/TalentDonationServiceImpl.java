@@ -3,10 +3,8 @@ package com.ssafy.helpus.volunteer.service.Impl;
 import com.ssafy.helpus.volunteer.dto.*;
 import com.ssafy.helpus.volunteer.entity.Member;
 import com.ssafy.helpus.volunteer.entity.Volunteer;
-import com.ssafy.helpus.volunteer.entity.VolunteerApply;
 import com.ssafy.helpus.volunteer.enumClass.VolunteerOrder;
 import com.ssafy.helpus.volunteer.repository.MemberRepository;
-import com.ssafy.helpus.volunteer.repository.VolunteerApplyRepository;
 import com.ssafy.helpus.volunteer.repository.VolunteerRepository;
 import com.ssafy.helpus.volunteer.service.FileService;
 import com.ssafy.helpus.volunteer.service.MemberService;
@@ -150,11 +148,11 @@ public class TalentDonationServiceImpl implements TalentDonationService {
         Page<Volunteer> volunteers;
         volunteers = volunteerRepository.findByCategory(category, PageRequest.of(page,10, Sort.by(Sort.Direction.DESC, "volunteerId")));
 
-        return makeListTalentDonation(volunteers);
+        return makeListTalentDonation(volunteers, page);
     }
 
     @Override
-    public Map<String, Object> makeListTalentDonation(Page<Volunteer> volunteers) throws Exception {
+    public Map<String, Object> makeListTalentDonation(Page<Volunteer> volunteers, int page) throws Exception {
         log.info("TalentDonationService makeListTalentDonation call");
 
         Map<String, Object> resultMap = new HashMap<>();
@@ -164,6 +162,9 @@ public class TalentDonationServiceImpl implements TalentDonationService {
             return resultMap;
         }
         List<ListTalentDonationResDto> list = new ArrayList<>();
+
+        int idx = volunteerRepository.countAllByCategory("USER");
+        idx -= page*10;
 
         for(Volunteer volunteer : volunteers){
             Map<String, String> member = memberService.getMember(volunteer.getMemberId());
@@ -175,8 +176,11 @@ public class TalentDonationServiceImpl implements TalentDonationService {
                     .memberId(Long.parseLong(member.get("memberId")))
                     .name(member.get("name"))
                     .profile(member.get("profile"))
+                    .no(idx)
                     .createDate(volunteer.getCreateDate()).build();
             list.add(listTalentDonationResDto);
+
+            idx--;
         }
         resultMap.put("listTalentDonation", list);
         resultMap.put("totalPage", volunteers.getTotalPages());
@@ -190,7 +194,7 @@ public class TalentDonationServiceImpl implements TalentDonationService {
 
         Sort sort = gerOrder(order);
         Page<Volunteer> volunteers = volunteerRepository.findByCategoryAndStatus("USER", 0, PageRequest.of(page,10,sort));
-        return makeListTalentDonation(volunteers);
+        return makeListTalentDonation(volunteers, page);
     }
 
     @Override
@@ -198,12 +202,15 @@ public class TalentDonationServiceImpl implements TalentDonationService {
 
         Map<String, Object> resultMap = new HashMap<>();
 
-        Page<Volunteer> volunteers = volunteerRepository.findByMemberId(memberId, PageRequest.of(page, 10, Sort.by("volunteerId").ascending()));
+        Page<Volunteer> volunteers = volunteerRepository.findByMemberId(memberId, PageRequest.of(page, 10, Sort.by("volunteerId").descending()));
 
         if(volunteers.isEmpty()){
             resultMap.put("message", "게시물 없음");
             return resultMap;
         }
+
+        int idx = volunteerRepository.countAllByMemberId(memberId);
+        idx -= page*10;
 
         List<ListTalentDonationResDto> list = new ArrayList<>();
 
@@ -217,8 +224,11 @@ public class TalentDonationServiceImpl implements TalentDonationService {
                     .memberId(Long.parseLong(member.get("memberId")))
                     .name(member.get("name"))
                     .profile(member.get("profile"))
+                    .no(idx)
                     .createDate(volunteer.getCreateDate()).build();
             list.add(listTalentDonationResDto);
+
+            idx--;
         }
         resultMap.put("listTalentDonation", list);
         resultMap.put("totalPage", volunteers.getTotalPages());
@@ -232,7 +242,7 @@ public class TalentDonationServiceImpl implements TalentDonationService {
         Map<String, Object> resultMap = new HashMap<>();
 
         Page<Volunteer> volunteers = volunteerRepository.findByTitleContainingAndCategory(keyword, "USER", PageRequest.of(page, 10, Sort.by("volunteerId").descending()));
-        return  makeListTalentDonation(volunteers);
+        return  makeListTalentDonation(volunteers, page);
     }
 
 

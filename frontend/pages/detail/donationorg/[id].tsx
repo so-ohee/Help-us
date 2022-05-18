@@ -38,6 +38,7 @@ import InsertLinkIcon from "@mui/icons-material/InsertLink";
 import testImage from "../../../public/images/testImage.jpg";
 import Comment from "../../../components/Comment2";
 import Pagination from "../../../components/Pagination";
+import ExpiryDate from "../../../components/ExpiryDate";
 
 import CustomCarousel from "@/components/Carousel";
 import DonationApply from "@/components/DonationApply";
@@ -194,7 +195,7 @@ const DonationOrgDetail: FC = () => {
     if (router.isReady) {
       donationOrgCommentList(router.query.id, params2).then((res) => {
         setCommentList(res.data.comment);
-        // console.log(commentList)
+        // console.log(res);
         setTotalPages(res.data.totalPage);
         setLoading(true);
       });
@@ -261,12 +262,28 @@ const DonationOrgDetail: FC = () => {
                   marginTop: "6px",
                 }}
               >
-                <Image
-                  src={testImage}
-                  alt="orgImage"
-                  width="150px"
-                  height="150px"
-                />
+              {
+                orgInfo ?
+                (
+                  orgInfo.profile ?
+                  (
+                    <Image
+                      src={orgInfo.profile}
+                      alt="orgImage"
+                      width="150px"
+                      height="150px"
+                    />
+                  ) :
+                  (
+                    <Image
+                      src={testImage}
+                      alt="orgImage"
+                      width="150px"
+                      height="150px"
+                    />
+                  )
+                ) : null
+              }
               </div>
             </Grid>
             <Grid>
@@ -450,9 +467,7 @@ const DonationOrgDetail: FC = () => {
                   남은 수량
                 </Typography>
               </Stack>
-              <CustomButton2 sx={{ height: "30px", ml: 5 }}>
-                유통기한 가이드
-              </CustomButton2>
+              <ExpiryDate></ExpiryDate>
             </Stack>
           </Stack>
           <TableContainer component={Paper} sx={{ mt: 5 }}>
@@ -536,8 +551,8 @@ const DonationOrgDetail: FC = () => {
                               direction="column"
                               sx={{
                                 width: `${
-                                  (data.deliveryCount +
-                                    data.waitingCount / data.totalCount) *
+                                  ((data.deliveryCount + data.waitingCount) /
+                                    data.totalCount) *
                                   100
                                 }%`,
                               }}
@@ -553,8 +568,8 @@ const DonationOrgDetail: FC = () => {
                               ></Box>
                               <Typography sx={{ fontSize: 11 }}>
                                 {(
-                                  (data.deliveryCount +
-                                    data.waitingCount / data.totalCount) *
+                                  ((data.deliveryCount + data.waitingCount) /
+                                    data.totalCount) *
                                   100
                                 ).toFixed()}
                                 %
@@ -666,31 +681,48 @@ const DonationOrgDetail: FC = () => {
           <Typography variant="h5" fontWeight="bold" sx={{ mx: 5 }}>
             댓글
           </Typography>
-          <Stack
-            justifyContent="space-between"
-            direction="row"
-            sx={{ mt: 1.5, mb: 3, mx: 5 }}
-            alignItems="center"
-          >
-            <CssTextField
-              sx={{ backgroundColor: "#ffffff", width: 1000 }}
-              size="small"
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
-            />
-            <CustomButton
-              variant="contained"
-              size="small"
-              sx={{ width: 30 }}
-              onClick={handleComment}
+          {role === "USER" || role === "ORG" || role === "ADMIN" ? (
+            <Stack
+              justifyContent="space-between"
+              direction="row"
+              sx={{ mt: 1.5, mb: 3, mx: 5 }}
+              alignItems="center"
             >
-              등록
-            </CustomButton>
-          </Stack>
+              <CssTextField
+                sx={{ backgroundColor: "#ffffff", width: 1000 }}
+                size="small"
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+              />
+              <CustomButton
+                variant="contained"
+                size="small"
+                sx={{ width: 30 }}
+                onClick={handleComment}
+              >
+                등록
+              </CustomButton>
+            </Stack>
+          ) : (
+            <></>
+          )}
+          <Stack>
           {commentList &&
             commentList.map((item, index) => (
               <Comment key={index} comment={item} id={userId} token={token} commentList={commentList} />
             ))}
+          </Stack>
+          {commentList && commentList.length > 0 ? (
+                <Box sx={{ display: "flex", justifyContent: "center", my: 5, pb:5 }}>
+                <Pagination
+                  paginate={paginate}
+                  curPage={curPage}
+                  totalPage={totalPages}
+                />
+              </Box>
+              ): (
+                <></>
+              )}
         </Container>
       </Box>
     </Box>

@@ -95,7 +95,9 @@ const UserMypage: FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const [myInfo, setMyInfo] = useState<any>(null);
-
+  const params = {
+    isDefault : null
+  }
   useEffect(() => {
     const token = localStorage.getItem("id");
     getUserInfo(token).then((res) => {
@@ -131,12 +133,23 @@ const UserMypage: FC = () => {
 
   // 업로드 버튼 클릭시
   const clickImageUpload = () => {
+    console.log(params);
+    console.log(profile);
+      params.isDefault = null;
       imageUpload.current.click()
   }
-
+  const clickDefault = () => {
+    console.log(params);
+    console.log(profile);
+    params.isDefault = "true";
+    setProfile('');
+    setProfileName('');
+  }
   // 수정 버튼 클릭시
   const clickEdit = () => {
-    userEdit(localStorage.getItem('jwt'), myInfo.memberId, intro, profile)
+    console.log(params);
+    console.log(profile);
+    userEdit(localStorage.getItem('jwt'), myInfo.memberId, intro, profile, params)
     .then(res => {
       handleClose()
       location.reload()
@@ -275,6 +288,13 @@ const UserMypage: FC = () => {
                     onClick={clickImageUpload}
                   >
                   업로드
+                  </UpdateButton>
+                  <UpdateButton
+                    sx={{ mt: 1, mb:1, mx:1}}
+                    variant="contained"
+                    onClick={clickDefault}
+                  >
+                  기본 이미지
                   </UpdateButton>
                   <input 
                     type="file" 

@@ -309,7 +309,7 @@ public class VolunteerServiceImpl implements VolunteerService{
         resultMap.put("message", "성공");
         return resultMap;
     }
-    
+
 
     @Override
     public Map<String, Object> mainListVolunteer(String order, int page) throws Exception{

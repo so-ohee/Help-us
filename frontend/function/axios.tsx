@@ -219,24 +219,27 @@ export const getUserDonationList = async (id, params) => {
 };
 
 // 마이페이지(개인) - 후원 송장 입력
-export const sendApply = async (id, data) => {
+export const sendApply = async (id, token, data) => {
+  console.log(id, data);
   return await axios({
     method: "PUT",
     url: "/8000/d.apply",
     headers: {
       memberId: id,
+      Authorization: token,
     },
     data: data,
   });
 };
 
 // 마이페이지(개인) - 후원 송장 수정
-export const updateApply = async (id, data) => {
+export const updateApply = async (id, token, data) => {
   return await axios({
     method: "PUT",
     url: "/8000/d.apply",
     headers: {
       memberId: id,
+      Authorization: token,
     },
     data: data,
   });
@@ -273,11 +276,14 @@ export const getDonationList = async (params) => {
 };
 
 // 마이페이지(기관) - 배송 현황 조회
-export const getDeliveryList = async (id, params) => {
+export const getDeliveryList = async (id, token, params) => {
   return await axios({
     method: "GET",
     url: `/8000/d.apply/tracking/${id}`,
     params: params,
+    headers: {
+      Authorization: token,
+    },
   });
 };
 
@@ -390,6 +396,18 @@ export const finishDonation = async (dId, mId, token) => {
     url: `/8000/donation/${dId}/${mId}`,
     headers: {
       Authorization: token,
+    },
+  });
+};
+
+// 봉사글 마감 (기관)
+export const finishVolunteer = async (volunteerId, token, memberId) => {
+  return await axios({
+    method: "DELETE",
+    url: `/8000/volunteer/end/${volunteerId}`,
+    headers: {
+      Authorization: token,
+      memberId: memberId,
     },
   });
 };
@@ -606,7 +624,7 @@ export const getMyTalentDonationList = async (params) => {
 export const emailCheck = async (email) => {
   return await axios({
     method: "POST",
-    url: "/8000/member/email-check",
+    url: "/8000/api/member/email-check",
     data: {
       email: email,
     },
@@ -617,7 +635,7 @@ export const emailCheck = async (email) => {
 export const emailAuth = async (email) => {
   return await axios({
     method: "POST",
-    url: "/8000/member/email-auth",
+    url: "/8000/api/member/email-auth",
     data: {
       email: email,
     },
@@ -628,7 +646,7 @@ export const emailAuth = async (email) => {
 export const phoneAuth = async (phone) => {
   return await axios({
     method: "POST",
-    url: "/8000/member/phone-auth",
+    url: "/8000/api/member/phone-auth",
     data: {
       number: phone,
     },
@@ -658,7 +676,7 @@ export const signupOrg = async (data, img) => {
   // newForm.append("profile",img)
 
   return await axios({
-    url: "/8000/member/org",
+    url: "/8000/api/member/org",
     method: "POST",
     headers: {
       "Content-Type": "multipart/form-data",
@@ -680,7 +698,7 @@ export const signupUser = async (data) => {
   // }
 
   return await axios({
-    url: "/8000/member/user",
+    url: "/8000/api/member/user",
     method: "POST",
     data: data,
   });
@@ -886,7 +904,7 @@ export const tokenCheck = async () => {
 };
 
 // 회원 수정
-export const userEdit = async (token, id, intro, file) => {
+export const userEdit = async (token, id, intro, file, params) => {
   const data = {
     info: intro,
   };
@@ -910,7 +928,7 @@ export const userEdit = async (token, id, intro, file) => {
       Authorization: token,
       memberId: id,
     },
-
+    params: params,
     data: newForm,
   });
 };
