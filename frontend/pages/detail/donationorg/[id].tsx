@@ -685,11 +685,7 @@ const DonationOrgDetail: FC = () => {
             </CustomButton>
           </Stack>
             {commentList &&
-<<<<<<< HEAD
               commentList.map((item, index) => <Comment key={index} comment={item} id={userId} token={token} />)}
-=======
-              commentList.map((item, j) => <Comment key={j} comment={item} id={userId} token={token} />)}
->>>>>>> d922fcc7d8e5dd7bdd3edd9f80f3398b0dfe252a
         </Container>
       </Box>
     </Box>
