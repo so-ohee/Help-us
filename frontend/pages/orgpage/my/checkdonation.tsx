@@ -18,7 +18,7 @@ import {
 import { tableCellClasses } from "@mui/material/TableCell";
 import { FC, useState, useEffect } from "react";
 import Pagination from "@/components/Pagination";
-import { getOrgDonationList } from "../../../function/axios";
+import { getOrgDonationList, getPostCompany } from "../../../function/axios";
 const mdTheme = createTheme();
 
 const CustomButton = styled(Button)({
@@ -63,209 +63,157 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   height: 62,
 }));
 
-const dummyData = [
-  {
-    donationApplyId: 1,
-    title: "엉키는 마음은 꿈에선 다 잊게 영원처럼 안아줘",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-  },
-  {
-    donationApplyId: 2,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-  },
-  {
-    donationApplyId: 3,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-  },
-  {
-    donationApplyId: 4,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-  },
-  {
-    donationApplyId: 5,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-  },
-  {
-    donationApplyId: 6,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-  },
-  {
-    donationApplyId: 7,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-  },
-  {
-    donationApplyId: 8,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-  },
-  {
-    donationApplyId: 9,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-  },
-  {
-    donationApplyId: 10,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-  },
-];
-
 const orgpageMyCheckDonation: FC = () => {
   const [donationList, setDonationList] = useState([]);
+
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const [wait, setWait] = useState<boolean>(false);
 
   const [curPage, setCurPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const paginate = (pageNumber) => setCurPage(pageNumber);
 
+  // 택배사 리스트 api
+  const [companyList, setCompanyList] = useState<any[]>([]);
+
+  useEffect(() => {
+    getPostCompany().then((res) => {
+      setCompanyList(res.data.Company);
+      setLoading(true);
+    });
+  }, []);
+
+  // console.log(companyList);
   const params = {
     page: curPage,
   };
+
   useEffect(() => {
     const id = localStorage.getItem("id");
     getOrgDonationList(id, params).then((res) => {
-      if (res.data.apply){
+      if (res.data.apply) {
         setDonationList(res.data.apply);
         setTotalPages(res.data.totalPage);
       }
     });
   }, [curPage]);
+
+  // 택배사 코드 -> 이름
+  const findCompanyName = (id) => {
+    var result = "";
+    if (loading) {
+      // console.log(companyList[0].Code.toString());
+      for (let i = 0; i < companyList.length; i++) {
+        if (companyList[i].Code.toString() == id.toString()) {
+          result = companyList[i].Name;
+          return result;
+        }
+      }
+    }
+  };
+
   return (
-    <Box sx={{ display: "flex" }}>
-      <CssBaseline />
-      <OrgMypageSidebar />
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          height: "100vh",
-          overflow: "auto",
-          mt: 0,
-        }}
-      >
-        <Container maxWidth="lg" sx={{}}>
-          <Typography variant="h4">물품 기부 현황</Typography>
-          <TableContainer component={Paper} sx={{ mt: 5 }}>
-            <Table sx={{ minWidth: 700 }} aria-label="customized table">
-              <TableHead>
-                <TableRow>
-                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                    기부 번호
-                  </StyledTableCell>
-                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                    글 번호
-                  </StyledTableCell>
-                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                    제목
-                  </StyledTableCell>
-                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                    물품 상세
-                  </StyledTableCell>
-                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                    발송인
-                  </StyledTableCell>
-                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                    송장번호
-                  </StyledTableCell>
-                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                    택배사
-                  </StyledTableCell>
-                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                    기부 신청일
-                  </StyledTableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {donationList.map((data) => (
-                  <StyledTableRow key={data.donationApplyId}>
-                    <StyledTableCell align="center">
-                      {data.donationApplyId}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {data.donationId}
-                    </StyledTableCell>
-                    <StyledTableCell align="center" sx={{ width: 400 }}>
-                      {data.title}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {data.productName}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {data.name}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {data.invoice}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {data.parcel}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {data.donationDate}
-                    </StyledTableCell>
-                  </StyledTableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          {donationList && donationList.length > 0 ? (
-            <Stack alignItems="center" sx={{ mb: 2, mt: 2 }}>
-            <Pagination
-              curPage={curPage}
-              paginate={paginate}
-              totalPage={totalPages}
-            />
-          </Stack>
-          ) : (
-            <Typography variant="h5" sx={{ mt: 10, display: 'flex', justifyContent: 'center'}}>진행 중인 기부가 없습니다.</Typography>
-          )}
-        </Container>
-      </Box>
-    </Box>
+    <>
+      {loading ? (
+        <Box sx={{ display: "flex" }}>
+          <CssBaseline />
+          <OrgMypageSidebar />
+          <Box
+            component="main"
+            sx={{
+              flexGrow: 1,
+              height: "100vh",
+              overflow: "auto",
+              mt: 0,
+            }}
+          >
+            <Container maxWidth="lg" sx={{}}>
+              <Typography variant="h4">물품 기부 현황</Typography>
+              <TableContainer component={Paper} sx={{ mt: 5 }}>
+                <Table sx={{ minWidth: 700 }} aria-label="customized table">
+                  <TableHead>
+                    <TableRow>
+                      <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                        기부 번호
+                      </StyledTableCell>
+                      <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                        글 번호
+                      </StyledTableCell>
+                      <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                        제목
+                      </StyledTableCell>
+                      <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                        물품 상세
+                      </StyledTableCell>
+                      <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                        발송인
+                      </StyledTableCell>
+                      <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                        송장번호
+                      </StyledTableCell>
+                      <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                        택배사
+                      </StyledTableCell>
+                      <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                        기부 신청일
+                      </StyledTableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {donationList.map((data) => (
+                      <StyledTableRow key={data.donationApplyId}>
+                        <StyledTableCell align="center">
+                          {data.donationApplyId}
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                          {data.donationId}
+                        </StyledTableCell>
+                        <StyledTableCell align="center" sx={{ width: 400 }}>
+                          {data.title}
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                          {data.productName}
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                          {data.name}
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                          {data.invoice}
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                          {/* {data.parcel} */}
+                          {findCompanyName(data.parcel)}
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                          {data.donationDate}
+                        </StyledTableCell>
+                      </StyledTableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+              {donationList && donationList.length > 0 ? (
+                <Stack alignItems="center" sx={{ mb: 2, mt: 2 }}>
+                  <Pagination
+                    curPage={curPage}
+                    paginate={paginate}
+                    totalPage={totalPages}
+                  />
+                </Stack>
+              ) : (
+                <Typography
+                  variant="h5"
+                  sx={{ mt: 10, display: "flex", justifyContent: "center" }}
+                >
+                  진행 중인 기부가 없습니다.
+                </Typography>
+              )}
+            </Container>
+          </Box>
+        </Box>
+      ) : null}
+    </>
   );
 };
 
