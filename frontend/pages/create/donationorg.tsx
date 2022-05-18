@@ -122,8 +122,8 @@ const DonationOrg: FC = (props) => {
     };
 
     try {
-      // console.log(image1);
-      // console.log(image1.image_file);
+      console.log(image1);
+      console.log(image1.image_file);
     } catch (err) {
       console.log("Error uploading file: ", err);
     }
