@@ -41,20 +41,10 @@ import Pagination from "../../../components/Pagination";
 
 import CustomCarousel from "@/components/Carousel";
 import DonationApply from "@/components/DonationApply";
-import ExpiryDate from "@/components/ExpiryDate";
 
 import { useRouter } from "next/router";
 // api
-<<<<<<< HEAD
 import { donationDetail, getUserInfo, donationOrgCommentList, donationOrgComment, finishDonation } from "function/axios";
-=======
-import {
-  donationDetail,
-  getUserInfo,
-  donationOrgCommentList,
-  donationOrgComment,
-} from "function/axios";
->>>>>>> c5730b2edf10efbd60af0be3a6a1a625ce7d9bb7
 
 const CustomButton = styled(Button)({
   backgroundColor: "#5B321E",
@@ -160,7 +150,7 @@ const DonationOrgDetail: FC = () => {
 
   const params2 = {
     page: curPage,
-  };
+  }
 
   const getStatus = (applyStatus) => {
     setApplyStatus(applyStatus);
@@ -196,14 +186,15 @@ const DonationOrgDetail: FC = () => {
   // 댓글
   useEffect(() => {
     if (router.isReady) {
-      donationOrgCommentList(router.query.id, params2).then((res) => {
-        setCommentList(res.data.comment);
-        // console.log(commentList)
-        setTotalPages(res.data.totalPage);
-        setLoading(true);
-      });
-    }
-  }, [curPage, router.isReady, commentList]);
+      donationOrgCommentList(router.query.id, params2)
+        .then((res) => {
+          setCommentList(res.data.comment);
+          // console.log(commentList)
+          setTotalPages(res.data.totalPage);
+          setLoading(true);
+        });
+    };
+  }, [curPage, router.isReady, commentList ]);
 
   const handleComment = () => {
     if (comment === "") {
@@ -213,42 +204,22 @@ const DonationOrgDetail: FC = () => {
     const params = {
       boardId: router.query.id,
       content: comment,
-      category: "donation",
-    };
+      category: "donation"
+    }
 
     donationOrgComment(userId, token, params)
       .then((res) => {
-        console.log(res + "성공");
+        console.log(res + "성공")
         setComment("");
       })
-      .catch((err) => console.log(err + "실패"));
-  };
-
-  const Unix_timestamp = (t) => {
-    var date = new Date(t);
-    date.setHours(date.getHours() + 9);
-    var year = date.getFullYear();
-    var month = "0" + (date.getMonth() + 1);
-    var day = "0" + date.getDate();
-    var hour = "0" + date.getHours();
-    var minute = "0" + date.getMinutes();
-    return (
-      year +
-      "-" +
-      month.substr(-2) +
-      "-" +
-      day.substr(-2) +
-      " " +
-      hour.substr(-2) +
-      ":" +
-      minute.substr(-2)
-    );
-  };
+      .catch((err) => console.log(err + "실패"))
+  } 
 
   // 마감하기
   const handleFinish = (e) => {
     e.preventDefault();
     const memberId = donationDetails.memberId
+
     finishDonation(donationId, memberId, token)
       .then((res) => console.log("성공" + res))
       .catch((err) => console.log("실패" + err))
@@ -295,12 +266,7 @@ const DonationOrgDetail: FC = () => {
             </Grid>
             <Grid>
               <Typography sx={{ mt: 0.5 }} variant="h6" fontWeight="bold">
-                <Link
-                  href={`/orgpage/${orgInfo?.memberId}`}
-                  style={{ cursor: "pointer" }}
-                >
-                  <a>{orgInfo ? orgInfo.name : null}</a>
-                </Link>
+                {orgInfo ? orgInfo.name : null}
               </Typography>
               <Grid
                 sx={{ mt: 2 }}
@@ -421,9 +387,7 @@ const DonationOrgDetail: FC = () => {
                 작성일
               </Typography>
               <Typography variant="h6" sx={{ mt: 3 }}>
-                {Unix_timestamp(
-                  donationDetails ? donationDetails.createDate : null
-                )}
+                {donationDetails ? donationDetails.createDate : null}
               </Typography>
             </Stack>
           </Stack>
@@ -481,8 +445,9 @@ const DonationOrgDetail: FC = () => {
                   남은 수량
                 </Typography>
               </Stack>
-                <ExpiryDate></ExpiryDate>
-
+              <CustomButton2 sx={{ height: "30px", ml: 5 }}>
+                유통기한 가이드
+              </CustomButton2>
             </Stack>
           </Stack>
           <TableContainer component={Paper} sx={{ mt: 5 }}>
@@ -685,8 +650,9 @@ const DonationOrgDetail: FC = () => {
                             role={role}
                           />
                         ) : (
-                          <>마감</>
+                            <>마감</>
                         )}
+                        
                       </StyledTableCell>
                     </StyledTableRow>
                   ))}
@@ -709,24 +675,17 @@ const DonationOrgDetail: FC = () => {
               value={comment}
               onChange={(e) => setComment(e.target.value)}
             />
-            <CustomButton
-              variant="contained"
-              size="small"
+            <CustomButton 
+              variant="contained" 
+              size="small" 
               sx={{ width: 30 }}
               onClick={handleComment}
-            >
+              >
               등록
             </CustomButton>
           </Stack>
-<<<<<<< HEAD
             {commentList &&
-              commentList.map((item, j) => <Comment key={j} comment={item} id={userId} token={token} />)}
-=======
-          {commentList &&
-            commentList.map((item) => (
-              <Comment comment={item} id={userId} token={token} />
-            ))}
->>>>>>> c5730b2edf10efbd60af0be3a6a1a625ce7d9bb7
+              commentList.map((item, index) => <Comment key={index} comment={item} id={userId} token={token} />)}
         </Container>
       </Box>
     </Box>

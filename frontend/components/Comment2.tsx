@@ -95,8 +95,6 @@ const Comment2: FC<CommentData> = ({ comment, id, token }) => {
         .catch((err) => console.log("실패" + err))
   }
 
-<<<<<<< HEAD
-=======
   const Unix_timestamp = (t) => {
     var date = new Date(t);
     date.setHours(date.getHours() + 9);
@@ -118,7 +116,6 @@ const Comment2: FC<CommentData> = ({ comment, id, token }) => {
     );
   };
 
->>>>>>> c5730b2edf10efbd60af0be3a6a1a625ce7d9bb7
   useEffect(() => {
     const Id = localStorage.getItem("id");
     setUserId(Id)
