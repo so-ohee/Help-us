@@ -127,18 +127,18 @@ const OrgPage: FC = () => {
     if (router.isReady) {
       // console.log(router.query.pk)
       getUserInfo(router.query.pk)
-      .then(res => {
-        // console.log(res)
-        setMyInfo(res.data)
-        if (res.data.role === 'ORG_WAIT' || res.data.role === 'ORG'){
-          // console.log('--')
-        }else{
-          // console.log('no')
-          location.href="/"
-        }
-      })
-      .catch(() => location.href="/")
-      }
+        .then((res) => {
+          // console.log(res)
+          setMyInfo(res.data);
+          if (res.data.role === "ORG_WAIT" || res.data.role === "ORG") {
+            // console.log('--')
+          } else {
+            // console.log('no')
+            location.href = "/";
+          }
+        })
+        .catch(() => (location.href = "/"));
+    }
   }, [router.isReady]);
 
   return (
@@ -173,14 +173,7 @@ const OrgPage: FC = () => {
                   // height: "300px",
                 }}
               >
-                {/* <Image
-                  src={TestImage}
-                  alt="orgImage"
-                  width="300px"
-                  height="300px"
-                /> */}
-                {myInfo !== null ? 
-                (
+                {myInfo !== null ? (
                   myInfo.profile === null ? (
                     <Image
                       src={defaultImage}
@@ -196,119 +189,55 @@ const OrgPage: FC = () => {
                       height="300px"
                     />
                   )
-                ) : null
-              }
+                ) : null}
               </div>
             </Grid>
-
-            { myInfo ? 
-            (
+            {myInfo ? (
               <>
                 <Grid item xs={9}>
-              <Typography sx={{ mt: 0 }} variant="h4" fontWeight="bold">
-                {myInfo.name}
-              </Typography>
-              <Grid
-                sx={{ mt: 2 }}
-                container
-                direction="row"
-                alignItems="center"
-              >
-                <BusinessIcon sx={{ mr: 2 }} />
-                <Typography align="center">
-                  {myInfo.address}
-                </Typography>
-              </Grid>
-              <Grid
-                sx={{ mt: 2 }}
-                container
-                direction="row"
-                alignItems="center"
-              >
-                <CallIcon sx={{ mr: 2 }} />
-                <Typography align="center">{myInfo.tel}</Typography>
-              </Grid>
-              <Grid
-                sx={{ mt: 2 }}
-                container
-                direction="row"
-                alignItems="center"
-              >
-                <MailIcon sx={{ mr: 2 }} />
-                <Typography align="center">{myInfo.email}</Typography>
-              </Grid>
-              <Box
-                sx={{
-                  bgcolor: "#f5e1be",
-                  borderRadius: 1.25,
-                  // height: "120px",
-                }}
-                minHeight="120px"
-              >
-                <Typography sx={{ p: 2, mt: 1 }}>
-                  {myInfo.info}
-                </Typography>
-              </Box>
-            </Grid>
-              
-              
-
-              
+                  <Typography sx={{ mt: 0 }} variant="h4" fontWeight="bold">
+                    {myInfo.name}
+                  </Typography>
+                  <Grid
+                    sx={{ mt: 2 }}
+                    container
+                    direction="row"
+                    alignItems="center"
+                  >
+                    <BusinessIcon sx={{ mr: 2 }} />
+                    <Typography align="center">{myInfo.address}</Typography>
+                  </Grid>
+                  <Grid
+                    sx={{ mt: 2 }}
+                    container
+                    direction="row"
+                    alignItems="center"
+                  >
+                    <CallIcon sx={{ mr: 2 }} />
+                    <Typography align="center">{myInfo.tel}</Typography>
+                  </Grid>
+                  <Grid
+                    sx={{ mt: 2 }}
+                    container
+                    direction="row"
+                    alignItems="center"
+                  >
+                    <MailIcon sx={{ mr: 2 }} />
+                    <Typography align="center">{myInfo.email}</Typography>
+                  </Grid>
+                  <Box
+                    sx={{
+                      bgcolor: "#f5e1be",
+                      borderRadius: 1.25,
+                      // height: "120px",
+                    }}
+                    minHeight="120px"
+                  >
+                    <Typography sx={{ p: 2, mt: 1 }}>{myInfo.info}</Typography>
+                  </Box>
+                </Grid>
               </>
-
-            ) : null
-            }
-            {/* <Grid item xs={9}>
-              <Typography sx={{ mt: 0 }} variant="h4" fontWeight="bold">
-                {/* {myInfo.address}
-              </Typography>
-              <Grid
-                sx={{ mt: 2 }}
-                container
-                direction="row"
-                alignItems="center"
-              >
-                <BusinessIcon sx={{ mr: 2 }} />
-                <Typography align="center">
-                  경기도 수원시 팔달구 중부대로 222번길 22 2-22
-                </Typography>
-              </Grid>
-              <Grid
-                sx={{ mt: 2 }}
-                container
-                direction="row"
-                alignItems="center"
-              >
-                <CallIcon sx={{ mr: 2 }} />
-                <Typography align="center">010-7777-7777</Typography>
-              </Grid>
-              <Grid
-                sx={{ mt: 2 }}
-                container
-                direction="row"
-                alignItems="center"
-              >
-                <MailIcon sx={{ mr: 2 }} />
-                <Typography align="center">test@gmail.com</Typography>
-              </Grid>
-              <Box
-                sx={{
-                  bgcolor: "#f5e1be",
-                  borderRadius: 1.25,
-                  // height: "120px",
-                }}
-                minHeight="120px"
-              >
-                <Typography sx={{ p: 2, mt: 1 }}>
-                  아무래도 다시 돌아갈 순 없어 아무런 표정도 없이 이런 말하는
-                  그런 내가 잔인한가요 제발 내 마음 설레이게 자꾸만 바라보게
-                  하지 말아요 아무 일 없던 것처럼 그냥 스쳐지나갈 미련인 걸
-                  알아요 아무리 사랑한다 말했어도 다시 돌아올 수 없는 그 때 그
-                  맘이 부른다고 다시 오나요 아무래도 다시 돌아갈 순 없어 아무런
-                  표정도 없이 이런 말하는 그런 내가 잔인한가요
-                </Typography>
-              </Box>
-            </Grid> */}
+            ) : null}
           </Grid>
           <Box sx={{ width: "100%", mt: 2 }}>
             <Box sx={{ bgcolor: "#FCF8F0", borderRadius: 1.25 }}>
@@ -333,145 +262,9 @@ const OrgPage: FC = () => {
                   {...a11yProps(2)}
                 />
               </StyledTabs>
-              {/* <Box sx={{ p: 3 }} /> */}
-              {/* <TabPanel value={value} index={0}>
-                <div>
-                  <Box
-                    sx={{
-                      display: "grid",
-                      gridTemplateColumns: "repeat(auto-fill, 500px)",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      marginTop: 5,
-                      rowGap: 5,
-                      columnGap: 10,
-                    }}
-                  >
-                    <DonationCardOrg />
-                    <DonationCardOrg />
-                  </Box>
-                  <Box
-                    sx={{
-                      display: "grid",
-                      gridTemplateColumns: "repeat(auto-fill, 500px)",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      marginTop: 5,
-                      rowGap: 5,
-                      columnGap: 10,
-                    }}
-                  >
-                    <DonationCardOrg />
-                    <DonationCardOrg />
-                  </Box>
-                  <Box
-                    sx={{
-                      display: "grid",
-                      gridTemplateColumns: "repeat(auto-fill, 500px)",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      marginTop: 5,
-                      rowGap: 5,
-                      columnGap: 10,
-                    }}
-                  >
-                    <DonationCardOrg />
-                    <DonationCardOrg />
-                  </Box>
-                </div>
-              </TabPanel>
-              <TabPanel value={value} index={1}>
-                <div>
-                  <Box
-                    sx={{
-                      display: "grid",
-                      gridTemplateColumns: "repeat(auto-fill, 500px)",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      marginTop: 5,
-                      rowGap: 5,
-                      columnGap: 10,
-                    }}
-                  >
-                    <DonationCardOrgFinish />
-                    <DonationCardOrgFinish />
-                  </Box>
-                  <Box
-                    sx={{
-                      display: "grid",
-                      gridTemplateColumns: "repeat(auto-fill, 500px)",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      marginTop: 5,
-                      rowGap: 5,
-                      columnGap: 10,
-                    }}
-                  >
-                    <DonationCardOrgFinish />
-                    <DonationCardOrgFinish />
-                  </Box>
-                  <Box
-                    sx={{
-                      display: "grid",
-                      gridTemplateColumns: "repeat(auto-fill, 500px)",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      marginTop: 5,
-                      rowGap: 5,
-                      columnGap: 10,
-                    }}
-                  >
-                    <DonationCardOrgFinish />
-                    <DonationCardOrgFinish />
-                  </Box>
-                </div>
-              </TabPanel>
-              <TabPanel value={value} index={2}>
-                <div>
-                  <Box
-                    sx={{
-                      display: "grid",
-                      gridTemplateColumns: "repeat(auto-fill, 500px)",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      marginTop: 5,
-                      rowGap: 5,
-                      columnGap: 10,
-                    }}
-                  >
-                    <ReviewCard />
-                    <ReviewCard />
-                  </Box>
-                  <Box
-                    sx={{
-                      display: "grid",
-                      gridTemplateColumns: "repeat(auto-fill, 500px)",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      marginTop: 5,
-                      rowGap: 5,
-                      columnGap: 10,
-                    }}
-                  >
-                    <ReviewCard />
-                    <ReviewCard />
-                  </Box>
-                  <Box
-                    sx={{
-                      display: "grid",
-                      gridTemplateColumns: "repeat(auto-fill, 500px)",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      marginTop: 5,
-                      rowGap: 5,
-                      columnGap: 10,
-                    }}
-                  >
-                    <ReviewCard />
-                    <ReviewCard />
-                  </Box>
-                </div>
-              </TabPanel> */}
+              <TabPanel value={value} index={0}></TabPanel>
+              <TabPanel value={value} index={1}></TabPanel>
+              <TabPanel value={value} index={2}></TabPanel>
             </Box>
           </Box>
         </Container>

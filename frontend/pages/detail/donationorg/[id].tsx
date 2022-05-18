@@ -279,7 +279,7 @@ const DonationOrgDetail: FC = () => {
                   href={`/orgpage/${orgInfo?.memberId}`}
                   style={{ cursor: "pointer" }}
                 >
-                  {orgInfo ? orgInfo.name : null}
+                  <a>{orgInfo ? orgInfo.name : null}</a>
                 </Link>
               </Typography>
               <Grid
