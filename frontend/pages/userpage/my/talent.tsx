@@ -14,7 +14,7 @@ import {
   Paper,
   Table,
   Button,
-  Link
+  Link,
 } from "@mui/material";
 import { tableCellClasses } from "@mui/material/TableCell";
 import { FC, useState, useEffect } from "react";
@@ -63,34 +63,10 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   height: 50,
 }));
 
-const IsFact = ({ fact }) => {
-  // const fact = props.fact;
-
-  if (fact === null) {
-    return (
-      <>
-        <CustomButton sx={{ width: 40, height: 30, mr: 2 }}>참석</CustomButton>
-        <CustomButton2 sx={{ width: 40, height: 30 }}>불참</CustomButton2>
-      </>
-    );
-  } else if (fact === true) {
-    return (
-      <>
-        <Typography>참석</Typography>
-      </>
-    );
-  } else if (fact === false) {
-    return (
-      <>
-        <Typography>불참</Typography>
-      </>
-    );
-  }
-};
-
 const UserMypageTalent: FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [myTalentDonationList, setMyTalentDonationList] = useState<any>(null);
+
   // pagination
   const [curPage, setCurPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
@@ -144,34 +120,44 @@ const UserMypageTalent: FC = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {myTalentDonationList && myTalentDonationList.map((data) => (
-                  <StyledTableRow key={data.volunteerId}>
-                    <StyledTableCell align="center">
-                      {data.volunteerId}
-                    </StyledTableCell>
-                    <StyledTableCell align="center" sx={{ width: 400 }}>
-                      <Link href={`/detail/talent/${data.volunteerId}`} underline="none" color="inherit">
-                        {data.title}
-                      </Link>
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {data.createDate}
-                    </StyledTableCell>
-                  </StyledTableRow>
-                ))}
+                {myTalentDonationList &&
+                  myTalentDonationList.map((data) => (
+                    <StyledTableRow key={data.volunteerId}>
+                      <StyledTableCell align="center">
+                        {data.volunteerId}
+                      </StyledTableCell>
+                      <StyledTableCell align="center" sx={{ width: 400 }}>
+                        <Link
+                          href={`/detail/talent/${data.volunteerId}`}
+                          underline="none"
+                          color="inherit"
+                        >
+                          {data.title}
+                        </Link>
+                      </StyledTableCell>
+                      <StyledTableCell align="center">
+                        {data.createDate}
+                      </StyledTableCell>
+                    </StyledTableRow>
+                  ))}
               </TableBody>
             </Table>
           </TableContainer>
           {myTalentDonationList && myTalentDonationList.length > 0 ? (
             <Stack alignItems="center" sx={{ mb: 2, mt: 2 }}>
-            <Pagination
-              curPage={curPage}
-              paginate={paginate}
-              totalPage={totalPages}
-            />
-          </Stack>
+              <Pagination
+                curPage={curPage}
+                paginate={paginate}
+                totalPage={totalPages}
+              />
+            </Stack>
           ) : (
-            <Typography variant="h5" sx={{ mt: 10, display: 'flex', justifyContent: 'center'}}>재능기부 글이 없습니다.</Typography>
+            <Typography
+              variant="h5"
+              sx={{ mt: 10, display: "flex", justifyContent: "center" }}
+            >
+              재능기부 글이 없습니다.
+            </Typography>
           )}
         </Container>
       </Box>
