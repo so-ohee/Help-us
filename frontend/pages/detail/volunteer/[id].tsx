@@ -541,7 +541,7 @@ const VolunteerDetail: FC = () => {
                       등록
                     </CustomButton>
                   </Stack>
-                  {commentList &&
+                  {/* {commentList &&
                     commentList.map((item, i) => (
                       <Comment
                         comment={item}
@@ -551,7 +551,7 @@ const VolunteerDetail: FC = () => {
                         deleteStatus={deleteStatus}
                         key={i}
                       />
-                    ))}
+                    ))} */}
                 </Box>
               ) : (
                 <></>
