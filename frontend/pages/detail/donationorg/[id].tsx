@@ -41,6 +41,7 @@ import Pagination from "../../../components/Pagination";
 
 import CustomCarousel from "@/components/Carousel";
 import DonationApply from "@/components/DonationApply";
+import ExpiryDate from "@/components/ExpiryDate";
 
 import { useRouter } from "next/router";
 // api
@@ -449,9 +450,8 @@ const DonationOrgDetail: FC = () => {
                   남은 수량
                 </Typography>
               </Stack>
-              <CustomButton2 sx={{ height: "30px", ml: 5 }}>
-                유통기한 가이드
-              </CustomButton2>
+                <ExpiryDate></ExpiryDate>
+
             </Stack>
           </Stack>
           <TableContainer component={Paper} sx={{ mt: 5 }}>
