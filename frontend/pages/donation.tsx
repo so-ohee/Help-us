@@ -193,6 +193,16 @@ const Donation: FC = () => {
       setTotalPages2(res.data.totalPage);
     });
   }, [option]);
+
+  // 봉사탭으로 보내기
+  useEffect(() => {
+    if (router.isReady){
+      if(router.query.value){
+        setValue(Number(router.query.value))
+      }
+    }
+  },[router.isReady])
+  
   return (
     <>
       <Container maxWidth="lg">

@@ -240,7 +240,7 @@ const Home: FC = () => {
               봉사
             </Typography>
 
-            <Link href={"/donation"}>
+            <Link href={"/donation?value=1"}>
               <Button>
                 <ArrowCircleRightOutlinedIcon fontSize="large" />
               </Button>
