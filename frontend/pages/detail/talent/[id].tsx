@@ -142,8 +142,7 @@ const TalentDetail: FC = () => {
   //const imageList = [testImage, testImage, testImage, testImage, testImage];
   const router = useRouter();
 
-  const [loading, setLoadging] = useState<boolean>(false);
-  const [loading2, setLoading2] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   // console.log("라우터 쿼리는", router.query.id);
   const [talentDonationDetail, setTalentDonationDetail] = useState<any>("");
@@ -160,12 +159,7 @@ const TalentDetail: FC = () => {
     if (router.isReady) {
       getTalentDonationDetail(router.query.id).then((res) => {
         setTalentDonationDetail(res.data.volunteer);
-        setLoading2(true);
-      });
-      getUserInfo(localStorage.getItem("id")).then((res) => {
-        console.log(res.data.profile === null);
-        setUserInfo(res.data);
-        setLoadging(true);
+        setLoading(true);
       });
     }
   }, [router.isReady]);
@@ -184,7 +178,7 @@ const TalentDetail: FC = () => {
       talentCommentList(router.query.id, params).then((res) => {
         setCommentList(res.data.comment);
         setTotalPages(res.data.totalPage);
-        setLoadging(true);
+        setLoading(true);
       });
     }
   }, [curPage, router.isReady, commentList, curPage]);
@@ -242,7 +236,7 @@ const TalentDetail: FC = () => {
 
   return (
     <>
-      {loading && loading2 ? (
+      {loading ? (
         <Box sx={{ display: "flex" }}>
           <CssBaseline />
           <Box
@@ -273,7 +267,7 @@ const TalentDetail: FC = () => {
                       marginTop: "6px",
                     }}
                   >
-                    {userInfo.profile === null ? (
+                    {talentDonationDetail.profile === null ? (
                       <Image
                         src={defaultImage}
                         alt="orgImage"
@@ -282,7 +276,7 @@ const TalentDetail: FC = () => {
                       />
                     ) : (
                       <Image
-                        src={userInfo.profile}
+                        src={talentDonationDetail.profile}
                         // src={defaultImage}
                         alt="orgImage"
                         width="150px"
@@ -293,7 +287,7 @@ const TalentDetail: FC = () => {
                 </Grid>
                 <Grid>
                   <Typography sx={{ mt: 2.5 }} variant="h6" fontWeight="bold">
-                    {userInfo.name}
+                    {talentDonationDetail.name}
                   </Typography>
                   <Grid
                     sx={{ mt: 2 }}
@@ -302,7 +296,7 @@ const TalentDetail: FC = () => {
                     alignItems="center"
                   >
                     <MailIcon sx={{ mr: 1 }} />
-                    <Typography align="center">{userInfo.email}</Typography>
+                    <Typography align="center">{talentDonationDetail.userEmail}</Typography>
                   </Grid>
                 </Grid>
               </Grid>

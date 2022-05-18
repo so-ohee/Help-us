@@ -99,6 +99,26 @@ const Comment2: FC<CommentData> = ({ comment, id, token }) => {
       }
   }
 
+  const Unix_timestamp = (t) => {
+    var date = new Date(t);
+    date.setHours(date.getHours() + 9);
+    var year = date.getFullYear();
+    var month = "0" + (date.getMonth() + 1);
+    var day = "0" + date.getDate();
+    var hour = "0" + date.getHours();
+    var minute = "0" + date.getMinutes();
+    return (
+      year +
+      "-" +
+      month.substr(-2) +
+      "-" +
+      day.substr(-2) +
+      " " +
+      hour.substr(-2) +
+      ":" +
+      minute.substr(-2)
+    );
+  };
 
   useEffect(() => {
     const Id = localStorage.getItem("id");
@@ -140,7 +160,7 @@ const Comment2: FC<CommentData> = ({ comment, id, token }) => {
                 </Button>
                 {comment ? (
                   <Typography>
-                      {comment.createDate}
+                      {Unix_timestamp(comment.createDate)}
                   </Typography>
                 ) : (null)}
                 {/* id랑  memberId랑 같으면 삭제 버튼 활성화*/}
@@ -196,7 +216,7 @@ const Comment2: FC<CommentData> = ({ comment, id, token }) => {
                   답글쓰기
                 </Button>
                 {comment ? (
-                  <Typography>{comment.createDate}</Typography>
+                  <Typography>{Unix_timestamp(comment.createDate)}</Typography>
                 ) : (null)}
                 
                   <Button

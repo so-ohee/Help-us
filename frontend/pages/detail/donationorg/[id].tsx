@@ -209,6 +209,27 @@ const DonationOrgDetail: FC = () => {
       .catch((err) => console.log(err + "실패"))
   } 
 
+  const Unix_timestamp = (t) => {
+    var date = new Date(t);
+    date.setHours(date.getHours() + 9);
+    var year = date.getFullYear();
+    var month = "0" + (date.getMonth() + 1);
+    var day = "0" + date.getDate();
+    var hour = "0" + date.getHours();
+    var minute = "0" + date.getMinutes();
+    return (
+      year +
+      "-" +
+      month.substr(-2) +
+      "-" +
+      day.substr(-2) +
+      " " +
+      hour.substr(-2) +
+      ":" +
+      minute.substr(-2)
+    );
+  };
+
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -359,7 +380,7 @@ const DonationOrgDetail: FC = () => {
                 작성일
               </Typography>
               <Typography variant="h6" sx={{ mt: 3 }}>
-                {donationDetails ? donationDetails.createDate : null}
+                {Unix_timestamp(donationDetails ? donationDetails.createDate : null)}
               </Typography>
             </Stack>
           </Stack>
