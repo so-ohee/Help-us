@@ -549,10 +549,11 @@ export const getVolunteerMain = async (params) => {
 };
 
 // 기관 마이페이지 - 봉사 글 조회
-export const getVolunteerOrg = async (memberId) => {
+export const getVolunteerOrg = async (memberId, params) => {
   return await axios({
     method: "GET",
     url: `/8000/api/volunteer/mylist/${memberId}`,
+    params: params,
   });
 };
 
