@@ -39,4 +39,7 @@ public class ListTalentDonationResDto {
     @ApiModelProperty(value = "기관명")
     private String name;
 
+    @ApiModelProperty(value = "게시글 번호")
+    private int no;
+
 }
