@@ -157,6 +157,7 @@ const Navbar: FC<LoginProps> = ({ value }) => {
                         color="#CDAD78"
                         fontWeight="bold"
                         variant="h5"
+                        style={{ cursor: "pointer" }}
                       >
                         관리자 페이지
                       </Link>
@@ -165,6 +166,7 @@ const Navbar: FC<LoginProps> = ({ value }) => {
                         onClick={() => router.push("/admin")}
                         underline="none"
                         color="inherit"
+                        style={{ cursor: "pointer" }}
                       >
                         관리자 페이지
                       </Link>
@@ -243,6 +245,7 @@ const Navbar: FC<LoginProps> = ({ value }) => {
                       color="#CDAD78"
                       fontWeight="bold"
                       variant="h5"
+                      style={{ cursor: "pointer" }}
                     >
                       로그인
                     </Link>
@@ -251,6 +254,7 @@ const Navbar: FC<LoginProps> = ({ value }) => {
                       onClick={() => router.push("/login")}
                       underline="none"
                       color="inherit"
+                      style={{ cursor: "pointer" }}
                     >
                       로그인
                     </Link>
@@ -267,6 +271,7 @@ const Navbar: FC<LoginProps> = ({ value }) => {
                       color="#CDAD78"
                       fontWeight="bold"
                       variant="h5"
+                      style={{ cursor: "pointer" }}
                     >
                       회원가입
                     </Link>
@@ -275,6 +280,7 @@ const Navbar: FC<LoginProps> = ({ value }) => {
                       onClick={() => router.push("/signup")}
                       underline="none"
                       color="inherit"
+                      style={{ cursor: "pointer" }}
                     >
                       회원가입
                     </Link>
