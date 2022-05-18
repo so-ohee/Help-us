@@ -195,7 +195,7 @@ const DonationOrgDetail: FC = () => {
     if (router.isReady) {
       donationOrgCommentList(router.query.id, params2).then((res) => {
         setCommentList(res.data.comment);
-        // console.log(commentList)
+        // console.log(res);
         setTotalPages(res.data.totalPage);
         setLoading(true);
       });
@@ -688,7 +688,7 @@ const DonationOrgDetail: FC = () => {
             </CustomButton>
           </Stack>
           ): (
-            <></>
+            <Box sx={{ height: 30 }}></Box>
           )}
           
           {commentList &&
@@ -696,7 +696,7 @@ const DonationOrgDetail: FC = () => {
               <Comment key={index} comment={item} id={userId} token={token} />
             ))}
           {commentList && commentList.length > 0 ? (
-                <Box sx={{ display: "flex", justifyContent: "center", my: 5 }}>
+                <Box sx={{ display: "flex", justifyContent: "center", my: 5, pb:5 }}>
                 <Pagination
                   paginate={paginate}
                   curPage={curPage}

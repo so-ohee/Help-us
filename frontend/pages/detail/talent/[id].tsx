@@ -399,7 +399,7 @@ const TalentDetail: FC = () => {
                 </CustomButton>
               </Stack>
                 ): (
-                  <></>
+                  <Box sx={{ height: 30 }}></Box>
                 )}
               <Stack>
                 {commentList &&
@@ -408,7 +408,7 @@ const TalentDetail: FC = () => {
                   ))}
               </Stack>
               {commentList && commentList.length > 0 ? (
-              <Box sx={{ display: "flex", justifyContent: "center", my: 5 }}>
+              <Box sx={{ display: "flex", justifyContent: "center", my: 5, pb:5 }}>
                 <Pagination
                   paginate={paginate}
                   curPage={curPage}
