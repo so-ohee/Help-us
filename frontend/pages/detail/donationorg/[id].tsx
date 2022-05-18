@@ -451,7 +451,7 @@ const DonationOrgDetail: FC = () => {
                   남은 수량
                 </Typography>
               </Stack>
-                  <ExpiryDate></ExpiryDate>
+              <ExpiryDate></ExpiryDate>
             </Stack>
           </Stack>
           <TableContainer component={Paper} sx={{ mt: 5 }}>
@@ -667,45 +667,45 @@ const DonationOrgDetail: FC = () => {
           </Typography>
           {role === "USER" || role === "ORG" || role === "ADMIN" ? (
             <Stack
-            justifyContent="space-between"
-            direction="row"
-            sx={{ mt: 1.5, mb: 3, mx: 5 }}
-            alignItems="center"
-          >
-            <CssTextField
-              sx={{ backgroundColor: "#ffffff", width: 1000 }}
-              size="small"
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
-            />
-            <CustomButton
-              variant="contained"
-              size="small"
-              sx={{ width: 30 }}
-              onClick={handleComment}
+              justifyContent="space-between"
+              direction="row"
+              sx={{ mt: 1.5, mb: 3, mx: 5 }}
+              alignItems="center"
             >
-              등록
-            </CustomButton>
-          </Stack>
-          ): (
+              <CssTextField
+                sx={{ backgroundColor: "#ffffff", width: 1000 }}
+                size="small"
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+              />
+              <CustomButton
+                variant="contained"
+                size="small"
+                sx={{ width: 30 }}
+                onClick={handleComment}
+              >
+                등록
+              </CustomButton>
+            </Stack>
+          ) : (
             <></>
           )}
-          
+
           {commentList &&
             commentList.map((item, index) => (
               <Comment key={index} comment={item} id={userId} token={token} />
             ))}
           {commentList && commentList.length > 0 ? (
-                <Box sx={{ display: "flex", justifyContent: "center", my: 5 }}>
-                <Pagination
-                  paginate={paginate}
-                  curPage={curPage}
-                  totalPage={totalPages}
-                />
-              </Box>
-              ): (
-                <></>
-              )}
+            <Box
+              sx={{ display: "flex", justifyContent: "center", my: 5, pb: 5 }}
+            >
+              <Pagination
+                paginate={paginate}
+                curPage={curPage}
+                totalPage={totalPages}
+              />
+            </Box>
+          ) : null}
         </Container>
       </Box>
     </Box>
