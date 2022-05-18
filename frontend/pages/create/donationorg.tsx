@@ -124,8 +124,8 @@ const DonationOrg: FC = (props) => {
     };
 
     try {
-      console.log(image1);
-      console.log(image1.image_file);
+      // console.log(image1);
+      // console.log(image1.image_file);
     } catch (err) {
       console.log("Error uploading file: ", err);
     }
@@ -151,8 +151,8 @@ const DonationOrg: FC = (props) => {
     };
 
     try {
-      console.log(image2);
-      console.log(image2.image_file);
+      // console.log(image2);
+      // console.log(image2.image_file);
     } catch (err) {
       console.log("Error uploading file: ", err);
     }
@@ -178,8 +178,8 @@ const DonationOrg: FC = (props) => {
     };
 
     try {
-      console.log(image3);
-      console.log(image3.image_file);
+      // console.log(image3);
+      // console.log(image3.image_file);
     } catch (err) {
       console.log("Error uploading file: ", err);
     }
@@ -205,8 +205,8 @@ const DonationOrg: FC = (props) => {
     };
 
     try {
-      console.log(image4);
-      console.log(image4.image_file);
+      // console.log(image4);
+      // console.log(image4.image_file);
     } catch (err) {
       console.log("Error uploading file: ", err);
     }
@@ -232,8 +232,8 @@ const DonationOrg: FC = (props) => {
     };
 
     try {
-      console.log(image5);
-      console.log(image5.image_file);
+      // console.log(image5);
+      // console.log(image5.image_file);
     } catch (err) {
       console.log("Error uploading file: ", err);
     }
@@ -242,8 +242,6 @@ const DonationOrg: FC = (props) => {
   useEffect(() => {
     setIsSSR(true);
   }, []);
-
-
 
   // 물품 기부 등록
   const handleSubmit = (e) => {
@@ -313,10 +311,9 @@ const DonationOrg: FC = (props) => {
       return;
     }
 
-
     createDonation(id, token, donation, imageList)
       .then((res) => {
-        console.log(res + "성공");
+        // console.log(res + "성공");
         Router.push("/donation");
       })
       .catch((err) => console.log(err + "실패"));

@@ -535,6 +535,7 @@ const DonationOrgDetail: FC = () => {
                         <Stack
                           sx={{
                             width: 300,
+                            mx: "auto",
                           }}
                           direction="row"
                           alignItems="center"

@@ -10,9 +10,9 @@ import {
   CssBaseline,
   IconButton,
   Stack,
-  TextField
+  TextField,
 } from "@mui/material";
-import Modal from '@mui/material/Modal';
+import Modal from "@mui/material/Modal";
 
 import UserMypageSidebar from "@/components/UserMypageSidebar";
 import Link from "next/link";
@@ -65,29 +65,27 @@ const UpdateButton2 = styled(Button)({
   // width: "50px",
 });
 
-
 // 모달
 const OutlinedButton = styled(Button)({
   border: "1px solid #5B321E",
-  color: "#5B321E"
-})
+  color: "#5B321E",
+});
 
 const style = {
-  position: 'absolute' as 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
+  position: "absolute" as "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
   width: 500,
-  bgcolor: 'background.paper',
+  bgcolor: "background.paper",
   // border: '1px solid #000',
-  borderRadius:'2%',
+  borderRadius: "2%",
   boxShadow: 24,
   padding: 1,
   paddingLeft: 3,
   paddingRight: 3,
 };
 // 모달 끝
-
 
 const UserMypage: FC = () => {
   const router = useRouter();
@@ -96,8 +94,8 @@ const UserMypage: FC = () => {
 
   const [myInfo, setMyInfo] = useState<any>(null);
   const params = {
-    isDefault : null
-  }
+    isDefault: null,
+  };
   useEffect(() => {
     const token = localStorage.getItem("id");
     getUserInfo(token).then((res) => {
@@ -106,59 +104,63 @@ const UserMypage: FC = () => {
     });
   }, []);
 
-
   // 모달
-  const imageUpload = useRef(null)
+  const imageUpload = useRef(null);
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
-    setIntro(myInfo.info)
-    setProfile('')
-    setProfileName('')
-    setOpen(true)
-  }
+    setIntro(myInfo.info);
+    setProfile("");
+    setProfileName("");
+    setOpen(true);
+  };
   const handleClose = () => {
-      setOpen(false)
-  }
-  const [intro, setIntro] = useState('')
-  const [profileName, setProfileName] = useState('')
-  const [profile, setProfile] = useState('')
+    setOpen(false);
+  };
+  const [intro, setIntro] = useState("");
+  const [profileName, setProfileName] = useState("");
+  const [profile, setProfile] = useState("");
 
   // 파일 선택시
   const onImageChange = (e) => {
-    if (e.target.files.length > 0){
-        setProfileName(e.target.files[0].name)
-        setProfile(e.target.files[0])
-      }
+    if (e.target.files.length > 0) {
+      setProfileName(e.target.files[0].name);
+      setProfile(e.target.files[0]);
     }
+  };
 
   // 업로드 버튼 클릭시
   const clickImageUpload = () => {
     console.log(params);
     console.log(profile);
-      params.isDefault = null;
-      imageUpload.current.click()
-  }
+    params.isDefault = null;
+    imageUpload.current.click();
+  };
   const clickDefault = () => {
     console.log(params);
     console.log(profile);
     params.isDefault = "true";
-    setProfile('');
-    setProfileName('');
-  }
+    setProfile("");
+    setProfileName("");
+  };
   // 수정 버튼 클릭시
   const clickEdit = () => {
     console.log(params);
     console.log(profile);
-    userEdit(localStorage.getItem('jwt'), myInfo.memberId, intro, profile, params)
-    .then(res => {
-      handleClose()
-      location.reload()
-    })
-    .catch(err => console.log(err))
-  }
+    userEdit(
+      localStorage.getItem("jwt"),
+      myInfo.memberId,
+      intro,
+      profile,
+      params
+    )
+      .then((res) => {
+        handleClose();
+        location.reload();
+      })
+      .catch((err) => console.log(err));
+  };
 
   // 모달 끝
-
 
   return (
     <>
@@ -187,10 +189,10 @@ const UserMypage: FC = () => {
               }}
             >
               <Grid container spacing={2} minHeight="350px">
-                <Grid item xs={3} >
+                <Grid item xs={3}>
                   <div
                     style={{
-                      borderRadius: "20%",
+                      // borderRadius: "20%",
                       overflow: "hidden",
                       marginTop: "6px",
                     }}
@@ -248,30 +250,38 @@ const UserMypage: FC = () => {
                     <Typography sx={{ p: 2, mt: 1 }}>{myInfo.info}</Typography>
                   </Box>
                 </Grid>
-                <Grid item xs={1} >
-                  <UpdateButton onClick={handleOpen} variant="contained" sx={{ mb: 15 }}>
+                <Grid item xs={1}>
+                  <UpdateButton
+                    onClick={handleOpen}
+                    variant="contained"
+                    sx={{ mb: 15 }}
+                  >
                     수정
                   </UpdateButton>
                 </Grid>
               </Grid>
             </Container>
           </Box>
-          
+
           {/* 회원수정 모달창 */}
           <div>
-              <Modal
-                open={open}
-                // onClose={handleClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
+            <Modal
+              open={open}
+              // onClose={handleClose}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
             >
               <Box sx={style}>
-                <Typography id="modal-modal-title" variant="h6" component="h2" style={{fontWeight:'bold'}}>
-                    회원정보 수정
+                <Typography
+                  id="modal-modal-title"
+                  variant="h6"
+                  component="h2"
+                  style={{ fontWeight: "bold" }}
+                >
+                  회원정보 수정
                 </Typography>
 
-
-                <div style={{marginTop:'15px', marginBottom:'10px'}}>
+                <div style={{ marginTop: "15px", marginBottom: "10px" }}>
                   <TextField
                     name="regi"
                     required
@@ -283,31 +293,31 @@ const UserMypage: FC = () => {
                   />
 
                   <UpdateButton
-                    sx={{ mt: 1, mb:1, mx:1}}
+                    sx={{ mt: 1, mb: 1, mx: 1 }}
                     variant="contained"
                     onClick={clickImageUpload}
                   >
-                  업로드
+                    업로드
                   </UpdateButton>
                   <UpdateButton
-                    sx={{ mt: 1, mb:1, mx:1}}
+                    sx={{ mt: 1, mb: 1, mx: 1 }}
                     variant="contained"
                     onClick={clickDefault}
                   >
-                  기본 이미지
+                    기본 이미지
                   </UpdateButton>
-                  <input 
-                    type="file" 
-                    accept='image/*'
+                  <input
+                    type="file"
+                    accept="image/*"
                     ref={imageUpload}
                     onChange={onImageChange}
-                    style={{display:"none"}}
+                    style={{ display: "none" }}
                   />
                 </div>
 
                 <TextField
                   name="intro"
-                  fullWidth       
+                  fullWidth
                   multiline
                   rows={3}
                   id="intro"
@@ -317,20 +327,25 @@ const UserMypage: FC = () => {
                   inputProps={{ maxLength: 200 }}
                 />
 
-                <div style={{marginTop:'10px', display:'flex', justifyContent:'end'}}>
-                    <UpdateButton 
-                        style={{marginRight:'3px'}}
-                        onClick={clickEdit}
-                    >수정</UpdateButton>
-                    <OutlinedButton
-                        onClick={handleClose}
-                    >취소</OutlinedButton>
+                <div
+                  style={{
+                    marginTop: "10px",
+                    display: "flex",
+                    justifyContent: "end",
+                  }}
+                >
+                  <UpdateButton
+                    style={{ marginRight: "3px" }}
+                    onClick={clickEdit}
+                  >
+                    수정
+                  </UpdateButton>
+                  <OutlinedButton onClick={handleClose}>취소</OutlinedButton>
                 </div>
               </Box>
             </Modal>
           </div>
           {/* 회원수정 모달창 끝 */}
-
         </Box>
       ) : null}
     </>
