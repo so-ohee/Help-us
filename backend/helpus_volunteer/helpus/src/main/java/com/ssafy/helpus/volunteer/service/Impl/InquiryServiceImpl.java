@@ -83,12 +83,10 @@ public class InquiryServiceImpl implements InquiryService {
     }
 
     @Override
-    public Map<String, Object> listApply(Long memberId, String order, int page) throws Exception {
+    public Map<String, Object> listApply(Long memberId, int page) throws Exception {
         log.info("InquiryService listApply call");
 
-        String id = "applyId";
-        Sort sort = gerOrder(order, id);
-        Page<VolunteerApply> volunteerApplies = volunteerApplyRepository.findByWriteId(memberId, PageRequest.of(page,6,sort));
+        Page<VolunteerApply> volunteerApplies = volunteerApplyRepository.findByWriteId(memberId, PageRequest.of(page, 10, Sort.by("status")));
         return makeListApply(volunteerApplies);
     }
 
