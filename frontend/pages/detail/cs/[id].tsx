@@ -164,7 +164,7 @@ const CsDetail: FC = () => {
         setLoading(true)
       });
     }
-  }, [router.isReady, commentList]);
+  }, [router.isReady, comment]);
 
   const getDeleteStatus = (deleteStatus) => {
     setDeleteStatus(deleteStatus);
@@ -347,7 +347,7 @@ const CsDetail: FC = () => {
               </Stack>
                 ) : (<Box sx={{ height: 30 }}></Box>)}
               <Stack>
-                {commentList.map((item) => (
+                {commentList && commentList.map((item) => (
                   <Comment comment={item} id={id} token={token} getDeleteStatus={getDeleteStatus} deleteStatus={deleteStatus} />
                 ))}
               </Stack>

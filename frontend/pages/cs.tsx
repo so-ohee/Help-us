@@ -135,7 +135,7 @@ const CsMain: FC = () => {
     setMyRole(localStorage.getItem("role"));
     
     getCSList(params).then((res) => {
-      console.log(res);
+      // console.log(res);
       setCSList(res.data.desk);
       setTotalPages(res.data.totalPage);
       // console.log("data는", reviewList);

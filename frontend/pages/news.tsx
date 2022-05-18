@@ -141,11 +141,11 @@ const NewsMain: FC = () => {
                           key={data.title}
                           onClick={() => window.open(`${data.link}`)}
                         >
-                          <StyledTableCell sx={{ width: "20%" }}>
+                          <StyledTableCell sx={{ width: "20%", cursor: 'pointer' }}>
                             {/* {data.title.substr(0, 17)}... */}
                             {data.title}
                           </StyledTableCell>
-                          <StyledTableCell>{data.description}</StyledTableCell>
+                          <StyledTableCell sx={{cursor: 'pointer'}}>{data.description}</StyledTableCell>
                           <StyledTableCell sx={{ width: "14%" }}>
                             {data.date}
                           </StyledTableCell>

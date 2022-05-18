@@ -198,12 +198,21 @@ const Comment2: FC<CommentData> = ({ comment, id, token, getDeleteStatus, delete
               justifyContent="space-between"
             >
               <Stack direction="row" alignItems="center">
-                <Image
-                  src={defaultImage}
-                  alt="프로필 이미지"
-                  width="40px"
-                  height="40px"
-                />
+                {comment && comment.profile ? (
+                  <Image
+                    src={comment.profile}
+                    alt="프로필 이미지"
+                    width="40px"
+                    height="40px"
+                  />
+                ) : (
+                  <Image
+                    src={defaultImage}
+                    alt="프로필 이미지"
+                    width="40px"
+                    height="40px"
+                  />
+                )}
                   <Link href={`/userpage/${comment.memberId}`} >
                     <Typography sx={{ fontSize: 18, ml: 1, cursor: 'pointer' }} fontWeight="bold" >
                       {comment.name}
