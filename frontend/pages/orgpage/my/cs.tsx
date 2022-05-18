@@ -108,16 +108,10 @@ const UserMypageCs: FC = () => {
               <TableHead>
                 <TableRow>
                   <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                    번호
-                  </StyledTableCell>
-                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
                     카테고리
                   </StyledTableCell>
                   <StyledTableCell align="center" sx={{ fontSize: 17 }}>
                     제목
-                  </StyledTableCell>
-                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                    작성일
                   </StyledTableCell>
                   <StyledTableCell align="center" sx={{ fontSize: 17 }}>
                     공개 여부
@@ -125,15 +119,15 @@ const UserMypageCs: FC = () => {
                   <StyledTableCell align="center" sx={{ fontSize: 17 }}>
                     답변 여부
                   </StyledTableCell>
+                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                    작성일
+                  </StyledTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {csList &&
                   csList.map((data) => (
                     <StyledTableRow key={data.helpDeskId}>
-                      <StyledTableCell align="center">
-                        {data.helpDeskId}
-                      </StyledTableCell>
                       <StyledTableCell align="center">
                         {data.category}
                       </StyledTableCell>
@@ -147,13 +141,13 @@ const UserMypageCs: FC = () => {
                         </Link>
                       </StyledTableCell>
                       <StyledTableCell align="center">
-                        {data.createDate.substr(0, 10)}
-                      </StyledTableCell>
-                      <StyledTableCell align="center">
                         {data.visible}
                       </StyledTableCell>
                       <StyledTableCell align="center">
                         {data.status}
+                      </StyledTableCell>
+                      <StyledTableCell align="center">
+                        {data.createDate.substr(0, 10)}
                       </StyledTableCell>
                     </StyledTableRow>
                   ))}
@@ -162,14 +156,19 @@ const UserMypageCs: FC = () => {
           </TableContainer>
           {csList && csList.length > 0 ? (
             <Stack alignItems="center" sx={{ mb: 2, mt: 2 }}>
-            <Pagination
-              curPage={curPage}
-              paginate={paginate}
-              totalPage={totalPages}
-            />
-          </Stack>
+              <Pagination
+                curPage={curPage}
+                paginate={paginate}
+                totalPage={totalPages}
+              />
+            </Stack>
           ) : (
-            <Typography variant="h5" sx={{ mt: 10, display: 'flex', justifyContent: 'center'}}>문의한 내역이 없습니다.</Typography>
+            <Typography
+              variant="h5"
+              sx={{ mt: 10, display: "flex", justifyContent: "center" }}
+            >
+              문의한 내역이 없습니다.
+            </Typography>
           )}
         </Container>
       </Box>

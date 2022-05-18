@@ -30,7 +30,12 @@ import { useRouter } from "next/router";
 // import CommentInput from "./CommentInput2";
 
 // api
-import {reviewCommentDelete, volunteerCommentList, talentRecomment} from "function/axios";
+import {
+  reviewCommentDelete,
+  volunteerCommentList,
+  talentRecomment,
+  donationOrgRecomment,
+} from "function/axios";
 
 const style = {
   position: "absolute" as "absolute",
@@ -87,17 +92,24 @@ const CustomButton2 = styled(Button)({
   fontSize: 12,
 });
 
-const Comment2: FC<CommentData> = ({ comment, id, token, getDeleteStatus, deleteStatus }) => {
+const Comment2: FC<CommentData> = ({
+  comment,
+  id,
+  token,
+  getDeleteStatus,
+  deleteStatus,
+}) => {
   const [inputStatus, setInputStatus] = useState<boolean>(false);
   const [userId, setUserId] = useState<any>();
   const router = useRouter();
 
-  const [recomment, setRecomment] = useState<string>('');
+  const [recomment, setRecomment] = useState<string>("");
   const [userToken, setUserToken] = useState<any>();
   const [boardId, setBoardId] = useState<any>();
 
-  const [recommentStatus, setRecommentStatus] = useState<boolean>(false);
+  const [reload, setReload] = useState<boolean>(false);
 
+  const [recommentStatus, setRecommentStatus] = useState<boolean>(false);
 
   const onClickInputStatus = () => {
     setInputStatus(!inputStatus);
@@ -111,17 +123,17 @@ const Comment2: FC<CommentData> = ({ comment, id, token, getDeleteStatus, delete
   // console.log(comment)
   //댓글 삭제
   const removeComment = () => {
-    const commentId = comment.commentId
-    const memberId = comment.memberId
-      // console.log(userId)
-      reviewCommentDelete(commentId, memberId, id, token)
-        .then((res) => {
-          console.log("성공" + res )
-          setOpen(false);
-          getDeleteStatus(!deleteStatus);
-        })
-        .catch((err) => console.log("실패" + err))
-  }
+    const commentId = comment.commentId;
+    const memberId = comment.memberId;
+    // console.log(userId)
+    reviewCommentDelete(commentId, memberId, id, token)
+      .then((res) => {
+        console.log("성공" + res);
+        setOpen(false);
+        getDeleteStatus(!deleteStatus);
+      })
+      .catch((err) => console.log("실패" + err));
+  };
 
   useEffect(() => {
     const id = localStorage.getItem("id");
@@ -129,10 +141,9 @@ const Comment2: FC<CommentData> = ({ comment, id, token, getDeleteStatus, delete
     setUserId(id);
     setUserToken(token);
     if (router.isReady) {
-      setBoardId(router.query.id)
+      setBoardId(router.query.id);
     }
-  }, [router.isReady])
-
+  }, [router.isReady]);
 
   // 대댓글 작성
   const handleRecomment = () => {
@@ -140,25 +151,29 @@ const Comment2: FC<CommentData> = ({ comment, id, token, getDeleteStatus, delete
       alert("댓글을 입력해주세요!");
       return;
     }
-    const parentId = comment.commentId
+    const parentId = comment.commentId;
 
-    const params = {
+    const data = {
       parentCommentId: parentId,
-      volunteerId: boardId,
+      boardId: Number(boardId),
       content: recomment,
-    }
+      category: "donation",
+    };
+    console.log("보내는 데이터", data);
 
-    talentRecomment(userId, userToken, params)
+    donationOrgRecomment(userId, userToken, data)
       .then((res) => {
-        console.log("성공" + res)
-        setRecomment("")
+        // console.log("성공" + res);
+        getDeleteStatus(!deleteStatus);
+        setRecomment("");
+        onClickInputStatus();
       })
-      .catch((err) => console.log("실패" + err))
-  }
+      .catch((err) => console.log("실패" + err));
+  };
 
   const cancle = () => {
-    setInputStatus(!inputStatus)
-  }
+    setInputStatus(!inputStatus);
+  };
 
   const Unix_timestamp = (t) => {
     var date = new Date(t);
@@ -183,8 +198,8 @@ const Comment2: FC<CommentData> = ({ comment, id, token, getDeleteStatus, delete
 
   useEffect(() => {
     const Id = localStorage.getItem("id");
-    setUserId(Id)
-  }, [id])
+    setUserId(Id);
+  }, [id]);
 
   return (
     <>
@@ -213,11 +228,14 @@ const Comment2: FC<CommentData> = ({ comment, id, token, getDeleteStatus, delete
                     height="40px"
                   />
                 )}
-                  <Link href={`/userpage/${comment.memberId}`} >
-                    <Typography sx={{ fontSize: 18, ml: 1, cursor: 'pointer' }} fontWeight="bold" >
-                      {comment.name}
-                    </Typography>
-                  </Link>
+                <Link href={`/userpage/${comment.memberId}`}>
+                  <Typography
+                    sx={{ fontSize: 18, ml: 1, cursor: "pointer" }}
+                    fontWeight="bold"
+                  >
+                    {comment.name}
+                  </Typography>
+                </Link>
                 <Typography sx={{ ml: 1 }}>{comment.content}</Typography>
               </Stack>
               <Stack direction="row" alignItems="center">
@@ -228,10 +246,8 @@ const Comment2: FC<CommentData> = ({ comment, id, token, getDeleteStatus, delete
                   답글쓰기
                 </Button>
                 {comment ? (
-                  <Typography>
-                      {Unix_timestamp(comment.createDate)}
-                  </Typography>
-                ) : (null)}
+                  <Typography>{Unix_timestamp(comment.createDate)}</Typography>
+                ) : null}
                 {/* id랑  memberId랑 같으면 삭제 버튼 활성화*/}
                 {userId == comment.memberId ? (
                   <Button
@@ -240,7 +256,6 @@ const Comment2: FC<CommentData> = ({ comment, id, token, getDeleteStatus, delete
                     color="error"
                     size="small"
                     sx={{ width: 10, mr: 5, ml: 2 }}
-                  
                   >
                     삭제
                   </Button>
@@ -255,14 +270,18 @@ const Comment2: FC<CommentData> = ({ comment, id, token, getDeleteStatus, delete
                   value={recomment}
                   onChange={(e) => setRecomment(e.target.value)}
                 />
-                <CustomButton2 sx={{ ml: 2, height: 28 }} size="small" onClick={cancle}>
+                <CustomButton2
+                  sx={{ ml: 2, height: 28 }}
+                  size="small"
+                  onClick={cancle}
+                >
                   취소
                 </CustomButton2>
-                <CustomButton 
-                  sx={{ ml: 2 }} 
+                <CustomButton
+                  sx={{ ml: 2 }}
                   size="small"
                   onClick={handleRecomment}
-                  >
+                >
                   등록
                 </CustomButton>
               </Stack>
@@ -271,25 +290,26 @@ const Comment2: FC<CommentData> = ({ comment, id, token, getDeleteStatus, delete
               <CommentInput inputStatus={inputStatus} comment={comment} />
             </Stack> */}
             <Stack justifyContent="center">
-                <Modal open={open} onClose={handleClose}>
-                  <Box sx={style}>
-                    <Stack justifyContent="center" alignItems="center">
-                      <Typography textAlign="center" sx={{ mb: 1, fontWeight: 'bold' }}>
-                        이 댓글을 삭제하시겠습니까?
-                      </Typography>
-                      <Typography textAlign="center" sx={{ mb: 1 }}>
-                        [이 댓글에 달린 대댓글도 모두 삭제됩니다]
-                      </Typography>
-                      <Stack direction="row" spacing={3} sx={{ mt: 1 }}>
-                        <CustomButton2 onClick={handleClose}>
-                          취소
-                        </CustomButton2>
-                        <CustomButton onClick={removeComment}>확인</CustomButton>
-                      </Stack>
+              <Modal open={open} onClose={handleClose}>
+                <Box sx={style}>
+                  <Stack justifyContent="center" alignItems="center">
+                    <Typography
+                      textAlign="center"
+                      sx={{ mb: 1, fontWeight: "bold" }}
+                    >
+                      이 댓글을 삭제하시겠습니까?
+                    </Typography>
+                    <Typography textAlign="center" sx={{ mb: 1 }}>
+                      [이 댓글에 달린 대댓글도 모두 삭제됩니다]
+                    </Typography>
+                    <Stack direction="row" spacing={3} sx={{ mt: 1 }}>
+                      <CustomButton2 onClick={handleClose}>취소</CustomButton2>
+                      <CustomButton onClick={removeComment}>확인</CustomButton>
                     </Stack>
-                  </Box>
-                </Modal>
-              </Stack>
+                  </Stack>
+                </Box>
+              </Modal>
+            </Stack>
           </>
         ) : (
           <>
@@ -307,7 +327,10 @@ const Comment2: FC<CommentData> = ({ comment, id, token, getDeleteStatus, delete
                   height="40px"
                 />
                 <Link href={`/userpage/${comment.memberId}`}>
-                  <Typography sx={{ fontSize: 18, ml: 1, cursor: 'pointer' }} fontWeight="bold">
+                  <Typography
+                    sx={{ fontSize: 18, ml: 1, cursor: "pointer" }}
+                    fontWeight="bold"
+                  >
                     {comment.name}
                   </Typography>
                 </Link>
@@ -330,7 +353,7 @@ const Comment2: FC<CommentData> = ({ comment, id, token, getDeleteStatus, delete
                 </Button>
                 {comment ? (
                   <Typography>{Unix_timestamp(comment.createDate)}</Typography>
-                ) : (null)}
+                ) : null}
                 {userId == comment.memberId ? (
                   <Button
                     variant="contained"
@@ -352,14 +375,18 @@ const Comment2: FC<CommentData> = ({ comment, id, token, getDeleteStatus, delete
                   value={recomment}
                   onChange={(e) => setRecomment(e.target.value)}
                 />
-                <CustomButton2 sx={{ ml: 2, height: 28 }} size="small" onClick={cancle}>
+                <CustomButton2
+                  sx={{ ml: 2, height: 28 }}
+                  size="small"
+                  onClick={cancle}
+                >
                   취소
                 </CustomButton2>
-                <CustomButton 
-                  sx={{ ml: 2 }} 
+                <CustomButton
+                  sx={{ ml: 2 }}
                   size="small"
                   onClick={handleRecomment}
-                  >
+                >
                   등록
                 </CustomButton>
               </Stack>

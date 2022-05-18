@@ -107,6 +107,27 @@ const CssTextField = styled(TextField)({
   },
 });
 
+const Unix_timestamp = (t) => {
+  var date = new Date(t);
+  date.setHours(date.getHours() + 9);
+  var year = date.getFullYear();
+  var month = "0" + (date.getMonth() + 1);
+  var day = "0" + date.getDate();
+  var hour = "0" + date.getHours();
+  var minute = "0" + date.getMinutes();
+  return (
+    year +
+    "-" +
+    month.substr(-2) +
+    "-" +
+    day.substr(-2) +
+    " " +
+    hour.substr(-2) +
+    ":" +
+    minute.substr(-2)
+  );
+};
+
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: "#CDAD78",
@@ -168,9 +189,6 @@ const DonationOrgDetail: FC = () => {
   const getDeleteStatus = (deleteStatus) => {
     setDeleteStatus(deleteStatus);
   };
-
-  
-
 
   // 기관 정보 불러오기
   useEffect(() => {
@@ -271,19 +289,15 @@ const DonationOrgDetail: FC = () => {
                   marginTop: "6px",
                 }}
               >
-              {
-                orgInfo ?
-                (
-                  orgInfo.profile ?
-                  (
+                {orgInfo ? (
+                  orgInfo.profile ? (
                     <Image
                       src={orgInfo.profile}
                       alt="orgImage"
                       width="150px"
                       height="150px"
                     />
-                  ) :
-                  (
+                  ) : (
                     <Image
                       src={testImage}
                       alt="orgImage"
@@ -291,8 +305,7 @@ const DonationOrgDetail: FC = () => {
                       height="150px"
                     />
                   )
-                ) : null
-              }
+                ) : null}
               </div>
             </Grid>
             <Grid>
@@ -418,7 +431,9 @@ const DonationOrgDetail: FC = () => {
                 작성일
               </Typography>
               <Typography variant="h6" sx={{ mt: 3 }}>
-                {donationDetails ? donationDetails.createDate : null}
+                {donationDetails
+                  ? Unix_timestamp(donationDetails.createDate)
+                  : null}
               </Typography>
             </Stack>
           </Stack>
@@ -716,22 +731,31 @@ const DonationOrgDetail: FC = () => {
             <></>
           )}
           <Stack>
-          {commentList &&
-            commentList.map((item, index) => (
-              <Comment key={index} comment={item} id={userId} token={token} getDeleteStatus={getDeleteStatus} deleteStatus={deleteStatus}/>
-            ))}
+            {commentList &&
+              commentList.map((item, index) => (
+                <Comment
+                  key={index}
+                  comment={item}
+                  id={userId}
+                  token={token}
+                  getDeleteStatus={getDeleteStatus}
+                  deleteStatus={deleteStatus}
+                />
+              ))}
           </Stack>
           {commentList && commentList.length > 0 ? (
-                <Box sx={{ display: "flex", justifyContent: "center", my: 5, pb:5 }}>
-                <Pagination
-                  paginate={paginate}
-                  curPage={curPage}
-                  totalPage={totalPages}
-                />
-              </Box>
-              ): (
-                <></>
-              )}
+            <Box
+              sx={{ display: "flex", justifyContent: "center", my: 5, pb: 5 }}
+            >
+              <Pagination
+                paginate={paginate}
+                curPage={curPage}
+                totalPage={totalPages}
+              />
+            </Box>
+          ) : (
+            <></>
+          )}
         </Container>
       </Box>
     </Box>

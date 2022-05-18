@@ -18,6 +18,7 @@ import {
 import { tableCellClasses } from "@mui/material/TableCell";
 import { FC, useState, useEffect } from "react";
 import Pagination from "@/components/Pagination";
+import Link from "next/link";
 import { getOrgDonationList, getPostCompany } from "../../../function/axios";
 const mdTheme = createTheme();
 
@@ -77,6 +78,19 @@ const orgpageMyCheckDonation: FC = () => {
   // 택배사 리스트 api
   const [companyList, setCompanyList] = useState<any[]>([]);
 
+  // 택배사 코드 -> 이름
+  const findCompanyName = (id) => {
+    var result = "";
+    if (loading) {
+      for (let i = 0; i < companyList.length; i++) {
+        if (companyList[i].Code.toString() == id.toString()) {
+          result = companyList[i].Name;
+          return result;
+        }
+      }
+    }
+  };
+
   useEffect(() => {
     getPostCompany().then((res) => {
       setCompanyList(res.data.Company);
@@ -94,24 +108,11 @@ const orgpageMyCheckDonation: FC = () => {
     getOrgDonationList(id, params).then((res) => {
       if (res.data.apply) {
         setDonationList(res.data.apply);
+        // console.log(res.data);
         setTotalPages(res.data.totalPage);
       }
     });
   }, [curPage]);
-
-  // 택배사 코드 -> 이름
-  const findCompanyName = (id) => {
-    var result = "";
-    if (loading) {
-      // console.log(companyList[0].Code.toString());
-      for (let i = 0; i < companyList.length; i++) {
-        if (companyList[i].Code.toString() == id.toString()) {
-          result = companyList[i].Name;
-          return result;
-        }
-      }
-    }
-  };
 
   return (
     <>
@@ -134,12 +135,6 @@ const orgpageMyCheckDonation: FC = () => {
                 <Table sx={{ minWidth: 700 }} aria-label="customized table">
                   <TableHead>
                     <TableRow>
-                      <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                        기부 번호
-                      </StyledTableCell>
-                      <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                        글 번호
-                      </StyledTableCell>
                       <StyledTableCell align="center" sx={{ fontSize: 17 }}>
                         제목
                       </StyledTableCell>
@@ -164,28 +159,34 @@ const orgpageMyCheckDonation: FC = () => {
                     {donationList.length > 0 &&
                       donationList.map((data) => (
                         <StyledTableRow key={data.donationApplyId}>
-                          <StyledTableCell align="center">
-                            {data.donationApplyId}
-                          </StyledTableCell>
-                          <StyledTableCell align="center">
-                            {data.donationId}
-                          </StyledTableCell>
                           <StyledTableCell align="center" sx={{ width: 400 }}>
-                            {data.title}
+                            <Link
+                              href={`/detail/donationorg/${data.donationId}`}
+                            >
+                              {data.title}
+                            </Link>
                           </StyledTableCell>
                           <StyledTableCell align="center">
                             {data.productName}
                           </StyledTableCell>
                           <StyledTableCell align="center">
-                            {data.name}
+                            <Link href={`/userpage/${data.memberId}`}>
+                              {data.name}
+                            </Link>
                           </StyledTableCell>
                           <StyledTableCell align="center">
                             {data.invoice}
                           </StyledTableCell>
-                          <StyledTableCell align="center">
-                            {/* {data.parcel} */}
-                            {findCompanyName(data.parcel)}
-                          </StyledTableCell>
+                          {data.parcel ? (
+                            <StyledTableCell align="center">
+                              {/* {data.parcel} */}
+                              {findCompanyName(data.parcel)}
+                            </StyledTableCell>
+                          ) : (
+                            <StyledTableCell align="center">
+                              {data.parcel}
+                            </StyledTableCell>
+                          )}
                           <StyledTableCell align="center">
                             {data.donationDate}
                           </StyledTableCell>

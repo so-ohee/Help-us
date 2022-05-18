@@ -14,7 +14,7 @@ import {
   Paper,
   Table,
   Button,
-  Link
+  Link,
 } from "@mui/material";
 import { tableCellClasses } from "@mui/material/TableCell";
 import { FC, useState, useEffect } from "react";
@@ -102,14 +102,13 @@ const UserMypageCs: FC = () => {
         }}
       >
         <Container maxWidth="lg" sx={{}}>
-          <Typography variant="h4">문의 내역</Typography>
+          <Typography variant="h4" sx={{ mt: 5 }}>
+            문의 내역
+          </Typography>
           <TableContainer component={Paper} sx={{ mt: 5 }}>
             <Table sx={{ minWidth: 700 }} aria-label="customized table">
               <TableHead>
                 <TableRow>
-                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                    번호
-                  </StyledTableCell>
                   <StyledTableCell align="center" sx={{ fontSize: 17 }}>
                     카테고리
                   </StyledTableCell>
@@ -132,13 +131,14 @@ const UserMypageCs: FC = () => {
                   csList.map((data) => (
                     <StyledTableRow key={data.helpDeskId}>
                       <StyledTableCell align="center">
-                        {data.helpDeskId}
-                      </StyledTableCell>
-                      <StyledTableCell align="center">
                         {data.category}
                       </StyledTableCell>
                       <StyledTableCell align="center" sx={{ width: 400 }}>
-                        <Link href={`/detail/cs/${data.helpDeskId}`} underline="none" color="inherit">
+                        <Link
+                          href={`/detail/cs/${data.helpDeskId}`}
+                          underline="none"
+                          color="inherit"
+                        >
                           {data.title}
                         </Link>
                       </StyledTableCell>
@@ -158,14 +158,19 @@ const UserMypageCs: FC = () => {
           </TableContainer>
           {csList && csList.length > 0 ? (
             <Stack alignItems="center" sx={{ mb: 2, mt: 2 }}>
-            <Pagination
-              curPage={curPage}
-              paginate={paginate}
-              totalPage={totalPages}
-            />
-          </Stack>
+              <Pagination
+                curPage={curPage}
+                paginate={paginate}
+                totalPage={totalPages}
+              />
+            </Stack>
           ) : (
-            <Typography variant="h5" sx={{ mt: 10, display: 'flex', justifyContent: 'center'}}>문의한 내역이 없습니다.</Typography>
+            <Typography
+              variant="h5"
+              sx={{ mt: 10, display: "flex", justifyContent: "center" }}
+            >
+              문의한 내역이 없습니다.
+            </Typography>
           )}
         </Container>
       </Box>

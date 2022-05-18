@@ -30,7 +30,11 @@ import { useRouter } from "next/router";
 // import CommentInput from "./CommentInput3";
 
 // api
-import {volunteerCommentDelete, volunteerCommentList, talentRecomment} from "function/axios";
+import {
+  volunteerCommentDelete,
+  volunteerCommentList,
+  talentRecomment,
+} from "function/axios";
 
 const style = {
   position: "absolute" as "absolute",
@@ -87,16 +91,21 @@ const CustomButton2 = styled(Button)({
   fontSize: 12,
 });
 
-const Comment: FC<CommentData> = ({ comment, id, token, getDeleteStatus, deleteStatus }) => {
+const Comment: FC<CommentData> = ({
+  comment,
+  id,
+  token,
+  getDeleteStatus,
+  deleteStatus,
+}) => {
   const [inputStatus, setInputStatus] = useState<boolean>(false);
   const [userId, setUserId] = useState<any>();
   const [parentId, setParentId] = useState<any>();
   const router = useRouter();
 
-  const [recomment, setRecomment] = useState<string>('');
+  const [recomment, setRecomment] = useState<string>("");
   const [userToken, setUserToken] = useState<any>();
   const [boardId, setBoardId] = useState<any>();
-
 
   const onClickInputStatus = () => {
     setInputStatus(!inputStatus);
@@ -109,23 +118,23 @@ const Comment: FC<CommentData> = ({ comment, id, token, getDeleteStatus, deleteS
 
   //댓글 삭제
   const removeComment = () => {
-    const commentId = comment.commentId
-      // console.log(commentId)
-      // console.log(userId)
-      // setOpen(true)
-      volunteerCommentDelete(commentId, id, token)
-        .then((res) => {
-          console.log("성공" + res );
-          setOpen(false);
-          getDeleteStatus(!deleteStatus);
-        })
-        .catch((err) => console.log("실패" + err))
+    const commentId = comment.commentId;
+    // console.log(commentId)
+    // console.log(userId)
+    // setOpen(true)
+    volunteerCommentDelete(commentId, id, token)
+      .then((res) => {
+        console.log("성공" + res);
+        setOpen(false);
+        getDeleteStatus(!deleteStatus);
+      })
+      .catch((err) => console.log("실패" + err));
 
-      if (userId != comment.memberId) {
-        alert("댓글 작성자가 아닙니다.");
-        return;
-      }
-  }
+    if (userId != comment.memberId) {
+      alert("댓글 작성자가 아닙니다.");
+      return;
+    }
+  };
 
   useEffect(() => {
     const id = localStorage.getItem("id");
@@ -133,9 +142,9 @@ const Comment: FC<CommentData> = ({ comment, id, token, getDeleteStatus, deleteS
     setUserId(id);
     setUserToken(token);
     if (router.isReady) {
-      setBoardId(router.query.id)
+      setBoardId(router.query.id);
     }
-  }, [router.isReady])
+  }, [router.isReady]);
 
   // 대댓글 작성
   const handleRecomment = () => {
@@ -143,26 +152,27 @@ const Comment: FC<CommentData> = ({ comment, id, token, getDeleteStatus, deleteS
       alert("댓글을 입력해주세요!");
       return;
     }
-    const parentId = comment.commentId
+    const parentId = comment.commentId;
 
     const params = {
       parentCommentId: parentId,
       volunteerId: boardId,
       content: recomment,
-    }
+    };
 
     talentRecomment(userId, userToken, params)
       .then((res) => {
-        console.log("성공" + res)
-        setInputStatus(false)
-        setRecomment("")
+        // console.log("성공" + res)
+        getDeleteStatus(!deleteStatus);
+        setInputStatus(false);
+        setRecomment("");
       })
-      .catch((err) => console.log("실패" + err))
-  }
+      .catch((err) => console.log("실패" + err));
+  };
 
   const cancle = () => {
-    setInputStatus(!inputStatus)
-  }
+    setInputStatus(!inputStatus);
+  };
   // console.log(comment)
 
   const Unix_timestamp = (t) => {
@@ -185,8 +195,7 @@ const Comment: FC<CommentData> = ({ comment, id, token, getDeleteStatus, deleteS
       minute.substr(-2)
     );
   };
-  
-  
+
   return (
     <>
       <>
@@ -214,8 +223,11 @@ const Comment: FC<CommentData> = ({ comment, id, token, getDeleteStatus, deleteS
                     height="40px"
                   />
                 )}
-                <Link href={`/userpage/${comment.memberId}`} >
-                  <Typography sx={{ fontSize: 18, ml: 1, cursor: 'pointer' }} fontWeight="bold">
+                <Link href={`/userpage/${comment.memberId}`}>
+                  <Typography
+                    sx={{ fontSize: 18, ml: 1, cursor: "pointer" }}
+                    fontWeight="bold"
+                  >
                     {comment.name}
                   </Typography>
                 </Link>
@@ -229,10 +241,8 @@ const Comment: FC<CommentData> = ({ comment, id, token, getDeleteStatus, deleteS
                   답글쓰기
                 </Button>
                 {comment ? (
-                  <Typography>
-                      {Unix_timestamp(comment.createDate)}
-                  </Typography>
-                ) : (null)}
+                  <Typography>{Unix_timestamp(comment.createDate)}</Typography>
+                ) : null}
                 {/* id랑  memberId랑 같으면 삭제 버튼 활성화*/}
                 {userId == comment.memberId ? (
                   <Button
@@ -241,7 +251,6 @@ const Comment: FC<CommentData> = ({ comment, id, token, getDeleteStatus, deleteS
                     color="error"
                     size="small"
                     sx={{ width: 10, mr: 5, ml: 2 }}
-                  
                   >
                     삭제
                   </Button>
@@ -256,14 +265,18 @@ const Comment: FC<CommentData> = ({ comment, id, token, getDeleteStatus, deleteS
                   value={recomment}
                   onChange={(e) => setRecomment(e.target.value)}
                 />
-                <CustomButton2 sx={{ ml: 2, height: 28 }} size="small" onClick={cancle}>
+                <CustomButton2
+                  sx={{ ml: 2, height: 28 }}
+                  size="small"
+                  onClick={cancle}
+                >
                   취소
                 </CustomButton2>
-                <CustomButton 
-                  sx={{ ml: 2 }} 
+                <CustomButton
+                  sx={{ ml: 2 }}
                   size="small"
                   onClick={handleRecomment}
-                  >
+                >
                   등록
                 </CustomButton>
               </Stack>
@@ -272,25 +285,26 @@ const Comment: FC<CommentData> = ({ comment, id, token, getDeleteStatus, deleteS
               <CommentInput inputStatus={inputStatus} comment={comment} />
             </Stack> */}
             <Stack justifyContent="center">
-                <Modal open={open} onClose={handleClose}>
-                  <Box sx={style}>
-                    <Stack justifyContent="center" alignItems="center">
-                      <Typography textAlign="center" sx={{ mb: 1, fontWeight: 'bold' }}>
-                        이 댓글을 삭제하시겠습니까?
-                      </Typography>
-                      <Typography textAlign="center" sx={{ mb: 1 }}>
-                        [이 댓글에 달린 대댓글도 모두 삭제됩니다]
-                      </Typography>
-                      <Stack direction="row" spacing={3} sx={{ mt: 1 }}>
-                        <CustomButton2 onClick={handleClose}>
-                          취소
-                        </CustomButton2>
-                        <CustomButton onClick={removeComment}>확인</CustomButton>
-                      </Stack>
+              <Modal open={open} onClose={handleClose}>
+                <Box sx={style}>
+                  <Stack justifyContent="center" alignItems="center">
+                    <Typography
+                      textAlign="center"
+                      sx={{ mb: 1, fontWeight: "bold" }}
+                    >
+                      이 댓글을 삭제하시겠습니까?
+                    </Typography>
+                    <Typography textAlign="center" sx={{ mb: 1 }}>
+                      [이 댓글에 달린 대댓글도 모두 삭제됩니다]
+                    </Typography>
+                    <Stack direction="row" spacing={3} sx={{ mt: 1 }}>
+                      <CustomButton2 onClick={handleClose}>취소</CustomButton2>
+                      <CustomButton onClick={removeComment}>확인</CustomButton>
                     </Stack>
-                  </Box>
-                </Modal>
-              </Stack>
+                  </Stack>
+                </Box>
+              </Modal>
+            </Stack>
           </>
         ) : (
           <>
@@ -307,8 +321,11 @@ const Comment: FC<CommentData> = ({ comment, id, token, getDeleteStatus, deleteS
                   width="40px"
                   height="40px"
                 />
-                <Link href={`/userpage/${comment.memberId}`} >
-                  <Typography sx={{ fontSize: 18, ml: 1, cursor: 'pointer' }} fontWeight="bold">
+                <Link href={`/userpage/${comment.memberId}`}>
+                  <Typography
+                    sx={{ fontSize: 18, ml: 1, cursor: "pointer" }}
+                    fontWeight="bold"
+                  >
                     {comment.name}
                   </Typography>
                 </Link>
@@ -329,8 +346,8 @@ const Comment: FC<CommentData> = ({ comment, id, token, getDeleteStatus, deleteS
                 </Button>
                 {comment ? (
                   <Typography>{Unix_timestamp(comment.createDate)}</Typography>
-                ) : (null)}
-                {userId == comment.memberId ?(
+                ) : null}
+                {userId == comment.memberId ? (
                   <Button
                     variant="contained"
                     color="error"
@@ -351,14 +368,18 @@ const Comment: FC<CommentData> = ({ comment, id, token, getDeleteStatus, deleteS
                   value={recomment}
                   onChange={(e) => setRecomment(e.target.value)}
                 />
-                <CustomButton2 sx={{ ml: 2, height: 28 }} size="small" onClick={cancle}>
+                <CustomButton2
+                  sx={{ ml: 2, height: 28 }}
+                  size="small"
+                  onClick={cancle}
+                >
                   취소
                 </CustomButton2>
-                <CustomButton 
-                  sx={{ ml: 2 }} 
+                <CustomButton
+                  sx={{ ml: 2 }}
                   size="small"
                   onClick={handleRecomment}
-                  >
+                >
                   등록
                 </CustomButton>
               </Stack>
@@ -367,25 +388,26 @@ const Comment: FC<CommentData> = ({ comment, id, token, getDeleteStatus, deleteS
               <CommentInput inputStatus={inputStatus} comment={comment} />
             </Stack> */}
             <Stack justifyContent="center">
-                <Modal open={open} onClose={handleClose}>
-                  <Box sx={style}>
-                    <Stack justifyContent="center" alignItems="center">
-                      <Typography textAlign="center" sx={{ mb: 1, fontWeight: 'bold' }}>
-                        이 댓글을 삭제하시겠습니까?
-                      </Typography>
-                      <Typography textAlign="center" sx={{ mb: 1 }}>
-                        [이 댓글에 달린 대댓글도 모두 삭제됩니다]
-                      </Typography>
-                      <Stack direction="row" spacing={3} sx={{ mt: 1 }}>
-                        <CustomButton2 onClick={handleClose}>
-                          취소
-                        </CustomButton2>
-                        <CustomButton onClick={removeComment}>확인</CustomButton>
-                      </Stack>
+              <Modal open={open} onClose={handleClose}>
+                <Box sx={style}>
+                  <Stack justifyContent="center" alignItems="center">
+                    <Typography
+                      textAlign="center"
+                      sx={{ mb: 1, fontWeight: "bold" }}
+                    >
+                      이 댓글을 삭제하시겠습니까?
+                    </Typography>
+                    <Typography textAlign="center" sx={{ mb: 1 }}>
+                      [이 댓글에 달린 대댓글도 모두 삭제됩니다]
+                    </Typography>
+                    <Stack direction="row" spacing={3} sx={{ mt: 1 }}>
+                      <CustomButton2 onClick={handleClose}>취소</CustomButton2>
+                      <CustomButton onClick={removeComment}>확인</CustomButton>
                     </Stack>
-                  </Box>
-                </Modal>
-              </Stack>
+                  </Stack>
+                </Box>
+              </Modal>
+            </Stack>
           </>
         )}
       </>

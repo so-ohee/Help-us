@@ -8,7 +8,7 @@ import {
   Button,
   InputBase,
   Paper,
-  Link
+  Link,
 } from "@mui/material/";
 import {
   Table,
@@ -28,7 +28,6 @@ import volunteer1 from "../public/images/volunteer1.jpg";
 import { getReviewList } from "function/axios";
 import Pagination from "@/components/Pagination";
 import CarouselMain from "../components/CarouselMain";
-
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -133,7 +132,11 @@ const Review: FC = () => {
                           {data.donationConfirmId}
                         </StyledTableCell> */}
                         <StyledTableCell align="center" sx={{ width: 400 }}>
-                          <Link href={`/detail/review/${data.donationConfirmId}`} underline="none" color="inherit">
+                          <Link
+                            href={`/detail/review/${data.donationConfirmId}`}
+                            underline="none"
+                            color="inherit"
+                          >
                             {data.title}
                           </Link>
                         </StyledTableCell>

@@ -30,7 +30,12 @@ import { useRouter } from "next/router";
 // import CommentInput from "./CommentInput";
 
 // api
-import { csCommentDelete, talentRecomment } from "function/axios";
+import {
+  csCommentDelete,
+  talentRecomment,
+  reviewComment,
+  reviewCommentDelete,
+} from "function/axios";
 
 const style = {
   position: "absolute" as "absolute",
@@ -136,11 +141,9 @@ const Comment3: FC<CommentData> = ({
   const removeComment = () => {
     const commentId = comment.commentId;
     const memberId = comment.memberId;
-    // console.log(commentId)
-    // console.log(userId)
-    csCommentDelete(commentId, memberId, id, token)
+    reviewCommentDelete(commentId, memberId, id, token)
       .then((res) => {
-        console.log("성공" + res);
+        // console.log("성공" + res);
         setOpen(false);
         getDeleteStatus(!deleteStatus);
       })
@@ -172,16 +175,18 @@ const Comment3: FC<CommentData> = ({
 
     const data = {
       parentCommentId: parentId,
-      volunteerId: Number(boardId),
+      boardId: Number(boardId),
       content: recomment,
+      category: "confirm",
     };
 
     console.log("보내는 데이터", data);
 
-    talentRecomment(userId, userToken, data)
+    reviewComment(userId, userToken, data)
       .then((res) => {
-        console.log("성공" + res);
+        // console.log("성공" + res);
         setInputStatus(false);
+        getDeleteStatus(!deleteStatus);
         setRecomment("");
       })
       .catch((err) => console.log("실패" + err));
@@ -194,7 +199,7 @@ const Comment3: FC<CommentData> = ({
   return (
     <>
       <>
-        {comment.parentId !== null ? (
+        {comment.parentId === null ? (
           <>
             <Stack
               direction="row"
@@ -218,15 +223,39 @@ const Comment3: FC<CommentData> = ({
                     height="40px"
                   />
                 )}
-                <Typography
-                  sx={{ fontSize: 18, ml: 1, cursor: "pointer" }}
-                  fontWeight="bold"
-                >
-                  {comment.name}
-                </Typography>
+                <Link href={`/userpage/${comment.memberId}`}>
+                  <Typography
+                    sx={{ fontSize: 18, ml: 1, cursor: "pointer" }}
+                    fontWeight="bold"
+                  >
+                    {comment.name}
+                  </Typography>
+                </Link>
                 <Typography sx={{ ml: 1 }}>{comment.content}</Typography>
               </Stack>
-              <Typography>{Unix_timestamp(comment.createDate)}</Typography>
+              <Stack direction="row" alignItems="center">
+                <Button
+                  onClick={onClickInputStatus}
+                  sx={{ color: "#807c7c", fontSize: 12 }}
+                >
+                  답글쓰기
+                </Button>
+                {comment ? (
+                  <Typography>{Unix_timestamp(comment.createDate)}</Typography>
+                ) : null}
+                {/* id랑  memberId랑 같으면 삭제 버튼 활성화*/}
+                {userId == comment.memberId ? (
+                  <Button
+                    onClick={handleOpen}
+                    variant="contained"
+                    color="error"
+                    size="small"
+                    sx={{ width: 10, mr: 5, ml: 2 }}
+                  >
+                    삭제
+                  </Button>
+                ) : null}
+              </Stack>
             </Stack>
             {inputStatus === true ? (
               <Stack direction="row" sx={{ ml: 11, mb: 2 }} alignItems="center">
@@ -307,6 +336,28 @@ const Comment3: FC<CommentData> = ({
                   {comment.parentName}
                 </Typography>
                 <Typography sx={{ ml: 1 }}>{comment.content}</Typography>
+              </Stack>
+              <Stack direction="row" alignItems="center">
+                <Button
+                  onClick={onClickInputStatus}
+                  sx={{ color: "#807c7c", fontSize: 12 }}
+                >
+                  답글쓰기
+                </Button>
+                {comment ? (
+                  <Typography>{Unix_timestamp(comment.createDate)}</Typography>
+                ) : null}
+                {userId == comment.memberId ? (
+                  <Button
+                    variant="contained"
+                    color="error"
+                    size="small"
+                    sx={{ width: 10, mr: 5, ml: 2 }}
+                    onClick={handleOpen}
+                  >
+                    삭제
+                  </Button>
+                ) : null}
               </Stack>
             </Stack>
             {inputStatus === true ? (

@@ -19,6 +19,7 @@ import { tableCellClasses } from "@mui/material/TableCell";
 import { FC, useState, useEffect } from "react";
 import CheckVolunteer from "@/components/CheckVolunteer";
 import Pagination from "@/components/Pagination";
+import Link from "next/link";
 
 // api
 import { getInquiryApplyList, endInquiry } from "function/axios";
@@ -65,6 +66,27 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   height: 50,
 }));
 
+const Unix_timestamp = (t) => {
+  var date = new Date(t);
+  date.setHours(date.getHours() + 9);
+  var year = date.getFullYear();
+  var month = "0" + (date.getMonth() + 1);
+  var day = "0" + date.getDate();
+  var hour = "0" + date.getHours();
+  var minute = "0" + date.getMinutes();
+  return (
+    year +
+    "-" +
+    month.substr(-2) +
+    "-" +
+    day.substr(-2) +
+    " " +
+    hour.substr(-2) +
+    ":" +
+    minute.substr(-2)
+  );
+};
+
 const orgpageMyCheckVolunteer: FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [inquiryApplyList, setInquiryApplyList] = useState<any>(null);
@@ -91,6 +113,8 @@ const orgpageMyCheckVolunteer: FC = () => {
     params.id = localStorage.getItem("id");
     getInquiryApplyList(params).then((res) => {
       setInquiryApplyList(res.data.listApply);
+
+      // console.log(res.data);
       setTotalPages(res.data.totalPage);
       setLoading(true);
     });
@@ -104,7 +128,7 @@ const orgpageMyCheckVolunteer: FC = () => {
         component="main"
         sx={{
           flexGrow: 1,
-          // height: "100vh",
+          height: "85vh",
           overflow: "auto",
           mt: 0,
         }}
@@ -115,9 +139,6 @@ const orgpageMyCheckVolunteer: FC = () => {
             <Table sx={{ minWidth: 700 }} aria-label="customized table">
               <TableHead>
                 <TableRow>
-                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                    번호
-                  </StyledTableCell>
                   <StyledTableCell align="center" sx={{ fontSize: 17 }}>
                     제목
                   </StyledTableCell>
@@ -136,17 +157,16 @@ const orgpageMyCheckVolunteer: FC = () => {
                 {inquiryApplyList &&
                   inquiryApplyList.map((data) => (
                     <StyledTableRow key={data.volunteerApplyId}>
-                      <StyledTableCell align="center">
-                        {data.volunteerApplyId}
-                      </StyledTableCell>
                       <StyledTableCell align="center" sx={{ width: 400 }}>
                         {data.title}
                       </StyledTableCell>
                       <StyledTableCell align="center">
-                        {data.volDate}
+                        {Unix_timestamp(data.volDate)}
                       </StyledTableCell>
                       <StyledTableCell align="center">
-                        {data.name}
+                        <Link href={`/userpage/${data.memberId}`}>
+                          {data.name}
+                        </Link>
                       </StyledTableCell>
                       <StyledTableCell align="center">
                         <CheckVolunteer
@@ -160,25 +180,26 @@ const orgpageMyCheckVolunteer: FC = () => {
                         {/* <IsFact fact={data.status} /> */}
                       </StyledTableCell>
                     </StyledTableRow>
-                  )
-                  )
-                }
+                  ))}
               </TableBody>
             </Table>
           </TableContainer>
           {inquiryApplyList && inquiryApplyList.length > 0 ? (
             <Stack alignItems="center" sx={{ mb: 2, mt: 2 }}>
-            <Pagination
-              curPage={curPage}
-              paginate={paginate}
-              totalPage={totalPages}
-            />
-          </Stack>
+              <Pagination
+                curPage={curPage}
+                paginate={paginate}
+                totalPage={totalPages}
+              />
+            </Stack>
           ) : (
-            <Typography variant="h5" sx={{ mt: 10, display: 'flex', justifyContent: 'center'}}>진행 중인 봉사가 없습니다.</Typography>
+            <Typography
+              variant="h5"
+              sx={{ mt: 10, display: "flex", justifyContent: "center" }}
+            >
+              진행 중인 봉사가 없습니다.
+            </Typography>
           )}
-          
-          
         </Container>
       </Box>
     </Box>

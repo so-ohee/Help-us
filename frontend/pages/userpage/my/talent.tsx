@@ -121,7 +121,7 @@ const UserMypageTalent: FC = () => {
         }}
       >
         <Container maxWidth="lg" sx={{}}>
-          <Stack direction="row" justifyContent="space-between">
+          <Stack direction="row" justifyContent="space-between" sx={{ mt: 5 }}>
             <Typography variant="h4">재능 기부 글</Typography>
             <CustomButton href="../../create/talent">글 작성</CustomButton>
           </Stack>
@@ -129,9 +129,6 @@ const UserMypageTalent: FC = () => {
             <Table sx={{ minWidth: 700 }} aria-label="customized table">
               <TableHead>
                 <TableRow>
-                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                    번호
-                  </StyledTableCell>
                   <StyledTableCell align="center" sx={{ fontSize: 17 }}>
                     제목
                   </StyledTableCell>
@@ -144,9 +141,6 @@ const UserMypageTalent: FC = () => {
                 {myTalentDonationList &&
                   myTalentDonationList.map((data) => (
                     <StyledTableRow key={data.volunteerId}>
-                      <StyledTableCell align="center">
-                        {data.no}
-                      </StyledTableCell>
                       <StyledTableCell align="center" sx={{ width: 400 }}>
                         <Link
                           href={`/detail/talent/${data.volunteerId}`}

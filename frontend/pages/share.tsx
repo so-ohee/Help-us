@@ -178,9 +178,6 @@ const Share: FC = () => {
               <TableHead>
                 <TableRow>
                   <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                    번호
-                  </StyledTableCell>
-                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
                     제목
                   </StyledTableCell>
                   <StyledTableCell align="center" sx={{ fontSize: 17 }}>
@@ -195,9 +192,6 @@ const Share: FC = () => {
                 {talentDonationList &&
                   talentDonationList.map((data) => (
                     <StyledTableRow key={data.volunteerId}>
-                      <StyledTableCell align="center">
-                        {data.no}
-                      </StyledTableCell>
                       <StyledTableCell align="center" sx={{ width: 400 }}>
                         <Link
                           href={`/detail/talent/${data.volunteerId}`}

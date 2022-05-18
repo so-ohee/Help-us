@@ -103,6 +103,7 @@ const UserMypageDelivery: FC = () => {
     const id = localStorage.getItem("id");
     getApplyList(id, params, token).then((res) => {
       setApplyList(res.data.apply);
+      // console.log(res.data);
       setTotalPages(res.data.totalPage);
     });
   }, [curPage, PostInfo, postStatus]);
@@ -116,13 +117,16 @@ const UserMypageDelivery: FC = () => {
           component="main"
           sx={{
             flexGrow: 1,
-            // height: "100vh",
+            // height: "90vh",
+            minHeight: "90vh",
             overflow: "auto",
             mt: 0,
           }}
         >
           <Container maxWidth="lg" sx={{}}>
-            <Typography variant="h4">기부 물품 배송 관리</Typography>
+            <Typography variant="h4" sx={{ mt: 5 }}>
+              기부 물품 배송 관리
+            </Typography>
             <TableContainer component={Paper} sx={{ mt: 5 }}>
               <Table sx={{ minWidth: 700 }} aria-label="customized table">
                 <TableHead>
@@ -143,12 +147,6 @@ const UserMypageDelivery: FC = () => {
                       기한
                     </StyledTableCell>
                     <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                      상태
-                    </StyledTableCell>
-                    <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                      배송조회
-                    </StyledTableCell>
-                    <StyledTableCell align="center" sx={{ fontSize: 17 }}>
                       송장입력
                     </StyledTableCell>
                   </TableRow>
@@ -158,7 +156,9 @@ const UserMypageDelivery: FC = () => {
                     applyList.map((data) => (
                       <StyledTableRow key={data.donationApplyId}>
                         <StyledTableCell align="center" sx={{ width: 200 }}>
-                          {data.name}
+                          <Link href={`/orgpage/${data.memberId}`}>
+                            {data.name}
+                          </Link>
                         </StyledTableCell>
                         <StyledTableCell align="center">
                           <Link href={`/detail/donationorg/${data.donationId}`}>
@@ -179,65 +179,6 @@ const UserMypageDelivery: FC = () => {
                         </StyledTableCell>
                         <StyledTableCell align="center">
                           {data.donationDate}
-                        </StyledTableCell>
-                        <StyledTableCell align="center">
-                          {data.status}
-                        </StyledTableCell>
-                        <StyledTableCell align="center">
-                          <>
-                            <form
-                              action="http://info.sweettracker.co.kr/tracking/5"
-                              method="post"
-                            >
-                              <div className="no">
-                                <label>API key</label>
-                                <input
-                                  type="text"
-                                  id="t_key"
-                                  name="t_key"
-                                  placeholder="제공받은 APIKEY"
-                                  value={
-                                    process.env.NEXT_PUBLIC_POST_TRACKER_API_KEY
-                                  }
-                                  readOnly
-                                />
-                              </div>
-                              <div className="no">
-                                <label>택배사 코드</label>
-                                <input
-                                  type="text"
-                                  name="t_code"
-                                  id="t_code"
-                                  placeholder="택배사 코드"
-                                  value={data.parcel}
-                                  readOnly
-                                />
-                              </div>
-                              <div className="no">
-                                <label>운송장 번호</label>
-                                <input
-                                  type="text"
-                                  name="t_invoice"
-                                  id="t_invoice"
-                                  placeholder="운송장 번호"
-                                  value={data.invoice}
-                                  readOnly
-                                />
-                              </div>
-                              <CustomButton2
-                                sx={{ width: 80, height: 30 }}
-                                type="submit"
-                              >
-                                조회하기
-                              </CustomButton2>
-                            </form>
-                          </>
-                          {/* <CustomButton2
-                            onClick={onClickGetPostTracking}
-                            sx={{ width: 40, height: 30 }}
-                          >
-                            조회
-                          </CustomButton2> */}
                         </StyledTableCell>
                         <StyledTableCell align="center">
                           {data.parcel === null ? (
@@ -266,17 +207,21 @@ const UserMypageDelivery: FC = () => {
               </Table>
             </TableContainer>
             {applyList && applyList.length > 0 ? (
-            <Stack alignItems="center" sx={{ mb: 2, mt: 2 }}>
-            <Pagination
-              curPage={curPage}
-              paginate={paginate}
-              totalPage={totalPages}
-            />
-          </Stack>
+              <Stack alignItems="center" sx={{ mb: 2, mt: 2 }}>
+                <Pagination
+                  curPage={curPage}
+                  paginate={paginate}
+                  totalPage={totalPages}
+                />
+              </Stack>
             ) : (
-              <Typography variant="h5" sx={{ mt: 10, display: 'flex', justifyContent: 'center'}}>진행 중인 배송이 없습니다.</Typography>   
-            )
-            }
+              <Typography
+                variant="h5"
+                sx={{ mt: 10, display: "flex", justifyContent: "center" }}
+              >
+                진행 중인 배송이 없습니다.
+              </Typography>
+            )}
           </Container>
         </Box>
       </Box>

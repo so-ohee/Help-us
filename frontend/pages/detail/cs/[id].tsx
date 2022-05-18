@@ -119,6 +119,27 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   height: 62,
 }));
 
+const Unix_timestamp = (t) => {
+  var date = new Date(t);
+  date.setHours(date.getHours() + 9);
+  var year = date.getFullYear();
+  var month = "0" + (date.getMonth() + 1);
+  var day = "0" + date.getDate();
+  var hour = "0" + date.getHours();
+  var minute = "0" + date.getMinutes();
+  return (
+    year +
+    "-" +
+    month.substr(-2) +
+    "-" +
+    day.substr(-2) +
+    " " +
+    hour.substr(-2) +
+    ":" +
+    minute.substr(-2)
+  );
+};
+
 const CsDetail: FC = () => {
   const router = useRouter();
 
@@ -133,7 +154,7 @@ const CsDetail: FC = () => {
   const [deleteStatus, setDeleteStatus] = useState<boolean>(false);
 
   const [detailLoading, setDetailLoading] = useState<boolean>(false);
-  const [name, setName] = useState<string>('');
+  const [name, setName] = useState<string>("");
 
   // 댓글
   const [comment, setComment] = useState<string>("");
@@ -150,7 +171,7 @@ const CsDetail: FC = () => {
     setRole(role);
     setId(id);
     setToken(token);
-  })
+  });
 
   // console.log(id)
   // 상세 페이지 정보 불러오기
@@ -161,7 +182,7 @@ const CsDetail: FC = () => {
         setCommentList(res.data.desk.comments);
         setLoading(true);
         setDetailLoading(true);
-        setLoading(true)
+        setLoading(true);
       });
     }
   }, [router.isReady, comment]);
@@ -176,17 +197,17 @@ const CsDetail: FC = () => {
       return;
     }
     const params = {
-      helpDeskId : router.query.id,
+      helpDeskId: router.query.id,
       content: comment,
-    }
+    };
 
     csComment(id, token, params)
       .then((res) => {
         // console.log("성공" + res)
         setComment("");
       })
-      .catch((err) => console.log("실패" + err))
-  }
+      .catch((err) => console.log("실패" + err));
+  };
 
   return (
     <>
@@ -221,8 +242,7 @@ const CsDetail: FC = () => {
                       marginTop: "6px",
                     }}
                   >
-                    { csDetails && csDetails.profile ? (
-
+                    {csDetails && csDetails.profile ? (
                       <Image
                         src={csDetails.profile}
                         alt="orgImage"
@@ -257,15 +277,28 @@ const CsDetail: FC = () => {
               <Stack
                 justifyContent="space-between"
                 direction="row"
-                sx={{ mt: 1.5, mb: 3 }}
+                sx={{ mt: 1.5, mb: 3, ml: 7 }}
                 alignItems="center"
               >
                 <Typography variant="h4" fontWeight="bold" sx={{ mt: 3 }}>
-                {csDetails.title}
+                  {csDetails.title}
                 </Typography>
-                <CustomButton variant="contained" size="small" sx={{ width: 30 }} onClick={() => history.back()}>
+                <CustomButton
+                  variant="contained"
+                  size="small"
+                  sx={{ width: 30 }}
+                  onClick={() => history.back()}
+                >
                   목록
                 </CustomButton>
+              </Stack>
+              <Stack sx={{ ml: 8 }} direction="row">
+                <Typography variant="h6" sx={{ mb: 3 }} fontWeight="bold">
+                  카테고리 :
+                </Typography>
+                <Typography variant="h6" sx={{ mb: 3, ml: 1 }}>
+                  {csDetails.category}
+                </Typography>
               </Stack>
               {/* 게시글 이미지 */}
               <Stack
@@ -304,7 +337,7 @@ const CsDetail: FC = () => {
                 fontWeight="bold"
                 textAlign="right"
               >
-                작성일 {csDetails.createDate}
+                작성일 {Unix_timestamp(csDetails.createDate)}
               </Typography>
 
               {csDetails.updateDate === null ? null : (
@@ -314,49 +347,58 @@ const CsDetail: FC = () => {
                   fontWeight="bold"
                   textAlign="right"
                 >
-                  수정일 {csDetails.updateDate}
+                  수정일 {Unix_timestamp(csDetails.updateDate)}
                 </Typography>
               )}
-              
+
               <Divider color="#CDAD78" sx={{ my: 2, borderBottomWidth: 5 }} />
               <Typography variant="h5" fontWeight="bold" sx={{ mx: 5 }}>
-                댓글 
+                댓글
               </Typography>
-              {commentList < 1 && role === "ADMIN"? (
-              <Stack
-                justifyContent="space-between"
-                direction="row"
-                sx={{ mt: 1.5, mb: 3, mx: 5 }}
-                alignItems="center"
-              >
-                <CssTextField
-                  sx={{ backgroundColor: "#ffffff", width: 1000 }}
-                  size="small"
-                  value={comment}
-                  onChange={(e) => setComment(e.target.value)}
-                />
-                
-                  <CustomButton 
-                    variant="contained" 
-                    size="small" 
+              {commentList < 1 && role === "ADMIN" ? (
+                <Stack
+                  justifyContent="space-between"
+                  direction="row"
+                  sx={{ mt: 1.5, mb: 3, mx: 5 }}
+                  alignItems="center"
+                >
+                  <CssTextField
+                    sx={{ backgroundColor: "#ffffff", width: 1000 }}
+                    size="small"
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
+                  />
+
+                  <CustomButton
+                    variant="contained"
+                    size="small"
                     sx={{ width: 30 }}
                     onClick={handelComment}
-                    >
+                  >
                     등록
-                    </CustomButton>
-              </Stack>
-                ) : (<Box sx={{ height: 30 }}></Box>)}
+                  </CustomButton>
+                </Stack>
+              ) : (
+                <Box sx={{ height: 30 }}></Box>
+              )}
               <Stack>
-                {commentList && commentList.map((item) => (
-                  <Comment comment={item} id={id} token={token} getDeleteStatus={getDeleteStatus} deleteStatus={deleteStatus} />
-                ))}
+                {commentList &&
+                  commentList.map((item, i) => (
+                    <Comment
+                      comment={item}
+                      id={id}
+                      token={token}
+                      getDeleteStatus={getDeleteStatus}
+                      deleteStatus={deleteStatus}
+                      key={i}
+                    />
+                  ))}
               </Stack>
             </Container>
           </Box>
         </Box>
       ) : null}
     </>
-    
   );
 };
 

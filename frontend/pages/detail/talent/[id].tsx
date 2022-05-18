@@ -156,7 +156,7 @@ const TalentDetail: FC = () => {
   const [id, setId] = useState<any>();
   const [token, setToken] = useState<any>();
   const [role, setRole] = useState<any>();
-  
+
   const getDeleteStatus = (deleteStatus) => {
     setDeleteStatus(deleteStatus);
   };
@@ -166,7 +166,7 @@ const TalentDetail: FC = () => {
     if (router.isReady) {
       getTalentDonationDetail(router.query.id).then((res) => {
         setTalentDonationDetail(res.data.volunteer);
-        console.log("ttt", talentDonationDetail);
+        // console.log("ttt", talentDonationDetail);
         setLoading2(true);
       });
     }
@@ -297,7 +297,9 @@ const TalentDetail: FC = () => {
                 </Grid>
                 <Grid>
                   <Typography sx={{ mt: 2.5 }} variant="h6" fontWeight="bold">
-                    {talentDonationDetail.name}
+                    <Link href={`/userpage/${talentDonationDetail.memberId}`}>
+                      {talentDonationDetail.name}
+                    </Link>
                   </Typography>
                   <Grid
                     sx={{ mt: 2 }}
@@ -411,16 +413,30 @@ const TalentDetail: FC = () => {
               <Stack>
                 {commentList &&
                   commentList.map((item, i) => (
-                    <Comment comment={item} id={id} token={token} key={i} getDeleteStatus={getDeleteStatus} deleteStatus={deleteStatus}/>
+                    <Comment
+                      comment={item}
+                      id={id}
+                      token={token}
+                      key={i}
+                      getDeleteStatus={getDeleteStatus}
+                      deleteStatus={deleteStatus}
+                    />
                   ))}
               </Stack>
               {commentList && commentList.length > 0 ? (
-              <Box sx={{ display: "flex", justifyContent: "center", my: 5, pb:5 }}>
-                <Pagination
-                  paginate={paginate}
-                  curPage={curPage}
-                  totalPage={totalPages}
-                />
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    my: 5,
+                    pb: 5,
+                  }}
+                >
+                  <Pagination
+                    paginate={paginate}
+                    curPage={curPage}
+                    totalPage={totalPages}
+                  />
                 </Box>
               ) : null}
             </Container>

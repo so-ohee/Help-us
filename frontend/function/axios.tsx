@@ -70,14 +70,14 @@ export const donationOrgComment = async (id, token, params) => {
 };
 
 // 물품 기부 상세 페이지 대댓글 작성
-export const donationOrgRecomment = async (id, token, params) => {
+export const donationOrgRecomment = async (id, token, data) => {
   return await axios({
     method: "POST",
     url: "/8000/d.comment",
     headers: {
       Authorization: token,
     },
-    data: params,
+    data: data,
   });
 };
 
@@ -154,14 +154,14 @@ export const reviewCommentList = async (id, params) => {
 };
 
 // 후기 상세 페이지 댓글 작성
-export const reviewComment = async (id, token, params) => {
+export const reviewComment = async (id, token, data) => {
   return await axios({
     method: "POST",
     url: "/8000/d.comment",
     headers: {
       Authorization: token,
     },
-    data: params,
+    data: data,
   });
 };
 
@@ -220,7 +220,7 @@ export const getUserDonationList = async (id, params) => {
 
 // 마이페이지(개인) - 후원 송장 입력
 export const sendApply = async (id, token, data) => {
-  console.log(id, data);
+  // console.log(id, data);
   return await axios({
     method: "PUT",
     url: "/8000/d.apply",
@@ -446,14 +446,15 @@ export const talentCommentDelete = async (commentId, id, token) => {
 };
 
 // 재능 기부 상세 페이지 대댓글 작성
-export const talentRecomment = async (id, token, params) => {
+export const talentRecomment = async (id, token, data) => {
   return await axios({
     method: "POST",
     url: "/8000/v.comment",
     headers: {
       Authorization: token,
+      memberId: id,
     },
-    data: params,
+    data: data,
   });
 };
 
@@ -576,7 +577,7 @@ export const getVolunteerOrg = async (memberId, params) => {
 
 //봉사 현황 조회
 export const getInquiryApplyList = async (params) => {
-  console.log(params.page);
+  // console.log(params.page);
   return await axios({
     method: "GET",
     url: `/8000/api/inquiry/apply/${params.id}`,

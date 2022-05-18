@@ -35,7 +35,7 @@ import BusinessIcon from "@mui/icons-material/Business";
 import CallIcon from "@mui/icons-material/Call";
 import MailIcon from "@mui/icons-material/Mail";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
-import Comment from "../../../components/Comment3";
+import Comment from "../../../components/CommentReview";
 import Pagination from "../../../components/Pagination";
 
 import defaultImage from "../../../public/images/defaultImage.png";
@@ -147,7 +147,6 @@ const ReviewDetail: FC = () => {
   const [role, setRole] = useState<any>("");
   const [deleteStatus, setDeleteStatus] = useState<boolean>(false);
 
-
   // 댓글
   const [comment, setComment] = useState<string>("");
   const [parentCommentId, setParentComeentId] = useState("");
@@ -178,7 +177,7 @@ const ReviewDetail: FC = () => {
     if (router.isReady) {
       reviewDetail(router.query.id).then((res) => {
         setReviewDetails(res.data.confirm);
-        console.log(res.data);
+        // console.log(res.data);
         setDetailLoading(true);
       });
     }
@@ -229,7 +228,7 @@ const ReviewDetail: FC = () => {
     }
     const id = localStorage.getItem("id");
     const token = localStorage.getItem("jwt");
-    console.log(router.query.id);
+    // console.log(router.query.id);
 
     const params = {
       boardId: router.query.id,
@@ -239,15 +238,17 @@ const ReviewDetail: FC = () => {
 
     reviewComment(id, token, params)
       .then((res) => {
-        console.log(res + "성공");
+        // console.log(res + "성공");
         setComment("");
       })
       .catch((err) => console.log(err + "실패"));
   };
 
+  const cDate = "" + reviewDetails?.createDate;
+
   return (
     <>
-      {loading1 && loading2 && loading3? (
+      {loading1 && loading2 && loading3 ? (
         <Box sx={{ display: "flex" }}>
           <CssBaseline />
           <Box
@@ -296,9 +297,15 @@ const ReviewDetail: FC = () => {
                   </div>
                 </Grid>
                 <Grid>
-                  <Typography sx={{ mt: 0.5 }} variant="h6" fontWeight="bold">
-                    {orgInfo ? orgInfo.name : null}
-                  </Typography>
+                  <Link
+                    href={`/orgpage/${orgInfo.memberId}`}
+                    underline="none"
+                    color="inherit"
+                  >
+                    <Typography sx={{ mt: 0.5 }} variant="h6" fontWeight="bold">
+                      {orgInfo ? orgInfo.name : null}
+                    </Typography>
+                  </Link>
                   <Grid
                     sx={{ mt: 2 }}
                     container
@@ -402,7 +409,7 @@ const ReviewDetail: FC = () => {
                 </Stack>
               </Stack>
               <Stack
-                justifyContent="space-between"
+                justifyContent="right"
                 direction="row"
                 sx={{ mt: 1.5, mb: 3 }}
                 alignItems="center"
@@ -416,7 +423,7 @@ const ReviewDetail: FC = () => {
                     작성일
                   </Typography>
                   <Typography variant="h6" sx={{ mt: 3 }}>
-                    {reviewDetails ? reviewDetails.createDate : null}
+                    {reviewDetails ? cDate.substring(0, 10) : null}
                   </Typography>
                 </Stack>
               </Stack>
@@ -476,45 +483,52 @@ const ReviewDetail: FC = () => {
                 </Table>
               </TableContainer>
               {sponsorList && sponsorList.length > 0 ? (
-              <Box sx={{ display: "flex", justifyContent: "center", my: 5,pb: 5 }}>
-                <Pagination
-                  paginate={paginate}
-                  curPage={curPage}
-                  totalPage={totalPages}
-                />
-              </Box>
-                ): (
-                  <></>
-                )}
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    my: 5,
+                    pb: 5,
+                  }}
+                >
+                  <Pagination
+                    paginate={paginate}
+                    curPage={curPage}
+                    totalPage={totalPages}
+                  />
+                </Box>
+              ) : (
+                <></>
+              )}
               <Divider color="#CDAD78" sx={{ my: 4, borderBottomWidth: 5 }} />
               <Typography variant="h5" fontWeight="bold" sx={{ mx: 5 }}>
                 댓글
               </Typography>
               {role === "USER" || role === "ORG" || role === "ADMIN" ? (
-              <Stack
-                justifyContent="space-between"
-                direction="row"
-                sx={{ mt: 1.5, mb: 3, mx: 5 }}
-                alignItems="center"
-              >
-                <CssTextField
-                  sx={{ backgroundColor: "#ffffff", width: 1000 }}
-                  size="small"
-                  value={comment}
-                  onChange={(e) => setComment(e.target.value)}
-                />
-                <CustomButton
-                  variant="contained"
-                  size="small"
-                  sx={{ width: 30 }}
-                  onClick={handleComment}
+                <Stack
+                  justifyContent="space-between"
+                  direction="row"
+                  sx={{ mt: 1.5, mb: 3, mx: 5 }}
+                  alignItems="center"
                 >
-                  등록
-                </CustomButton>
+                  <CssTextField
+                    sx={{ backgroundColor: "#ffffff", width: 1000 }}
+                    size="small"
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
+                  />
+                  <CustomButton
+                    variant="contained"
+                    size="small"
+                    sx={{ width: 30 }}
+                    onClick={handleComment}
+                  >
+                    등록
+                  </CustomButton>
                 </Stack>
               ) : (
-              <Box sx={{ height: 30 }}></Box>
-            )}
+                <Box sx={{ height: 30 }}></Box>
+              )}
               {commentList &&
                 commentList.map((item, index) => (
                   <Comment
@@ -522,21 +536,28 @@ const ReviewDetail: FC = () => {
                     comment={item}
                     id={userId}
                     token={token}
-                    getDeleteStatus={getDeleteStatus} 
+                    getDeleteStatus={getDeleteStatus}
                     deleteStatus={deleteStatus}
                   />
                 ))}
               {commentList && commentList.length > 0 ? (
-                <Box sx={{ display: "flex", justifyContent: "center", my: 5, pb:5 }}>
-                <Stack alignItems="center" sx={{ mb: 2, mt: 5 }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    my: 5,
+                    pb: 5,
+                  }}
+                >
+                  <Stack alignItems="center" sx={{ mb: 2, mt: 5 }}>
                     <Pagination
                       curPage={curPage2}
                       paginate={paginate2}
                       totalPage={totalPages2}
                     />
-                    </Stack>
-              </Box>
-              ): (
+                  </Stack>
+                </Box>
+              ) : (
                 <></>
               )}
             </Container>

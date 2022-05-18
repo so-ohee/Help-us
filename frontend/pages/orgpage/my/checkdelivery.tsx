@@ -14,14 +14,17 @@ import {
   Paper,
   Table,
   Button,
+  Modal,
 } from "@mui/material";
 import { tableCellClasses } from "@mui/material/TableCell";
 import { FC, useEffect, useState } from "react";
 import Pagination from "@/components/Pagination";
+import Link from "next/link";
 
 // api
 import { getDeliveryList, endDelivery } from "function/axios";
 import { WindowSharp } from "@mui/icons-material";
+import { BaseOptions } from "vm";
 
 const CustomButton = styled(Button)({
   backgroundColor: "#5B321E",
@@ -64,6 +67,19 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
+const style = {
+  position: "absolute" as "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "#e9e1d3",
+  // border: "2px solid #000",
+  borderRadius: 2,
+  // boxShadow: 24,
+  p: 2,
+};
+
 const orgpageMyCheckDelivery: FC = () => {
   // 배송 현황 리스트
   const [deliveryList, setDeliveryList] = useState<any>("");
@@ -73,6 +89,13 @@ const orgpageMyCheckDelivery: FC = () => {
   const [totalPages, setTotalPages] = useState(0);
   const paginate = (pageNumber) => setCurPage(pageNumber);
 
+  const [cpStatus, setCpStatus] = useState<boolean>(false);
+
+  // 모달
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   // 도착 완료
   const deliverySubmit = (e) => {
     const id = localStorage.getItem("id");
@@ -81,7 +104,8 @@ const orgpageMyCheckDelivery: FC = () => {
 
     endDelivery(token, donationApplyId, id)
       .then((res) => {
-        console.log(res + "성공");
+        // console.log(res + "성공");
+        setCpStatus(!cpStatus);
       })
       .catch((err) => console.log(err + "실패"));
   };
@@ -92,11 +116,12 @@ const orgpageMyCheckDelivery: FC = () => {
     const params = {
       page: curPage,
     };
-    getDeliveryList(memberId, token,params).then((res) => {
+    getDeliveryList(memberId, token, params).then((res) => {
       setDeliveryList(res.data.apply);
+      // console.log(res.data);
       setTotalPages(res.data.totalPage);
     });
-  }, [deliverySubmit]);
+  }, [cpStatus]);
 
   return (
     <>
@@ -118,14 +143,14 @@ const orgpageMyCheckDelivery: FC = () => {
               <Table sx={{ minWidth: 700 }} aria-label="customized table">
                 <TableHead>
                   <TableRow>
-                    <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                    {/* <StyledTableCell align="center" sx={{ fontSize: 17 }}>
                       기부 번호
-                    </StyledTableCell>
+                    </StyledTableCell> */}
                     <StyledTableCell align="center" sx={{ fontSize: 17 }}>
                       글 제목
                     </StyledTableCell>
                     <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                      물품 상세
+                      물품명
                     </StyledTableCell>
                     <StyledTableCell align="center" sx={{ fontSize: 17 }}>
                       수량
@@ -148,11 +173,13 @@ const orgpageMyCheckDelivery: FC = () => {
                   {deliveryList &&
                     deliveryList.map((data) => (
                       <StyledTableRow key={data.donationApplyId}>
-                        <StyledTableCell align="center">
+                        {/* <StyledTableCell align="center">
                           {data.donationApplyId}
-                        </StyledTableCell>
+                        </StyledTableCell> */}
                         <StyledTableCell align="center" sx={{ width: 300 }}>
-                          {data.title}
+                          <Link href={`/detail/donationorg/${data.donationId}`}>
+                            {data.title}
+                          </Link>
                         </StyledTableCell>
                         <StyledTableCell align="center">
                           {data.productName}
@@ -161,7 +188,9 @@ const orgpageMyCheckDelivery: FC = () => {
                           {data.count}
                         </StyledTableCell>
                         <StyledTableCell align="center">
-                          {data.name}
+                          <Link href={`/userpage/${data.memberId}`}>
+                            {data.name}
+                          </Link>
                         </StyledTableCell>
                         <StyledTableCell align="center">
                           {data.donationDate}

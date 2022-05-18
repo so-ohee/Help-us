@@ -128,7 +128,7 @@ const orgpageMyDonation: FC = () => {
   // pagination2
   const [curPage2, setCurPage2] = useState(1);
   const [totalPages2, setTotalPages2] = useState(0);
-  const paginate2 = (pageNumber) => setCurPage(pageNumber);
+  const paginate2 = (pageNumber) => setCurPage2(pageNumber);
 
   const [mId, setMID] = useState<any>("");
   const [userToken, setUserToken] = useState<any>("");
@@ -192,7 +192,9 @@ const orgpageMyDonation: FC = () => {
               <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
                 <Stack direction="row" justifyContent="space-between">
                   <Typography variant="h4">물품 후원 게시글</Typography>
-                  <CustomButton href="/create/donationorg">글 작성</CustomButton>
+                  <CustomButton href="/create/donationorg">
+                    글 작성
+                  </CustomButton>
                 </Stack>
                 {/* Tab 시작 */}
                 <Box sx={{ width: "100%", mt: 2 }}>

@@ -21,7 +21,7 @@ import { FC, useState, useEffect } from "react";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
 import Link from "next/link";
 import Pagination from "@/components/Pagination";
-import { getUserDonationList } from "../../../function/axios";
+import { getUserDonationList, getPostCompany } from "../../../function/axios";
 
 const CustomButton = styled(Button)({
   backgroundColor: "#5B321E",
@@ -82,17 +82,39 @@ const UserMypageDonation: FC = () => {
   const [totalPages, setTotalPages] = useState(0);
   const paginate = (pageNumber) => setCurPage(pageNumber);
 
+  // 택배사 리스트 api
+  const [companyList, setCompanyList] = useState<any[]>([]);
+
   const params = {
     page: curPage,
   };
+
+  // 택배사 코드 -> 이름
+  const findCompanyName = (id) => {
+    var result = "";
+    for (let i = 0; i < companyList.length; i++) {
+      if (companyList[i].Code.toString() == id.toString()) {
+        result = companyList[i].Name;
+        return result;
+      }
+    }
+  };
+
+  useEffect(() => {
+    getPostCompany().then((res) => {
+      setCompanyList(res.data.Company);
+    });
+  }, []);
 
   useEffect(() => {
     const id = localStorage.getItem("id");
     getUserDonationList(id, params).then((res) => {
       setDonationList(res.data.apply);
+      console.log(res.data);
       setTotalPages(res.data.totalPage);
     });
   }, [curPage]);
+
   return (
     <>
       <Box sx={{ display: "flex" }}>
@@ -108,14 +130,18 @@ const UserMypageDonation: FC = () => {
           }}
         >
           <Container maxWidth="lg" sx={{}}>
-            <div style={{ display: "flex" }}>
+            <Stack
+              direction="row"
+              justifyContent="space-between"
+              sx={{ mt: 5 }}
+            >
               <Typography variant="h4">물품 기부 조회</Typography>
               <Link href="/certi">
                 <UpdateButton style={{ marginLeft: "10px", marginTop: "5px" }}>
                   증명서 발급
                 </UpdateButton>
               </Link>
-            </div>
+            </Stack>
             <TableContainer component={Paper} sx={{ mt: 5 }}>
               <Table sx={{ minWidth: 700 }} aria-label="customized table">
                 <TableHead>
@@ -133,14 +159,14 @@ const UserMypageDonation: FC = () => {
                       수량
                     </StyledTableCell>
                     <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                      날짜
+                      기부일자
                     </StyledTableCell>
-                    <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                    {/* <StyledTableCell align="center" sx={{ fontSize: 17 }}>
                       송장 번호
                     </StyledTableCell>
                     <StyledTableCell align="center" sx={{ fontSize: 17 }}>
                       택배사
-                    </StyledTableCell>
+                    </StyledTableCell> */}
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -170,12 +196,12 @@ const UserMypageDonation: FC = () => {
                         <StyledTableCell align="center">
                           {data.donationDate}
                         </StyledTableCell>
-                        <StyledTableCell align="center">
+                        {/* <StyledTableCell align="center">
                           {data.invoice}
                         </StyledTableCell>
                         <StyledTableCell align="center">
-                          {data.parcel}
-                        </StyledTableCell>
+                          {findCompanyName(data.parcel)}
+                        </StyledTableCell> */}
                       </StyledTableRow>
                     ))}
                 </TableBody>

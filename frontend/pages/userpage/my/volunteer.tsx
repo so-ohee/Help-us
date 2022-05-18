@@ -65,14 +65,24 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 const Unix_timestamp = (t) => {
   var date = new Date(t);
-  date.setHours(date.getHours()+9)
+  date.setHours(date.getHours() + 9);
   var year = date.getFullYear();
-  var month = "0" + (date.getMonth()+1);
+  var month = "0" + (date.getMonth() + 1);
   var day = "0" + date.getDate();
   var hour = "0" + date.getHours();
   var minute = "0" + date.getMinutes();
-  return year + "-" + month.substr(-2) + "-" + day.substr(-2) + " " + hour.substr(-2) + ":" + minute.substr(-2)
-}
+  return (
+    year +
+    "-" +
+    month.substr(-2) +
+    "-" +
+    day.substr(-2) +
+    " " +
+    hour.substr(-2) +
+    ":" +
+    minute.substr(-2)
+  );
+};
 
 // const ConvertTime = ((stringTime) => ({
 //   console.log(stringTime);
@@ -93,16 +103,18 @@ const UserMypageVolunteer: FC = () => {
   useEffect(() => {
     const id = localStorage.getItem("id");
     getMyvolunteerList(id, params).then((res) => {
-      if (res.data.listVolunteer){
-        let tmpList = res.data.listVolunteer.filter((data) => data.status !== 2);
+      if (res.data.listVolunteer) {
+        let tmpList = res.data.listVolunteer.filter(
+          (data) => data.status !== 2
+        );
         let converted = new Date(tmpList[0].volDate);
         // console.log(converted);
         // console.log(converted.getHours);
         // console.log(typeof (tmpList[0].volDate))
         setVolunteerList(tmpList);
+        // console.log(volunteerList);
         setTotalPages(res.data.totalPage);
       }
-
     });
   }, [curPage]);
   return (
@@ -120,16 +132,18 @@ const UserMypageVolunteer: FC = () => {
           }}
         >
           <Container maxWidth="lg" sx={{}}>
-            <Typography variant="h4">봉사 조회</Typography>
+            <Typography variant="h4" sx={{ mt: 5 }}>
+              봉사 조회
+            </Typography>
             <TableContainer component={Paper} sx={{ mt: 5 }}>
               <Table sx={{ minWidth: 700 }} aria-label="customized table">
                 <TableHead>
                   <TableRow>
                     <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                      봉사글
+                      제목
                     </StyledTableCell>
                     <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                      제목
+                      봉사글
                     </StyledTableCell>
                     <StyledTableCell align="center" sx={{ fontSize: 17 }}>
                       일시
@@ -152,6 +166,9 @@ const UserMypageVolunteer: FC = () => {
                   {volunteerList &&
                     volunteerList.map((data) => (
                       <StyledTableRow key={data.volunteerId}>
+                        <StyledTableCell align="center" sx={{ width: 200 }}>
+                          {data.title}
+                        </StyledTableCell>
                         <StyledTableCell align="center">
                           <Link href={`/detail/volunteer/${data.volunteerId}`}>
                             <Button>
@@ -163,48 +180,50 @@ const UserMypageVolunteer: FC = () => {
                             </Button>
                           </Link>
                         </StyledTableCell>
-                        <StyledTableCell align="center" sx={{ width: 200 }}>
-                          {data.title}
-                        </StyledTableCell>
                         <StyledTableCell align="center">
                           {Unix_timestamp(data.volDate)}
                         </StyledTableCell>
                         <StyledTableCell align="center">
-                          {data.volAddress}
+                          <Link
+                            href={`https://map.kakao.com/link/search/'${data.volAddress}'`}
+                          >
+                            {data.volAddress}
+                          </Link>
                         </StyledTableCell>
                         <StyledTableCell align="center">
-                          {data.name}
+                          <Link href={`/orgpage/${data.memberId}`}>
+                            {data.name}
+                          </Link>
                         </StyledTableCell>
                         <StyledTableCell align="center">
                           {data.time}
                         </StyledTableCell>
-                        {
-                          data.status === 0 ? (
-                            <StyledTableCell align="center">
-                              대기
-                            </StyledTableCell>
-                          ) : (
-                            <StyledTableCell align="center">
-                              완료
-                            </StyledTableCell>
-                          )
-                        }
+                        {data.status === 0 ? (
+                          <StyledTableCell align="center">대기</StyledTableCell>
+                        ) : (
+                          <StyledTableCell align="center">완료</StyledTableCell>
+                        )}
                       </StyledTableRow>
                     ))}
                 </TableBody>
               </Table>
             </TableContainer>
             {volunteerList && volunteerList.length > 0 ? (
-            <Stack alignItems="center" sx={{ mb: 2, mt: 2 }}>
-            <Pagination
-              curPage={curPage}
-              paginate={paginate}
-              totalPage={totalPages}
-            />
-          </Stack>
-          ) : (
-            <Typography variant="h5" sx={{ mt: 10, display: 'flex', justifyContent: 'center'}}>봉사 내역이 없습니다.</Typography>
-          )}
+              <Stack alignItems="center" sx={{ mb: 2, mt: 2 }}>
+                <Pagination
+                  curPage={curPage}
+                  paginate={paginate}
+                  totalPage={totalPages}
+                />
+              </Stack>
+            ) : (
+              <Typography
+                variant="h5"
+                sx={{ mt: 10, display: "flex", justifyContent: "center" }}
+              >
+                봉사 내역이 없습니다.
+              </Typography>
+            )}
           </Container>
         </Box>
       </Box>

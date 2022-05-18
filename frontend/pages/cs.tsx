@@ -71,7 +71,7 @@ const CsMain: FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [csList, setCSList] = useState<any>(null);
   const [option, setOption] = useState("전체");
-  
+
   const [word, setWord] = useState("");
   // pagination
   const [curPage, setCurPage] = useState(1);
@@ -88,55 +88,49 @@ const CsMain: FC = () => {
   const params = {
     page: curPage,
     category: null,
-    word: null
+    word: null,
   };
   const Search = (e: FormEvent) => {
     e.preventDefault();
     console.log("option : " + option);
     console.log("word : " + word);
-    if (option === "전체")
-      params.category = null;
-    else
-      params.category = option;
-    if (word === '')
-      params.word = null;
-    else
-      params.word = word;
+    if (option === "전체") params.category = null;
+    else params.category = option;
+    if (word === "") params.word = null;
+    else params.word = word;
     setLoading(false);
     getCSList(params).then((res) => {
-      console.log(res);
-      setCSList(res.data.desk);
-      setTotalPages(res.data.totalPage);
-      // console.log("data는", reviewList);
-      setLoading(true);
-    });
-  }
-  const optionHandleChange = (event: SelectChangeEvent) => {
-    setOption(event.target.value as string);
-    if (event.target.value === "전체")
-      params.category = null;
-    else
-      params.category = event.target.value;
-    if (word === '')
-      params.word = null;
-    console.log(event.target.value);
-    setLoading(false);
-    getCSList(params).then((res) => {
-      console.log(res);
+      // console.log(res);
       setCSList(res.data.desk);
       setTotalPages(res.data.totalPage);
       // console.log("data는", reviewList);
       setLoading(true);
     });
   };
-  
+  const optionHandleChange = (event: SelectChangeEvent) => {
+    setOption(event.target.value as string);
+    if (event.target.value === "전체") params.category = null;
+    else params.category = event.target.value;
+    if (word === "") params.word = null;
+    // console.log(event.target.value);
+    setLoading(false);
+    getCSList(params).then((res) => {
+      // console.log(res.data);
+      setCSList(res.data.desk);
+      setTotalPages(res.data.totalPage);
+      // console.log("data는", reviewList);
+      setLoading(true);
+    });
+  };
+
   useEffect(() => {
     setMyId(Number(localStorage.getItem("id")));
     setMyRole(localStorage.getItem("role"));
-    
+
     getCSList(params).then((res) => {
       // console.log(res);
       setCSList(res.data.desk);
+      // console.log(res.data);
       setTotalPages(res.data.totalPage);
       // console.log("data는", reviewList);
       setLoading(true);
@@ -153,7 +147,7 @@ const CsMain: FC = () => {
               <CarouselMain />
             </Stack>
           </Box>
-          <Box sx={{ fontWeight: "bold", my: 5 }}>
+          <Box sx={{ fontWeight: "bold", mt: 5 }}>
             <Typography variant="h4" textAlign="center">
               문의 게시판
             </Typography>
@@ -161,20 +155,21 @@ const CsMain: FC = () => {
           <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
             {myRole === "USER" || myRole === "ORG" ? (
               <CustomButton variant="contained" href="create/cs">
-              글 작성
-            </CustomButton>
-            ): (
+                글 작성
+              </CustomButton>
+            ) : (
               <></>
             )}
-            
           </Box>
           <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 1 }}>
-            <Box sx={{
-                      minWidth: 200,
-                      display: "flex",
-                      justifyContent: "flex-end",
-                      mr: 6,
-            }}>
+            <Box
+              sx={{
+                minWidth: 200,
+                display: "flex",
+                justifyContent: "flex-end",
+                mr: 6,
+              }}
+            >
               <FormControl>
                 <InputLabel>카테고리</InputLabel>
                 <Select
@@ -191,7 +186,7 @@ const CsMain: FC = () => {
                 </Select>
               </FormControl>
             </Box>
-            
+
             <Paper
               component="form"
               sx={{
@@ -205,8 +200,9 @@ const CsMain: FC = () => {
               <InputBase
                 sx={{ ml: 1, flex: 1 }}
                 placeholder="검색"
-                onChange={event=>{                                 //adding the onChange event
-                  setWord(event.target.value)
+                onChange={(event) => {
+                  //adding the onChange event
+                  setWord(event.target.value);
                 }}
               />
               <IconButton type="submit" sx={{ p: "10px" }} onClick={Search}>
@@ -220,22 +216,19 @@ const CsMain: FC = () => {
                 <TableHead>
                   <TableRow>
                     <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                      번호
-                    </StyledTableCell>
-                    <StyledTableCell align="center" sx={{ fontSize: 17 }}>
                       카테고리
                     </StyledTableCell>
                     <StyledTableCell align="center" sx={{ fontSize: 17 }}>
                       제목
                     </StyledTableCell>
                     <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                      작성일
-                    </StyledTableCell>
-                    <StyledTableCell align="center" sx={{ fontSize: 17 }}>
                       공개 여부
                     </StyledTableCell>
                     <StyledTableCell align="center" sx={{ fontSize: 17 }}>
                       답변 여부
+                    </StyledTableCell>
+                    <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                      작성일
                     </StyledTableCell>
                   </TableRow>
                 </TableHead>
@@ -244,33 +237,39 @@ const CsMain: FC = () => {
                     csList.map((data) => (
                       <StyledTableRow key={data.helpDeskId}>
                         <StyledTableCell align="center">
-                          {data.helpDeskId}
-                        </StyledTableCell>
-                        <StyledTableCell align="center">
                           {data.category}
                         </StyledTableCell>
-                        
-                          {myRole !== "ADMIN" && data.visible === "비공개" && data.memberId !== myId ? (
-                            <StyledTableCell align="center" sx={{ width: 400 }} onClick={onClickVisible}>
-                            { data.title }
-                            </StyledTableCell>
+
+                        {myRole !== "ADMIN" &&
+                        data.visible === "비공개" &&
+                        data.memberId !== myId ? (
+                          <StyledTableCell
+                            align="center"
+                            sx={{ width: 400 }}
+                            onClick={onClickVisible}
+                          >
+                            {data.title}
+                          </StyledTableCell>
                         ) : (
                           <StyledTableCell align="center" sx={{ width: 400 }}>
-                          <Link href={`/detail/cs/${data.helpDeskId}`} underline="none" color="inherit">
-                          {data.title}
-                        </Link>
-                        </StyledTableCell>
-                            )
-                          }
-                        
-                        <StyledTableCell align="center">
-                          {data.createDate.substr(0, 10)}
-                        </StyledTableCell>
+                            <Link
+                              href={`/detail/cs/${data.helpDeskId}`}
+                              underline="none"
+                              color="inherit"
+                            >
+                              {data.title}
+                            </Link>
+                          </StyledTableCell>
+                        )}
+
                         <StyledTableCell align="center">
                           {data.visible}
                         </StyledTableCell>
                         <StyledTableCell align="center">
                           {data.status}
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                          {data.createDate.substr(0, 10)}
                         </StyledTableCell>
                       </StyledTableRow>
                     ))}
@@ -286,10 +285,9 @@ const CsMain: FC = () => {
                 totalPage={totalPages}
               />
             </Stack>
-          ): (
-              <></>
+          ) : (
+            <></>
           )}
-          
         </Stack>
       </Grid>
     </div>

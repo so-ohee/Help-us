@@ -189,7 +189,7 @@ const PostInfo: FC<IPostInfo> = ({
   return (
     <>
       {loading ? (
-        <Stack direction="row">
+        <Stack direction="row" justifyContent="center">
           <Stack alignItems="center">
             <CssAutocomplete
               onChange={getCompany}

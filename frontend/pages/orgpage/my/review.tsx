@@ -214,7 +214,7 @@ const orgpageMyReview: FC = () => {
             component="main"
             sx={{
               flexGrow: 1,
-              // height: "100vh",
+              height: "90vh",
               overflow: "auto",
               mt: 0,
             }}
@@ -295,12 +295,6 @@ const orgpageMyReview: FC = () => {
                                   align="center"
                                   sx={{ fontSize: 17 }}
                                 >
-                                  기부글 번호
-                                </StyledTableCell>
-                                <StyledTableCell
-                                  align="center"
-                                  sx={{ fontSize: 17 }}
-                                >
                                   제목
                                 </StyledTableCell>
                                 <StyledTableCell
@@ -315,14 +309,12 @@ const orgpageMyReview: FC = () => {
                               {reviews &&
                                 reviews.map((data) => (
                                   <StyledTableRow key={data.donationConfirmId}>
-                                    <StyledTableCell
-                                      align="center"
-                                      sx={{ width: 400 }}
-                                    >
-                                      {data.donationConfirmId}
-                                    </StyledTableCell>
                                     <StyledTableCell align="center">
-                                      <Link href={`/detail/review/${data.donationConfirmId}`} underline="none" color="inherit">
+                                      <Link
+                                        href={`/detail/review/${data.donationConfirmId}`}
+                                        underline="none"
+                                        color="inherit"
+                                      >
                                         {data.title}
                                       </Link>
                                     </StyledTableCell>

@@ -111,7 +111,7 @@ const VolunteerDetail: FC = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  console.log(open);
+  // console.log(open);
 
   const getDeleteStatus = (deleteStatus) => {
     setDeleteStatus(deleteStatus);
@@ -120,18 +120,14 @@ const VolunteerDetail: FC = () => {
   // 상세 페이지 내용 불러오기
   useEffect(() => {
     if (router.isReady) {
-      // console.log("id" + router.query.id);
       volunteerDetail(router.query.id)
         .then((res) => {
-          // console.log(res);
           setVolunteerDetails(res.data.volunteer);
           userId = res.data.volunteer.memberId;
           setLoading(true);
-          // console.log(volunteerDetails);
         })
         .then(() => {
           userDetail(userId).then((res) => {
-            // console.log(res);
             setUserDetails(res.data);
             setLoading2(true);
           });
@@ -162,14 +158,11 @@ const VolunteerDetail: FC = () => {
     if (router.isReady) {
       volunteerCommentList(router.query.id, params).then((res) => {
         setCommentList(res.data.comment);
-        // console.log(res);
         setTotalPages(res.data.totalPage);
         setLoading(true);
       });
     }
   }, [curPage, router.isReady, comment, open, deleteStatus]);
-
-
 
   useEffect(() => {
     const id = localStorage.getItem("id");
@@ -256,7 +249,7 @@ const VolunteerDetail: FC = () => {
             component="main"
             sx={{
               flexGrow: 1,
-              // height: "100vh",
+              // height: "85vh",
               overflow: "auto",
               mt: 0,
             }}
@@ -549,8 +542,15 @@ const VolunteerDetail: FC = () => {
                     </CustomButton>
                   </Stack>
                   {commentList &&
-                    commentList.map((item) => (
-                      <Comment comment={item} id={id} token={token} getDeleteStatus={getDeleteStatus} deleteStatus={deleteStatus} />
+                    commentList.map((item, i) => (
+                      <Comment
+                        comment={item}
+                        id={id}
+                        token={token}
+                        getDeleteStatus={getDeleteStatus}
+                        deleteStatus={deleteStatus}
+                        key={i}
+                      />
                     ))}
                 </Box>
               ) : (
@@ -558,8 +558,15 @@ const VolunteerDetail: FC = () => {
               )}
               <Stack>
                 {commentList &&
-                  commentList.map((item,i) => (
-                    <Comment comment={item} id={id} token={token} key={i} getDeleteStatus={getDeleteStatus} deleteStatus={deleteStatus} />
+                  commentList.map((item, i) => (
+                    <Comment
+                      comment={item}
+                      id={id}
+                      token={token}
+                      key={i}
+                      getDeleteStatus={getDeleteStatus}
+                      deleteStatus={deleteStatus}
+                    />
                   ))}
               </Stack>
               {commentList && commentList.length > 0 ? (
