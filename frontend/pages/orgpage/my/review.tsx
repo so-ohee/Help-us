@@ -23,6 +23,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Paper,
 } from "@mui/material";
 import helpImage from "../../../public/images/help.png";
 
@@ -283,7 +284,7 @@ const orgpageMyReview: FC = () => {
                     </TabPanel>
                     <TabPanel value={value} index={1}>
                       {reviews && reviews.length > 0 ? (
-                        <TableContainer sx={{ my: 5 }}>
+                        <TableContainer component={Paper} sx={{ my: 5 }}>
                           <Table
                             sx={{ minWidth: 700 }}
                             aria-label="customized table"

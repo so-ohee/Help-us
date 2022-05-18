@@ -29,6 +29,7 @@ const DonationCard: FC<DonationData> = ({ donation }) => {
           height: 230,
           width: 325,
           // mt: 3,
+          bgcolor: "#ffffff",
         }}
       >
         <Stack direction="row" justifyContent="center">

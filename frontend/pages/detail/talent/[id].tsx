@@ -143,7 +143,7 @@ const TalentDetail: FC = () => {
   const router = useRouter();
 
   const [loading, setLoading] = useState<boolean>(false);
-
+  const [loading2, setLoading2] = useState<boolean>(false);
   // console.log("라우터 쿼리는", router.query.id);
   const [talentDonationDetail, setTalentDonationDetail] = useState<any>("");
   const [userInfo, setUserInfo] = useState<any>("");
@@ -159,7 +159,8 @@ const TalentDetail: FC = () => {
     if (router.isReady) {
       getTalentDonationDetail(router.query.id).then((res) => {
         setTalentDonationDetail(res.data.volunteer);
-        setLoading(true);
+        console.log("ttt", talentDonationDetail);
+        setLoading2(true);
       });
     }
   }, [router.isReady]);
@@ -181,14 +182,14 @@ const TalentDetail: FC = () => {
         setLoading(true);
       });
     }
-  }, [curPage, router.isReady, commentList, curPage]);
+  }, [router.isReady, commentList, curPage]);
 
   useEffect(() => {
     const id = localStorage.getItem("id");
     const token = localStorage.getItem("jwt");
     setId(id);
     setToken(token);
-  });
+  }, []);
 
   //  댓글 등록 버튼
   const handleComment = (e) => {
@@ -204,14 +205,14 @@ const TalentDetail: FC = () => {
       content: comment,
       parentCommentId: "",
     };
-    console.log(params);
+    // console.log(params);
     talentComment(id, token, params)
       .then((res) => {
-        console.log(res + "성공")
+        // console.log(res + "성공");
         setComment("");
       })
-      .catch((err) => console.log(err + "실패"))
-  }
+      .catch((err) => console.log(err + "실패"));
+  };
 
   const Unix_timestamp = (t) => {
     var date = new Date(t);
@@ -236,7 +237,7 @@ const TalentDetail: FC = () => {
 
   return (
     <>
-      {loading ? (
+      {loading && loading2 ? (
         <Box sx={{ display: "flex" }}>
           <CssBaseline />
           <Box
@@ -296,7 +297,9 @@ const TalentDetail: FC = () => {
                     alignItems="center"
                   >
                     <MailIcon sx={{ mr: 1 }} />
-                    <Typography align="center">{talentDonationDetail.userEmail}</Typography>
+                    <Typography align="center">
+                      {talentDonationDetail.userEmail}
+                    </Typography>
                   </Grid>
                 </Grid>
               </Grid>
@@ -359,7 +362,7 @@ const TalentDetail: FC = () => {
               </Typography>
               <Divider color="#CDAD78" sx={{ my: 2, borderBottomWidth: 5 }} />
               <Typography variant="h5" fontWeight="bold" sx={{ mx: 5 }}>
-                댓글 
+                댓글
               </Typography>
               <Stack
                 justifyContent="space-between"
@@ -384,8 +387,8 @@ const TalentDetail: FC = () => {
               </Stack>
               <Stack>
                 {commentList &&
-                  commentList.map((item) => (
-                    <Comment comment={item} id={id} token={token} />
+                  commentList.map((item, i) => (
+                    <Comment comment={item} id={id} token={token} key={i} />
                   ))}
               </Stack>
               <Box sx={{ display: "flex", justifyContent: "center", my: 5 }}>

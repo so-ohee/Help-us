@@ -229,17 +229,21 @@ const orgpageMyCheckDelivery: FC = () => {
               </Table>
             </TableContainer>
             {deliveryList && deliveryList.length > 0 ? (
-            <Stack alignItems="center" sx={{ mb: 2, mt: 2 }}>
-            <Pagination
-              curPage={curPage}
-              paginate={paginate}
-              totalPage={totalPages}
-            />
-          </Stack>
+              <Stack alignItems="center" sx={{ mb: 2, mt: 2 }}>
+                <Pagination
+                  curPage={curPage}
+                  paginate={paginate}
+                  totalPage={totalPages}
+                />
+              </Stack>
             ) : (
-              <Typography variant="h5" sx={{ mt: 10, display: 'flex', justifyContent: 'center'}}>진행 중인 배송이 없습니다.</Typography>   
-
-          )}
+              <Typography
+                variant="h5"
+                sx={{ mt: 10, display: "flex", justifyContent: "center" }}
+              >
+                진행 중인 배송이 없습니다.
+              </Typography>
+            )}
           </Container>
         </Box>
       </Box>
