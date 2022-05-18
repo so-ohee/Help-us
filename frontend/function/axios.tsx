@@ -273,13 +273,13 @@ export const getDonationList = async (params) => {
 };
 
 // 마이페이지(기관) - 배송 현황 조회
-export const getDeliveryList = async (id, token,params) => {
+export const getDeliveryList = async (id, token, params) => {
   return await axios({
     method: "GET",
     url: `/8000/d.apply/tracking/${id}`,
     params: params,
     headers: {
-      Authorization: token
+      Authorization: token,
     },
   });
 };
@@ -393,6 +393,18 @@ export const finishDonation = async (dId, mId, token) => {
     url: `/8000/donation/${dId}/${mId}`,
     headers: {
       Authorization: token,
+    },
+  });
+};
+
+// 봉사글 마감 (기관)
+export const finishVolunteer = async (volunteerId, token, memberId) => {
+  return await axios({
+    method: "DELETE",
+    url: `/8000/volunteer/end/${volunteerId}`,
+    headers: {
+      Authorization: token,
+      memberId: memberId,
     },
   });
 };
