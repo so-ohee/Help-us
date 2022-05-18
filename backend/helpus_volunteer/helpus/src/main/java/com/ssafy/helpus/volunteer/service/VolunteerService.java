@@ -37,6 +37,4 @@ public interface VolunteerService {
     Map<String, Object> myVolunteerList(Long memberId, int page) throws Exception;
     // 내가 봉사한 봉사목록
     Map<String, Object> doVolunteerList(Long memberId, int page) throws Exception;
-
-
 }
