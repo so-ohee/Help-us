@@ -4,6 +4,7 @@ import { content } from "html2canvas/dist/types/css/property-descriptors/content
 import endOfDecadeWithOptions from "date-fns/esm/fp/endOfDecadeWithOptions/index.js";
 import { id } from "date-fns/locale";
 import { PartyModeSharp } from "@mui/icons-material";
+import { parseDocumentSize } from "html2canvas/dist/types/css/layout/bounds";
 
 // proxy
 // 9080: 기부, 후기 'http://k6c106.p.ssafy.io:9080'
@@ -59,6 +60,18 @@ export const donationOrgComment = async (id, token, params) => {
   });
 };
 
+// 물품 기부 상세 페이지 대댓글 작성
+export const donationOrgRecomment = async (id, token, params) => {
+  return await axios({
+    method: "POST",
+    url : "/8000/d.comment",
+    headers: {
+      Authorization: token,
+    },
+    data: params,
+  })
+}
+
 // 물품 기부 상세 페이지 댓글 삭제
 export const donationOrgCommentDelete = async (
   commentId,
@@ -88,7 +101,7 @@ export const getReviewList = async (params) => {
 export const getMyReviewOrg = async (params) => {
   return await axios({
     method: "GET",
-    url: "/8000/d.confirm",
+    url: "/8000/api/d.confirm",
     params: params,
   });
 };
@@ -154,6 +167,18 @@ export const reviewCommentDelete = async (commentId, memberId, id, token) => {
   });
 };
 
+// 후기 상세 페이지 대댓글 작성
+export const reviewRecomment = async (id, token, params) => {
+  return await axios({
+    method: "POST",
+    url: "/8000/d.comment",
+    headers:{
+      Authorization: token,
+    },
+    data: params,
+  });
+};
+
 //후원자 명단
 export const getSponsorList = async (id, params) => {
   return await axios({
@@ -207,6 +232,7 @@ export const updateApply = async (id, data) => {
     data: data,
   });
 };
+
 // 마이페이지(기관) - 봉사 현황 조회
 export const getInquiryList = async (id, params) => {
   return await axios({
@@ -392,6 +418,18 @@ export const talentCommentDelete = async (commentId, id, token) => {
   });
 };
 
+// 재능 기부 상세 페이지 대댓글 작성
+export const talentRecomment = async (id, token, params) => {
+  return await axios({
+    method: "POST",
+    url: "/8000/v.comment",
+    headers: {
+      Authorization: token,
+    },
+    data: params,
+  });
+};
+
 // ----------------------- 9081 ------------------------------
 
 // 내가 기부한 전체 목록
@@ -510,10 +548,12 @@ export const getVolunteerOrg = async (memberId) => {
 };
 
 //봉사 현황 조회
-export const getInquiryApplyList = async (id) => {
+export const getInquiryApplyList = async (params) => {
+  console.log(params.page);
   return await axios({
     method: "GET",
-    url: `/8000/api/inquiry/apply/${id}`,
+    url: `/8000/api/inquiry/apply/${params.id}`,
+    params: params,
   });
 };
 
@@ -683,11 +723,25 @@ export const csCommentDelete = async (commentId, memberId, id, token) => {
   });
 };
 
-// 고객센터 상세 조회
-export const getCsDetail = async (id) => {
+// 고객센터 상세 조회(공개)
+export const getCsDetail = async (id, token) => {
   return await axios({
     method: "GET",
     url: `/8000/api/desk/${id}`,
+    headers: {
+      Authorization: token,
+    },
+  });
+};
+
+// 고객센터 상세 조회(비공개)
+export const getSecretCsDetail = async (id, token, memberId) => {
+  return await axios({
+    method: "GET",
+    url: `/8000/desk/secret/${id}/${memberId}`,
+    headers: {
+      Authorization: token,
+    },
   });
 };
 

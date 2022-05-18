@@ -79,6 +79,12 @@ const CsMain: FC = () => {
   const paginate = (pageNumber) => setCurPage(pageNumber);
   const [myId, setMyId] = useState(0);
   const [myRole, setMyRole] = useState("");
+
+  const onClickVisible = () => {
+    alert("비공개 게시글 입니다.");
+    return;
+  };
+
   const params = {
     page: curPage,
     category: null,
@@ -227,7 +233,7 @@ const CsMain: FC = () => {
                         </StyledTableCell>
                         
                           {myRole !== "ADMIN" && data.visible === "비공개" && data.memberId !== myId ? (
-                            <StyledTableCell align="center" sx={{ width: 400 }}>
+                            <StyledTableCell align="center" sx={{ width: 400 }} onClick={onClickVisible}>
                             { data.title }
                             </StyledTableCell>
                         ) : (

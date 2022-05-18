@@ -149,7 +149,7 @@ const Navbar: FC<LoginProps> = ({ value }) => {
                   <Typography variant="h6" sx={{}}>
                     {pathName === "/admin" ? (
                       <Link
-                      onClick={() => router.push("/admin")}
+                        onClick={() => router.push("/admin")}
                         underline="none"
                         color="#CDAD78"
                         fontWeight="bold"
@@ -158,7 +158,11 @@ const Navbar: FC<LoginProps> = ({ value }) => {
                         관리자 페이지
                       </Link>
                     ) : (
-                      <Link onClick={() => router.push("/admin")} underline="none" color="inherit">
+                      <Link
+                        onClick={() => router.push("/admin")}
+                        underline="none"
+                        color="inherit"
+                      >
                         관리자 페이지
                       </Link>
                     )}
@@ -178,22 +182,37 @@ const Navbar: FC<LoginProps> = ({ value }) => {
               ) : (
                 <>
                   <Typography variant="h6" sx={{ mx: 2 }}>
-                    {pathName === "/userpage/my" || pathName === "/userpage/my/talent" || pathName === "/userpage/my/cs"
-                    || pathName === "/userpage/my/delivery" || pathName === "/userpage/my/donation" || pathName === "/userpage/my/volunteer"
-                    || pathName === "/orgpage/my" || pathName === "/orgpage/my/review" || pathName === "/orgpage/my/cs"
-                    || pathName === "/orgpage/my/checkdonation" || pathName === "/orgpage/my/donation" || pathName === "/orgpage/my/volunteer" 
-                    || pathName === "/orgpage/my/checkvolunteer" || pathName === "/orgpage/my/checkdelivery"  ? (
+                    {pathName === "/userpage/my" ||
+                    pathName === "/userpage/my/talent" ||
+                    pathName === "/userpage/my/cs" ||
+                    pathName === "/userpage/my/delivery" ||
+                    pathName === "/userpage/my/donation" ||
+                    pathName === "/userpage/my/volunteer" ||
+                    pathName === "/orgpage/my" ||
+                    pathName === "/orgpage/my/review" ||
+                    pathName === "/orgpage/my/cs" ||
+                    pathName === "/orgpage/my/checkdonation" ||
+                    pathName === "/orgpage/my/donation" ||
+                    pathName === "/orgpage/my/volunteer" ||
+                    pathName === "/orgpage/my/checkvolunteer" ||
+                    pathName === "/orgpage/my/checkdelivery" ? (
                       <Link
-                      onClick={onMyPage}
+                        onClick={onMyPage}
                         underline="none"
                         color="#CDAD78"
                         fontWeight="bold"
                         variant="h5"
+                        style={{ cursor: "pointer" }}
                       >
                         마이페이지
                       </Link>
                     ) : (
-                      <Link onClick={onMyPage} underline="none" color="inherit">
+                      <Link
+                        onClick={onMyPage}
+                        underline="none"
+                        color="inherit"
+                        style={{ cursor: "pointer" }}
+                      >
                         마이페이지
                       </Link>
                     )}
@@ -215,26 +234,32 @@ const Navbar: FC<LoginProps> = ({ value }) => {
               <>
                 <Typography variant="h6" sx={{ mx: 2 }}>
                   {pathName === "/login" ? (
-                      <Link
+                    <Link
                       onClick={() => router.push("/login")}
-                        underline="none"
-                        color="#CDAD78"
-                        fontWeight="bold"
-                        variant="h5"
-                      >
-                        로그인
-                      </Link>
-                    ) : (
-                      <Link onClick={() => router.push("/login")} underline="none" color="inherit">
-                        로그인
-                      </Link>
-                    )}
+                      underline="none"
+                      color="#CDAD78"
+                      fontWeight="bold"
+                      variant="h5"
+                    >
+                      로그인
+                    </Link>
+                  ) : (
+                    <Link
+                      onClick={() => router.push("/login")}
+                      underline="none"
+                      color="inherit"
+                    >
+                      로그인
+                    </Link>
+                  )}
                 </Typography>
 
                 <Typography variant="h6" sx={{ ml: 2 }}>
-                  {pathName === "/signup" || pathName === "/signup/user" || pathName === "/signup/org" ? (
+                  {pathName === "/signup" ||
+                  pathName === "/signup/user" ||
+                  pathName === "/signup/org" ? (
                     <Link
-                    onClick={() => router.push("/signup")}
+                      onClick={() => router.push("/signup")}
                       underline="none"
                       color="#CDAD78"
                       fontWeight="bold"
@@ -243,7 +268,11 @@ const Navbar: FC<LoginProps> = ({ value }) => {
                       회원가입
                     </Link>
                   ) : (
-                    <Link onClick={() => router.push("/signup")} underline="none" color="inherit">
+                    <Link
+                      onClick={() => router.push("/signup")}
+                      underline="none"
+                      color="inherit"
+                    >
                       회원가입
                     </Link>
                   )}

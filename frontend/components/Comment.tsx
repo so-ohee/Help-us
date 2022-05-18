@@ -25,10 +25,10 @@ import defaultImage from "../public/images/userDefaultImage.png";
 import ReplyIcon from "@mui/icons-material/Reply";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useRouter } from "next/router";
-import CommentInput from "./CommentInput";
+import CommentInput from "./CommentInput3";
 
 // api
-import {volunteerCommentDelete} from "function/axios";
+import {volunteerCommentDelete, donationOrgRecomment} from "function/axios";
 
 const CssTextField = styled(TextField)({
   "& label.Mui-focused": {
@@ -75,12 +75,12 @@ const CustomButton2 = styled(Button)({
 const Comment: FC<CommentData> = ({ comment, id, token }) => {
   const [inputStatus, setInputStatus] = useState<boolean>(false);
   const [userId, setUserId] = useState<any>();
+  const [parentId, setParentId] = useState<any>();
   const router = useRouter();
 
   const onClickInputStatus = () => {
     setInputStatus(!inputStatus);
   };
-
 
 
   //댓글 삭제
@@ -98,13 +98,31 @@ const Comment: FC<CommentData> = ({ comment, id, token }) => {
       }
   }
 
-
   useEffect(() => {
     const Id = localStorage.getItem("id");
     setUserId(Id)
   }, [id])
 
-
+  const Unix_timestamp = (t) => {
+    var date = new Date(t);
+    date.setHours(date.getHours() + 9);
+    var year = date.getFullYear();
+    var month = "0" + (date.getMonth() + 1);
+    var day = "0" + date.getDate();
+    var hour = "0" + date.getHours();
+    var minute = "0" + date.getMinutes();
+    return (
+      year +
+      "-" +
+      month.substr(-2) +
+      "-" +
+      day.substr(-2) +
+      " " +
+      hour.substr(-2) +
+      ":" +
+      minute.substr(-2)
+    );
+  };
   
   
   return (
@@ -139,7 +157,7 @@ const Comment: FC<CommentData> = ({ comment, id, token }) => {
                 </Button>
                 {comment ? (
                   <Typography>
-                      {comment.createDate}
+                      {Unix_timestamp(comment.createDate)}
                   </Typography>
                 ) : (null)}
                 {/* id랑  memberId랑 같으면 삭제 버튼 활성화*/}
@@ -158,7 +176,7 @@ const Comment: FC<CommentData> = ({ comment, id, token }) => {
               </Stack>
             </Stack>
             <Stack direction="row" sx={{ ml: 11, mb: 2 }} alignItems="center">
-              <CommentInput inputStatus={inputStatus} />
+              <CommentInput inputStatus={inputStatus} comment={comment} />
             </Stack>
           </>
         ) : (
@@ -195,7 +213,7 @@ const Comment: FC<CommentData> = ({ comment, id, token }) => {
                   답글쓰기
                 </Button>
                 {comment ? (
-                  <Typography>{comment.createDate}</Typography>
+                  <Typography>{Unix_timestamp(comment.createDate)}</Typography>
                 ) : (null)}
                 
                   <Button
@@ -210,7 +228,7 @@ const Comment: FC<CommentData> = ({ comment, id, token }) => {
               </Stack>
             </Stack>
             <Stack direction="row" sx={{ ml: 16, mb: 2 }} alignItems="center">
-              <CommentInput inputStatus={inputStatus} />
+              <CommentInput inputStatus={inputStatus} comment={comment} />
             </Stack>
           </>
         )}

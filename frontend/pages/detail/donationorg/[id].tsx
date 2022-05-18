@@ -44,7 +44,12 @@ import DonationApply from "@/components/DonationApply";
 
 import { useRouter } from "next/router";
 // api
-import { donationDetail, getUserInfo, donationOrgCommentList, donationOrgComment } from "function/axios";
+import {
+  donationDetail,
+  getUserInfo,
+  donationOrgCommentList,
+  donationOrgComment,
+} from "function/axios";
 
 const CustomButton = styled(Button)({
   backgroundColor: "#5B321E",
@@ -137,7 +142,7 @@ const DonationOrgDetail: FC = () => {
 
   // 댓글
   const [comment, setComment] = useState<string>("");
-  const [parentCommentId, setParentComeentId] = useState("");
+  const [recomment, setRecomment] = useState<string>("");
   const [commentList, setCommentList] = useState<any>([]);
 
   // pagination
@@ -147,7 +152,7 @@ const DonationOrgDetail: FC = () => {
 
   const params2 = {
     page: curPage,
-  }
+  };
 
   const getStatus = (applyStatus) => {
     setApplyStatus(applyStatus);
@@ -161,7 +166,7 @@ const DonationOrgDetail: FC = () => {
       donationDetail(router.query.id).then((res) => {
         // console.log(res);
         setDonationDetails(res.data.donation);
-        console.log(res.data.donation);
+        // console.log(res.data.donation);
         setDetailLoading(true);
       });
     }
@@ -180,14 +185,14 @@ const DonationOrgDetail: FC = () => {
   // 댓글
   useEffect(() => {
     if (router.isReady) {
-      donationOrgCommentList(router.query.id, params2)
-        .then((res) => {
-          setCommentList(res.data.comment);
-          setTotalPages(res.data.totalPage);
-          setLoading(true);
-        });
-    };
-  }, [curPage, router.isReady, commentList, ]);
+      donationOrgCommentList(router.query.id, params2).then((res) => {
+        setCommentList(res.data.comment);
+        // console.log(commentList)
+        setTotalPages(res.data.totalPage);
+        setLoading(true);
+      });
+    }
+  }, [curPage, router.isReady, commentList]);
 
   const handleComment = () => {
     if (comment === "") {
@@ -197,13 +202,38 @@ const DonationOrgDetail: FC = () => {
     const params = {
       boardId: router.query.id,
       content: comment,
-      category: "donation"
-    }
+      category: "donation",
+    };
 
     donationOrgComment(userId, token, params)
-      .then((res) => console.log(res + "성공"))
-      .catch((err) => console.log(err + "실패"))
-  } 
+      .then((res) => {
+        console.log(res + "성공");
+        setComment("");
+      })
+      .catch((err) => console.log(err + "실패"));
+  };
+
+  const Unix_timestamp = (t) => {
+    var date = new Date(t);
+    date.setHours(date.getHours() + 9);
+    var year = date.getFullYear();
+    var month = "0" + (date.getMonth() + 1);
+    var day = "0" + date.getDate();
+    var hour = "0" + date.getHours();
+    var minute = "0" + date.getMinutes();
+    return (
+      year +
+      "-" +
+      month.substr(-2) +
+      "-" +
+      day.substr(-2) +
+      " " +
+      hour.substr(-2) +
+      ":" +
+      minute.substr(-2)
+    );
+  };
+
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -245,7 +275,12 @@ const DonationOrgDetail: FC = () => {
             </Grid>
             <Grid>
               <Typography sx={{ mt: 0.5 }} variant="h6" fontWeight="bold">
-                {orgInfo ? orgInfo.name : null}
+                <Link
+                  href={`/orgpage/${orgInfo?.memberId}`}
+                  style={{ cursor: "pointer" }}
+                >
+                  {orgInfo ? orgInfo.name : null}
+                </Link>
               </Typography>
               <Grid
                 sx={{ mt: 2 }}
@@ -354,7 +389,9 @@ const DonationOrgDetail: FC = () => {
                 작성일
               </Typography>
               <Typography variant="h6" sx={{ mt: 3 }}>
-                {donationDetails ? donationDetails.createDate : null}
+                {Unix_timestamp(
+                  donationDetails ? donationDetails.createDate : null
+                )}
               </Typography>
             </Stack>
           </Stack>
@@ -615,9 +652,8 @@ const DonationOrgDetail: FC = () => {
                             getStatus={getStatus}
                           />
                         ) : (
-                            <>마감</>
+                          <>마감</>
                         )}
-                        
                       </StyledTableCell>
                     </StyledTableRow>
                   ))}
@@ -637,19 +673,22 @@ const DonationOrgDetail: FC = () => {
             <CssTextField
               sx={{ backgroundColor: "#ffffff", width: 1000 }}
               size="small"
+              value={comment}
               onChange={(e) => setComment(e.target.value)}
             />
-            <CustomButton 
-              variant="contained" 
-              size="small" 
+            <CustomButton
+              variant="contained"
+              size="small"
               sx={{ width: 30 }}
               onClick={handleComment}
-              >
+            >
               등록
             </CustomButton>
           </Stack>
           {commentList &&
-            commentList.map((item) => <Comment comment={item} id={userId} token={token} />)}
+            commentList.map((item) => (
+              <Comment comment={item} id={userId} token={token} />
+            ))}
         </Container>
       </Box>
     </Box>

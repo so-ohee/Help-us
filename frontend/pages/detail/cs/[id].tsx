@@ -35,8 +35,7 @@ import CallIcon from "@mui/icons-material/Call";
 import MailIcon from "@mui/icons-material/Mail";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
 
-import Comment from "../../../components/Comment2";
-import Pagination from "../../../components/Pagination";
+import Comment from "../../../components/Comment3";
 import testImage from "../../../public/images/testImage.jpg";
 
 import CustomCarousel from "@/components/Carousel";
@@ -123,7 +122,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 const CsDetail: FC = () => {
   const router = useRouter();
 
-  const [loading, setLoadging] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   // console.log("라우터 쿼리는", router.query.id);
 
@@ -132,47 +131,54 @@ const CsDetail: FC = () => {
   const [orgInfo, setOrgInfo] = useState<any>("");
 
   const [detailLoading, setDetailLoading] = useState<boolean>(false);
+  const [name, setName] = useState<string>('');
 
   // 댓글
   const [comment, setComment] = useState<string>("");
   const [parentCommentId, setParentComeentId] = useState("");
   const [commentList, setCommentList] = useState<any>([]);
 
-  // pagination
-  const [curPage, setCurPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(0);
-  const paginate = (pageNumber) => setCurPage(pageNumber);
+  const [id, setId] = useState<any>();
+  const [token, setToken] = useState<any>();
 
-  const params2 = {
-    page: curPage,
-  }
+  useEffect(() => {
+    const id = localStorage.getItem("id");
+    const token = localStorage.getItem("jwt");
+    setId(id);
+    setToken(token);
+  })
 
-  const params = {
-    helpDeskId: 20
-  };
+  // console.log(id)
   // 상세 페이지 정보 불러오기
   useEffect(() => {
     if (router.isReady) {
-      getCsDetail(router.query.id).then((res) => {
+      getCsDetail(router.query.id, token).then((res) => {
         setCsDetails(res.data.desk);
+        setCommentList(res.data.desk.comments);
+        setLoading(true);
         setDetailLoading(true);
-        setLoadging(true)
+        setLoading(true)
       });
     }
-  }, [router.isReady]);
+  }, [router.isReady, commentList]);
 
-  // 댓글
-  // useEffect(() => {
-  //   if (router.isReady) {
-  //     getCsDetail(router.query.id, params2)
-  //       .then((res) => {
-  //         setCommentList(res.data.comment);
-  //         setTotalPages(res.data.totalPage);
-  //         setLoading(true);
-  //       });
-  //   };
-  // }, [curPage, router.isReady, commentList, ]);
+  const handelComment = () => {
+    if (comment === "") {
+      alert("댓글을 입력해주세요!");
+      return;
+    }
+    const params = {
+      helpDeskId : router.query.id,
+      content: comment,
+    }
 
+    csComment(id, token, params)
+      .then((res) => {
+        console.log("성공" + res)
+        setComment("");
+      })
+      .catch((err) => console.log("실패" + err))
+  }
 
   return (
     <>
@@ -207,7 +213,7 @@ const CsDetail: FC = () => {
                       marginTop: "6px",
                     }}
                   >
-                    {csDetails.profile ? (
+                    { csDetails && csDetails.profile ? (
 
                       <Image
                         src={csDetails.profile}
@@ -317,15 +323,24 @@ const CsDetail: FC = () => {
                 <CssTextField
                   sx={{ backgroundColor: "#ffffff", width: 1000 }}
                   size="small"
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
                 />
-                <CustomButton variant="contained" size="small" sx={{ width: 30 }}>
-                  등록
-                </CustomButton>
+                { commentList < 1 ? (
+                  <CustomButton 
+                    variant="contained" 
+                    size="small" 
+                    sx={{ width: 30 }}
+                    onClick={handelComment}
+                    >
+                    등록
+                  </CustomButton>
+                ) : null}
               </Stack>
               <Stack>
-                {/* {csDetails.comments.map((item) => (
-                  <Comment comment={item} />
-                ))} */}
+                {commentList.map((item) => (
+                  <Comment comment={item} id={id} token={token} />
+                ))}
               </Stack>
             </Container>
           </Box>

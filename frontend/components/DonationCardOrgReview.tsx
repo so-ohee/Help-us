@@ -6,6 +6,9 @@ import Chip from "@mui/material/Chip";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 import Link from "next/link";
 
+// api
+import { createReview } from "../function/axios";
+
 const CustomButton = styled(Button)({
   backgroundColor: "#5B321E",
   color: "white",
@@ -21,6 +24,10 @@ interface IDnc {
 }
 
 const DonationCardOrgReview: FC<IDnc> = ({ item }) => {
+  const onClickCreateReview = () => {
+    window.location.href = `/create/review/${item.donationId}`;
+  };
+
   return (
     <div>
       <Box
@@ -207,6 +214,7 @@ const DonationCardOrgReview: FC<IDnc> = ({ item }) => {
                 variant="contained"
                 size="small"
                 sx={{ width: 75, ml: 5 }}
+                onClick={onClickCreateReview}
               >
                 후기 작성
               </CustomButton>

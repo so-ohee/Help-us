@@ -63,6 +63,19 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     border: 0,
   },
 }));
+
+const UpdateButton = styled(Button)({
+  backgroundColor: "#5B321E",
+  color: "white",
+  fontWeight: "bold",
+  "&:hover": {
+    backgroundColor: "#CDAD78",
+    color: "white",
+  },
+  // width: "50px",
+});
+
+
 const UserMypageDonation: FC = () => {
   const [donationList, setDonationList] = useState([]);
 
@@ -96,7 +109,12 @@ const UserMypageDonation: FC = () => {
           }}
         >
           <Container maxWidth="lg" sx={{}}>
-            <Typography variant="h4">물품 기부 조회</Typography>
+            <div style={{display:'flex'}}>
+              <Typography variant="h4">물품 기부 조회</Typography>
+              <Link href='/certi'>
+                <UpdateButton style={{marginLeft:'10px', marginTop:'5px'}}>확인서 발급</UpdateButton>
+              </Link>
+            </div>
             <TableContainer component={Paper} sx={{ mt: 5 }}>
               <Table sx={{ minWidth: 700 }} aria-label="customized table">
                 <TableHead>

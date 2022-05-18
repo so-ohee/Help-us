@@ -74,7 +74,7 @@ const Share: FC = () => {
     getTalentDonationList(params).then((res) => {
       setTalentDonationList(res.data.listTalentDonation);
       setTotalPages(res.data.totalPage);
-      // console.log("data는", reviewList);
+      console.log("data는", talentDonationList);
       setLoading(true);
     });
   }, [curPage]);
@@ -108,12 +108,6 @@ const Share: FC = () => {
             {/* 이미지 출력 부분 */}
             <Stack alignItems="center" sx={{ mb: 5 }}>
               <CarouselMain />
-              {/* <Image
-            src={volunteer1}
-            alt="volunteer first"
-            width={1200}
-            height={200}
-          /> */}
             </Stack>
           </Box>
           <Box sx={{ fontWeight: "bold", my: 5 }}>
