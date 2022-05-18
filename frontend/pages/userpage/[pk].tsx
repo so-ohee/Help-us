@@ -114,10 +114,10 @@ const UserMypageOther: FC = () => {
       getUserInfo(router.query.pk)
         .then((res) => {
           setMyInfo(res.data);
-          if (res.data.role === "USER") {
-          } else {
-            location.href = "/";
-          }
+          // if (res.data.role === "USER") {
+          // } else {
+          //   location.href = "/";
+          // }
         })
         .catch(() => (location.href = "/"));
     }
