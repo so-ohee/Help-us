@@ -87,7 +87,7 @@ const CustomButton2 = styled(Button)({
   fontSize: 12,
 });
 
-const Comment: FC<CommentData> = ({ comment, id, token, commentList }) => {
+const Comment: FC<CommentData> = ({ comment, id, token, getDeleteStatus, deleteStatus }) => {
   const [inputStatus, setInputStatus] = useState<boolean>(false);
   const [userId, setUserId] = useState<any>();
   const [parentId, setParentId] = useState<any>();
@@ -117,6 +117,7 @@ const Comment: FC<CommentData> = ({ comment, id, token, commentList }) => {
         .then((res) => {
           console.log("성공" + res );
           setOpen(false);
+          getDeleteStatus(!deleteStatus);
         })
         .catch((err) => console.log("실패" + err))
 

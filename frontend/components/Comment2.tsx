@@ -87,7 +87,7 @@ const CustomButton2 = styled(Button)({
   fontSize: 12,
 });
 
-const Comment2: FC<CommentData> = ({ comment, id, token }) => {
+const Comment2: FC<CommentData> = ({ comment, id, token, getDeleteStatus, deleteStatus }) => {
   const [inputStatus, setInputStatus] = useState<boolean>(false);
   const [userId, setUserId] = useState<any>();
   const router = useRouter();
@@ -95,6 +95,8 @@ const Comment2: FC<CommentData> = ({ comment, id, token }) => {
   const [recomment, setRecomment] = useState<string>('');
   const [userToken, setUserToken] = useState<any>();
   const [boardId, setBoardId] = useState<any>();
+
+  const [recommentStatus, setRecommentStatus] = useState<boolean>(false);
 
 
   const onClickInputStatus = () => {
@@ -116,6 +118,7 @@ const Comment2: FC<CommentData> = ({ comment, id, token }) => {
         .then((res) => {
           console.log("성공" + res )
           setOpen(false);
+          getDeleteStatus(!deleteStatus);
         })
         .catch((err) => console.log("실패" + err))
   }
@@ -129,6 +132,7 @@ const Comment2: FC<CommentData> = ({ comment, id, token }) => {
       setBoardId(router.query.id)
     }
   }, [router.isReady])
+
 
   // 대댓글 작성
   const handleRecomment = () => {
@@ -147,7 +151,6 @@ const Comment2: FC<CommentData> = ({ comment, id, token }) => {
     talentRecomment(userId, userToken, params)
       .then((res) => {
         console.log("성공" + res)
-        setInputStatus(false)
         setRecomment("")
       })
       .catch((err) => console.log("실패" + err))

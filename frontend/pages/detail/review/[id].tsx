@@ -145,6 +145,9 @@ const ReviewDetail: FC = () => {
   const [userId, setUserId] = useState<any>("");
   const [token, setToken] = useState<any>("");
   const [role, setRole] = useState<any>("");
+  const [deleteStatus, setDeleteStatus] = useState<boolean>(false);
+
+
   // 댓글
   const [comment, setComment] = useState<string>("");
   const [parentCommentId, setParentComeentId] = useState("");
@@ -162,6 +165,11 @@ const ReviewDetail: FC = () => {
     page: curPage,
     donationId: 0,
   };
+
+  const getDeleteStatus = (deleteStatus) => {
+    setDeleteStatus(deleteStatus);
+  };
+
   // 상세 페이지 내용 불러오기
   useEffect(() => {
     setUserId(localStorage.getItem("id"));
@@ -212,7 +220,7 @@ const ReviewDetail: FC = () => {
         setLoading3(true);
       });
     }
-  }, [curPage, router.isReady, comment]);
+  }, [curPage, router.isReady, comment, deleteStatus]);
 
   const handleComment = (e) => {
     if (comment === "") {
@@ -509,16 +517,14 @@ const ReviewDetail: FC = () => {
             )}
               {commentList &&
                 commentList.map((item, index) => (
-<<<<<<< HEAD
-                  <Comment key={index} comment={item} id={userId} token={token} commentList={commentList} />
-=======
                   <Comment
                     key={index}
                     comment={item}
                     id={userId}
                     token={token}
+                    getDeleteStatus={getDeleteStatus} 
+                    deleteStatus={deleteStatus}
                   />
->>>>>>> bdb04803760af68b87afa4a291f0b8d57666fdb2
                 ))}
               {commentList && commentList.length > 0 ? (
                 <Box sx={{ display: "flex", justifyContent: "center", my: 5, pb:5 }}>

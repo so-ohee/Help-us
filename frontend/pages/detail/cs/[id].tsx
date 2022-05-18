@@ -130,6 +130,8 @@ const CsDetail: FC = () => {
 
   const [orgInfo, setOrgInfo] = useState<any>("");
 
+  const [deleteStatus, setDeleteStatus] = useState<boolean>(false);
+
   const [detailLoading, setDetailLoading] = useState<boolean>(false);
   const [name, setName] = useState<string>('');
 
@@ -164,6 +166,10 @@ const CsDetail: FC = () => {
     }
   }, [router.isReady, commentList]);
 
+  const getDeleteStatus = (deleteStatus) => {
+    setDeleteStatus(deleteStatus);
+  };
+
   const handelComment = () => {
     if (comment === "") {
       alert("댓글을 입력해주세요!");
@@ -176,7 +182,7 @@ const CsDetail: FC = () => {
 
     csComment(id, token, params)
       .then((res) => {
-        console.log("성공" + res)
+        // console.log("성공" + res)
         setComment("");
       })
       .catch((err) => console.log("실패" + err))
@@ -342,7 +348,7 @@ const CsDetail: FC = () => {
                 ) : (<Box sx={{ height: 30 }}></Box>)}
               <Stack>
                 {commentList.map((item) => (
-                  <Comment comment={item} id={id} token={token} commentList={commentList} />
+                  <Comment comment={item} id={id} token={token} getDeleteStatus={getDeleteStatus} deleteStatus={deleteStatus} />
                 ))}
               </Stack>
             </Container>

@@ -151,9 +151,16 @@ const TalentDetail: FC = () => {
   const [parentCommentId, setParentComeentId] = useState("");
   const [commentList, setCommentList] = useState<any>([]);
 
+  const [deleteStatus, setDeleteStatus] = useState<boolean>(false);
+
   const [id, setId] = useState<any>();
   const [token, setToken] = useState<any>();
   const [role, setRole] = useState<any>();
+  
+  const getDeleteStatus = (deleteStatus) => {
+    setDeleteStatus(deleteStatus);
+  };
+
   // 상세 페이지 내용 불러오기
   useEffect(() => {
     if (router.isReady) {
@@ -182,7 +189,7 @@ const TalentDetail: FC = () => {
         setLoading(true);
       });
     }
-  }, [router.isReady, comment, curPage]);
+  }, [router.isReady, comment, curPage, deleteStatus]);
 
   useEffect(() => {
     const id = localStorage.getItem("id");
@@ -404,7 +411,7 @@ const TalentDetail: FC = () => {
               <Stack>
                 {commentList &&
                   commentList.map((item, i) => (
-                    <Comment comment={item} id={id} token={token} key={i} commentList={commentList} />
+                    <Comment comment={item} id={id} token={token} key={i} getDeleteStatus={getDeleteStatus} deleteStatus={deleteStatus}/>
                   ))}
               </Stack>
               {commentList && commentList.length > 0 ? (

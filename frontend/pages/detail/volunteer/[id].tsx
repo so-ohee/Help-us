@@ -97,6 +97,8 @@ const VolunteerDetail: FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [loading2, setLoading2] = useState<boolean>(false);
 
+  const [deleteStatus, setDeleteStatus] = useState<boolean>(false);
+
   const [loading3, setLoading3] = useState<boolean>(false);
   const [id, setId] = useState<any>();
   const [token, setToken] = useState<any>();
@@ -110,6 +112,11 @@ const VolunteerDetail: FC = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   console.log(open);
+
+  const getDeleteStatus = (deleteStatus) => {
+    setDeleteStatus(deleteStatus);
+  };
+
   // 상세 페이지 내용 불러오기
   useEffect(() => {
     if (router.isReady) {
@@ -161,13 +168,9 @@ const VolunteerDetail: FC = () => {
         setLoading(true);
       });
     }
-<<<<<<< HEAD
-  }, [curPage, router.isReady, comment, open]);
+  }, [curPage, router.isReady, comment, open, deleteStatus]);
 
 
-=======
-  }, [curPage, router.isReady,commentList, open]);
->>>>>>> bdb04803760af68b87afa4a291f0b8d57666fdb2
 
   useEffect(() => {
     const id = localStorage.getItem("id");
@@ -549,7 +552,7 @@ const VolunteerDetail: FC = () => {
                   </Stack>
                   {commentList &&
                     commentList.map((item) => (
-                      <Comment comment={item} id={id} token={token} />
+                      <Comment comment={item} id={id} token={token} getDeleteStatus={getDeleteStatus} deleteStatus={deleteStatus} />
                     ))}
                 </Box>
               ) : (
@@ -557,13 +560,8 @@ const VolunteerDetail: FC = () => {
               )}
               <Stack>
                 {commentList &&
-<<<<<<< HEAD
-                  commentList.map((item, index) => (
-                    <Comment key={index} comment={item} id={id} token={token} commentList={commentList} />
-=======
                   commentList.map((item,i) => (
-                    <Comment comment={item} id={id} token={token} key={i}/>
->>>>>>> bdb04803760af68b87afa4a291f0b8d57666fdb2
+                    <Comment comment={item} id={id} token={token} key={i} getDeleteStatus={getDeleteStatus} deleteStatus={deleteStatus} />
                   ))}
               </Stack>
               {commentList && commentList.length > 0 ? (

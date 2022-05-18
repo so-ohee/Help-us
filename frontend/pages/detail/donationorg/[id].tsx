@@ -139,6 +139,8 @@ const DonationOrgDetail: FC = () => {
   const [detailLoading, setDetailLoading] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
 
+  const [deleteStatus, setDeleteStatus] = useState<boolean>(false);
+
   const [userId, setUserId] = useState<any>("");
   const [token, setToken] = useState<any>("");
   const [role, setRole] = useState<any>("");
@@ -162,6 +164,13 @@ const DonationOrgDetail: FC = () => {
   const getStatus = (applyStatus) => {
     setApplyStatus(applyStatus);
   };
+
+  const getDeleteStatus = (deleteStatus) => {
+    setDeleteStatus(deleteStatus);
+  };
+
+  
+
 
   // 기관 정보 불러오기
   useEffect(() => {
@@ -200,7 +209,7 @@ const DonationOrgDetail: FC = () => {
         setLoading(true);
       });
     }
-  }, [curPage, router.isReady, comment]);
+  }, [curPage, router.isReady, comment, deleteStatus]);
 
   const handleComment = () => {
     if (comment === "") {
@@ -709,7 +718,7 @@ const DonationOrgDetail: FC = () => {
           <Stack>
           {commentList &&
             commentList.map((item, index) => (
-              <Comment key={index} comment={item} id={userId} token={token} commentList={commentList} />
+              <Comment key={index} comment={item} id={userId} token={token} getDeleteStatus={getDeleteStatus} deleteStatus={deleteStatus}/>
             ))}
           </Stack>
           {commentList && commentList.length > 0 ? (
