@@ -159,7 +159,6 @@ const VolunteerDetail: FC = () => {
   };
 
   useEffect(() => {
-
     if (router.isReady) {
       volunteerCommentList(router.query.id, params).then((res) => {
         setCommentList(res.data.comment);
@@ -180,7 +179,6 @@ const VolunteerDetail: FC = () => {
     setId(id);
     setToken(token);
   }, []);
-
 
   // 댓글 버튼 누를 시 작성
   // const repoArray: any = [...commentList]
@@ -205,7 +203,7 @@ const VolunteerDetail: FC = () => {
       })
       .catch((err) => console.log(err + "실패"));
   };
-  
+
   const SetApplyPart = ({ role, status }) => {
     // console.log(status)
     if (role === "USER" && status === -1) {
