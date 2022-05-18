@@ -44,6 +44,9 @@ import LocalShippingOutlinedIcon from "@mui/icons-material/LocalShippingOutlined
 import CoPresentIcon from "@mui/icons-material/CoPresent";
 import CoPresentOutlinedIcon from "@mui/icons-material/CoPresentOutlined";
 
+import AdfScannerIcon from "@mui/icons-material/AdfScanner";
+import AdfScannerOutlinedIcon from "@mui/icons-material/AdfScannerOutlined";
+
 const FireNav = styled(List)<{ component?: React.ElementType }>({
   "& .MuiListItemButton-root": {
     paddingLeft: 24,
@@ -117,6 +120,16 @@ export default function UserMypageSidebar() {
         ),
       label: "봉사",
       path: "/userpage/my/volunteer",
+    },
+    {
+      icon:
+        pathName === "/userpage/my/certi" ? (
+          <AdfScannerIcon />
+        ) : (
+          <AdfScannerOutlinedIcon />
+        ),
+      label: "증명서 발급",
+      path: "/userpage/my/certi",
     },
   ];
 
