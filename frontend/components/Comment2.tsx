@@ -1,5 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 import {
   Container,
@@ -83,20 +84,15 @@ const Comment2: FC<CommentData> = ({ comment, id, token }) => {
 
 
 
+  // console.log(comment)
   //댓글 삭제
   const removeComment = () => {
     const commentId = comment.commentId
     const memberId = comment.memberId
-      console.log(commentId)
-      console.log(userId)
+      // console.log(userId)
       reviewCommentDelete(commentId, memberId, id, token)
         .then((res) => console.log("성공" + res ))
         .catch((err) => console.log("실패" + err))
-
-      if (userId != comment.memberId) {
-        alert("댓글 작성자가 아닙니다.");
-        return;
-      }
   }
 
   const Unix_timestamp = (t) => {
@@ -125,9 +121,6 @@ const Comment2: FC<CommentData> = ({ comment, id, token }) => {
     setUserId(Id)
   }, [id])
 
-
-  
-  
   return (
     <>
       <>
@@ -146,9 +139,11 @@ const Comment2: FC<CommentData> = ({ comment, id, token }) => {
                   width="40px"
                   height="40px"
                 />
-                <Typography sx={{ fontSize: 18, ml: 1 }} fontWeight="bold">
-                  {comment.name}
-                </Typography>
+                  {/* <Link href={`/userpage/${comment.memberId}`} > */}
+                    <Typography sx={{ fontSize: 18, ml: 1, cursor: 'pointer' }} fontWeight="bold" >
+                      {comment.name}
+                    </Typography>
+                  {/* </Link> */}
                 <Typography sx={{ ml: 1 }}>{comment.content}</Typography>
               </Stack>
               <Stack direction="row" alignItems="center">
@@ -197,15 +192,19 @@ const Comment2: FC<CommentData> = ({ comment, id, token }) => {
                   width="40px"
                   height="40px"
                 />
-                <Typography sx={{ fontSize: 18, ml: 1 }} fontWeight="bold">
-                  {comment.name}
-                </Typography>
-                <Typography
-                  sx={{ ml: 1, color: "#3470ca", fontSize: 14 }}
-                  fontWeight="bold"
-                >
-                  {comment.parentName}
-                </Typography>
+                {/* <Link href={`/userpage/${comment.memberId}`}> */}
+                  <Typography sx={{ fontSize: 18, ml: 1 }} fontWeight="bold">
+                    {comment.name}
+                  </Typography>
+                {/* </Link> */}
+                {/* <Link href={`/userpage/${comment.memberId}`}> */}
+                  <Typography
+                    sx={{ ml: 1, color: "#3470ca", fontSize: 14 }}
+                    fontWeight="bold"
+                  >
+                    {comment.parentName}
+                  </Typography>
+                {/* </Link> */}
                 <Typography sx={{ ml: 1 }}>{comment.content}</Typography>
               </Stack>
               <Stack direction="row" alignItems="center">
@@ -218,7 +217,7 @@ const Comment2: FC<CommentData> = ({ comment, id, token }) => {
                 {comment ? (
                   <Typography>{Unix_timestamp(comment.createDate)}</Typography>
                 ) : (null)}
-                
+                {userId == comment.memberId ? (
                   <Button
                     variant="contained"
                     color="error"
@@ -228,6 +227,7 @@ const Comment2: FC<CommentData> = ({ comment, id, token }) => {
                   >
                     삭제
                   </Button>
+                ) : null}
               </Stack>
             </Stack>
             <Stack direction="row" sx={{ ml: 16, mb: 2 }} alignItems="center">

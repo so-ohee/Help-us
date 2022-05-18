@@ -360,6 +360,19 @@ const TalentDetail: FC = () => {
               >
                 작성일 {Unix_timestamp(talentDonationDetail.createDate)}
               </Typography>
+<<<<<<< HEAD
+              {talentDonationDetail.updateDate === null ? null : (
+                <Typography
+                  sx={{ mt: 2 }}
+                  variant="h6"
+                  fontWeight="bold"
+                  textAlign="right"
+                >
+                  수정일 {talentDonationDetail.updateDate}
+                </Typography>
+              )}
+=======
+>>>>>>> c5730b2edf10efbd60af0be3a6a1a625ce7d9bb7
               <Divider color="#CDAD78" sx={{ my: 2, borderBottomWidth: 5 }} />
               <Typography variant="h5" fontWeight="bold" sx={{ mx: 5 }}>
                 댓글
