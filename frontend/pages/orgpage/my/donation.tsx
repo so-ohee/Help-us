@@ -161,7 +161,7 @@ const orgpageMyDonation: FC = () => {
       donationStatus: "마감",
       page: curPage2,
     };
-    
+
     getDonationList(ingParams).then((res) => {
       setIngDonation(res.data.donation);
       setTotalPages(res.data.totalPage);
@@ -184,7 +184,7 @@ const orgpageMyDonation: FC = () => {
               component="main"
               sx={{
                 flexGrow: 1,
-                // height: "100vh",
+                height: "85vh",
                 overflow: "auto",
                 mt: 0,
               }}
