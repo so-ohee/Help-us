@@ -312,7 +312,7 @@ const Volunteer: FC = () => {
       volDate : startValue,
       time : time,
       volZipcode : post,
-      volAddress : addr + addr2,
+      volAddress : addr + ' ' + addr2,
     }
     console.log()
     if (title === "") {

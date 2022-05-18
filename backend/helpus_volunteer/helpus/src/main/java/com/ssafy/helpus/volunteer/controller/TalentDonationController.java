@@ -158,4 +158,25 @@ public class TalentDonationController {
         return new ResponseEntity(resultMap, status);
     }
 
+    @ApiOperation(value = "검색")
+    @GetMapping("/search/{keyword}")
+    public ResponseEntity searchTalentDonationList(@PathVariable String keyword, @RequestParam(required = false, defaultValue = "1") int page){
+        log.info("TalentDonationController searchTalentDonationList");
+
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.OK;
+
+        try {
+            resultMap = talentDonationService.searchTalentDonationList(keyword, page-1);
+        }catch (Exception e){
+            log.error(e.getMessage());
+
+            resultMap.put("message", e.getMessage());
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+
+        return new ResponseEntity(resultMap, status);
+
+    }
+
 }

@@ -227,6 +227,14 @@ public class TalentDonationServiceImpl implements TalentDonationService {
 
     }
 
+    @Override
+    public Map<String, Object> searchTalentDonationList(String keyword, int page) throws Exception {
+        Map<String, Object> resultMap = new HashMap<>();
+
+        Page<Volunteer> volunteers = volunteerRepository.findByTitleContainingAndCategory(keyword, "USER", PageRequest.of(page, 10, Sort.by("volunteerId").descending()));
+        return  makeListTalentDonation(volunteers);
+    }
+
 
     public Sort gerOrder(String order) {
         //정렬(최신, 달성률 높은, 달성률 낮은, 오래된)

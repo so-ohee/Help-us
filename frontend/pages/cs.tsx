@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from "react";
+import { FC, useState, useEffect, FormEvent } from "react";
 
 import { getCSList } from "function/axios";
 import Pagination from "@/components/Pagination";
@@ -12,7 +12,10 @@ import {
   InputBase,
   Paper,
   Tabs,
-  Link
+  Link,
+  InputLabel,
+  MenuItem,
+  FormControl,
 } from "@mui/material/";
 import {
   Table,
@@ -23,6 +26,7 @@ import {
   TableRow,
 } from "@mui/material/";
 import { tableCellClasses } from "@mui/material/TableCell";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { styled } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
 import IconButton from "@mui/material/IconButton";
@@ -66,20 +70,72 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 const CsMain: FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [csList, setCSList] = useState<any>(null);
+  const [option, setOption] = useState("전체");
+  
+  const [word, setWord] = useState("");
   // pagination
   const [curPage, setCurPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const paginate = (pageNumber) => setCurPage(pageNumber);
   const [myId, setMyId] = useState(0);
   const [myRole, setMyRole] = useState("");
-  const params = {
-    page: curPage,
+
+  const onClickVisible = () => {
+    alert("비공개 게시글 입니다.");
+    return;
   };
 
+  const params = {
+    page: curPage,
+    category: null,
+    word: null
+  };
+  const Search = (e: FormEvent) => {
+    e.preventDefault();
+    console.log("option : " + option);
+    console.log("word : " + word);
+    if (option === "전체")
+      params.category = null;
+    else
+      params.category = option;
+    if (word === '')
+      params.word = null;
+    else
+      params.word = word;
+    setLoading(false);
+    getCSList(params).then((res) => {
+      console.log(res);
+      setCSList(res.data.desk);
+      setTotalPages(res.data.totalPage);
+      // console.log("data는", reviewList);
+      setLoading(true);
+    });
+  }
+  const optionHandleChange = (event: SelectChangeEvent) => {
+    setOption(event.target.value as string);
+    if (event.target.value === "전체")
+      params.category = null;
+    else
+      params.category = event.target.value;
+    if (word === '')
+      params.word = null;
+    console.log(event.target.value);
+    setLoading(false);
+    getCSList(params).then((res) => {
+      console.log(res);
+      setCSList(res.data.desk);
+      setTotalPages(res.data.totalPage);
+      // console.log("data는", reviewList);
+      setLoading(true);
+    });
+  };
+  
   useEffect(() => {
     setMyId(Number(localStorage.getItem("id")));
     setMyRole(localStorage.getItem("role"));
+    
     getCSList(params).then((res) => {
+      console.log(res);
       setCSList(res.data.desk);
       setTotalPages(res.data.totalPage);
       // console.log("data는", reviewList);
@@ -103,11 +159,39 @@ const CsMain: FC = () => {
             </Typography>
           </Box>
           <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-            <CustomButton variant="contained" href="create/cs">
+            {myRole === "USER" || myRole === "ORG" ? (
+              <CustomButton variant="contained" href="create/cs">
               글 작성
             </CustomButton>
+            ): (
+              <></>
+            )}
+            
           </Box>
           <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 1 }}>
+            <Box sx={{
+                      minWidth: 200,
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      mr: 6,
+            }}>
+              <FormControl>
+                <InputLabel>카테고리</InputLabel>
+                <Select
+                  value={option}
+                  label="option"
+                  onChange={optionHandleChange}
+                  defaultValue={option}
+                >
+                  <MenuItem value="전체">전체</MenuItem>
+                  <MenuItem value="문의">문의</MenuItem>
+                  <MenuItem value="정보수정">정보수정</MenuItem>
+                  <MenuItem value="신고">신고</MenuItem>
+                  <MenuItem value="도움">도움</MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
+            
             <Paper
               component="form"
               sx={{
@@ -116,9 +200,16 @@ const CsMain: FC = () => {
                 alignItems: "center",
                 width: 250,
               }}
+              onSubmit={Search}
             >
-              <InputBase sx={{ ml: 1, flex: 1 }} placeholder="검색" />
-              <IconButton type="submit" sx={{ p: "10px" }}>
+              <InputBase
+                sx={{ ml: 1, flex: 1 }}
+                placeholder="검색"
+                onChange={event=>{                                 //adding the onChange event
+                  setWord(event.target.value)
+                }}
+              />
+              <IconButton type="submit" sx={{ p: "10px" }} onClick={Search}>
                 <SearchIcon />
               </IconButton>
             </Paper>
@@ -160,7 +251,7 @@ const CsMain: FC = () => {
                         </StyledTableCell>
                         
                           {myRole !== "ADMIN" && data.visible === "비공개" && data.memberId !== myId ? (
-                            <StyledTableCell align="center" sx={{ width: 400 }}>
+                            <StyledTableCell align="center" sx={{ width: 400 }} onClick={onClickVisible}>
                             { data.title }
                             </StyledTableCell>
                         ) : (
@@ -187,13 +278,18 @@ const CsMain: FC = () => {
               </Table>
             </TableContainer>
           </Stack>
-          <Stack alignItems="center" sx={{ mb: 5 }}>
-            <Pagination
-              curPage={curPage}
-              paginate={paginate}
-              totalPage={totalPages}
-            />
-          </Stack>
+          {csList && csList.length > 0 ? (
+            <Stack alignItems="center" sx={{ mb: 5 }}>
+              <Pagination
+                curPage={curPage}
+                paginate={paginate}
+                totalPage={totalPages}
+              />
+            </Stack>
+          ): (
+              <></>
+          )}
+          
         </Stack>
       </Grid>
     </div>

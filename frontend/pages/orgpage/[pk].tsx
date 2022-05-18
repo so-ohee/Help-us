@@ -12,6 +12,13 @@ import {
   Tab,
   Box,
   CssBaseline,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  Paper,
+  TableHead,
+  TableRow,
 } from "@mui/material";
 import BusinessIcon from "@mui/icons-material/Business";
 import CallIcon from "@mui/icons-material/Call";
@@ -19,11 +26,38 @@ import MailIcon from "@mui/icons-material/Mail";
 import DonationCardOrg from "@/components/DonationCardOrg";
 import DonationCardOrgFinish from "@/components/DonationCardOrgFinish";
 import ReviewCard from "@/components/ReviewCard";
+import DonationCard from "@/components/DonationCard";
 
 import TestImage from "../../public/images/testImage.jpg";
 import { useRouter } from "next/router";
 import { getUserInfo } from "function/axios";
 import defaultImage from "../../public/images/defaultImage.png";
+import Pagination from "@/components/Pagination";
+import { tableCellClasses } from "@mui/material/TableCell";
+
+// api
+import { getOrgpageDonation, getMyReviewOrg } from "function/axios";
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: "#CDAD78",
+    color: theme.palette.common.white,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  "&:nth-of-type(odd)": {
+    // backgroundColor: theme.palette.action.hover,
+    backgroundColor: "#FCF8F0",
+  },
+  // hide last border
+  "&:last-child td, &:last-child th": {
+    border: 0,
+  },
+}));
 
 const UpdateButton = styled(Button)({
   backgroundColor: "#5B321E",
@@ -55,7 +89,7 @@ function TabPanel(props: TabPanelProps) {
     >
       {value === index && (
         <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
+          <Typography component={"span"}>{children}</Typography>
         </Box>
       )}
     </div>
@@ -116,30 +150,81 @@ function a11yProps(index: number) {
 const OrgPage: FC = () => {
   const router = useRouter();
 
+  const [thisMId, setThisMId] = useState<any>("");
+
   const [myInfo, setMyInfo] = useState<any>(null);
   const [value, setValue] = useState(0);
+
+  const [ingDonation, setIngDonation] = useState<any>("");
+  const [doneDonation, setDonaDonation] = useState<any>("");
+  const [review, setReview] = useState<any>("");
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
+  // pagination
+  const [curPage, setCurPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const paginate = (pageNumber) => setCurPage(pageNumber);
+
+  // pagination2
+  const [curPage2, setCurPage2] = useState(1);
+  const [totalPages2, setTotalPages2] = useState(0);
+  const paginate2 = (pageNumber) => setCurPage2(pageNumber);
+
+  // pagination3 - 후기
+  const [curPage3, setCurPage3] = useState(1);
+  const [totalPages3, setTotalPages3] = useState(0);
+  const paginate3 = (pageNumber) => setCurPage3(pageNumber);
+
   useEffect(() => {
     if (router.isReady) {
-      // console.log(router.query.pk)
+      setThisMId(router.query.pk);
       getUserInfo(router.query.pk)
-      .then(res => {
-        // console.log(res)
-        setMyInfo(res.data)
-        if (res.data.role === 'ORG_WAIT' || res.data.role === 'ORG'){
-          // console.log('--')
-        }else{
-          // console.log('no')
-          location.href="/"
-        }
-      })
-      .catch(() => location.href="/")
-      }
+        .then((res) => {
+          setMyInfo(res.data);
+          if (res.data.role === "ORG_WAIT" || res.data.role === "ORG") {
+          } else {
+            location.href = "/";
+          }
+        })
+        .catch(() => (location.href = "/"));
+    }
   }, [router.isReady]);
+
+  useEffect(() => {
+    if (router.isReady) {
+      const params = {
+        memberId: router.query.pk,
+        page: curPage,
+        donationStatus: "진행",
+      };
+      getOrgpageDonation(params).then((res) => {
+        setIngDonation(res.data.donation);
+        setTotalPages(res.data.totalPage);
+      });
+
+      const params2 = {
+        memberId: router.query.pk,
+        page: curPage2,
+        donationStatus: "마감",
+      };
+      getOrgpageDonation(params2).then((res) => {
+        setDonaDonation(res.data.donation);
+        setTotalPages2(res.data.totalPage);
+      });
+
+      const params3 = {
+        memberId: router.query.pk,
+        page: curPage3,
+      };
+      getMyReviewOrg(params2).then((res) => {
+        setReview(res.data.confirm);
+        setTotalPages3(res.data.totalPage);
+      });
+    }
+  }, [router.isReady, curPage, curPage2, curPage3]);
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -173,14 +258,7 @@ const OrgPage: FC = () => {
                   // height: "300px",
                 }}
               >
-                {/* <Image
-                  src={TestImage}
-                  alt="orgImage"
-                  width="300px"
-                  height="300px"
-                /> */}
-                {myInfo !== null ? 
-                (
+                {myInfo !== null ? (
                   myInfo.profile === null ? (
                     <Image
                       src={defaultImage}
@@ -196,119 +274,55 @@ const OrgPage: FC = () => {
                       height="300px"
                     />
                   )
-                ) : null
-              }
+                ) : null}
               </div>
             </Grid>
-
-            { myInfo ? 
-            (
+            {myInfo ? (
               <>
                 <Grid item xs={9}>
-              <Typography sx={{ mt: 0 }} variant="h4" fontWeight="bold">
-                {myInfo.name}
-              </Typography>
-              <Grid
-                sx={{ mt: 2 }}
-                container
-                direction="row"
-                alignItems="center"
-              >
-                <BusinessIcon sx={{ mr: 2 }} />
-                <Typography align="center">
-                  {myInfo.address}
-                </Typography>
-              </Grid>
-              <Grid
-                sx={{ mt: 2 }}
-                container
-                direction="row"
-                alignItems="center"
-              >
-                <CallIcon sx={{ mr: 2 }} />
-                <Typography align="center">{myInfo.tel}</Typography>
-              </Grid>
-              <Grid
-                sx={{ mt: 2 }}
-                container
-                direction="row"
-                alignItems="center"
-              >
-                <MailIcon sx={{ mr: 2 }} />
-                <Typography align="center">{myInfo.email}</Typography>
-              </Grid>
-              <Box
-                sx={{
-                  bgcolor: "#f5e1be",
-                  borderRadius: 1.25,
-                  // height: "120px",
-                }}
-                minHeight="120px"
-              >
-                <Typography sx={{ p: 2, mt: 1 }}>
-                  {myInfo.info}
-                </Typography>
-              </Box>
-            </Grid>
-              
-              
-
-              
+                  <Typography sx={{ mt: 0 }} variant="h4" fontWeight="bold">
+                    {myInfo.name}
+                  </Typography>
+                  <Grid
+                    sx={{ mt: 2 }}
+                    container
+                    direction="row"
+                    alignItems="center"
+                  >
+                    <BusinessIcon sx={{ mr: 2 }} />
+                    <Typography align="center">{myInfo.address}</Typography>
+                  </Grid>
+                  <Grid
+                    sx={{ mt: 2 }}
+                    container
+                    direction="row"
+                    alignItems="center"
+                  >
+                    <CallIcon sx={{ mr: 2 }} />
+                    <Typography align="center">{myInfo.tel}</Typography>
+                  </Grid>
+                  <Grid
+                    sx={{ mt: 2 }}
+                    container
+                    direction="row"
+                    alignItems="center"
+                  >
+                    <MailIcon sx={{ mr: 2 }} />
+                    <Typography align="center">{myInfo.email}</Typography>
+                  </Grid>
+                  <Box
+                    sx={{
+                      bgcolor: "#f5e1be",
+                      borderRadius: 1.25,
+                      // height: "120px",
+                    }}
+                    minHeight="120px"
+                  >
+                    <Typography sx={{ p: 2, mt: 1 }}>{myInfo.info}</Typography>
+                  </Box>
+                </Grid>
               </>
-
-            ) : null
-            }
-            {/* <Grid item xs={9}>
-              <Typography sx={{ mt: 0 }} variant="h4" fontWeight="bold">
-                {/* {myInfo.address}
-              </Typography>
-              <Grid
-                sx={{ mt: 2 }}
-                container
-                direction="row"
-                alignItems="center"
-              >
-                <BusinessIcon sx={{ mr: 2 }} />
-                <Typography align="center">
-                  경기도 수원시 팔달구 중부대로 222번길 22 2-22
-                </Typography>
-              </Grid>
-              <Grid
-                sx={{ mt: 2 }}
-                container
-                direction="row"
-                alignItems="center"
-              >
-                <CallIcon sx={{ mr: 2 }} />
-                <Typography align="center">010-7777-7777</Typography>
-              </Grid>
-              <Grid
-                sx={{ mt: 2 }}
-                container
-                direction="row"
-                alignItems="center"
-              >
-                <MailIcon sx={{ mr: 2 }} />
-                <Typography align="center">test@gmail.com</Typography>
-              </Grid>
-              <Box
-                sx={{
-                  bgcolor: "#f5e1be",
-                  borderRadius: 1.25,
-                  // height: "120px",
-                }}
-                minHeight="120px"
-              >
-                <Typography sx={{ p: 2, mt: 1 }}>
-                  아무래도 다시 돌아갈 순 없어 아무런 표정도 없이 이런 말하는
-                  그런 내가 잔인한가요 제발 내 마음 설레이게 자꾸만 바라보게
-                  하지 말아요 아무 일 없던 것처럼 그냥 스쳐지나갈 미련인 걸
-                  알아요 아무리 사랑한다 말했어도 다시 돌아올 수 없는 그 때 그
-                  맘이 부른다고 다시 오나요 아무래도 다시 돌아갈 순 없어 아무런
-                  표정도 없이 이런 말하는 그런 내가 잔인한가요
-                </Typography>
-              </Box>
-            </Grid> */}
+            ) : null}
           </Grid>
           <Box sx={{ width: "100%", mt: 2 }}>
             <Box sx={{ bgcolor: "#FCF8F0", borderRadius: 1.25 }}>
@@ -333,145 +347,173 @@ const OrgPage: FC = () => {
                   {...a11yProps(2)}
                 />
               </StyledTabs>
-              {/* <Box sx={{ p: 3 }} /> */}
-              {/* <TabPanel value={value} index={0}>
-                <div>
-                  <Box
-                    sx={{
-                      display: "grid",
-                      gridTemplateColumns: "repeat(auto-fill, 500px)",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      marginTop: 5,
-                      rowGap: 5,
-                      columnGap: 10,
-                    }}
-                  >
-                    <DonationCardOrg />
-                    <DonationCardOrg />
-                  </Box>
-                  <Box
-                    sx={{
-                      display: "grid",
-                      gridTemplateColumns: "repeat(auto-fill, 500px)",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      marginTop: 5,
-                      rowGap: 5,
-                      columnGap: 10,
-                    }}
-                  >
-                    <DonationCardOrg />
-                    <DonationCardOrg />
-                  </Box>
-                  <Box
-                    sx={{
-                      display: "grid",
-                      gridTemplateColumns: "repeat(auto-fill, 500px)",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      marginTop: 5,
-                      rowGap: 5,
-                      columnGap: 10,
-                    }}
-                  >
-                    <DonationCardOrg />
-                    <DonationCardOrg />
-                  </Box>
-                </div>
+              <TabPanel value={value} index={0}>
+                <Typography fontWeight="bold" variant="h5" sx={{ mb: 2 }}>
+                  진행 중인 기부
+                </Typography>
+                <Box
+                  sx={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(auto-fill, 300px)",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    rowGap: 5,
+                    columnGap: 7,
+                  }}
+                >
+                  {ingDonation && ingDonation.length > 0 ? (
+                    ingDonation.map((item, i) => (
+                      <DonationCard donation={item} key={i} />
+                    ))
+                  ) : (
+                    <Typography sx={{ margin: "200px 0" }}>
+                      진행 중인 기부글이 없습니다.
+                    </Typography>
+                  )}
+                </Box>
+                {ingDonation && ingDonation.length > 0 ? (
+                  <Stack alignItems="center" sx={{ mb: 2, mt: 5 }}>
+                    <Pagination
+                      curPage={curPage}
+                      paginate={paginate}
+                      totalPage={totalPages}
+                    />
+                  </Stack>
+                ) : (
+                  <Typography fontWeight="bold" variant="h5" sx={{ mb: 2 }}>
+                    진행 중인 기부가 없습니다.
+                  </Typography>
+                )}
+                <Typography fontWeight="bold" variant="h5" sx={{ mb: 2 }}>
+                  마감된 기부
+                </Typography>
+                <Box
+                  sx={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(auto-fill, 300px)",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    rowGap: 5,
+                    columnGap: 7,
+                  }}
+                >
+                  {doneDonation && doneDonation.length > 0 ? (
+                    doneDonation.map((item, i) => (
+                      <DonationCardOrgFinish item={item} key={i} />
+                    ))
+                  ) : (
+                    <Typography sx={{ margin: "200px 0" }}>
+                      마감된 기부가 없습니다.
+                    </Typography>
+                  )}
+                </Box>
+                {doneDonation && doneDonation.length > 0 ? (
+                  <Stack alignItems="center" sx={{ mb: 2, mt: 5 }}>
+                    <Pagination
+                      curPage={curPage2}
+                      paginate={paginate2}
+                      totalPage={totalPages2}
+                    />
+                  </Stack>
+                ) : (
+                  <Typography fontWeight="bold" variant="h5" sx={{ mb: 2 }}>
+                    마감된 기부가 없습니다.
+                  </Typography>
+                )}
               </TabPanel>
               <TabPanel value={value} index={1}>
-                <div>
-                  <Box
-                    sx={{
-                      display: "grid",
-                      gridTemplateColumns: "repeat(auto-fill, 500px)",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      marginTop: 5,
-                      rowGap: 5,
-                      columnGap: 10,
-                    }}
-                  >
-                    <DonationCardOrgFinish />
-                    <DonationCardOrgFinish />
-                  </Box>
-                  <Box
-                    sx={{
-                      display: "grid",
-                      gridTemplateColumns: "repeat(auto-fill, 500px)",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      marginTop: 5,
-                      rowGap: 5,
-                      columnGap: 10,
-                    }}
-                  >
-                    <DonationCardOrgFinish />
-                    <DonationCardOrgFinish />
-                  </Box>
-                  <Box
-                    sx={{
-                      display: "grid",
-                      gridTemplateColumns: "repeat(auto-fill, 500px)",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      marginTop: 5,
-                      rowGap: 5,
-                      columnGap: 10,
-                    }}
-                  >
-                    <DonationCardOrgFinish />
-                    <DonationCardOrgFinish />
-                  </Box>
-                </div>
+                <Typography fontWeight="bold" variant="h5" sx={{ mb: 2 }}>
+                  진행 중인 봉사
+                </Typography>
+                <Typography fontWeight="bold" variant="h5" sx={{ mb: 2 }}>
+                  마감된 봉사
+                </Typography>
               </TabPanel>
               <TabPanel value={value} index={2}>
-                <div>
-                  <Box
+                {review && review.length > 0 ? (
+                  <>
+                    <TableContainer component={Paper} sx={{ my: 5 }}>
+                      <Table
+                        sx={{ minWidth: 700 }}
+                        aria-label="customized table"
+                      >
+                        <TableHead>
+                          <TableRow>
+                            <StyledTableCell
+                              align="center"
+                              sx={{ fontSize: 17 }}
+                            >
+                              기부글 번호
+                            </StyledTableCell>
+                            <StyledTableCell
+                              align="center"
+                              sx={{ fontSize: 17 }}
+                            >
+                              제목
+                            </StyledTableCell>
+                            <StyledTableCell
+                              align="center"
+                              sx={{ fontSize: 17 }}
+                            >
+                              작성일
+                            </StyledTableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {review &&
+                            review.map((data) => (
+                              <StyledTableRow key={data.donationConfirmId}>
+                                <StyledTableCell
+                                  align="center"
+                                  sx={{ width: 400 }}
+                                >
+                                  {data.donationConfirmId}
+                                </StyledTableCell>
+                                <StyledTableCell align="center">
+                                  {data.title}
+                                </StyledTableCell>
+                                <StyledTableCell align="center">
+                                  {data.createDate.substr(0, 10)}
+                                </StyledTableCell>
+                              </StyledTableRow>
+                            ))}
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
+                    {review && review.length > 0 ? (
+                      <Stack alignItems="center" sx={{ mb: 2, mt: 2 }}>
+                        <Pagination
+                          curPage={curPage3}
+                          paginate={paginate3}
+                          totalPage={totalPages3}
+                        />
+                      </Stack>
+                    ) : (
+                      <Typography
+                        variant="h5"
+                        sx={{
+                          mt: 10,
+                          display: "flex",
+                          justifyContent: "center",
+                        }}
+                      >
+                        진행 중인 배송이 없습니다.
+                      </Typography>
+                    )}
+                  </>
+                ) : (
+                  <Typography
+                    variant="h5"
                     sx={{
-                      display: "grid",
-                      gridTemplateColumns: "repeat(auto-fill, 500px)",
+                      mt: 10,
+                      display: "flex",
                       justifyContent: "center",
-                      alignItems: "center",
-                      marginTop: 5,
-                      rowGap: 5,
-                      columnGap: 10,
                     }}
                   >
-                    <ReviewCard />
-                    <ReviewCard />
-                  </Box>
-                  <Box
-                    sx={{
-                      display: "grid",
-                      gridTemplateColumns: "repeat(auto-fill, 500px)",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      marginTop: 5,
-                      rowGap: 5,
-                      columnGap: 10,
-                    }}
-                  >
-                    <ReviewCard />
-                    <ReviewCard />
-                  </Box>
-                  <Box
-                    sx={{
-                      display: "grid",
-                      gridTemplateColumns: "repeat(auto-fill, 500px)",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      marginTop: 5,
-                      rowGap: 5,
-                      columnGap: 10,
-                    }}
-                  >
-                    <ReviewCard />
-                    <ReviewCard />
-                  </Box>
-                </div>
-              </TabPanel> */}
+                    작성된 리뷰가 없습니다.
+                  </Typography>
+                )}
+              </TabPanel>
             </Box>
           </Box>
         </Container>

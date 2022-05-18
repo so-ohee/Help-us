@@ -39,6 +39,15 @@ export const donationDetail = async (id) => {
   });
 };
 
+// 타인이 보는 기관 페이지 - 봉사글 조회
+export const getOrgpageDonation = async (params) => {
+  return await axios({
+    method: "GET",
+    url: "/8000/api/donation",
+    params: params,
+  });
+};
+
 // 물품 기부 상세 페이지 댓글 조회
 export const donationOrgCommentList = async (id, params) => {
   return await axios({
@@ -64,13 +73,13 @@ export const donationOrgComment = async (id, token, params) => {
 export const donationOrgRecomment = async (id, token, params) => {
   return await axios({
     method: "POST",
-    url : "/8000/d.comment",
+    url: "/8000/d.comment",
     headers: {
       Authorization: token,
     },
     data: params,
-  })
-}
+  });
+};
 
 // 물품 기부 상세 페이지 댓글 삭제
 export const donationOrgCommentDelete = async (
@@ -172,7 +181,7 @@ export const reviewRecomment = async (id, token, params) => {
   return await axios({
     method: "POST",
     url: "/8000/d.comment",
-    headers:{
+    headers: {
       Authorization: token,
     },
     data: params,
@@ -547,10 +556,12 @@ export const getVolunteerOrg = async (memberId) => {
 };
 
 //봉사 현황 조회
-export const getInquiryApplyList = async (id) => {
+export const getInquiryApplyList = async (params) => {
+  console.log(params.page);
   return await axios({
     method: "GET",
-    url: `/8000/api/inquiry/apply/${id}`,
+    url: `/8000/api/inquiry/apply/${params.id}`,
+    params: params,
   });
 };
 
@@ -563,6 +574,14 @@ export const getTalentDonationList = async (params) => {
   });
 };
 
+// 재능기부 목록 검색
+export const searchTalentDonationList = async (keyword,params) => {
+  return await axios({
+    method: "GET",
+    url: `/8000/api/talentDonation/search/${keyword}`,
+    params: params
+  });
+};
 // 재능기부 상세 조회
 export const getTalentDonationDetail = async (id) => {
   return await axios({
@@ -744,6 +763,7 @@ export const getSecretCsDetail = async (id, token, memberId) => {
 
 // 고객센터 목록 조회
 export const getCSList = async (params) => {
+  console.log(params);
   return await axios({
     method: "GET",
     url: `/8000/api/desk`,

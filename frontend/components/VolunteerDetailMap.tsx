@@ -5,7 +5,7 @@ interface MapProps {
   item: any;
 }
 
-const Map: FC<MapProps> = ({ item }) => {
+const VolunteerDetailMap: FC<MapProps> = ({ item }) => {
   useEffect(() => {
     const mapScript = document.createElement("script");
 
@@ -69,4 +69,4 @@ const MapContainer = styled.div`
   /* justify-content: ; */
 `;
 
-export default Map;
+export default VolunteerDetailMap;

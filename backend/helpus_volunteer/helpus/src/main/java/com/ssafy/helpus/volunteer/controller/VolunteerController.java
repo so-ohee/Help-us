@@ -199,20 +199,20 @@ public class VolunteerController {
 
     @ApiOperation(value = "기업입장에서 내가 올린 봉사목록")
     @GetMapping("/mylist/{memberId}")
-    public ResponseEntity myVolunteerList(@PathVariable Long memberId, @RequestParam(required = false, defaultValue = "1") int page){
+    public ResponseEntity myVolunteerList(@PathVariable Long memberId, @RequestParam(required = false, defaultValue = "1") int page, @RequestParam int status){
         log.info("VolunteerController myVolunteerList call");
 
         Map<String, Object> resultMap = new HashMap<>();
-        HttpStatus status = HttpStatus.OK;
+        HttpStatus stat = HttpStatus.OK;
         try {
-            resultMap = volunteerService.myVolunteerList(memberId, page-1);
+            resultMap = volunteerService.myVolunteerList(memberId, page-1, status);
         }catch (Exception e){
             log.error(e.getMessage());
 
             resultMap.put("message", "게시물 조회 실패");
-            status = HttpStatus.INTERNAL_SERVER_ERROR;
+            stat = HttpStatus.INTERNAL_SERVER_ERROR;
         }
-        return new ResponseEntity(resultMap, status);
+        return new ResponseEntity(resultMap, stat);
     }
 
     @ApiOperation(value = "내가 봉사한 봉사목록")

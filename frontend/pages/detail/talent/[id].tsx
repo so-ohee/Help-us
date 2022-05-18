@@ -142,9 +142,8 @@ const TalentDetail: FC = () => {
   //const imageList = [testImage, testImage, testImage, testImage, testImage];
   const router = useRouter();
 
-  const [loading, setLoadging] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [loading2, setLoading2] = useState<boolean>(false);
-
   // console.log("라우터 쿼리는", router.query.id);
   const [talentDonationDetail, setTalentDonationDetail] = useState<any>("");
   const [userInfo, setUserInfo] = useState<any>("");
@@ -160,12 +159,8 @@ const TalentDetail: FC = () => {
     if (router.isReady) {
       getTalentDonationDetail(router.query.id).then((res) => {
         setTalentDonationDetail(res.data.volunteer);
+        console.log("ttt", talentDonationDetail);
         setLoading2(true);
-      });
-      getUserInfo(localStorage.getItem("id")).then((res) => {
-        console.log(res.data.profile === null);
-        setUserInfo(res.data);
-        setLoadging(true);
       });
     }
   }, [router.isReady]);
@@ -184,17 +179,17 @@ const TalentDetail: FC = () => {
       talentCommentList(router.query.id, params).then((res) => {
         setCommentList(res.data.comment);
         setTotalPages(res.data.totalPage);
-        setLoadging(true);
+        setLoading(true);
       });
     }
-  }, [curPage, router.isReady, commentList, curPage]);
+  }, [router.isReady, commentList, curPage]);
 
   useEffect(() => {
     const id = localStorage.getItem("id");
     const token = localStorage.getItem("jwt");
     setId(id);
     setToken(token);
-  });
+  }, []);
 
   //  댓글 등록 버튼
   const handleComment = (e) => {
@@ -210,14 +205,35 @@ const TalentDetail: FC = () => {
       content: comment,
       parentCommentId: "",
     };
-    console.log(params);
+    // console.log(params);
     talentComment(id, token, params)
       .then((res) => {
-        console.log(res + "성공")
+        // console.log(res + "성공");
         setComment("");
       })
-      .catch((err) => console.log(err + "실패"))
-  }
+      .catch((err) => console.log(err + "실패"));
+  };
+
+  const Unix_timestamp = (t) => {
+    var date = new Date(t);
+    date.setHours(date.getHours() + 9);
+    var year = date.getFullYear();
+    var month = "0" + (date.getMonth() + 1);
+    var day = "0" + date.getDate();
+    var hour = "0" + date.getHours();
+    var minute = "0" + date.getMinutes();
+    return (
+      year +
+      "-" +
+      month.substr(-2) +
+      "-" +
+      day.substr(-2) +
+      " " +
+      hour.substr(-2) +
+      ":" +
+      minute.substr(-2)
+    );
+  };
 
   return (
     <>
@@ -252,7 +268,7 @@ const TalentDetail: FC = () => {
                       marginTop: "6px",
                     }}
                   >
-                    {userInfo.profile === null ? (
+                    {talentDonationDetail.profile === null ? (
                       <Image
                         src={defaultImage}
                         alt="orgImage"
@@ -261,7 +277,7 @@ const TalentDetail: FC = () => {
                       />
                     ) : (
                       <Image
-                        src={userInfo.profile}
+                        src={talentDonationDetail.profile}
                         // src={defaultImage}
                         alt="orgImage"
                         width="150px"
@@ -272,7 +288,7 @@ const TalentDetail: FC = () => {
                 </Grid>
                 <Grid>
                   <Typography sx={{ mt: 2.5 }} variant="h6" fontWeight="bold">
-                    {userInfo.name}
+                    {talentDonationDetail.name}
                   </Typography>
                   <Grid
                     sx={{ mt: 2 }}
@@ -281,7 +297,9 @@ const TalentDetail: FC = () => {
                     alignItems="center"
                   >
                     <MailIcon sx={{ mr: 1 }} />
-                    <Typography align="center">{userInfo.email}</Typography>
+                    <Typography align="center">
+                      {talentDonationDetail.userEmail}
+                    </Typography>
                   </Grid>
                 </Grid>
               </Grid>
@@ -340,8 +358,9 @@ const TalentDetail: FC = () => {
                 fontWeight="bold"
                 textAlign="right"
               >
-                작성일 {talentDonationDetail.createDate}
+                작성일 {Unix_timestamp(talentDonationDetail.createDate)}
               </Typography>
+<<<<<<< HEAD
               {talentDonationDetail.updateDate === null ? null : (
                 <Typography
                   sx={{ mt: 2 }}
@@ -352,9 +371,11 @@ const TalentDetail: FC = () => {
                   수정일 {talentDonationDetail.updateDate}
                 </Typography>
               )}
+=======
+>>>>>>> c5730b2edf10efbd60af0be3a6a1a625ce7d9bb7
               <Divider color="#CDAD78" sx={{ my: 2, borderBottomWidth: 5 }} />
               <Typography variant="h5" fontWeight="bold" sx={{ mx: 5 }}>
-                댓글 
+                댓글
               </Typography>
               <Stack
                 justifyContent="space-between"
@@ -379,8 +400,8 @@ const TalentDetail: FC = () => {
               </Stack>
               <Stack>
                 {commentList &&
-                  commentList.map((item) => (
-                    <Comment comment={item} id={id} token={token} />
+                  commentList.map((item, i) => (
+                    <Comment comment={item} id={id} token={token} key={i} />
                   ))}
               </Stack>
               <Box sx={{ display: "flex", justifyContent: "center", my: 5 }}>
