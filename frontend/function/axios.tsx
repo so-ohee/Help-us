@@ -267,7 +267,7 @@ export const endInquiry = async (id, token, volunteerApplyId, status) => {
 export const getDonationList = async (params) => {
   return await axios({
     method: "GET",
-    url: "/8000/donation",
+    url: "/8000/api/donation",
     params: params,
   });
 };
@@ -576,11 +576,11 @@ export const getTalentDonationList = async (params) => {
 };
 
 // 재능기부 목록 검색
-export const searchTalentDonationList = async (keyword,params) => {
+export const searchTalentDonationList = async (keyword, params) => {
   return await axios({
     method: "GET",
     url: `/8000/api/talentDonation/search/${keyword}`,
-    params: params
+    params: params,
   });
 };
 // 재능기부 상세 조회
