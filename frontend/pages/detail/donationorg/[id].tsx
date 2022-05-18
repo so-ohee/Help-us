@@ -174,7 +174,7 @@ const DonationOrgDetail: FC = () => {
       donationDetail(router.query.id).then((res) => {
         // console.log(res);
         setDonationDetails(res.data.donation);
-        // console.log(res.data.donation);
+        console.log(res.data.donation);
         setDetailLoading(true);
       });
     }
@@ -535,8 +535,8 @@ const DonationOrgDetail: FC = () => {
                               direction="column"
                               sx={{
                                 width: `${
-                                  (data.deliveryCount +
-                                    data.waitingCount / data.totalCount) *
+                                  ((data.deliveryCount + data.waitingCount) /
+                                    data.totalCount) *
                                   100
                                 }%`,
                               }}
@@ -552,8 +552,8 @@ const DonationOrgDetail: FC = () => {
                               ></Box>
                               <Typography sx={{ fontSize: 11 }}>
                                 {(
-                                  (data.deliveryCount +
-                                    data.waitingCount / data.totalCount) *
+                                  ((data.deliveryCount + data.waitingCount) /
+                                    data.totalCount) *
                                   100
                                 ).toFixed()}
                                 %
