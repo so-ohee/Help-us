@@ -606,7 +606,7 @@ export const getMyTalentDonationList = async (params) => {
 export const emailCheck = async (email) => {
   return await axios({
     method: "POST",
-    url: "/8000/member/email-check",
+    url: "/8000/api/member/email-check",
     data: {
       email: email,
     },
@@ -617,7 +617,7 @@ export const emailCheck = async (email) => {
 export const emailAuth = async (email) => {
   return await axios({
     method: "POST",
-    url: "/8000/member/email-auth",
+    url: "/8000/api/member/email-auth",
     data: {
       email: email,
     },
@@ -628,7 +628,7 @@ export const emailAuth = async (email) => {
 export const phoneAuth = async (phone) => {
   return await axios({
     method: "POST",
-    url: "/8000/member/phone-auth",
+    url: "/8000/api/member/phone-auth",
     data: {
       number: phone,
     },
@@ -658,7 +658,7 @@ export const signupOrg = async (data, img) => {
   // newForm.append("profile",img)
 
   return await axios({
-    url: "/8000/member/org",
+    url: "/8000/api/member/org",
     method: "POST",
     headers: {
       "Content-Type": "multipart/form-data",
@@ -680,7 +680,7 @@ export const signupUser = async (data) => {
   // }
 
   return await axios({
-    url: "/8000/member/user",
+    url: "/8000/api/member/user",
     method: "POST",
     data: data,
   });
