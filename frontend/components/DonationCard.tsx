@@ -6,6 +6,7 @@ import Chip from "@mui/material/Chip";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 import { DonationData } from "../interfaces";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const CustomButton = styled(Button)({
   backgroundColor: "#5B321E",
@@ -18,6 +19,9 @@ const CustomButton = styled(Button)({
 });
 
 const DonationCard: FC<DonationData> = ({ donation }) => {
+  const router = useRouter();
+  const [hover, setHover] = useState<any>({cursor:'pointer'})
+  
   return (
     <div>
       <Box
@@ -29,7 +33,12 @@ const DonationCard: FC<DonationData> = ({ donation }) => {
           height: 230,
           width: 325,
           // mt: 3,
+          bgcolor: "#ffffff",
         }}
+        style={hover}
+        onMouseOver={() => setHover({transform: 'translateY(-5px)',boxShadow:'0 0 15px #CDAD78', cursor:'pointer'})}
+        onMouseOut={() => setHover({cursor:'pointer'})}
+        onClick={() => router.push(`/detail/donationorg/${donation.donationId}`)}
       >
         <Stack direction="row" justifyContent="center">
           <Box
@@ -43,15 +52,15 @@ const DonationCard: FC<DonationData> = ({ donation }) => {
             }}
           >
             <Box>
-              <Link href={`/detail/donationorg/${donation.donationId}`}>
-                <a>
+              {/* <Link href={`/detail/donationorg/${donation.donationId}`}>
+                <a> */}
                   <Typography
                     sx={{ fontWeight: "bold", fontSize: 17, mt: 0.5, ml: 3 }}
                   >
                     {donation.title}
                   </Typography>
-                </a>
-              </Link>
+                {/* </a>
+              </Link> */}
               <Grid
                 container
                 sx={{

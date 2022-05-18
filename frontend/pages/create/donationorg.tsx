@@ -22,6 +22,8 @@ import { createDonation } from "../../function/axios";
 import Logo from "../../public/images/logo4.png";
 import Router from "next/router";
 
+import ExpiryDate from "@/components/ExpiryDate";
+
 const CustomButton = styled(Button)({
   backgroundColor: "#5B321E",
   color: "white",
@@ -357,9 +359,7 @@ const DonationOrg: FC = (props) => {
                 maxWidth="100"
                 sx={{ display: "flex", justifyContent: "flex-end" }}
               >
-                <OutlinedButton variant="outlined">
-                  유통기한 가이드
-                </OutlinedButton>
+                <ExpiryDate></ExpiryDate>
               </Box>
               <Box sx={{ my: 3 }}>
                 <TextField

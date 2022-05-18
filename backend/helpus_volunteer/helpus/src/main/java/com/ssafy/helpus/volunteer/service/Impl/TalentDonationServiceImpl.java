@@ -231,7 +231,7 @@ public class TalentDonationServiceImpl implements TalentDonationService {
     public Map<String, Object> searchTalentDonationList(String keyword, int page) throws Exception {
         Map<String, Object> resultMap = new HashMap<>();
 
-        Page<Volunteer> volunteers = volunteerRepository.findByTitleContaining(keyword,PageRequest.of(page, 10, Sort.by("volunteerId").descending()));
+        Page<Volunteer> volunteers = volunteerRepository.findByTitleContainingAndCategory(keyword, "USER", PageRequest.of(page, 10, Sort.by("volunteerId").descending()));
         return  makeListTalentDonation(volunteers);
     }
 

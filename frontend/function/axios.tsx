@@ -39,6 +39,15 @@ export const donationDetail = async (id) => {
   });
 };
 
+// 타인이 보는 기관 페이지 - 봉사글 조회
+export const getOrgpageDonation = async (params) => {
+  return await axios({
+    method: "GET",
+    url: "/8000/api/donation",
+    params: params,
+  });
+};
+
 // 물품 기부 상세 페이지 댓글 조회
 export const donationOrgCommentList = async (id, params) => {
   return await axios({
@@ -64,13 +73,13 @@ export const donationOrgComment = async (id, token, params) => {
 export const donationOrgRecomment = async (id, token, params) => {
   return await axios({
     method: "POST",
-    url : "/8000/d.comment",
+    url: "/8000/d.comment",
     headers: {
       Authorization: token,
     },
     data: params,
-  })
-}
+  });
+};
 
 // 물품 기부 상세 페이지 댓글 삭제
 export const donationOrgCommentDelete = async (
@@ -172,7 +181,7 @@ export const reviewRecomment = async (id, token, params) => {
   return await axios({
     method: "POST",
     url: "/8000/d.comment",
-    headers:{
+    headers: {
       Authorization: token,
     },
     data: params,
