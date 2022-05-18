@@ -27,6 +27,7 @@ import DonationCardOrg from "@/components/DonationCardOrg";
 import DonationCardOrgFinish from "@/components/DonationCardOrgFinish";
 import ReviewCard from "@/components/ReviewCard";
 import DonationCard from "@/components/DonationCard";
+import VolunteerCard from "@/components/VolunteerCard";
 
 import TestImage from "../../public/images/testImage.jpg";
 import { useRouter } from "next/router";
@@ -36,7 +37,11 @@ import Pagination from "@/components/Pagination";
 import { tableCellClasses } from "@mui/material/TableCell";
 
 // api
-import { getOrgpageDonation, getMyReviewOrg } from "function/axios";
+import {
+  getOrgpageDonation,
+  getMyReviewOrg,
+  getVolunteerOrg,
+} from "function/axios";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -159,6 +164,9 @@ const OrgPage: FC = () => {
   const [doneDonation, setDonaDonation] = useState<any>("");
   const [review, setReview] = useState<any>("");
 
+  const [ingVolunteer, setIngVolunteer] = useState<any>("");
+  const [doneVolunteer, setDoneVolunteer] = useState<any>("");
+
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
@@ -178,16 +186,26 @@ const OrgPage: FC = () => {
   const [totalPages3, setTotalPages3] = useState(0);
   const paginate3 = (pageNumber) => setCurPage3(pageNumber);
 
+  // pagination4 - 진행 중 봉사
+  const [curPage4, setCurPage4] = useState(1);
+  const [totalPages4, setTotalPages4] = useState(0);
+  const paginate4 = (pageNumber) => setCurPage4(pageNumber);
+
+  // pagination5 - 마감된 봉사
+  const [curPage5, setCurPage5] = useState(1);
+  const [totalPages5, setTotalPages5] = useState(0);
+  const paginate5 = (pageNumber) => setCurPage5(pageNumber);
+
   useEffect(() => {
     if (router.isReady) {
       setThisMId(router.query.pk);
       getUserInfo(router.query.pk)
         .then((res) => {
           setMyInfo(res.data);
-          if (res.data.role === "ORG_WAIT" || res.data.role === "ORG") {
-          } else {
-            location.href = "/";
-          }
+          // if (res.data.role === "ORG_WAIT" || res.data.role === "ORG") {
+          // } else {
+          //   location.href = "/";
+          // }
         })
         .catch(() => (location.href = "/"));
     }
@@ -219,12 +237,30 @@ const OrgPage: FC = () => {
         memberId: router.query.pk,
         page: curPage3,
       };
-      getMyReviewOrg(params2).then((res) => {
+      getMyReviewOrg(params3).then((res) => {
         setReview(res.data.confirm);
         setTotalPages3(res.data.totalPage);
       });
+
+      const params4 = {
+        page: curPage4,
+        status: 0,
+      };
+      getVolunteerOrg(router.query.pk, params4).then((res) => {
+        setIngVolunteer(res.data.listVolunteer);
+        setTotalPages4(res.data.totalPage);
+      });
+
+      const params5 = {
+        page: curPage5,
+        status: 1,
+      };
+      getVolunteerOrg(router.query.pk, params5).then((res) => {
+        setDoneVolunteer(res.data.listVolunteer);
+        setTotalPages5(res.data.totalPage);
+      });
     }
-  }, [router.isReady, curPage, curPage2, curPage3]);
+  }, [router.isReady, curPage, curPage2, curPage3, curPage4, curPage5]);
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -425,9 +461,75 @@ const OrgPage: FC = () => {
                 <Typography fontWeight="bold" variant="h5" sx={{ mb: 2 }}>
                   진행 중인 봉사
                 </Typography>
+                <Box
+                  sx={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(auto-fill, 300px)",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    rowGap: 5,
+                    columnGap: 7,
+                  }}
+                >
+                  {ingVolunteer && ingVolunteer.length > 0 ? (
+                    ingVolunteer.map((item, i) => (
+                      <VolunteerCard volunteer={item} key={i} />
+                    ))
+                  ) : (
+                    <Typography sx={{ margin: "200px 0" }}>
+                      진행 중인 봉사가 없습니다.
+                    </Typography>
+                  )}
+                </Box>
+                {ingVolunteer && ingVolunteer.length > 0 ? (
+                  <Stack alignItems="center" sx={{ mb: 2, mt: 5 }}>
+                    <Pagination
+                      curPage={curPage4}
+                      paginate={paginate4}
+                      totalPage={totalPages4}
+                    />
+                  </Stack>
+                ) : (
+                  <Typography fontWeight="bold" variant="h5" sx={{ mb: 2 }}>
+                    진행 중인 봉사가 없습니다.
+                  </Typography>
+                )}
                 <Typography fontWeight="bold" variant="h5" sx={{ mb: 2 }}>
                   마감된 봉사
                 </Typography>
+                <Box
+                  sx={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(auto-fill, 300px)",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    rowGap: 5,
+                    columnGap: 7,
+                  }}
+                >
+                  {doneVolunteer && doneVolunteer.length > 0 ? (
+                    doneVolunteer.map((item, i) => (
+                      <VolunteerCard volunteer={item} key={i} />
+                    ))
+                  ) : (
+                    <Typography sx={{ margin: "200px 0" }}>
+                      마감된 봉사가 없습니다.
+                    </Typography>
+                  )}
+                </Box>
+                {doneVolunteer && doneVolunteer.length > 0 ? (
+                  <Stack alignItems="center" sx={{ mb: 2, mt: 5 }}>
+                    <Pagination
+                      curPage={curPage5}
+                      paginate={paginate5}
+                      totalPage={totalPages5}
+                    />
+                  </Stack>
+                ) : (
+                  <Typography fontWeight="bold" variant="h5" sx={{ mb: 2 }}>
+                    마감된 봉사가 없습니다.
+                  </Typography>
+                )}
               </TabPanel>
               <TabPanel value={value} index={2}>
                 {review && review.length > 0 ? (

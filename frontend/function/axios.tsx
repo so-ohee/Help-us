@@ -222,7 +222,7 @@ export const getUserDonationList = async (id, params) => {
 export const sendApply = async (id, data) => {
   return await axios({
     method: "PUT",
-    url: "/9080/d.apply",
+    url: "/8000/d.apply",
     headers: {
       memberId: id,
     },
@@ -234,7 +234,7 @@ export const sendApply = async (id, data) => {
 export const updateApply = async (id, data) => {
   return await axios({
     method: "PUT",
-    url: "/9080/d.apply",
+    url: "/8000/d.apply",
     headers: {
       memberId: id,
     },
@@ -267,7 +267,7 @@ export const endInquiry = async (id, token, volunteerApplyId, status) => {
 export const getDonationList = async (params) => {
   return await axios({
     method: "GET",
-    url: "/9080/donation",
+    url: "/8000/api/donation",
     params: params,
   });
 };
@@ -276,7 +276,7 @@ export const getDonationList = async (params) => {
 export const getDeliveryList = async (id, params) => {
   return await axios({
     method: "GET",
-    url: `/9080/d.apply/tracking/${id}`,
+    url: `/8000/d.apply/tracking/${id}`,
     params: params,
   });
 };
@@ -528,7 +528,6 @@ export const volunteerCommentList = async (id, params) => {
 
 // 봉사 상세 페이지 댓글 삭제
 export const volunteerCommentDelete = async (commentId, id, token) => {
-  // console.log(token)
   return await axios({
     method: "DELETE",
     url: `/8000/v.comment/${commentId}`,
@@ -549,10 +548,11 @@ export const getVolunteerMain = async (params) => {
 };
 
 // 기관 마이페이지 - 봉사 글 조회
-export const getVolunteerOrg = async (memberId) => {
+export const getVolunteerOrg = async (memberId, params) => {
   return await axios({
     method: "GET",
     url: `/8000/api/volunteer/mylist/${memberId}`,
+    params: params,
   });
 };
 
@@ -576,11 +576,11 @@ export const getTalentDonationList = async (params) => {
 };
 
 // 재능기부 목록 검색
-export const searchTalentDonationList = async (keyword,params) => {
+export const searchTalentDonationList = async (keyword, params) => {
   return await axios({
     method: "GET",
     url: `/8000/api/talentDonation/search/${keyword}`,
-    params: params
+    params: params,
   });
 };
 // 재능기부 상세 조회
@@ -606,7 +606,7 @@ export const getMyTalentDonationList = async (params) => {
 export const emailCheck = async (email) => {
   return await axios({
     method: "POST",
-    url: "/9082/member/email-check",
+    url: "/8000/member/email-check",
     data: {
       email: email,
     },
@@ -617,7 +617,7 @@ export const emailCheck = async (email) => {
 export const emailAuth = async (email) => {
   return await axios({
     method: "POST",
-    url: "/9082/member/email-auth",
+    url: "/8000/member/email-auth",
     data: {
       email: email,
     },
@@ -628,7 +628,7 @@ export const emailAuth = async (email) => {
 export const phoneAuth = async (phone) => {
   return await axios({
     method: "POST",
-    url: "/9082/member/phone-auth",
+    url: "/8000/member/phone-auth",
     data: {
       number: phone,
     },
@@ -658,7 +658,7 @@ export const signupOrg = async (data, img) => {
   // newForm.append("profile",img)
 
   return await axios({
-    url: "/9082/member/org",
+    url: "/8000/member/org",
     method: "POST",
     headers: {
       "Content-Type": "multipart/form-data",
@@ -680,7 +680,7 @@ export const signupUser = async (data) => {
   // }
 
   return await axios({
-    url: "/9082/member/user",
+    url: "/8000/member/user",
     method: "POST",
     data: data,
   });

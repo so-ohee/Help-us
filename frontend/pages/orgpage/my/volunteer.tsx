@@ -20,6 +20,8 @@ import {
 } from "@mui/material";
 import helpImage from "../../../public/images/help.png";
 
+import Pagination from "@/components/Pagination";
+
 import VolunteerCard from "@/components/VolunteerCard";
 import VolunteerCardOrg from "../../../components/VolunteerCardOrg";
 import VolunteerCardOrgFinish from "@/components/VolunteerCardOrgFinish";
@@ -124,14 +126,38 @@ const orgpageMyVolunteer: FC = () => {
     setValue(newValue);
   };
 
+  // pagination
+  const [curPage, setCurPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const paginate = (pageNumber) => setCurPage(pageNumber);
+
+  // pagination2
+  const [curPage2, setCurPage2] = useState(1);
+  const [totalPages2, setTotalPages2] = useState(0);
+  const paginate2 = (pageNumber) => setCurPage2(pageNumber);
+
   useEffect(() => {
     const memberId = localStorage.getItem("id");
+    const params = {
+      page: curPage,
+      status: 0,
+    };
 
-    getVolunteerOrg(memberId).then((res) => {
-      setIngVolunteer(res.data.not_end_list);
-      setDoneVolunteer(res.data.end_list);
+    const params2 = {
+      page: curPage2,
+      status: 1,
+    };
+
+    getVolunteerOrg(memberId, params).then((res) => {
+      setIngVolunteer(res.data.listVolunteer);
+      setTotalPages(res.data.totalPage);
     });
-  }, []);
+
+    getVolunteerOrg(memberId, params2).then((res) => {
+      setDoneVolunteer(res.data.listVolunteer);
+      setTotalPages2(res.data.totalPage);
+    });
+  }, [curPage, curPage2]);
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -141,7 +167,7 @@ const orgpageMyVolunteer: FC = () => {
         component="main"
         sx={{
           flexGrow: 1,
-          // height: "100vh",
+          height: "85vh",
           overflow: "auto",
           mt: 0,
         }}
@@ -196,7 +222,7 @@ const orgpageMyVolunteer: FC = () => {
                       <Typography>모집 중인 봉사가 없습니다.</Typography>
                     )}
                   </Box>
-                  {/* {ingVolunteer && ingVolunteer.length > 0 ? (
+                  {ingVolunteer && ingVolunteer.length > 0 ? (
                     <Stack alignItems="center" sx={{ mb: 0, mt: 3 }}>
                       <Pagination
                         curPage={curPage}
@@ -206,7 +232,7 @@ const orgpageMyVolunteer: FC = () => {
                     </Stack>
                   ) : (
                     <></>
-                  )} */}
+                  )}
                 </TabPanel>
                 <TabPanel value={value} index={1}>
                   <Box
@@ -231,9 +257,20 @@ const orgpageMyVolunteer: FC = () => {
                         />
                       ))
                     ) : (
-                      <Typography>모집 중인 봉사가 없습니다.</Typography>
+                      <Typography>마감된 봉사가 없습니다.</Typography>
                     )}
                   </Box>
+                  {ingVolunteer && ingVolunteer.length > 0 ? (
+                    <Stack alignItems="center" sx={{ mb: 0, mt: 3 }}>
+                      <Pagination
+                        curPage={curPage2}
+                        paginate={paginate2}
+                        totalPage={totalPages2}
+                      />
+                    </Stack>
+                  ) : (
+                    <></>
+                  )}
                 </TabPanel>
               </Box>
             </Box>

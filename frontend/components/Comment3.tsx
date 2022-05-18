@@ -198,7 +198,7 @@ const Comment3: FC<CommentData> = ({ comment, id, token }) => {
                 {comment ? (
                   <Typography>{comment.createDate}</Typography>
                 ) : (null)}
-                
+                {userId == comment.memberId ? (
                   <Button
                     variant="contained"
                     color="error"
@@ -208,6 +208,7 @@ const Comment3: FC<CommentData> = ({ comment, id, token }) => {
                   >
                     삭제
                   </Button>
+                ) : null}
               </Stack>
             </Stack>
             <Stack direction="row" sx={{ ml: 16, mb: 2 }} alignItems="center">
