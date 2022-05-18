@@ -21,6 +21,7 @@ import {
   Divider,
   TextField,
   alertClasses,
+  Modal,
 } from "@mui/material";
 import { tableCellClasses } from "@mui/material/TableCell";
 
@@ -61,6 +62,30 @@ const CustomButton = styled(Button)({
   },
 });
 
+const style = {
+  position: "absolute" as "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "#e9e1d3",
+  // border: "2px solid #000",
+  borderRadius: 2,
+  // boxShadow: 24,
+  p: 2,
+};
+
+const CustomButton2 = styled(Button)({
+  color: "#5B321E",
+  border: "2px solid #5B321E",
+  fontWeight: "bold",
+  "&:hover": {
+    backgroundColor: "#FCE2A6",
+    color: "#5B321E",
+  },
+  fontSize: 12,
+});
+
 const VolunteerDetail: FC = () => {
   const router = useRouter();
   const [input, setInput] = useState<string>("");
@@ -80,10 +105,15 @@ const VolunteerDetail: FC = () => {
   let userId = 0;
   let applyPart;
 
+  // 모달
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   // 상세 페이지 내용 불러오기
   useEffect(() => {
     if (router.isReady) {
-      console.log("id" + router.query.id);
+      // console.log("id" + router.query.id);
       volunteerDetail(router.query.id)
         .then((res) => {
           // console.log(res);
@@ -109,7 +139,7 @@ const VolunteerDetail: FC = () => {
           setLoading3(true);
         });
     }
-  }, [router.isReady]);
+  }, [router.isReady, open]);
 
   // pagination
   const [curPage, setCurPage] = useState(1);
@@ -129,7 +159,7 @@ const VolunteerDetail: FC = () => {
         setLoading(true);
       });
     }
-  }, [curPage, router.isReady, commentList]);
+  }, [curPage, router.isReady, commentList, open]);
 
   useEffect(() => {
     const id = localStorage.getItem("id");
@@ -158,7 +188,7 @@ const VolunteerDetail: FC = () => {
     volunteerComment(id, token, params)
       .then((res) => {
         // setCommentList(commentList.concat(comment));
-        console.log(res + "성공");
+        // console.log(res + "성공");
         setComment("");
       })
       .catch((err) => console.log(err + "실패"));
@@ -194,7 +224,9 @@ const VolunteerDetail: FC = () => {
 
     volunteerApply(id, token)
       .then((res) => {
-        console.log(res + "성공");
+        // console.log(res + "성공");
+        setOpen(true);
+        // window.location.reload();
       })
       .catch((err) => console.log(err + "실패"));
   };
@@ -348,50 +380,94 @@ const VolunteerDetail: FC = () => {
                 }}
                 direction="row"
               >
-                <Stack
-                  direction="column"
-                  sx={{
-                    width: `${volunteerDetails?.percent}%`,
-                  }}
-                >
-                  <Box
+                {volunteerDetails?.percent === 0 ? null : (
+                  <Stack
+                    direction="column"
                     sx={{
-                      borderTopLeftRadius: 5,
-                      borderBottomLeftRadius: 5,
-                      height: 30,
-                      bgcolor: "#CDAD78",
+                      width: `${volunteerDetails?.percent}%`,
                     }}
-                    justifyContent="center"
-                    flexDirection="column"
-                    display="flex"
                   >
-                    <Typography sx={{ fontSize: 13 }} textAlign="center">
-                      {volunteerDetails?.percent.toFixed()}%
-                    </Typography>
-                  </Box>
-                </Stack>
-                <Stack
-                  direction="column"
-                  sx={{
-                    width: `${100 - volunteerDetails?.percent}%`,
-                  }}
-                >
-                  <Box
+                    {volunteerDetails?.percent === 100 ? (
+                      <Box
+                        sx={{
+                          borderTopLeftRadius: 5,
+                          borderBottomLeftRadius: 5,
+                          borderTopRightRadius: 5,
+                          borderBottomRightRadius: 5,
+                          height: 30,
+                          bgcolor: "#CDAD78",
+                        }}
+                        justifyContent="center"
+                        flexDirection="column"
+                        display="flex"
+                      >
+                        <Typography sx={{ fontSize: 13 }} textAlign="center">
+                          {volunteerDetails?.percent.toFixed()}%
+                        </Typography>
+                      </Box>
+                    ) : (
+                      <Box
+                        sx={{
+                          borderTopLeftRadius: 5,
+                          borderBottomLeftRadius: 5,
+                          height: 30,
+                          bgcolor: "#CDAD78",
+                        }}
+                        justifyContent="center"
+                        flexDirection="column"
+                        display="flex"
+                      >
+                        <Typography sx={{ fontSize: 13 }} textAlign="center">
+                          {volunteerDetails?.percent.toFixed()}%
+                        </Typography>
+                      </Box>
+                    )}
+                  </Stack>
+                )}
+                {100 - volunteerDetails?.percent === 0 ? null : (
+                  <Stack
+                    direction="column"
                     sx={{
-                      borderTopRightRadius: 5,
-                      borderBottomRightRadius: 5,
-                      height: 30,
-                      bgcolor: "#dbd5ca",
+                      width: `${100 - volunteerDetails?.percent}%`,
                     }}
-                    justifyContent="center"
-                    flexDirection="column"
-                    display="flex"
                   >
-                    <Typography sx={{ fontSize: 13 }} textAlign="center">
-                      {(100 - volunteerDetails?.percent).toFixed()}%
-                    </Typography>
-                  </Box>
-                </Stack>
+                    {100 - volunteerDetails?.percent === 100 ? (
+                      <Box
+                        sx={{
+                          borderTopRightRadius: 5,
+                          borderBottomRightRadius: 5,
+                          borderTopLeftRadius: 5,
+                          borderBottomLeftRadius: 5,
+                          height: 30,
+                          bgcolor: "#dbd5ca",
+                        }}
+                        justifyContent="center"
+                        flexDirection="column"
+                        display="flex"
+                      >
+                        <Typography sx={{ fontSize: 13 }} textAlign="center">
+                          {(100 - volunteerDetails?.percent).toFixed()}%
+                        </Typography>
+                      </Box>
+                    ) : (
+                      <Box
+                        sx={{
+                          borderTopRightRadius: 5,
+                          borderBottomRightRadius: 5,
+                          height: 30,
+                          bgcolor: "#dbd5ca",
+                        }}
+                        justifyContent="center"
+                        flexDirection="column"
+                        display="flex"
+                      >
+                        <Typography sx={{ fontSize: 13 }} textAlign="center">
+                          {(100 - volunteerDetails?.percent).toFixed()}%
+                        </Typography>
+                      </Box>
+                    )}
+                  </Stack>
+                )}
                 {/* <Stack>
               <Typography sx={{ width: 100, ml: 2 }}>3 / 9</Typography>
             </Stack> */}
@@ -406,17 +482,6 @@ const VolunteerDetail: FC = () => {
               <Stack sx={{ width: 800, height: 300, mt: 3, ml: 20 }}>
                 <VolunteerDetailMap item={volunteerDetails} />
               </Stack>
-              {/* <Box
-                sx={{
-                  width: 800,
-                  height: 300,
-                  bgcolor: "#ffffff",
-                  mx: "auto",
-                  mt: 3,
-                }}
-              >
-                지도
-              </Box> */}
               <Stack
                 justifyContent="right"
                 direction="row"
@@ -473,6 +538,25 @@ const VolunteerDetail: FC = () => {
                   totalPage={totalPages}
                 />
               </Box>
+              <Stack justifyContent="center">
+                <Modal open={open} onClose={handleClose}>
+                  <Box sx={style}>
+                    <Stack justifyContent="center" alignItems="center">
+                      <Typography textAlign="center" sx={{ mb: 1 }}>
+                        봉사 신청이 완료됐습니다.
+                      </Typography>
+                      <CustomButton onClick={handleClose}>확인</CustomButton>
+                      {/* <Stack direction="row" spacing={3}>
+                        <Link href={`/userpage/my/delivery`}>
+                        </Link>
+                        <CustomButton2 onClick={handleClose} sx={{ width: 80 }}>
+                          확인
+                        </CustomButton2>
+                      </Stack> */}
+                    </Stack>
+                  </Box>
+                </Modal>
+              </Stack>
             </Container>
           </Box>
         </Box>

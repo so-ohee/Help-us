@@ -26,6 +26,7 @@ interface IVolunteer {
 
 const VolunteerCard: FC<IVolunteer> = ({ volunteer }) => {
   const volDate = "" + volunteer.volDate;
+  const volTitle = "" + volunteer.title;
 
   return (
     <div>
@@ -55,11 +56,19 @@ const VolunteerCard: FC<IVolunteer> = ({ volunteer }) => {
               {/* 제목은 17자까지만 보여주기??*/}
               <Link href={`/detail/volunteer/${volunteer.volunteerId}`}>
                 <a>
-                  <Typography
-                    sx={{ fontWeight: "bold", fontSize: 17, mt: 0.5, ml: 3 }}
-                  >
-                    {volunteer.title}
-                  </Typography>
+                  {volTitle.length > 18 ? (
+                    <Typography
+                      sx={{ fontWeight: "bold", fontSize: 17, mt: 0.5, ml: 3 }}
+                    >
+                      {volTitle.substring(0, 17)}...
+                    </Typography>
+                  ) : (
+                    <Typography
+                      sx={{ fontWeight: "bold", fontSize: 17, mt: 0.5, ml: 3 }}
+                    >
+                      {volTitle}
+                    </Typography>
+                  )}
                 </a>
               </Link>
 
@@ -95,7 +104,7 @@ const VolunteerCard: FC<IVolunteer> = ({ volunteer }) => {
                 >
                   <CalendarMonthIcon sx={{ mr: 1 }} />
                   <Typography align="left" sx={{ fontSize: 14, width: 200 }}>
-                    {volDate.substr(0, 10)}
+                    {volDate.substring(0, 10)}
                   </Typography>
                 </Grid>
                 <Grid
