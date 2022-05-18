@@ -262,12 +262,28 @@ const DonationOrgDetail: FC = () => {
                   marginTop: "6px",
                 }}
               >
-                <Image
-                  src={testImage}
-                  alt="orgImage"
-                  width="150px"
-                  height="150px"
-                />
+              {
+                orgInfo ?
+                (
+                  orgInfo.profile ?
+                  (
+                    <Image
+                      src={orgInfo.profile}
+                      alt="orgImage"
+                      width="150px"
+                      height="150px"
+                    />
+                  ) :
+                  (
+                    <Image
+                      src={testImage}
+                      alt="orgImage"
+                      width="150px"
+                      height="150px"
+                    />
+                  )
+                ) : null
+              }
               </div>
             </Grid>
             <Grid>
