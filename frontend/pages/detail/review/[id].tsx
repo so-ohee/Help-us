@@ -225,12 +225,11 @@ const ReviewDetail: FC = () => {
 
     reviewComment(id, token, params)
       .then((res) => {
-        console.log(res + "성공")
+        console.log(res + "성공");
         setComment("");
       })
-      .catch((err) => console.log(err + "실패"))
-  }
-
+      .catch((err) => console.log(err + "실패"));
+  };
 
   return (
     <>
@@ -462,13 +461,15 @@ const ReviewDetail: FC = () => {
                   </TableBody>
                 </Table>
               </TableContainer>
-              <Box sx={{ display: "flex", justifyContent: "center", my: 5 }}>
-                <Pagination
-                  paginate={paginate}
-                  curPage={curPage}
-                  totalPage={totalPages}
-                />
-              </Box>
+              {sponsorList && sponsorList.length > 0 ? (
+                <Box sx={{ display: "flex", justifyContent: "center", my: 5 }}>
+                  <Pagination
+                    paginate={paginate}
+                    curPage={curPage}
+                    totalPage={totalPages}
+                  />
+                </Box>
+              ) : null}
               <Divider color="#CDAD78" sx={{ my: 4, borderBottomWidth: 5 }} />
               <Typography variant="h5" fontWeight="bold" sx={{ mx: 5 }}>
                 댓글
@@ -496,8 +497,29 @@ const ReviewDetail: FC = () => {
               </Stack>
               {commentList &&
                 commentList.map((item, index) => (
-                  <Comment key={index} comment={item} id={userId} token={token} />
+                  <Comment
+                    key={index}
+                    comment={item}
+                    id={userId}
+                    token={token}
+                  />
                 ))}
+              {commentList && commentList.length > 0 ? (
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    my: 5,
+                    pb: 5,
+                  }}
+                >
+                  <Pagination
+                    paginate={paginate}
+                    curPage={curPage}
+                    totalPage={totalPages}
+                  />
+                </Box>
+              ) : null}
             </Container>
           </Box>
         </Box>

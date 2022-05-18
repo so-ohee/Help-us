@@ -401,13 +401,22 @@ const TalentDetail: FC = () => {
                     <Comment comment={item} id={id} token={token} key={i} />
                   ))}
               </Stack>
-              <Box sx={{ display: "flex", justifyContent: "center", my: 5 }}>
-                <Pagination
-                  paginate={paginate}
-                  curPage={curPage}
-                  totalPage={totalPages}
-                />
-              </Box>
+              {commentList && commentList > 0 ? (
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    my: 5,
+                    pb: 5,
+                  }}
+                >
+                  <Pagination
+                    paginate={paginate}
+                    curPage={curPage}
+                    totalPage={totalPages}
+                  />
+                </Box>
+              ) : null}
             </Container>
           </Box>
         </Box>

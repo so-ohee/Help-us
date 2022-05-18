@@ -451,7 +451,7 @@ const DonationOrgDetail: FC = () => {
                   남은 수량
                 </Typography>
               </Stack>
-                  <ExpiryDate></ExpiryDate>
+              <ExpiryDate></ExpiryDate>
             </Stack>
           </Stack>
           <TableContainer component={Paper} sx={{ mt: 5 }}>
@@ -690,6 +690,17 @@ const DonationOrgDetail: FC = () => {
             commentList.map((item, index) => (
               <Comment key={index} comment={item} id={userId} token={token} />
             ))}
+          {commentList && commentList.length > 0 ? (
+            <Box
+              sx={{ display: "flex", justifyContent: "center", my: 5, pb: 5 }}
+            >
+              <Pagination
+                paginate={paginate}
+                curPage={curPage}
+                totalPage={totalPages}
+              />
+            </Box>
+          ) : null}
         </Container>
       </Box>
     </Box>

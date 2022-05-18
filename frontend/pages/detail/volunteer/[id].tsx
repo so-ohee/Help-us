@@ -539,13 +539,22 @@ const VolunteerDetail: FC = () => {
                     <Comment comment={item} id={id} token={token} />
                   ))}
               </Box>
-              <Box sx={{ display: "flex", justifyContent: "center", my: 5 }}>
-                <Pagination
-                  paginate={paginate}
-                  curPage={curPage}
-                  totalPage={totalPages}
-                />
-              </Box>
+              {commentList && commentList.length > 0 ? (
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    my: 5,
+                    pb: 5,
+                  }}
+                >
+                  <Pagination
+                    paginate={paginate}
+                    curPage={curPage}
+                    totalPage={totalPages}
+                  />
+                </Box>
+              ) : null}
               <Stack justifyContent="center">
                 <Modal open={open} onClose={handleClose}>
                   <Box sx={style}>
