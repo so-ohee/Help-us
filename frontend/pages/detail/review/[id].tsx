@@ -466,7 +466,13 @@ const ReviewDetail: FC = () => {
                       sponsorList.map((data, i) => (
                         <StyledTableRow key={i}>
                           <StyledTableCell align="center">
-                            {data.name}
+                            <Link
+                              href={`/userpage/${data.memberId}`}
+                              underline="none"
+                              color="inherit"
+                            >
+                              {data.name}
+                            </Link>
                           </StyledTableCell>
                           <StyledTableCell align="center">
                             {data.productName}

@@ -22,10 +22,11 @@ import {
   TextField,
   Tooltip,
   FormGroup,
+  Link,
 } from "@mui/material";
 import { tableCellClasses } from "@mui/material/TableCell";
 
-import Link from "next/link";
+// import Link from "next/link";
 import helpImage from "../../public/images/help.png";
 import EditIcon from "@mui/icons-material/Edit";
 import { makeStyles } from "@material-ui/core/styles";
@@ -309,9 +310,16 @@ const DonationOrgDetail: FC = () => {
               </div>
             </Grid>
             <Grid>
-              <Typography sx={{ mt: 0.5 }} variant="h6" fontWeight="bold">
-                {orgInfo ? orgInfo.name : null}
-              </Typography>
+              <Link
+                href={`/orgpage/${orgInfo.memberId}`}
+                underline="none"
+                color="inherit"
+              >
+                <Typography sx={{ mt: 0.5 }} variant="h6" fontWeight="bold">
+                  {orgInfo ? orgInfo.name : null}
+                </Typography>
+              </Link>
+
               <Grid
                 sx={{ mt: 2 }}
                 container
@@ -350,7 +358,7 @@ const DonationOrgDetail: FC = () => {
           <Stack
             justifyContent="space-between"
             direction="row"
-            sx={{ mt: 1.5, mb: 3 }}
+            sx={{ mt: 1.5, mb: 3, ml: 7 }}
             alignItems="center"
           >
             <Typography variant="h4" fontWeight="bold" sx={{ mt: 3 }}>

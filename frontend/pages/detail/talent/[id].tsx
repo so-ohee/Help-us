@@ -317,7 +317,7 @@ const TalentDetail: FC = () => {
               <Stack
                 justifyContent="space-between"
                 direction="row"
-                sx={{ mt: 1.5, mb: 3 }}
+                sx={{ mt: 1.5, mb: 3, ml: 7 }}
                 alignItems="center"
               >
                 <Typography variant="h4" fontWeight="bold" sx={{ mt: 3 }}>
