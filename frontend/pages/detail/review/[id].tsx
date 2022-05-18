@@ -231,12 +231,11 @@ const ReviewDetail: FC = () => {
 
     reviewComment(id, token, params)
       .then((res) => {
-        console.log(res + "성공")
+        console.log(res + "성공");
         setComment("");
       })
-      .catch((err) => console.log(err + "실패"))
-  }
-
+      .catch((err) => console.log(err + "실패"));
+  };
 
   return (
     <>
@@ -510,7 +509,12 @@ const ReviewDetail: FC = () => {
             )}
               {commentList &&
                 commentList.map((item, index) => (
-                  <Comment key={index} comment={item} id={userId} token={token} />
+                  <Comment
+                    key={index}
+                    comment={item}
+                    id={userId}
+                    token={token}
+                  />
                 ))}
               {commentList && commentList.length > 0 ? (
                 <Box sx={{ display: "flex", justifyContent: "center", my: 5, pb:5 }}>

@@ -377,30 +377,30 @@ const TalentDetail: FC = () => {
                 댓글
               </Typography>
               {role === "USER" || role === "ORG" || role === "ADMIN" ? (
-              <Stack
-                justifyContent="space-between"
-                direction="row"
-                sx={{ mt: 1.5, mb: 3, mx: 5 }}
-                alignItems="center"
-              >
-                <CssTextField
-                  sx={{ backgroundColor: "#ffffff", width: 1000 }}
-                  size="small"
-                  value={comment}
-                  onChange={(e) => setComment(e.target.value)}
-                />
-                <CustomButton
-                  variant="contained"
-                  size="small"
-                  sx={{ width: 30 }}
-                  onClick={handleComment}
+                <Stack
+                  justifyContent="space-between"
+                  direction="row"
+                  sx={{ mt: 1.5, mb: 3, mx: 5 }}
+                  alignItems="center"
                 >
-                  등록
-                </CustomButton>
-              </Stack>
-                ): (
-                  <Box sx={{ height: 30 }}></Box>
-                )}
+                  <CssTextField
+                    sx={{ backgroundColor: "#ffffff", width: 1000 }}
+                    size="small"
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
+                  />
+                  <CustomButton
+                    variant="contained"
+                    size="small"
+                    sx={{ width: 30 }}
+                    onClick={handleComment}
+                  >
+                    등록
+                  </CustomButton>
+                </Stack>
+              ) : (
+                <></>
+              )}
               <Stack>
                 {commentList &&
                   commentList.map((item, i) => (
@@ -415,9 +415,7 @@ const TalentDetail: FC = () => {
                   totalPage={totalPages}
                 />
                 </Box>
-                ): (
-                  <></>
-                )}
+              ) : null}
             </Container>
           </Box>
         </Box>

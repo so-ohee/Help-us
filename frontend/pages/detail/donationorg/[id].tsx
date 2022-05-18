@@ -174,7 +174,7 @@ const DonationOrgDetail: FC = () => {
       donationDetail(router.query.id).then((res) => {
         // console.log(res);
         setDonationDetails(res.data.donation);
-        // console.log(res.data.donation);
+        console.log(res.data.donation);
         setDetailLoading(true);
       });
     }
@@ -451,7 +451,7 @@ const DonationOrgDetail: FC = () => {
                   남은 수량
                 </Typography>
               </Stack>
-                  <ExpiryDate></ExpiryDate>
+              <ExpiryDate></ExpiryDate>
             </Stack>
           </Stack>
           <TableContainer component={Paper} sx={{ mt: 5 }}>
@@ -535,8 +535,8 @@ const DonationOrgDetail: FC = () => {
                               direction="column"
                               sx={{
                                 width: `${
-                                  (data.deliveryCount +
-                                    data.waitingCount / data.totalCount) *
+                                  ((data.deliveryCount + data.waitingCount) /
+                                    data.totalCount) *
                                   100
                                 }%`,
                               }}
@@ -552,8 +552,8 @@ const DonationOrgDetail: FC = () => {
                               ></Box>
                               <Typography sx={{ fontSize: 11 }}>
                                 {(
-                                  (data.deliveryCount +
-                                    data.waitingCount / data.totalCount) *
+                                  ((data.deliveryCount + data.waitingCount) /
+                                    data.totalCount) *
                                   100
                                 ).toFixed()}
                                 %
@@ -667,30 +667,30 @@ const DonationOrgDetail: FC = () => {
           </Typography>
           {role === "USER" || role === "ORG" || role === "ADMIN" ? (
             <Stack
-            justifyContent="space-between"
-            direction="row"
-            sx={{ mt: 1.5, mb: 3, mx: 5 }}
-            alignItems="center"
-          >
-            <CssTextField
-              sx={{ backgroundColor: "#ffffff", width: 1000 }}
-              size="small"
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
-            />
-            <CustomButton
-              variant="contained"
-              size="small"
-              sx={{ width: 30 }}
-              onClick={handleComment}
+              justifyContent="space-between"
+              direction="row"
+              sx={{ mt: 1.5, mb: 3, mx: 5 }}
+              alignItems="center"
             >
-              등록
-            </CustomButton>
-          </Stack>
-          ): (
-            <Box sx={{ height: 30 }}></Box>
+              <CssTextField
+                sx={{ backgroundColor: "#ffffff", width: 1000 }}
+                size="small"
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+              />
+              <CustomButton
+                variant="contained"
+                size="small"
+                sx={{ width: 30 }}
+                onClick={handleComment}
+              >
+                등록
+              </CustomButton>
+            </Stack>
+          ) : (
+            <></>
           )}
-          
+
           {commentList &&
             commentList.map((item, index) => (
               <Comment key={index} comment={item} id={userId} token={token} />

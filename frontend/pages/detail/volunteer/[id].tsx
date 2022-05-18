@@ -516,46 +516,46 @@ const VolunteerDetail: FC = () => {
               </Typography>
               {role === "USER" || role === "ORG" || role === "ADMIN" ? (
                 <Box>
-                <Stack
-                  justifyContent="space-between"
-                  direction="row"
-                  sx={{ mt: 1.5, mb: 3, mx: 5 }}
-                  alignItems="center"
-                >
-                  <TextField
-                    sx={{ backgroundColor: "#ffffff", width: 980 }}
-                    value={comment}
-                    onChange={(e) => setComment(e.target.value)}
-                  />
-                  <CustomButton
-                    variant="contained"
-                    size="large"
-                    sx={{ width: 80 }}
-                    onClick={handleComment}
+                  <Stack
+                    justifyContent="space-between"
+                    direction="row"
+                    sx={{ mt: 1.5, mb: 3, mx: 5 }}
+                    alignItems="center"
                   >
-                    등록
-                  </CustomButton>
-                </Stack>
-                {commentList &&
-                  commentList.map((item) => (
-                    <Comment comment={item} id={id} token={token} />
-                  ))}
-              </Box>
-              ): (
-                <Box sx={{ height: 30 }}></Box>
-              )}
-              {commentList && commentList.length > 0 ? (
-                <Box sx={{ display: "flex", justifyContent: "center", my: 5, pb:5 }}>
-                <Pagination
-                  paginate={paginate}
-                  curPage={curPage}
-                  totalPage={totalPages}
-                />
-              </Box>
-              ): (
+                    <TextField
+                      sx={{ backgroundColor: "#ffffff", width: 980 }}
+                      value={comment}
+                      onChange={(e) => setComment(e.target.value)}
+                    />
+                    <CustomButton
+                      variant="contained"
+                      size="large"
+                      sx={{ width: 80 }}
+                      onClick={handleComment}
+                    >
+                      등록
+                    </CustomButton>
+                  </Stack>
+                  {commentList &&
+                    commentList.map((item) => (
+                      <Comment comment={item} id={id} token={token} />
+                    ))}
+                </Box>
+              ) : (
                 <></>
               )}
-              
+              {commentList && commentList.length > 0 ? (
+                <Box sx={{ display: "flex", justifyContent: "center", my: 5 }}>
+                  <Pagination
+                    paginate={paginate}
+                    curPage={curPage}
+                    totalPage={totalPages}
+                  />
+                </Box>
+              ) : (
+                <></>
+              )}
+
               <Stack justifyContent="center">
                 <Modal open={open} onClose={handleClose}>
                   <Box sx={style}>
