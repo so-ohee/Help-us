@@ -69,6 +69,7 @@ interface IDonationInfo {
   pId: any;
   applyStatus: boolean;
   getStatus: any;
+  role: any;
 }
 
 const style = {
@@ -92,6 +93,7 @@ const DonationApply: FC<IDonationInfo> = ({
   pId,
   applyStatus,
   getStatus,
+  role,
 }) => {
   // 모달
   const [open, setOpen] = useState(false);
@@ -142,6 +144,7 @@ const DonationApply: FC<IDonationInfo> = ({
 
   return (
     <>
+    {role === "USER" ? (
       <FormGroup row>
         <TextField
           size="small"
@@ -162,6 +165,7 @@ const DonationApply: FC<IDonationInfo> = ({
           신청
         </CustomButton3>
       </FormGroup>
+      ) : <>신청불가</>}
       <Stack justifyContent="center">
         <Modal open={open} onClose={handleClose}>
           <Box sx={style}>

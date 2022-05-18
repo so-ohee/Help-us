@@ -495,8 +495,8 @@ const ReviewDetail: FC = () => {
                 </CustomButton>
               </Stack>
               {commentList &&
-                commentList.map((item) => (
-                  <Comment comment={item} id={userId} token={token} />
+                commentList.map((item, index) => (
+                  <Comment key={index} comment={item} id={userId} token={token} />
                 ))}
             </Container>
           </Box>

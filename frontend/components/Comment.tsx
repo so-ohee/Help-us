@@ -86,8 +86,8 @@ const Comment: FC<CommentData> = ({ comment, id, token }) => {
   //댓글 삭제
   const removeComment = () => {
     const commentId = comment.commentId
-      console.log(commentId)
-      console.log(userId)
+      // console.log(commentId)
+      // console.log(userId)
       volunteerCommentDelete(commentId, id, token)
         .then((res) => console.log("성공" + res ))
         .catch((err) => console.log("실패" + err))
@@ -196,7 +196,7 @@ const Comment: FC<CommentData> = ({ comment, id, token }) => {
                 {comment ? (
                   <Typography>{comment.createDate}</Typography>
                 ) : (null)}
-                
+                {userId == comment.memberId ?(
                   <Button
                     variant="contained"
                     color="error"
@@ -206,6 +206,7 @@ const Comment: FC<CommentData> = ({ comment, id, token }) => {
                   >
                     삭제
                   </Button>
+                ) : null}
               </Stack>
             </Stack>
             <Stack direction="row" sx={{ ml: 16, mb: 2 }} alignItems="center">

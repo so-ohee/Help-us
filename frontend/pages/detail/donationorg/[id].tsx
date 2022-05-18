@@ -44,7 +44,7 @@ import DonationApply from "@/components/DonationApply";
 
 import { useRouter } from "next/router";
 // api
-import { donationDetail, getUserInfo, donationOrgCommentList, donationOrgComment } from "function/axios";
+import { donationDetail, getUserInfo, donationOrgCommentList, donationOrgComment, finishDonation } from "function/axios";
 
 const CustomButton = styled(Button)({
   backgroundColor: "#5B321E",
@@ -67,16 +67,17 @@ const CustomButton2 = styled(Button)({
 });
 
 const CustomButton3 = styled(Button)({
-  backgroundColor: "#5B321E",
+  backgroundColor: "#CDAD78",
   color: "white",
   fontWeight: "bold",
   "&:hover": {
-    backgroundColor: "#CDAD78",
+    backgroundColor: "#5B321E",
     color: "white",
   },
   borderTopRightRadius: 5,
   borderBottomRightRadius: 5,
   outline: "none",
+  margin: 10,
 });
 
 const CssTextField = styled(TextField)({
@@ -133,6 +134,8 @@ const DonationOrgDetail: FC = () => {
 
   const [userId, setUserId] = useState<any>("");
   const [token, setToken] = useState<any>("");
+  const [role, setRole] = useState<any>("");
+  const [donationId, setDonationId] = useState<any>("");
   const [applyStatus, setApplyStatus] = useState<boolean>(false);
 
   // 댓글
@@ -157,7 +160,10 @@ const DonationOrgDetail: FC = () => {
   useEffect(() => {
     setUserId(localStorage.getItem("id"));
     setToken(localStorage.getItem("jwt"));
+    setRole(localStorage.getItem("role"));
+    
     if (router.isReady) {
+      setDonationId(router.query.id)
       donationDetail(router.query.id).then((res) => {
         // console.log(res);
         setDonationDetails(res.data.donation);
@@ -208,6 +214,15 @@ const DonationOrgDetail: FC = () => {
       })
       .catch((err) => console.log(err + "실패"))
   } 
+
+  // 마감하기
+  const handleFinish = (e) => {
+    e.preventDefault();
+    const memberId = donationDetails.memberId
+    finishDonation(donationId, memberId, token)
+      .then((res) => console.log("성공" + res))
+      .catch((err) => console.log("실패" + err))
+  }
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -296,16 +311,28 @@ const DonationOrgDetail: FC = () => {
             <Typography variant="h4" fontWeight="bold" sx={{ mt: 3 }}>
               {donationDetails ? donationDetails.title : null}
             </Typography>
-            <Link href="/donation">
-              <CustomButton
+            <Box >
+            {userId == donationDetails.memberId ? (
+              <CustomButton3
                 variant="contained"
                 size="small"
                 sx={{ width: 30 }}
-                onClick={() => history.back()}
+                onClick={handleFinish}
               >
-                목록
-              </CustomButton>
-            </Link>
+                마감
+              </CustomButton3> 
+            ) : null}
+              <Link href="/donation">
+                <CustomButton
+                  variant="contained"
+                  size="small"
+                  sx={{ width: 30 }}
+                  onClick={() => history.back()}
+                >
+                  목록
+                </CustomButton>
+              </Link>
+            </Box>
           </Stack>
           {/* 게시글 이미지 */}
           <Stack
@@ -609,6 +636,7 @@ const DonationOrgDetail: FC = () => {
                         </Tooltip>
                       </StyledTableCell>
                       <StyledTableCell align="center">
+                        
                         {donationDetails.status !== "마감" ? (
                           <DonationApply
                             donation={data}
@@ -618,6 +646,7 @@ const DonationOrgDetail: FC = () => {
                             token={token}
                             applyStatus={applyStatus}
                             getStatus={getStatus}
+                            role={role}
                           />
                         ) : (
                             <>마감</>
@@ -654,8 +683,8 @@ const DonationOrgDetail: FC = () => {
               등록
             </CustomButton>
           </Stack>
-          {commentList &&
-            commentList.map((item) => <Comment comment={item} id={userId} token={token} />)}
+            {commentList &&
+              commentList.map((item, j) => <Comment key={j} comment={item} id={userId} token={token} />)}
         </Container>
       </Box>
     </Box>
