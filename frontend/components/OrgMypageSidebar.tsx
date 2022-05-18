@@ -102,11 +102,11 @@ export default function OrgMypageSidebar() {
     {
       icon:
         pathName === "/orgpage/my/review" ? (
-          <Badge badgeContent={donations.length} color="success">
+          <Badge badgeContent={donations?.length} color="success">
             <RateReviewIcon />
           </Badge>
         ) : (
-          <Badge badgeContent={donations.length} color="success">
+          <Badge badgeContent={donations?.length} color="success">
             <RateReviewOutlinedIcon />
           </Badge>
         ),
