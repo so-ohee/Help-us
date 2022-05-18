@@ -75,7 +75,6 @@ const UpdateButton = styled(Button)({
   // width: "50px",
 });
 
-
 const UserMypageDonation: FC = () => {
   const [donationList, setDonationList] = useState([]);
 
@@ -109,10 +108,12 @@ const UserMypageDonation: FC = () => {
           }}
         >
           <Container maxWidth="lg" sx={{}}>
-            <div style={{display:'flex'}}>
+            <div style={{ display: "flex" }}>
               <Typography variant="h4">물품 기부 조회</Typography>
-              <Link href='/certi'>
-                <UpdateButton style={{marginLeft:'10px', marginTop:'5px'}}>확인서 발급</UpdateButton>
+              <Link href="/certi">
+                <UpdateButton style={{ marginLeft: "10px", marginTop: "5px" }}>
+                  증명서 발급
+                </UpdateButton>
               </Link>
             </div>
             <TableContainer component={Paper} sx={{ mt: 5 }}>
@@ -181,16 +182,21 @@ const UserMypageDonation: FC = () => {
               </Table>
             </TableContainer>
             {donationList && donationList.length > 0 ? (
-            <Stack alignItems="center" sx={{ mb: 2, mt: 2 }}>
-            <Pagination
-              curPage={curPage}
-              paginate={paginate}
-              totalPage={totalPages}
-            />
-          </Stack>
-          ) : (
-            <Typography variant="h5" sx={{ mt: 10, display: 'flex', justifyContent: 'center'}}>기부 내역이 없습니다.</Typography>
-          )}
+              <Stack alignItems="center" sx={{ mb: 2, mt: 2 }}>
+                <Pagination
+                  curPage={curPage}
+                  paginate={paginate}
+                  totalPage={totalPages}
+                />
+              </Stack>
+            ) : (
+              <Typography
+                variant="h5"
+                sx={{ mt: 10, display: "flex", justifyContent: "center" }}
+              >
+                기부 내역이 없습니다.
+              </Typography>
+            )}
           </Container>
         </Box>
       </Box>
