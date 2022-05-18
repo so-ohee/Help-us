@@ -161,35 +161,36 @@ const orgpageMyCheckDonation: FC = () => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {donationList.map((data) => (
-                      <StyledTableRow key={data.donationApplyId}>
-                        <StyledTableCell align="center">
-                          {data.donationApplyId}
-                        </StyledTableCell>
-                        <StyledTableCell align="center">
-                          {data.donationId}
-                        </StyledTableCell>
-                        <StyledTableCell align="center" sx={{ width: 400 }}>
-                          {data.title}
-                        </StyledTableCell>
-                        <StyledTableCell align="center">
-                          {data.productName}
-                        </StyledTableCell>
-                        <StyledTableCell align="center">
-                          {data.name}
-                        </StyledTableCell>
-                        <StyledTableCell align="center">
-                          {data.invoice}
-                        </StyledTableCell>
-                        <StyledTableCell align="center">
-                          {/* {data.parcel} */}
-                          {findCompanyName(data.parcel)}
-                        </StyledTableCell>
-                        <StyledTableCell align="center">
-                          {data.donationDate}
-                        </StyledTableCell>
-                      </StyledTableRow>
-                    ))}
+                    {donationList.length > 0 &&
+                      donationList.map((data) => (
+                        <StyledTableRow key={data.donationApplyId}>
+                          <StyledTableCell align="center">
+                            {data.donationApplyId}
+                          </StyledTableCell>
+                          <StyledTableCell align="center">
+                            {data.donationId}
+                          </StyledTableCell>
+                          <StyledTableCell align="center" sx={{ width: 400 }}>
+                            {data.title}
+                          </StyledTableCell>
+                          <StyledTableCell align="center">
+                            {data.productName}
+                          </StyledTableCell>
+                          <StyledTableCell align="center">
+                            {data.name}
+                          </StyledTableCell>
+                          <StyledTableCell align="center">
+                            {data.invoice}
+                          </StyledTableCell>
+                          <StyledTableCell align="center">
+                            {/* {data.parcel} */}
+                            {findCompanyName(data.parcel)}
+                          </StyledTableCell>
+                          <StyledTableCell align="center">
+                            {data.donationDate}
+                          </StyledTableCell>
+                        </StyledTableRow>
+                      ))}
                   </TableBody>
                 </Table>
               </TableContainer>
