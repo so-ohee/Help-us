@@ -30,7 +30,7 @@ public interface VolunteerService {
     // 목록 만들기
     Map<String, Object> makeListVolunteer (Page<Volunteer> volunteers) throws Exception;
     // 목록 만들기
-    Map<String, Object> makeListVolunteer2 (Page<Volunteer> volunteers) throws Exception;
+    Map<String, Object> makeListVolunteer2 (Page<Volunteer> not_end, Page<Volunteer> end) throws Exception;
     // 봉사 글 목록 - 메인
     Map<String, Object> mainListVolunteer(String order, int page) throws Exception;
     // 기업입장에서 내가 올린 봉사글들 목록
