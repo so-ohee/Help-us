@@ -38,6 +38,7 @@ import InsertLinkIcon from "@mui/icons-material/InsertLink";
 import testImage from "../../../public/images/testImage.jpg";
 import Comment from "../../../components/Comment2";
 import Pagination from "../../../components/Pagination";
+import ExpiryDate from "../../../components/ExpiryDate";
 
 import CustomCarousel from "@/components/Carousel";
 import DonationApply from "@/components/DonationApply";
@@ -450,9 +451,7 @@ const DonationOrgDetail: FC = () => {
                   남은 수량
                 </Typography>
               </Stack>
-              <CustomButton2 sx={{ height: "30px", ml: 5 }}>
-                유통기한 가이드
-              </CustomButton2>
+                  <ExpiryDate></ExpiryDate>
             </Stack>
           </Stack>
           <TableContainer component={Paper} sx={{ mt: 5 }}>
