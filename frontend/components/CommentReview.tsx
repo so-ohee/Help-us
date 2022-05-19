@@ -224,7 +224,7 @@ const Comment3: FC<CommentData> = ({
                     height="40px"
                   />
                 )}
-                <Link href={`/userpage/${comment.memberId}`}>
+                <Link href={`/profile/${comment.memberId}`}>
                   <Typography
                     sx={{ fontSize: 18, ml: 1, cursor: "pointer" }}
                     fontWeight="bold"
