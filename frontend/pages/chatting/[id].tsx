@@ -12,6 +12,7 @@ import {
   Paper,
   Tabs,
   ThemeProvider,
+  CssBaseline,
 } from "@mui/material/";
 import {
   Table,
@@ -87,29 +88,19 @@ const Chatting: FC = () => {
   //   });
   // }, []);
 
-  return (<div></div>
-    // <ThemeProvider theme={theme}>
-    //   <Container maxWidth="lg" direction="row">
-    //     <Grid
-    //       item
-    //       md={6}
-    //       align="center"
-    //     >
-    //       <Box>
-
-    //       </Box>
-
-    //     </Grid> 
-    //     <Grid
-    //       item
-    //       md={6}
-    //       align="center"
-    //     >
-
-    //     </Grid> 
-        
-    //   </Container>
-    // </ThemeProvider>
+  return (
+    <Box sx={{ display: "flex" }}>
+      <CssBaseline />
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          // height: "100vh",
+          overflow: "auto",
+          mt: 0,
+        }}
+      ></Box>
+    </Box>
   );
 };
 
