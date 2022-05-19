@@ -459,9 +459,9 @@ const VolunteerDetail: FC = () => {
                         flexDirection="column"
                         display="flex"
                       >
-                        <Typography sx={{ fontSize: 13 }} textAlign="center">
+                        {/* <Typography sx={{ fontSize: 13 }} textAlign="center">
                           {(100 - volunteerDetails?.percent).toFixed()}%
-                        </Typography>
+                        </Typography> */}
                       </Box>
                     ) : (
                       <Box
