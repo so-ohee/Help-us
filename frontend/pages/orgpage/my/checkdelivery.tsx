@@ -82,7 +82,7 @@ const style = {
 
 const orgpageMyCheckDelivery: FC = () => {
   // 배송 현황 리스트
-  const [deliveryList, setDeliveryList] = useState<any>("");
+  const [deliveryList, setDeliveryList] = useState<any>([]);
 
   // pagination
   const [curPage, setCurPage] = useState(1);
