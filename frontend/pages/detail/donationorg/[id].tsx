@@ -190,7 +190,7 @@ const DonationOrgDetail: FC = () => {
   const getDeleteStatus = (deleteStatus) => {
     setDeleteStatus(deleteStatus);
   };
-  console.log(donationDetails)
+
   // 기관 정보 불러오기
   useEffect(() => {
     setUserId(localStorage.getItem("id"));
