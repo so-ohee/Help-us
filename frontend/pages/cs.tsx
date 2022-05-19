@@ -234,26 +234,26 @@ const CsMain: FC = () => {
                 </TableHead>
                 <TableBody>
                   {csList &&
-                    csList.map((data) => (
-                      <StyledTableRow key={data.helpDeskId}>
+                    csList.map((data, i) => (
+                      <StyledTableRow key={i}>
                         <StyledTableCell align="center">
-                          {data.category}
+                          {data?.category}
                         </StyledTableCell>
 
                         {myRole !== "ADMIN" &&
-                        data.visible === "비공개" &&
-                        data.memberId !== myId ? (
+                        data?.visible === "비공개" &&
+                        data?.memberId !== myId ? (
                           <StyledTableCell
                             align="center"
                             sx={{ width: 400 }}
                             onClick={onClickVisible}
                           >
-                            {data.title}
+                            {data?.title}
                           </StyledTableCell>
                         ) : (
                           <StyledTableCell align="center" sx={{ width: 400 }}>
                             <Link
-                              href={`/detail/cs/${data.helpDeskId}`}
+                              href={`/detail/cs/${data?.helpDeskId}`}
                               underline="none"
                               color="inherit"
                             >
@@ -263,13 +263,13 @@ const CsMain: FC = () => {
                         )}
 
                         <StyledTableCell align="center">
-                          {data.visible}
+                          {data?.visible}
                         </StyledTableCell>
                         <StyledTableCell align="center">
-                          {data.status}
+                          {data?.status}
                         </StyledTableCell>
                         <StyledTableCell align="center">
-                          {data.createDate.substr(0, 10)}
+                          {data?.createDate.substr(0, 10)}
                         </StyledTableCell>
                       </StyledTableRow>
                     ))}
