@@ -36,6 +36,7 @@ import CallIcon from "@mui/icons-material/Call";
 import MailIcon from "@mui/icons-material/Mail";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
 
+import defaultImage from "../../../public/images/defaultImage.png";
 import testImage from "../../../public/images/testImage.jpg";
 import Comment from "../../../components/CommentDonation";
 import Pagination from "../../../components/Pagination";
@@ -300,7 +301,7 @@ const DonationOrgDetail: FC = () => {
                     />
                   ) : (
                     <Image
-                      src={testImage}
+                      src={defaultImage}
                       alt="orgImage"
                       width="150px"
                       height="150px"
