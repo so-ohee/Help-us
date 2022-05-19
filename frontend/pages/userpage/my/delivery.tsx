@@ -89,7 +89,7 @@ const UserMypageDelivery: FC = () => {
 
   const [loading, setLoading] = useState<boolean>(true);
 
-  const [applyList, setApplyList] = useState<any>("");
+  const [applyList, setApplyList] = useState<any>([]);
 
   // 배송 입력 여부 상태
   const [postStatus, setPostStatus] = useState<boolean>(false);
