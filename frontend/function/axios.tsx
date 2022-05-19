@@ -967,6 +967,15 @@ export const searchCerti = async (num) => {
   });
 };
 
+// 봉사 모든 내역 조회
+export const getVolunteerAll = async (id) => {
+  return await axios({
+    method: "GET",
+    url: `8000/api/volunteer/myVolunteerList/${id}`,
+  });
+};
+
+
 // ------------------------- 기타 ------------------------------
 
 // ocr
