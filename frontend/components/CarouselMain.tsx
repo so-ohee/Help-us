@@ -20,15 +20,15 @@ const item = [
   },
   {
     img: main2,
-    url: '/detail/volunteer/75'
+    url: '/detail/donationorg/73'
   },
   {
     img: main3,
-    url: '/detail/volunteer/75'
+    url: '/detail/donationorg/72'
   },
   {
     img: main4,
-    url: '/detail/volunteer/75'
+    url: '/detail/volunteer/77'
   },
   ];
 
