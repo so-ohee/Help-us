@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from "react";
+import { FC, useState, useEffect, useRef } from "react";
 import { getNewsList } from "function/axios";
 import Pagination from "@/components/Pagination";
 import {
@@ -13,6 +13,7 @@ import {
   Tabs,
   ThemeProvider,
   CssBaseline,
+  TextField,
 } from "@mui/material/";
 import {
   Table,
@@ -29,6 +30,13 @@ import SearchIcon from "@mui/icons-material/Search";
 import IconButton from "@mui/material/IconButton";
 import Image from "next/image";
 import volunteer1 from "../public/images/volunteer1.jpg";
+import userDefaultImage from "../../public/images/userDefaultImage.png";
+import { useRouter } from "next/router";
+// import "../../styles/scroll.css";
+
+// 채팅 컴포넌트
+import ChatRoomList from "@/components/chat/ChatRoomList";
+import ChatBubble from "@/components/chat/ChatBubble";
 
 const CustomButton = styled(Button)({
   backgroundColor: "#5B321E",
@@ -40,67 +48,256 @@ const CustomButton = styled(Button)({
   },
 });
 
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: "#CDAD78",
-    color: theme.palette.common.white,
+const CssTextField = styled(TextField)({
+  "& label.Mui-focused": {
+    color: "#5B321E",
   },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
+  "& .MuiInput-underline:after": {
+    borderBottomColor: "#5B321E",
   },
-}));
-
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  "&:nth-of-type(odd)": {
-    // backgroundColor: theme.palette.action.hover,
-    backgroundColor: "#FCF8F0",
+  "& .MuiOutlinedInput-root": {
+    "& fieldset": {
+      borderColor: "#CDAD78",
+    },
+    "&:hover fieldset": {
+      borderColor: "#5B321E",
+    },
+    "&.Mui-focused fieldset": {
+      borderColor: "#5B321E",
+    },
   },
-  // hide last border
-  "&:last-child td, &:last-child th": {
-    border: 0,
-  },
-  // height: 70,
-  // rowStyle: { height: 50 },
-  // maxHeight: ,
-}));
+});
 
 const Chatting: FC = () => {
-  const theme = createTheme({
-    typography: {
-      // fontFamily: "Gowun Dodum",
-      // fontFamily: "Noto Serif KR",
-      fontFamily: "Noto Sans KR",
-    },
-    palette: {
-      primary: {
-        main: "#5B321E",
-      },
-    },
-  });
   const [loading, setLoading] = useState<boolean>(false);
   const [chatroomList, setChatroomList] = useState<any>(null);
 
-  // useEffect(() => {
-  //   getNewsList(params).then((res) => {
-  //     setChatroomList(res.data.news);
-  //     // console.log("data는", reviewList);
-  //     setLoading(true);
-  //   });
-  // }, []);
+  const scrollRef = useRef();
+
+  const router = useRouter();
+
+  const messageBoxRef = useRef<HTMLUListElement>();
+
+  const scrollToBottom = () => {
+    if (messageBoxRef.current) {
+      messageBoxRef.current.scrollTop = messageBoxRef.current.scrollHeight;
+    }
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, []);
+
+  // 현재 보고 있는 유저의 memberId
+  const [userId, setUserId] = useState<any>(null);
+
+  const myId = 1000;
+
+  // 채팅 인풋
+  const [chatInput, setChatInput] = useState<any>("");
+
+  const onChangeChatInput = useEffect(() => {
+    if (router.isReady) {
+      setUserId(router.query.id);
+    }
+  }, [router.isReady]);
+
+  const dummyChatList = [
+    {
+      name: "김나영",
+      lastMessage: "인생",
+      memberId: 1,
+    },
+    {
+      name: "이다예",
+      lastMessage: "ㅋㅋ",
+      memberId: 2,
+    },
+    {
+      name: "이제민",
+      lastMessage: "ㅎㅎ",
+      memberId: 3,
+    },
+    {
+      name: "최다운",
+      lastMessage: "ㅋㅋ",
+      memberId: 4,
+    },
+    {
+      name: "이명원",
+      lastMessage: "채팅채팅",
+      memberId: 100,
+    },
+  ];
+
+  const dummyChat = [
+    {
+      name: "이명원",
+      message: "채팅채팅",
+      time: "12:22",
+      memberId: 100,
+    },
+    {
+      name: "김나영",
+      message: "채팅채팅",
+      time: "12:22",
+      memberId: 1000,
+    },
+    {
+      name: "이명원",
+      message: "채팅채팅",
+      time: "12:22",
+      memberId: 100,
+    },
+    {
+      name: "이명원",
+      message: "채팅채팅",
+      time: "12:22",
+      memberId: 100,
+    },
+    {
+      name: "이명원",
+      message: "채팅채팅",
+      time: "12:22",
+      memberId: 100,
+    },
+    {
+      name: "이명원",
+      message: "채팅채팅",
+      time: "12:22",
+      memberId: 100,
+    },
+    {
+      name: "이명원",
+      message: "채팅채팅",
+      time: "12:22",
+      memberId: 100,
+    },
+    {
+      name: "이명원",
+      message: "채팅채팅",
+      time: "12:22",
+      memberId: 100,
+    },
+    {
+      name: "이명원",
+      message: "채팅채팅",
+      time: "12:22",
+      memberId: 100,
+    },
+  ];
 
   return (
-    <Box sx={{ display: "flex" }}>
-      <CssBaseline />
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          // height: "100vh",
-          overflow: "auto",
-          mt: 0,
-        }}
-      ></Box>
-    </Box>
+    <>
+      <Box sx={{ display: "flex" }}>
+        <CssBaseline />
+        <Box
+          component="main"
+          sx={{
+            flexGrow: 1,
+            // height: "100vh",
+            overflow: "auto",
+            // mt: 10,
+            mb: 20,
+          }}
+        >
+          <Container maxWidth="lg">
+            <Typography
+              sx={{ my: 5 }}
+              textAlign="center"
+              variant="h4"
+              fontWeight="bold"
+            >
+              @@@님과의 채팅방
+            </Typography>
+            <Stack direction="row" spacing={20} justifyContent="center">
+              <Stack>
+                <Stack>
+                  <Box
+                    className="scroolBar"
+                    // ref={scrollRef}
+                    sx={{
+                      bgcolor: "#FCF8F0",
+                      height: "600px",
+                      width: "400px",
+                      overflowY: "scroll",
+                      overflowX: "hidden",
+                    }}
+                  >
+                    {/* 채팅방 목록 표시 부분 */}
+                    <Stack>
+                      {dummyChatList &&
+                        dummyChatList.map((item, i) => (
+                          <ChatRoomList chatList={item} key={i} />
+                        ))}
+                    </Stack>
+                  </Box>
+                </Stack>
+              </Stack>
+              <Stack>
+                <Stack>
+                  <Box
+                    sx={{
+                      bgcolor: "#FCF8F0",
+                      height: "600px",
+                      width: "600px",
+                    }}
+                  >
+                    {/* /chatting/0 이라면 */}
+                    {/* {userId == 0 ? (
+                    <Typography
+                      sx={{ mt: 10, ml: 20 }}
+                      fontWeight="bold"
+                      variant="h5"
+                    >
+                      대화 상대를 선택해주세요.
+                    </Typography>
+                  ) : (
+                    <Typography>zz</Typography>
+                  )} */}
+
+                    {/* 말풍선 출력 부분 */}
+                    <Stack
+                      className="scroolBar"
+                      ref={messageBoxRef}
+                      sx={{ height: "520px", overflowY: "scroll" }}
+                    >
+                      {dummyChat &&
+                        dummyChat.map((item, i) => (
+                          <ChatBubble chat={item} key={i} myId={myId} />
+                        ))}
+                    </Stack>
+                    {/* 입력창 */}
+                    <Stack
+                      justifyContent="center"
+                      direction="row"
+                      sx={{ mt: 1.5, mx: 5 }}
+                      alignItems="center"
+                      spacing={3}
+                    >
+                      <CssTextField
+                        sx={{ backgroundColor: "#ffffff", width: 400 }}
+                        size="small"
+                        value={chatInput}
+                        onChange={(e) => setChatInput(e.target.value)}
+                      />
+                      <CustomButton
+                        variant="contained"
+                        size="small"
+                        sx={{ width: 30, height: 35 }}
+                        // onClick={handleComment}
+                      >
+                        등록
+                      </CustomButton>
+                    </Stack>
+                  </Box>
+                </Stack>
+              </Stack>
+            </Stack>
+          </Container>
+        </Box>
+      </Box>
+    </>
   );
 };
 
