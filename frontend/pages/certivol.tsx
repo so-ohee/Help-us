@@ -164,6 +164,10 @@ const CertiVol: FC = () => {
           str += '7'
         } else if (x === 'o'){
           str += '5'  
+        } else if (x === '1'){
+          str += '3'
+        } else if (x === 'i'){
+          str += '6'
         }else{
           str += x
         }
