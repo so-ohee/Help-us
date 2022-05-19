@@ -200,7 +200,7 @@ const DonationOrgDetail: FC = () => {
     if (router.isReady) {
       setDonationId(router.query.id);
       donationDetail(router.query.id).then((res) => {
-        console.log(res);
+        // console.log(res);
         setDonationDetails(res.data.donation);
         // console.log(res.data.donation);
         setDetailLoading(true);
