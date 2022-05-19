@@ -35,7 +35,7 @@ import CallIcon from "@mui/icons-material/Call";
 import MailIcon from "@mui/icons-material/Mail";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
 
-import Comment from "../../../components/Comment3";
+import Comment from "../../../components/CommentCs";
 import testImage from "../../../public/images/testImage.jpg";
 
 import CustomCarousel from "@/components/Carousel";

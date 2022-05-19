@@ -37,7 +37,7 @@ import MailIcon from "@mui/icons-material/Mail";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
 
 import testImage from "../../../public/images/testImage.jpg";
-import Comment from "../../../components/Comment2";
+import Comment from "../../../components/CommentDonation";
 import Pagination from "../../../components/Pagination";
 import ExpiryDate from "../../../components/ExpiryDate";
 
