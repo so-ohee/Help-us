@@ -148,9 +148,7 @@ const UserMypageVolunteer: FC = () => {
               justifyContent="space-between"
               sx={{ mt: 5 }}
             >
-              <Typography variant="h4">
-                봉사 조회
-              </Typography>
+              <Typography variant="h4">봉사 조회</Typography>
               <Link href="/certivol">
                 <UpdateButton style={{ marginLeft: "10px", marginTop: "5px" }}>
                   증명서 발급
@@ -204,7 +202,8 @@ const UserMypageVolunteer: FC = () => {
                           </Link>
                         </StyledTableCell>
                         <StyledTableCell align="center">
-                          {Unix_timestamp(data.volDate)}
+                          {/* {Unix_timestamp(data.volDate)} */}
+                          {data.volDate}
                         </StyledTableCell>
                         <StyledTableCell align="center">
                           <Link
