@@ -451,11 +451,7 @@ const OrgPage: FC = () => {
                       totalPage={totalPages2}
                     />
                   </Stack>
-                ) : (
-                  <Typography fontWeight="bold" variant="h5" sx={{ mb: 2 }}>
-                    마감된 기부가 없습니다.
-                  </Typography>
-                )}
+                ) : null}
               </TabPanel>
               <TabPanel value={value} index={1}>
                 <Typography fontWeight="bold" variant="h5" sx={{ mb: 2 }}>
