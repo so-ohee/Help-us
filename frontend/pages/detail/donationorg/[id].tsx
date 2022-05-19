@@ -155,7 +155,7 @@ const DonationOrgDetail: FC = () => {
   const router = useRouter();
   const routerId = useRouter().query.id;
 
-  const [donationDetails, setDonationDetails] = useState<any>("");
+  const [donationDetails, setDonationDetails] = useState<any>('');
   const [orgInfo, setOrgInfo] = useState<any>("");
   const [orgId, setOrgId] = useState<any>("");
   const [detailLoading, setDetailLoading] = useState<boolean>(false);
@@ -190,7 +190,7 @@ const DonationOrgDetail: FC = () => {
   const getDeleteStatus = (deleteStatus) => {
     setDeleteStatus(deleteStatus);
   };
-
+  console.log(donationDetails)
   // 기관 정보 불러오기
   useEffect(() => {
     setUserId(localStorage.getItem("id"));
@@ -200,7 +200,7 @@ const DonationOrgDetail: FC = () => {
     if (router.isReady) {
       setDonationId(router.query.id);
       donationDetail(router.query.id).then((res) => {
-        // console.log(res);
+        console.log(res);
         setDonationDetails(res.data.donation);
         // console.log(res.data.donation);
         setDetailLoading(true);
@@ -530,7 +530,7 @@ const DonationOrgDetail: FC = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {donationDetails &&
+                {donationDetails.products &&
                   donationDetails.products.map((data, i) => (
                     <StyledTableRow key={i}>
                       <StyledTableCell align="center">
