@@ -339,7 +339,7 @@ const Volunteer: FC = () => {
     //   alert("상세주소를 입력해주세요.");
     //   return;
     // }
-    console.log(id);
+    // console.log(id);
 
     createVolunteer(id, token, volunteerReqDto, imageList)
       .then((res) => {
