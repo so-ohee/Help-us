@@ -35,6 +35,7 @@ import {
   volunteerCommentList,
   talentRecomment,
 } from "function/axios";
+import { getUserInfo } from "function/axios";
 
 const style = {
   position: "absolute" as "absolute",
@@ -196,6 +197,17 @@ const Comment: FC<CommentData> = ({
     );
   };
 
+  const profile = (e) => {
+    getUserInfo(e)
+    .then(res => {
+        if (res.data.role === 'ORG' || res.data.role === 'ORG_WAIT'){
+            router.push(`/orgpage/${res.data.memberId}`)
+        } else if (res.data.role === 'USER'){
+            router.push(`/userpage/${res.data.memberId}`)
+        }
+    })
+  }
+
   return (
     <>
       <>
@@ -223,14 +235,15 @@ const Comment: FC<CommentData> = ({
                     height="40px"
                   />
                 )}
-                <Link href={`/profile/${comment.memberId}`}>
+                {/* <Link href={`/profile/${comment.memberId}`}> */}
                   <Typography
                     sx={{ fontSize: 18, ml: 1, cursor: "pointer" }}
                     fontWeight="bold"
+                    onClick={() => profile(comment.memberId)}
                   >
                     {comment.name}
                   </Typography>
-                </Link>
+                {/* </Link> */}
                 <Typography sx={{ ml: 1 }}>{comment.content}</Typography>
               </Stack>
               <Stack direction="row" alignItems="center">
@@ -321,14 +334,15 @@ const Comment: FC<CommentData> = ({
                   width="40px"
                   height="40px"
                 />
-                <Link href={`/userpage/${comment.memberId}`}>
+                {/* <Link href={`/userpage/${comment.memberId}`}> */}
                   <Typography
                     sx={{ fontSize: 18, ml: 1, cursor: "pointer" }}
                     fontWeight="bold"
+                    onClick={() => profile(comment.memberId)}
                   >
                     {comment.name}
                   </Typography>
-                </Link>
+                {/* </Link> */}
                 <Typography
                   sx={{ ml: 1, color: "#3470ca", fontSize: 14 }}
                   fontWeight="bold"
