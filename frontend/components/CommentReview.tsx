@@ -196,6 +196,7 @@ const Comment3: FC<CommentData> = ({
     setInputStatus(!inputStatus);
   };
 
+  
   return (
     <>
       <>
