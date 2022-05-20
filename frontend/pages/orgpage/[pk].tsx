@@ -416,9 +416,9 @@ const OrgPage: FC = () => {
                     />
                   </Stack>
                 ) : (
-                  <Typography fontWeight="bold" variant="h5" sx={{ mb: 2 }}>
-                    진행 중인 기부가 없습니다.
-                  </Typography>
+                  // <Typography fontWeight="bold" variant="h5" sx={{ mb: 2 }}>
+                  //   진행 중인 기부가 없습니다.
+                  // </Typography>
                 )}
                 <Typography fontWeight="bold" variant="h5" sx={{ mb: 2 }}>
                   마감된 기부
@@ -486,9 +486,9 @@ const OrgPage: FC = () => {
                     />
                   </Stack>
                 ) : (
-                  <Typography fontWeight="bold" variant="h5" sx={{ mb: 2 }}>
-                    진행 중인 봉사가 없습니다.
-                  </Typography>
+                  // <Typography fontWeight="bold" variant="h5" sx={{ mb: 2 }}>
+                  //   진행 중인 봉사가 없습니다.
+                  // </Typography>
                 )}
                 <Typography fontWeight="bold" variant="h5" sx={{ mb: 2 }}>
                   마감된 봉사
@@ -522,9 +522,9 @@ const OrgPage: FC = () => {
                     />
                   </Stack>
                 ) : (
-                  <Typography fontWeight="bold" variant="h5" sx={{ mb: 2 }}>
-                    마감된 봉사가 없습니다.
-                  </Typography>
+                  // <Typography fontWeight="bold" variant="h5" sx={{ mb: 2 }}>
+                  //   마감된 봉사가 없습니다.
+                  // </Typography>
                 )}
               </TabPanel>
               <TabPanel value={value} index={2}>
