@@ -20,11 +20,11 @@ const item = [
   },
   {
     img: main2,
-    url: '/detail/donationorg/73'
+    url: '/detail/donationorg/6'
   },
   {
     img: main3,
-    url: '/detail/donationorg/72'
+    url: '/detail/donationorg/8'
   },
   {
     img: main4,
