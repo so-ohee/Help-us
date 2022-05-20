@@ -161,7 +161,8 @@ const orgpageMyCheckVolunteer: FC = () => {
                         {data.title}
                       </StyledTableCell>
                       <StyledTableCell align="center">
-                        {Unix_timestamp(data.volDate)}
+                        {/* {Unix_timestamp(data.volDate)} */}
+                        {data.volDate}
                       </StyledTableCell>
                       <StyledTableCell align="center">
                         <Link href={`/userpage/${data.memberId}`}>
