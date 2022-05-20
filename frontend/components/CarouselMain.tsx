@@ -16,7 +16,7 @@ import main4 from "../public/images/main4.jpg";
 const item = [
   {
     img: main1,
-    url: '/detail/volunteer/75'
+    url: '/detail/volunteer/86'
   },
   {
     img: main2,
@@ -28,7 +28,7 @@ const item = [
   },
   {
     img: main4,
-    url: '/detail/volunteer/77'
+    url: '/detail/volunteer/87'
   },
   ];
 

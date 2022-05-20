@@ -202,8 +202,8 @@ const UserMypageVolunteer: FC = () => {
                           </Link>
                         </StyledTableCell>
                         <StyledTableCell align="center">
-                          {/* {Unix_timestamp(data.volDate)} */}
-                          {data.volDate}
+                          {Unix_timestamp(data.volDate)}
+                          {/* {data.volDate} */}
                         </StyledTableCell>
                         <StyledTableCell align="center">
                           <Link
