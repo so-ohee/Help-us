@@ -16,19 +16,19 @@ import main4 from "../public/images/main4.jpg";
 const item = [
   {
     img: main1,
-    url: '/detail/volunteer/75'
+    url: '/detail/volunteer/86'
   },
   {
     img: main2,
-    url: '/detail/donationorg/73'
+    url: '/detail/donationorg/6'
   },
   {
     img: main3,
-    url: '/detail/donationorg/72'
+    url: '/detail/donationorg/8'
   },
   {
     img: main4,
-    url: '/detail/volunteer/77'
+    url: '/detail/volunteer/87'
   },
   ];
 
